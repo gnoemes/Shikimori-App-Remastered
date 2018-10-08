@@ -1,37 +1,65 @@
+apply from: '../dependencies.gradle'
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
+    compileSdkVersion versions.compileSdk
+    buildToolsVersion versions.buildTools
 
     kapt { generateStubs = true }
     androidExtensions { experimental = true }
 
-    compileSdkVersion 28
     defaultConfig {
         applicationId "com.gnoemes.shikimori"
-        minSdkVersion 21
-        targetSdkVersion 28
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.compileSdk
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
+            zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
+        debug {
+            versionNameSuffix "-SNAPSHOT"
+        }
+    }
+
+    buildTypes.each {
+        it.buildConfigField 'String', 'ShikimoriClientId', ShikimoriClientId
+        it.buildConfigField 'String', 'ShikimoriClientSecret', ShikimoriClientSecret
+        it.buildConfigField 'String', 'ShikimoriBaseUrl', ShikimoriBaseUrl
+        it.buildConfigField 'String', 'PlaySkihimoriBaseUrl', PlaySkihimoriBaseUrl
+        it.buildConfigField 'String', 'AlternativeBaseUrl', AlternativeBaseUrl
     }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    kaptTest 'junit:junit:4.12'
-    kaptAndroidTest 'com.android.support.test:runner:1.0.2'
-    kaptAndroidTest 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:" + versions.kotlin
+    implementation 'com.android.support:appcompat-v7:' + versions.supportLibraries
+    implementation 'com.android.support.constraint:constraint-layout:' + versions.constraint
+    implementation "com.google.dagger:dagger-android:" + versions.dagger
+    implementation "com.google.dagger:dagger-android-support:" + versions.dagger
+    kapt "com.google.dagger:dagger-android-processor:" + versions.dagger
+    kapt "com.google.dagger:dagger-compiler:" + versions.dagger
+    implementation 'io.reactivex.rxjava2:rxandroid:' + versions.rxAndroid
+    implementation "io.reactivex.rxjava2:rxjava:" + versions.rxJava
+    implementation "com.squareup.retrofit2:retrofit:" + versions.retrofit
+    implementation "com.squareup.retrofit2:converter-gson:" + versions.retrofit
+    implementation "com.squareup.retrofit2:adapter-rxjava2:" + versions.retrofit
+    implementation "com.squareup.okhttp3:okhttp:" + versions.okHttp
+    implementation "com.squareup.okhttp3:logging-interceptor:" + versions.okHttp
+    implementation 'com.squareup.okhttp3:okhttp-urlconnection:' + versions.urlConnection
+    implementation 'com.github.franmontiel:PersistentCookieJar:' + versions.cookieJar
+    implementation "com.google.code.gson:gson:" + versions.gson
+    implementation 'org.jsoup:jsoup:' + versions.jsoup
+    implementation 'net.danlew:android.joda:' + versions.jodaDateTime
 }
