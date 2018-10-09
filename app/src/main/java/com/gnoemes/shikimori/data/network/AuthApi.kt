@@ -1,8 +1,8 @@
 package com.gnoemes.shikimori.data.network
 
 import com.gnoemes.shikimori.BuildConfig
-import com.gnoemes.shikimori.entity.app.Constants
-import com.gnoemes.shikimori.entity.app.TokenResponse
+import com.gnoemes.shikimori.entity.app.data.TokenResponse
+import com.gnoemes.shikimori.entity.app.domain.Constants
 import io.reactivex.Single
 import retrofit2.http.POST
 import retrofit2.http.Query

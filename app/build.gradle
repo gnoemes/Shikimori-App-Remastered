@@ -8,7 +8,7 @@ android {
     compileSdkVersion versions.compileSdk
     buildToolsVersion versions.buildTools
 
-    kapt { generateStubs = true }
+    kapt {generateStubs = true}
     androidExtensions { experimental = true }
 
     defaultConfig {
@@ -39,12 +39,18 @@ android {
         it.buildConfigField 'String', 'PlaySkihimoriBaseUrl', PlaySkihimoriBaseUrl
         it.buildConfigField 'String', 'AlternativeBaseUrl', AlternativeBaseUrl
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:" + versions.kotlin
     implementation 'com.android.support:appcompat-v7:' + versions.supportLibraries
+    implementation "com.android.support:preference-v7:" + versions.supportLibraries
     implementation 'com.android.support.constraint:constraint-layout:' + versions.constraint
     implementation "com.google.dagger:dagger-android:" + versions.dagger
     implementation "com.google.dagger:dagger-android-support:" + versions.dagger

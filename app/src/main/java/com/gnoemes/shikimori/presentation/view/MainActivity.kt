@@ -1,7 +1,8 @@
-package com.gnoemes.shikimori
+package com.gnoemes.shikimori.presentation.view
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
+import com.gnoemes.shikimori.R
 
 class MainActivity : AppCompatActivity() {
 
