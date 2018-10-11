@@ -21,5 +21,6 @@ data class UserDetails(
         val isShowComments: Boolean,
         val isFriend: Boolean,
         val isIgnored: Boolean,
-        val stats: UserStats
+        val stats: UserStats,
+        var isMe: Boolean = false
 )
