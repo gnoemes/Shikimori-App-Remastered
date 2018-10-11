@@ -14,4 +14,6 @@ object Constants {
     const val BIG_LIMIT = 30
 
     const val LONG_TIMEOUT = 30
+
+    const val NO_ID = -1L
 }

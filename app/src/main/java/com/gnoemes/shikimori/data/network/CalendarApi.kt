@@ -1,6 +1,6 @@
 package com.gnoemes.shikimori.data.network
 
-import com.gnoemes.shikimori.entity.calendar.CalendarResponse
+import com.gnoemes.shikimori.entity.calendar.data.CalendarResponse
 import io.reactivex.Single
 import retrofit2.http.GET
 

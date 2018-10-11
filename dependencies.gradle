@@ -23,6 +23,7 @@ ext.versions = [
     urlConnection     : '3.9.0',
     cookieJar         : 'v1.0.1',
     jsoup             : '1.10.2',
+    storIO            : '3.0.0',
 
     jodaDateTime      : '2.9.9.3',
 

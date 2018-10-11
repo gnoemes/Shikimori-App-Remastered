@@ -14,19 +14,13 @@ interface VideoApi {
      * Get html page of specific video
      */
     @GET("/animes/a{animeId}/video_online/{episode}/{videoId}")
-    fun getAnimeVideoInfo(@Path("animeId") animeId: Long, @Path("episode") episode: Int, @Path("videoId") videoId: Long): Single<Document>
+    fun getAnimeVideoInfo(@Path("animeId") animeId: Long, @Path("episode") episode: Int, @Path("videoId") videoId: Long? = null): Single<Document>
 
     /**
      * Get html page of anime (information about episodes hostings etc)
      */
     @GET("/animes/a{animeId}/video_online/")
     fun getAnimeVideoInfo(@Path("animeId") animeId: Long): Single<Document>
-
-    /**
-     * Get html page of anime with default video
-     */
-    @GET("/animes/a{animeId}/video_online/{episode}")
-    fun getAnimeVideoInfo(@Path("animeId") animeId: Long, @Path("episode") episode: Int): Single<Document>
 
     /**
      * Get html source from hosting

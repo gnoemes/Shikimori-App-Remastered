@@ -8,7 +8,7 @@ android {
     compileSdkVersion versions.compileSdk
     buildToolsVersion versions.buildTools
 
-    kapt {generateStubs = true}
+    kapt { generateStubs = true }
     androidExtensions { experimental = true }
 
     defaultConfig {
@@ -68,4 +68,7 @@ dependencies {
     implementation "com.google.code.gson:gson:" + versions.gson
     implementation 'org.jsoup:jsoup:' + versions.jsoup
     implementation 'net.danlew:android.joda:' + versions.jodaDateTime
+    implementation "com.pushtorefresh.storio3:sqlite:" + versions.storIO
+    implementation "com.pushtorefresh.storio3:sqlite-annotations:" + versions.storIO
+    kapt "com.pushtorefresh.storio3:sqlite-annotations-processor:" + versions.storIO
 }

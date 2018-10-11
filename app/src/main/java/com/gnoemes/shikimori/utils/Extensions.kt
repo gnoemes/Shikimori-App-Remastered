@@ -24,9 +24,9 @@ fun String.firstUpperCase(): String? {
 
 fun String.toUri() = Uri.parse(this)
 
-fun String?.isEmpty(): Boolean = this == null || this.isEmpty()
+fun Boolean.toInt(): Int = if (this) 1 else 0
 
-fun String?.isNotEmpty(): Boolean = this != null && this.isNotEmpty()
+fun Int.toBoolean(): Boolean? = if (this > 1) null else this == 1
 
 fun Context.inflateLayout(layoutResId: Int): View =
         inflateView(this, layoutResId, null, false)

@@ -4,7 +4,6 @@ import android.content.SharedPreferences
 import com.gnoemes.shikimori.data.repository.app.TokenSource
 import com.gnoemes.shikimori.entity.app.domain.AppExtras
 import com.gnoemes.shikimori.entity.app.domain.Token
-import com.gnoemes.shikimori.utils.isNotEmpty
 import com.gnoemes.shikimori.utils.putString
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
@@ -25,7 +24,7 @@ class TokenSourceImpl @Inject constructor(
     override fun getToken(): Token? {
         return try {
             val json = preferences.getString(AppExtras.ARGUMENT_TOKEN, "")
-            when (json.isNotEmpty()) {
+            when (!json.isNullOrEmpty()) {
                 true -> gson.fromJson<Token>(json, Token::class.java)
                 else -> null
             }

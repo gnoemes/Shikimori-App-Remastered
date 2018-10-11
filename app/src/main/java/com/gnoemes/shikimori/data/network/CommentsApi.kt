@@ -1,6 +1,6 @@
 package com.gnoemes.shikimori.data.network
 
-import com.gnoemes.shikimori.entity.topic.CommentResponse
+import com.gnoemes.shikimori.entity.topic.data.CommentResponse
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Query

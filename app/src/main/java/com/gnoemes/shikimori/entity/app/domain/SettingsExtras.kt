@@ -1,0 +1,16 @@
+package com.gnoemes.shikimori.entity.app.domain
+
+object SettingsExtras {
+    const val USER_BRIEF = "USER_BRIEF"
+    const val USER_STATUS = "USER_STATUS"
+    const val IS_AUTO_STATUS = "IS_AUTO_STATUS"
+    const val IS_ROMADZI_NAMING = "IS_ROMADZI_NAMING"
+    const val IS_REMEMBER_TRANSLATION_TYPE = "IS_REMEMBER_TRANSLATION_TYPE"
+    const val IS_REMEMBER_PLAYER = "IS_REMEMBER_PLAYER"
+    const val TRANSLATION_TYPE = "TRANSLATION_TYPE"
+    const val PLAYER_TYPE = "PLAYER_TYPE"
+    const val DOWNLOAD_LOCATION_TYPE = "DOWNLOAD_LOCATION_TYPE"
+    const val IS_NOTIFICATIONS_ENABLED = "IS_NOTIFICATIONS_ENABLED"
+
+
+}
