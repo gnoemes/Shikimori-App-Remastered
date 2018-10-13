@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/tab_rates"
+        android:icon="@drawable/ic_bookmark"
+        android:title="@string/common_rates" />
+
+    <item
+        android:id="@+id/tab_calendar"
+        android:icon="@drawable/ic_calendar"
+        android:title="@string/common_calendar" />
+
+    <item
+        android:id="@+id/tab_search"
+        android:icon="@drawable/ic_search"
+        android:title="@string/common_search" />
+
+    <item
+        android:id="@+id/tab_main"
+        android:icon="@drawable/ic_group"
+        android:title="@string/common_main" />
+
+    <item
+        android:id="@+id/tab_more"
+        android:icon="@drawable/ic_menu"
+        android:title="@string/common_more" />
+
+</menu>

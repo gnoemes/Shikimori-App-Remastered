@@ -16,6 +16,10 @@ fun View.gone() {
     visibility = View.GONE
 }
 
+inline fun View.visibleIf(block: () -> Boolean) {
+    if (block()) visible() else gone()
+}
+
 fun View.onClick(l: (v: android.view.View?) -> Unit) {
     setOnClickListener(l)
 }
@@ -23,7 +27,5 @@ fun View.onClick(l: (v: android.view.View?) -> Unit) {
 @ColorInt
 fun View.color(@ColorRes colorRes: Int): Int = context.color(colorRes)
 
-inline fun View.visibleIf(block: () -> Boolean) {
-    visibility = if (block()) View.VISIBLE else View.GONE
-}
+
 

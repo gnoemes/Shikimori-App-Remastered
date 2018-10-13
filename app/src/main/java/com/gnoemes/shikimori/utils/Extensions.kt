@@ -8,11 +8,15 @@ import android.support.annotation.*
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v4.graphics.drawable.DrawableCompat
+import android.support.v7.widget.Toolbar
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.gnoemes.shikimori.BuildConfig
+import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.presentation.view.base.activity.BaseView
+import io.reactivex.Single
 
 fun String.appendHostIfNeed(host: String = BuildConfig.ShikimoriBaseUrl): String {
     return if (this.contains("http")) this else host + this
@@ -67,15 +71,14 @@ fun Drawable.tint(@ColorInt color: Int) {
 fun ViewGroup.inflate(@LayoutRes layoutResId: Int, attachToRoot: Boolean = false): View =
         inflateView(context, layoutResId, this, attachToRoot)
 
-//@SuppressLint("ResourceType")
-//fun Toolbar.addBackButton() {
-//    this.navigationIcon = this.context.themeDrawable(R.drawable.ic_arrow_back, R.attr.colorText)
-//}
+fun Toolbar.addBackButton() {
+    this.navigationIcon = this.context.drawable(R.drawable.ic_arrow_back)
+}
 
-//fun <T> Single<T>.appendLoadingLogic(viewState: BaseView): Single<T> =
-//        this.doOnSubscribe { viewState.onShowLoading() }
-//                .doAfterTerminate { viewState.onHideLoading() }
-//                .doOnEvent { _, _ -> viewState.onHideLoading() }
+fun <T> Single<T>.appendLoadingLogic(viewState: BaseView): Single<T> =
+        this.doOnSubscribe { viewState.onShowLoading() }
+                .doAfterTerminate { viewState.onHideLoading() }
+                .doOnEvent { _, _ -> viewState.onHideLoading() }
 
 inline fun <T : Fragment> T.withArgs(
         argsBuilder: Bundle.() -> Unit): T =

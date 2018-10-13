@@ -49,15 +49,22 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:" + versions.kotlin
+
     implementation 'com.android.support:appcompat-v7:' + versions.supportLibraries
     implementation "com.android.support:preference-v7:" + versions.supportLibraries
     implementation 'com.android.support.constraint:constraint-layout:' + versions.constraint
+    implementation 'com.android.support:design:' + versions.supportLibraries
+    implementation 'com.android.support:recyclerview-v7:' + versions.supportLibraries
+    implementation "com.android.support:cardview-v7:" + versions.supportLibraries
+
     implementation "com.google.dagger:dagger-android:" + versions.dagger
     implementation "com.google.dagger:dagger-android-support:" + versions.dagger
     kapt "com.google.dagger:dagger-android-processor:" + versions.dagger
     kapt "com.google.dagger:dagger-compiler:" + versions.dagger
+
     implementation 'io.reactivex.rxjava2:rxandroid:' + versions.rxAndroid
     implementation "io.reactivex.rxjava2:rxjava:" + versions.rxJava
+
     implementation "com.squareup.retrofit2:retrofit:" + versions.retrofit
     implementation "com.squareup.retrofit2:converter-gson:" + versions.retrofit
     implementation "com.squareup.retrofit2:adapter-rxjava2:" + versions.retrofit
@@ -65,10 +72,20 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:" + versions.okHttp
     implementation 'com.squareup.okhttp3:okhttp-urlconnection:' + versions.urlConnection
     implementation 'com.github.franmontiel:PersistentCookieJar:' + versions.cookieJar
-    implementation "com.google.code.gson:gson:" + versions.gson
-    implementation 'org.jsoup:jsoup:' + versions.jsoup
-    implementation 'net.danlew:android.joda:' + versions.jodaDateTime
+
     implementation "com.pushtorefresh.storio3:sqlite:" + versions.storIO
     implementation "com.pushtorefresh.storio3:sqlite-annotations:" + versions.storIO
     kapt "com.pushtorefresh.storio3:sqlite-annotations-processor:" + versions.storIO
+
+    implementation "com.arello-mobile:moxy:" + versions.moxy
+    implementation "com.arello-mobile:moxy-app-compat:" + versions.moxy
+    kapt "com.arello-mobile:moxy-compiler:" + versions.moxy
+
+    implementation "com.google.code.gson:gson:" + versions.gson
+    implementation 'org.jsoup:jsoup:' + versions.jsoup
+    implementation 'net.danlew:android.joda:' + versions.jodaDateTime
+    implementation 'ru.terrakok.cicerone:cicerone:' + versions.cicerone
+    //noinspection GradleDependency
+    implementation 'com.afollestad:aesthetic:' + versions.aestheric
+
 }

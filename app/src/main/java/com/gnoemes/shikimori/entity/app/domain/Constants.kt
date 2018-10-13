@@ -18,4 +18,6 @@ object Constants {
     const val NO_ID = -1L
 
     const val MAX_LIMIT = 1000
+
+    const val EXIT_TIMEOUT = 3L * 1000
 }

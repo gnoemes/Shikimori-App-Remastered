@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Shikimori App</string>
+    <string name="appBarFixScrollingFooterBehavior">com.gnoemes.shikimori.utils.widgets.FixScrollingFooterBehavior</string>
+    <string name="main_exit_message">Для выхода из программы нажмите кнопку еще раз</string>
+
+    <string name="common_rates">Списки</string>
+    <string name="common_calendar">Онгоинги</string>
+    <string name="common_search">Поиск</string>
+    <string name="common_main">Главная</string>
+    <string name="common_more">Еще</string>
+
+
 </resources>
