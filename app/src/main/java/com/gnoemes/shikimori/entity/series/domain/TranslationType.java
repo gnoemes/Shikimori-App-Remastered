@@ -1,6 +1,6 @@
 package com.gnoemes.shikimori.entity.series.domain;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 public enum TranslationType {
     VOICE_RU("озвучка"),

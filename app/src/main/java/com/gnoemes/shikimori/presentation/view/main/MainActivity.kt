@@ -4,9 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentTransaction
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
@@ -17,10 +17,10 @@ import com.gnoemes.shikimori.presentation.view.base.activity.BaseActivity
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
 import com.gnoemes.shikimori.presentation.view.bottom.BottomTabContainer
 import com.gnoemes.shikimori.utils.ifNotNull
+import com.gnoemes.shikimori.utils.navigation.SupportAppNavigator
 import kotlinx.android.synthetic.main.layout_bottom_bar.*
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder
-import ru.terrakok.cicerone.android.SupportAppNavigator
 import ru.terrakok.cicerone.commands.Command
 import ru.terrakok.cicerone.commands.Replace
 import javax.inject.Inject
@@ -51,14 +51,15 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
     }
 
     private fun initBottomNav() {
-        var prevItem = 0
+//        var prevItem = 0
         bottomNav.setOnNavigationItemSelectedListener { item ->
             val tab = tabs.find { it.id == item.itemId }!!
-            when (prevItem) {
-                tab.id -> presenter.onTabItemReselected(tab.screenKey)
-                else -> presenter.onTabItemSelected(tab.screenKey)
-            }
-            prevItem = bottomNav.selectedItemId
+//            when (prevItem) {
+//                tab.id -> presenter.onTabItemReselected(tab.screenKey)
+//                else ->
+            presenter.onTabItemSelected(tab.screenKey)
+//            }
+//            prevItem = bottomNav.selectedItemId
             true
         }
     }

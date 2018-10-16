@@ -2,14 +2,14 @@ package com.gnoemes.shikimori.di.base.modules;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 
 import com.gnoemes.shikimori.di.base.scopes.ActivityScope;
 import com.gnoemes.shikimori.di.main.qualifier.ActivityContext;
 
 import javax.inject.Named;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;

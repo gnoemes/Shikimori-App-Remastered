@@ -2,8 +2,8 @@ package com.gnoemes.shikimori.utils
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.support.v4.app.Fragment
-import android.support.v7.preference.PreferenceManager
+import androidx.fragment.app.Fragment
+import androidx.preference.PreferenceManager
 
 fun Context.getDefaultSharedPreferences(): SharedPreferences {
     return PreferenceManager.getDefaultSharedPreferences(this)

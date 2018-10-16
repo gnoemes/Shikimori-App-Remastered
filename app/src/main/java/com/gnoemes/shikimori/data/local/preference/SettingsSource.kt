@@ -8,7 +8,7 @@ interface SettingsSource {
 
     fun setAutoStatus(status: Boolean)
 
-    fun getRomadziNaming(): Boolean
+    val isRomadziNaming: Boolean
 
     fun setRomadziNaming(value: Boolean)
 

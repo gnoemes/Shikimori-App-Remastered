@@ -1,7 +1,7 @@
 package com.gnoemes.shikimori.domain.search
 
-import android.support.v4.util.ArrayMap
 import android.text.TextUtils
+import androidx.collection.ArrayMap
 import com.gnoemes.shikimori.entity.common.domain.FilterItem
 import com.gnoemes.shikimori.entity.common.domain.SearchConstants
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus

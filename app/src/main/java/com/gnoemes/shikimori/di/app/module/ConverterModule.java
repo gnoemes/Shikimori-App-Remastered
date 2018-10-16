@@ -8,6 +8,7 @@ import com.gnoemes.shikimori.data.repository.common.ImageResponseConverter;
 import com.gnoemes.shikimori.data.repository.common.LinkResponseConverter;
 import com.gnoemes.shikimori.data.repository.common.LinkedContentResponseConverter;
 import com.gnoemes.shikimori.data.repository.common.MangaResponseConverter;
+import com.gnoemes.shikimori.data.repository.common.PersonResponseConverter;
 import com.gnoemes.shikimori.data.repository.common.impl.AnimeResponseConverterImpl;
 import com.gnoemes.shikimori.data.repository.common.impl.CharacterResponseConverterImpl;
 import com.gnoemes.shikimori.data.repository.common.impl.FranchiseResponseConverterImpl;
@@ -16,6 +17,7 @@ import com.gnoemes.shikimori.data.repository.common.impl.ImageResponseConverterI
 import com.gnoemes.shikimori.data.repository.common.impl.LinkResponseConverterImpl;
 import com.gnoemes.shikimori.data.repository.common.impl.LinkedContentResponseConverterImpl;
 import com.gnoemes.shikimori.data.repository.common.impl.MangaResponseConverterImpl;
+import com.gnoemes.shikimori.data.repository.common.impl.PersonResponseConverterImpl;
 import com.gnoemes.shikimori.data.repository.user.converter.UserBriefResponseConverter;
 import com.gnoemes.shikimori.data.repository.user.converter.UserBriefResponseConverterImpl;
 
@@ -61,5 +63,9 @@ public interface ConverterModule {
     @Binds
     @Reusable
     LinkedContentResponseConverter bindLinkedContentResponseConverter(LinkedContentResponseConverterImpl converter);
+
+    @Binds
+    @Reusable
+    PersonResponseConverter bindPersonResponseConverter(PersonResponseConverterImpl converter);
 
 }

@@ -8,6 +8,46 @@
     <string name="common_search">Поиск</string>
     <string name="common_main">Главная</string>
     <string name="common_more">Еще</string>
+    <string name="common_today">Сегодня</string>
+    <string name="common_tomorrow">Завтра</string>
+    <string name="common_genre">Жанр</string>
+    <string name="common_type">Тип</string>
+    <string name="common_status">Статус</string>
+    <string name="common_season">Сезон</string>
+    <string name="common_year">Год</string>
+    <string name="common_yesterday">Вчера</string>
+    <string name="common_error_message">Похоже, что у Вас отсуствует интернет-соединение или произошла ошибка.\n Потяните, что бы обновить</string>
+    <string name="common_error_message_without_pull">Похоже, что у Вас отсуствует интернет-соединение или произошла ошибка.</string>
+    <string name="common_description">Описание</string>
+    <string name="common_cancel">Отмена</string>
+    <string name="common_next">Далее</string>
+
+
+    <string name="season_autumn">Осень</string>
+    <string name="season_winter">Зима</string>
+    <string name="season_spring">Весна</string>
+    <string name="season_summer">Лето</string>
+
+    <string name="search_nothing">Ничего не найдено.\n Попробуйте поискать что-нибудь другое</string>
+
+    <string name="common_this_week">На этой неделе</string>
+    <string name="day_ago">день назад</string>
+    <string name="week_ago">неделю назад</string>
+    <string name="month_ago">месяц назад</string>
+    <string name="year_ago">год назад</string>
+    <string name="history_half_year_ago">Более полугода назад</string>
+    <string name="history_hour_ago">час назад</string>
+    <string name="history_its_now">только что</string>
+    <string name="history_minute_ago">минуту назад</string>
+
+    <string name="calendar_date_format" translatable="false">%s, %s</string>
+    <string name="calendar_must_aired">Сейчас на ТВ</string>
+    <string name="calendar_my_ongoings">Мои онгоинги</string>
+    <string name="calendar_nothing">Ничего не найдено.\n Добавляйте аниме в списки для отслеживания выхода новых серий</string>
+    <string name="episodes_format">\n[%s из %s]</string>
+    <string name="volumes_format">\n[%s-%s]</string>
+    <string name="episode_number">%d эпизод</string>
+    <string name="episode_in">через %s</string>
 
 
 </resources>

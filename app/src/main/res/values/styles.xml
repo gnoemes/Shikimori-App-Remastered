@@ -1,11 +1,14 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorSurface">@color/colorBackground</item>
+        <item name="colorOnSurface">@color/colorOnSurface</item>
     </style>
 
     <style name="PopupMenuTheme" parent="ThemeOverlay.AppCompat.Light">
@@ -14,8 +17,14 @@
     </style>
 
     <style name="ToolbarTextAppearance">
-        <item name="android:fontFamily">sans-serif-condensed</item>
-        <item name="android:textColor">?attr/colorSecondary</item>
+        <item name="android:fontFamily">@font/open_sans_semibold</item>
+        <item name="android:textColor">?colorOnSurface</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="TextHeadlineStyle">
+        <item name="android:fontFamily">@font/open_sans_semibold</item>
+        <item name="android:textColor">?colorOnSurface</item>
         <item name="android:textSize">18sp</item>
     </style>
 

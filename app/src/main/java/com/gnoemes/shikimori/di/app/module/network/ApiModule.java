@@ -10,7 +10,6 @@ import com.gnoemes.shikimori.data.network.RolesApi;
 import com.gnoemes.shikimori.data.network.TopicApi;
 import com.gnoemes.shikimori.data.network.UserApi;
 import com.gnoemes.shikimori.data.network.VideoApi;
-import com.gnoemes.shikimori.di.app.annotations.AlternativeApi;
 import com.gnoemes.shikimori.di.app.annotations.AuthCommonApi;
 
 import javax.inject.Singleton;
@@ -71,11 +70,11 @@ public interface ApiModule {
         return retrofit.create(TopicApi.class);
     }
 
-    @Singleton
-    @Provides
-    static AlternativeApi bindAlternativeApi(@com.gnoemes.shikimori.di.app.annotations.AlternativeApi Retrofit retrofit) {
-        return retrofit.create(AlternativeApi.class);
-    }
+//    @Singleton
+//    @Provides
+//    static AlternativeApi bindAlternativeApi(@com.gnoemes.shikimori.di.app.annotations.AlternativeApi Retrofit retrofit) {
+//        return retrofit.create(AlternativeApi.class);
+//    }
 
     @Singleton
     @Provides

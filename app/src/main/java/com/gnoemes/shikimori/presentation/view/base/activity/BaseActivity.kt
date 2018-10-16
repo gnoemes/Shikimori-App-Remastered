@@ -1,14 +1,13 @@
 package com.gnoemes.shikimori.presentation.view.base.activity
 
 import android.os.Bundle
-import android.support.annotation.LayoutRes
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
+import androidx.annotation.LayoutRes
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.afollestad.aesthetic.Aesthetic
 import com.afollestad.aesthetic.AutoSwitchMode
 import com.afollestad.aesthetic.BottomNavBgMode
 import com.afollestad.aesthetic.BottomNavIconTextMode
-import com.arellomobile.mvp.MvpAppCompatActivity
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.di.base.modules.BaseActivityModule
 import com.gnoemes.shikimori.presentation.presenter.base.BasePresenter
@@ -24,7 +23,7 @@ import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Provider
 
-abstract class BaseActivity<Presenter : BasePresenter<View>, View : BaseView> : MvpAppCompatActivity(),
+abstract class BaseActivity<Presenter : BasePresenter<View>, View : BaseView> : MvpActivity(),
         HasSupportFragmentInjector, BaseView {
 
     @Inject
@@ -53,8 +52,8 @@ abstract class BaseActivity<Presenter : BasePresenter<View>, View : BaseView> : 
     }
 
     override fun onPause() {
-        getNavigatorHolder().removeNavigator()
         Aesthetic.pause(this)
+        getNavigatorHolder().removeNavigator()
         super.onPause()
     }
 
@@ -74,14 +73,12 @@ abstract class BaseActivity<Presenter : BasePresenter<View>, View : BaseView> : 
                 colorNavigationBarAuto()
                 bottomNavigationBackgroundMode(BottomNavBgMode.PRIMARY)
                 bottomNavigationIconTextMode(BottomNavIconTextMode.SELECTED_ACCENT)
-                textColorPrimaryRes(R.color.colorSecondaryInverse)
-                textColorPrimaryInverseRes(R.color.colorSecondary)
+                toolbarTitleColorRes(R.color.colorOnPrimary)
+                toolbarIconColor(R.color.colorOnPrimary)
+                textColorPrimaryRes(R.color.colorOnSurface)
                 textColorSecondaryRes(R.color.colorSecondary)
-                textColorSecondaryInverseRes(R.color.colorSecondaryInverse)
                 lightStatusBarMode(AutoSwitchMode.AUTO)
-                colorIconTitleActiveRes(R.color.colorAccent)
-                colorIconTitleInactiveRes(R.color.black)
-                colorCardViewBackgroundRes(R.color.colorBackground)
+                colorCardViewBackgroundRes(R.color.colorSurface)
             }
         }
     }

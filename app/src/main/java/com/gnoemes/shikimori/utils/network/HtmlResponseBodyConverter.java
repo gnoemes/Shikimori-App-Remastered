@@ -1,12 +1,11 @@
 package com.gnoemes.shikimori.utils.network;
 
-import android.support.annotation.NonNull;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 
+import androidx.annotation.NonNull;
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
 

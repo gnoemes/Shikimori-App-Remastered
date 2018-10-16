@@ -1,6 +1,6 @@
 package com.gnoemes.shikimori.presentation.view.base.activity
 
-import android.support.annotation.StringRes
+import androidx.annotation.StringRes
 import com.arellomobile.mvp.MvpView
 
 interface BaseView : MvpView {
@@ -13,12 +13,12 @@ interface BaseView : MvpView {
     /**
      * Show loading Dialog
      */
-    fun onShowLoading()
+    fun onShowLoading() = Unit
 
     /**
      * Hide loading dialog
      */
-    fun onHideLoading()
+    fun onHideLoading() = Unit
 
     /**
      * Set title
@@ -30,4 +30,11 @@ interface BaseView : MvpView {
      */
     fun setTitle(@StringRes stringRes: Int)
 
+    fun showEmptyView() = Unit
+
+    fun hideEmptyView() = Unit
+
+    fun showNetworkView() = Unit
+
+    fun hideNetworkView() = Unit
 }

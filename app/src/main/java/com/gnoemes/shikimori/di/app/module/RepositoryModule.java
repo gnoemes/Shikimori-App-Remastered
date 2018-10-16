@@ -1,7 +1,9 @@
 package com.gnoemes.shikimori.di.app.module;
 
+import com.gnoemes.shikimori.data.repository.app.AuthorizationRepository;
 import com.gnoemes.shikimori.data.repository.app.TokenRepository;
 import com.gnoemes.shikimori.data.repository.app.TokenSource;
+import com.gnoemes.shikimori.data.repository.app.impl.AuthorizationRepositoryImpl;
 import com.gnoemes.shikimori.data.repository.app.impl.TokenRepositoryImpl;
 import com.gnoemes.shikimori.data.repository.app.impl.TokenSourceImpl;
 import com.gnoemes.shikimori.data.repository.rates.RatesRepository;
@@ -33,5 +35,9 @@ public interface RepositoryModule {
     @Binds
     @Reusable
     RatesRepository bindRatesRepository(RatesRepositoryImpl repository);
+
+    @Binds
+    @Reusable
+    AuthorizationRepository bindAuthorizationRepository(AuthorizationRepositoryImpl repository);
 
 }

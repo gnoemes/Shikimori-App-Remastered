@@ -1,9 +1,9 @@
 package com.gnoemes.shikimori.di.app.module.network;
 
 import com.gnoemes.shikimori.BuildConfig;
+import com.gnoemes.shikimori.data.local.preference.UserSource;
 import com.gnoemes.shikimori.data.repository.app.AuthorizationRepository;
 import com.gnoemes.shikimori.data.repository.app.TokenRepository;
-import com.gnoemes.shikimori.data.repository.user.UserRepository;
 import com.gnoemes.shikimori.di.app.annotations.AuthCommonApi;
 import com.gnoemes.shikimori.entity.app.domain.Constants;
 import com.gnoemes.shikimori.utils.network.AuthHolder;
@@ -65,10 +65,9 @@ public interface AuthCommonNetworkModule {
     @Singleton
     @AuthCommonApi
     static AuthHolder provideAuthHolder(TokenRepository tokenRepository,
-                                        UserRepository userRepository,
-                                        AuthorizationRepository repository
-    ) {
-        return new AuthHolder(tokenRepository, userRepository, repository);
+                                        AuthorizationRepository repository,
+                                        UserSource settingsRepository) {
+        return new AuthHolder(tokenRepository, repository, settingsRepository);
     }
 
     @Provides

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/item_my_ongoings"
+        android:icon="@drawable/ic_tune"
+        android:title="@string/calendar_my_ongoings"
+        app:showAsAction="always" />
+
+
+</menu>

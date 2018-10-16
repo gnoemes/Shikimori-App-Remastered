@@ -1,6 +1,6 @@
 package com.gnoemes.shikimori.entity.common.domain;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 public enum Genre {
     ACTION("action", "Экшен", 1, 56),

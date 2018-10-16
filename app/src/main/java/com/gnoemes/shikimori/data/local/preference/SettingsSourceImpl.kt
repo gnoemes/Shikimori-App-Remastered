@@ -19,7 +19,8 @@ class SettingsSourceImpl @Inject constructor(
         prefs.putBoolean(SettingsExtras.IS_AUTO_STATUS, status)
     }
 
-    override fun getRomadziNaming(): Boolean = prefs.getBoolean(SettingsExtras.IS_ROMADZI_NAMING, false)
+    override val isRomadziNaming: Boolean
+        get() = prefs.getBoolean(SettingsExtras.IS_ROMADZI_NAMING, false)
 
     override fun setRomadziNaming(value: Boolean) {
         prefs.putBoolean(SettingsExtras.IS_ROMADZI_NAMING, value)

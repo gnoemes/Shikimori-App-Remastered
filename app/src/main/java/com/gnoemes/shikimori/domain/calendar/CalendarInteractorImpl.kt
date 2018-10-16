@@ -2,15 +2,18 @@ package com.gnoemes.shikimori.domain.calendar
 
 import com.gnoemes.shikimori.data.repository.calendar.CalendarRepository
 import com.gnoemes.shikimori.data.repository.search.SearchRepository
+import com.gnoemes.shikimori.data.repository.user.UserRepository
 import com.gnoemes.shikimori.domain.search.SearchQueryBuilder
 import com.gnoemes.shikimori.entity.calendar.domain.CalendarItem
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
+import com.gnoemes.shikimori.entity.user.domain.UserStatus
 import com.gnoemes.shikimori.utils.applyErrorHandlerAndSchedulers
 import io.reactivex.Observable
 import io.reactivex.Single
 import javax.inject.Inject
 
 class CalendarInteractorImpl @Inject constructor(
+        private val userRepository: UserRepository,
         private val repository: CalendarRepository,
         private val searchRepository: SearchRepository,
         private val queryBuilder: SearchQueryBuilder
@@ -20,7 +23,13 @@ class CalendarInteractorImpl @Inject constructor(
             repository.getData().applyErrorHandlerAndSchedulers()
 
     override fun getMyCalendarData(): Single<List<CalendarItem>> =
-            repository.getData()
+            Single.fromCallable { userRepository.getUserStatus() }
+                    .filter { it == UserStatus.AUTHORIZED }
+                    .isEmpty
+                    .flatMap {
+                        if (it) Single.just(emptyList())
+                        else repository.getData()
+                    }
                     .flatMap { items ->
                         val ids = items.asSequence().map { it.anime.id }.toMutableList()
                         Observable.concat(

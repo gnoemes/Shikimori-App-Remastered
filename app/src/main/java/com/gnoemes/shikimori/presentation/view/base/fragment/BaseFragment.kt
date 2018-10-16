@@ -2,11 +2,10 @@ package com.gnoemes.shikimori.presentation.view.base.fragment
 
 import android.content.Context
 import android.os.Bundle
-import android.support.annotation.LayoutRes
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.ViewGroup
-import com.arellomobile.mvp.MvpAppCompatFragment
+import androidx.annotation.LayoutRes
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.presentation.presenter.base.BasePresenter
 import com.gnoemes.shikimori.presentation.view.base.activity.BaseNetworkView
@@ -17,7 +16,7 @@ import javax.inject.Inject
 import javax.inject.Provider
 
 abstract class BaseFragment<Presenter : BasePresenter<View>, View : BaseNetworkView>
-    : MvpAppCompatFragment(), BaseFragmentView {
+    : MvpFragment(), BaseFragmentView {
 
     @Inject
     lateinit var presenterProvider: Provider<Presenter>
@@ -78,10 +77,6 @@ abstract class BaseFragment<Presenter : BasePresenter<View>, View : BaseNetworkV
     ///////////////////////////////////////////////////////////////////////////
 
     override fun onBackPressed() = getPresenter().onBackPressed()
-
-    override fun onShowLoading() = Unit
-
-    override fun onHideLoading() = Unit
 
     override fun setTitle(title: String) {
         toolbar?.title = title

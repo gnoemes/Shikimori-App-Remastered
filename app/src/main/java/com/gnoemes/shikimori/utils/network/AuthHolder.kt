@@ -1,8 +1,8 @@
 package com.gnoemes.shikimori.utils.network
 
+import com.gnoemes.shikimori.data.local.preference.UserSource
 import com.gnoemes.shikimori.data.repository.app.AuthorizationRepository
 import com.gnoemes.shikimori.data.repository.app.TokenRepository
-import com.gnoemes.shikimori.data.repository.user.UserRepository
 import com.gnoemes.shikimori.entity.app.domain.HttpStatusCode
 import com.gnoemes.shikimori.entity.app.domain.Token
 import io.reactivex.Completable
@@ -12,8 +12,8 @@ import javax.inject.Inject
 
 class AuthHolder @Inject constructor(
         private val tokenRepository: TokenRepository,
-        private val userRepository: UserRepository,
-        private val authRepository: AuthorizationRepository
+        private val authRepository: AuthorizationRepository,
+        private val userRepository: UserSource
 ) {
 
     fun getToken(): Token? = tokenRepository.getToken()

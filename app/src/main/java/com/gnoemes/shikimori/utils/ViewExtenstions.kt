@@ -1,8 +1,8 @@
 package com.gnoemes.shikimori.utils
 
-import android.support.annotation.ColorInt
-import android.support.annotation.ColorRes
 import android.view.View
+import androidx.annotation.ColorInt
+import androidx.annotation.ColorRes
 
 fun View.visible() {
     visibility = View.VISIBLE

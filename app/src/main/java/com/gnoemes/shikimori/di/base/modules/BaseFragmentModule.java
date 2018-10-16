@@ -1,13 +1,12 @@
 package com.gnoemes.shikimori.di.base.modules;
 
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-
 import com.gnoemes.shikimori.di.base.scopes.BottomScope;
 
 import javax.inject.Named;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import dagger.Module;
 import dagger.Provides;
 

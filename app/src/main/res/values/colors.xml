@@ -5,7 +5,10 @@
     <color name="colorAccent">#ff5722</color>
     <color name="colorBackground">#fafafa</color>
     <color name="colorSecondary">#DEFFFFFF</color>
-    <color name="colorSecondaryInverse">#DE000000</color>
+    <color name="colorTextProtector">#96000000</color>
+    <color name="colorSurface">#fafafa</color>
+    <color name="colorOnSurface">#DE000000</color>
+    <color name="colorOnPrimary">#DE000000</color>
 
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>

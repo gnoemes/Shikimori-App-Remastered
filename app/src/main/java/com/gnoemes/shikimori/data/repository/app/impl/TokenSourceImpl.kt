@@ -2,6 +2,7 @@ package com.gnoemes.shikimori.data.repository.app.impl
 
 import android.content.SharedPreferences
 import com.gnoemes.shikimori.data.repository.app.TokenSource
+import com.gnoemes.shikimori.di.app.annotations.UserQualifier
 import com.gnoemes.shikimori.entity.app.domain.AppExtras
 import com.gnoemes.shikimori.entity.app.domain.Token
 import com.gnoemes.shikimori.utils.putString
@@ -11,7 +12,7 @@ import io.reactivex.Completable
 import javax.inject.Inject
 
 class TokenSourceImpl @Inject constructor(
-        private val preferences: SharedPreferences,
+        @UserQualifier private val preferences: SharedPreferences,
         private val gson: Gson
 ) : TokenSource {
 

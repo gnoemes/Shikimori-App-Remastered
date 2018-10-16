@@ -2,7 +2,6 @@ package com.gnoemes.shikimori.di.app.module.local;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.v7.preference.PreferenceManager;
 
 import com.gnoemes.shikimori.data.local.preference.SettingsSource;
 import com.gnoemes.shikimori.data.local.preference.SettingsSourceImpl;
@@ -13,6 +12,7 @@ import com.gnoemes.shikimori.di.app.annotations.UserQualifier;
 
 import javax.inject.Singleton;
 
+import androidx.preference.PreferenceManager;
 import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;

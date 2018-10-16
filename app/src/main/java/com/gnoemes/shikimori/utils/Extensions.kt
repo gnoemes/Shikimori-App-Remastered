@@ -4,15 +4,15 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
-import android.support.annotation.*
-import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
-import android.support.v4.graphics.drawable.DrawableCompat
-import android.support.v7.widget.Toolbar
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.*
+import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
+import androidx.fragment.app.Fragment
 import com.gnoemes.shikimori.BuildConfig
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.presentation.view.base.activity.BaseView
@@ -31,6 +31,8 @@ fun String.toUri() = Uri.parse(this)
 fun Boolean.toInt(): Int = if (this) 1 else 0
 
 fun Int.toBoolean(): Boolean? = if (this > 1) null else this == 1
+
+fun Int.unknownIfZero(): String = if (this == 0) "xxx" else toString()
 
 fun Context.inflateLayout(layoutResId: Int): View =
         inflateView(this, layoutResId, null, false)
@@ -77,6 +79,8 @@ fun Toolbar.addBackButton() {
 
 fun <T> Single<T>.appendLoadingLogic(viewState: BaseView): Single<T> =
         this.doOnSubscribe { viewState.onShowLoading() }
+                .doOnSubscribe { viewState.hideEmptyView() }
+                .doOnSubscribe { viewState.hideNetworkView() }
                 .doAfterTerminate { viewState.onHideLoading() }
                 .doOnEvent { _, _ -> viewState.onHideLoading() }
 

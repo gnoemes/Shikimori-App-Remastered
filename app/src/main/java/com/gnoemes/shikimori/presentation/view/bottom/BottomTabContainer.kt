@@ -3,16 +3,22 @@ package com.gnoemes.shikimori.presentation.view.bottom
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import com.arellomobile.mvp.MvpAppCompatFragment
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.di.base.modules.BaseFragmentModule
+import com.gnoemes.shikimori.entity.main.BottomScreens
 import com.gnoemes.shikimori.entity.main.LocalCiceroneHolder
 import com.gnoemes.shikimori.presentation.view.base.fragment.BackButtonListener
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragmentView
+import com.gnoemes.shikimori.presentation.view.base.fragment.MvpFragment
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
+import com.gnoemes.shikimori.presentation.view.calendar.CalendarFragment
+import com.gnoemes.shikimori.utils.navigation.SupportAppNavigator
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.AndroidSupportInjection
@@ -20,12 +26,11 @@ import dagger.android.support.HasSupportFragmentInjector
 import ru.terrakok.cicerone.Cicerone
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.Router
-import ru.terrakok.cicerone.android.SupportAppNavigator
 import ru.terrakok.cicerone.commands.Command
 import javax.inject.Inject
 import javax.inject.Named
 
-class BottomTabContainer : MvpAppCompatFragment(), RouterProvider, BackButtonListener, HasSupportFragmentInjector {
+class BottomTabContainer : MvpFragment(), RouterProvider, BackButtonListener, HasSupportFragmentInjector {
 
     @Inject
     lateinit var ciceroneHolder: LocalCiceroneHolder
@@ -60,6 +65,10 @@ class BottomTabContainer : MvpAppCompatFragment(), RouterProvider, BackButtonLis
         }
     }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_tab, container, false)
+    }
+
     override fun onResume() {
         super.onResume()
         getCicerone().navigatorHolder.setNavigator(localNavigator)
@@ -92,14 +101,14 @@ class BottomTabContainer : MvpAppCompatFragment(), RouterProvider, BackButtonLis
     override val localNavigator: Navigator
         get() = object : SupportAppNavigator(activity, childFM, R.id.fragment_container) {
             override fun createFragment(screenKey: String?, data: Any?): Fragment? {
-//                when (screenKey) {
-//                    BottomScreens.RATES -> {}
-//                    BottomScreens.CALENDAR -> {}
-//                    BottomScreens.SEARCH -> {}
-//                    BottomScreens.MAIN -> {}
-//                    BottomScreens.MORE -> {}
-//                }
-                return null
+                return when (screenKey) {
+//                    BottomScreens.RATES ->
+                    BottomScreens.CALENDAR -> CalendarFragment.newInstance()
+//                    BottomScreens.SEARCH ->
+//                    BottomScreens.MAIN ->
+//                    BottomScreens.MORE ->
+                    else -> null
+                }
             }
 
             override fun createActivityIntent(context: Context?, screenKey: String?, data: Any?): Intent? {
