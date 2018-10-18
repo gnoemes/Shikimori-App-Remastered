@@ -3,7 +3,6 @@ package com.gnoemes.shikimori.presentation.view.calendar.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gnoemes.shikimori.R
@@ -36,24 +35,7 @@ class CalendarAdapter(
     fun bindItems(viewModels: List<CalendarViewModel>) {
         items.clear()
         items.addAll(viewModels)
-
-        DiffUtil
-                .calculateDiff(DiffCallback(items, viewModels))
-                .dispatchUpdatesTo(this)
-    }
-
-    private inner class DiffCallback(
-            private val newItems: List<CalendarViewModel>,
-            private val oldItems: List<CalendarViewModel>
-    ) : DiffUtil.Callback() {
-        override fun getNewListSize(): Int = newItems.size
-        override fun getOldListSize(): Int = oldItems.size
-
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-                oldItems[oldItemPosition] == newItems[newItemPosition]
-
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-                oldItems[oldItemPosition] == newItems[newItemPosition]
+        notifyDataSetChanged()
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {

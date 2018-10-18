@@ -26,5 +26,6 @@ ext.versions = [
     moxy              : '1.5.5',
     aestheric         : '1.0.0-beta01',
     glide             : '4.8.0',
+    spinKit           : '1.1.0',
 
 ]

@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.calendar.presentation.CalendarAnimeItem
 import com.gnoemes.shikimori.utils.images.ImageLoader
@@ -37,7 +36,6 @@ class CalendarAnimeAdapter(
     fun bindItems(animeViewModels: List<CalendarAnimeItem>) {
         items.clear()
         items.addAll(animeViewModels)
-
         DiffUtil.calculateDiff(DiffCallback(items, animeViewModels))
                 .dispatchUpdatesTo(this)
     }
@@ -78,7 +76,7 @@ class CalendarAnimeAdapter(
                 nextEpisodeDateView.text = nextEpisodeText
 
                 nextEpisodeDateView.visibleIf { item.isToday }
-                cardView.onClick { Glide.get(this.context).clearMemory() }
+                cardView.onClick { callback.invoke(item.id) }
             }
         }
 

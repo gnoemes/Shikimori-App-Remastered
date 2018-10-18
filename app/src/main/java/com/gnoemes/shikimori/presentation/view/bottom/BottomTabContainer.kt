@@ -11,8 +11,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.di.base.modules.BaseFragmentModule
+import com.gnoemes.shikimori.entity.auth.AuthType
+import com.gnoemes.shikimori.entity.common.domain.Screens
 import com.gnoemes.shikimori.entity.main.BottomScreens
 import com.gnoemes.shikimori.entity.main.LocalCiceroneHolder
+import com.gnoemes.shikimori.presentation.view.auth.AuthActivity
 import com.gnoemes.shikimori.presentation.view.base.fragment.BackButtonListener
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragmentView
 import com.gnoemes.shikimori.presentation.view.base.fragment.MvpFragment
@@ -112,7 +115,10 @@ class BottomTabContainer : MvpFragment(), RouterProvider, BackButtonListener, Ha
             }
 
             override fun createActivityIntent(context: Context?, screenKey: String?, data: Any?): Intent? {
-                return null
+                return when (screenKey) {
+                    Screens.AUTHORIZATION -> AuthActivity.newIntent(context, data as AuthType)
+                    else -> null
+                }
             }
 
             override fun showSystemMessage(message: String?) {

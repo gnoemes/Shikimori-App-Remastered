@@ -21,6 +21,9 @@
     <string name="common_description">Описание</string>
     <string name="common_cancel">Отмена</string>
     <string name="common_next">Далее</string>
+    <string name="common_sign_in">Войти</string>
+    <string name="common_sign_up">Регистрация</string>
+    <string name="common_sign_as_guest">Войти как гость</string>
 
 
     <string name="season_autumn">Осень</string>
