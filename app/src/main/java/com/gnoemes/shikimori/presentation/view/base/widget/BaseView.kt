@@ -12,10 +12,10 @@ abstract class BaseView @JvmOverloads constructor(context: Context,
 ) : FrameLayout(context, attrs, defStyleInt) {
 
     init {
-        init(context)
+        init(context, attrs)
     }
 
-    protected open fun init(context: Context) {
+    protected open fun init(context: Context, attrs: AttributeSet? = null) {
         View.inflate(context, getLayout(), this)
     }
 

@@ -31,6 +31,28 @@
     <string name="season_spring">Весна</string>
     <string name="season_summer">Лето</string>
 
+    <string name="rate_add">Добавить</string>
+    <string name="rate_empty">Здесь пока ничего нет</string>
+    <string name="rate_watching">Смотрю</string>
+    <string name="rate_reading">Читаю</string>
+    <string name="rate_rereading">Перечитываю</string>
+    <string name="rate_readed">Прочитано</string>
+    <string name="rate_planned">Запланировано</string>
+    <string name="rate_rewatch">Пересматриваю</string>
+    <string name="rate_completed">Просмотрено</string>
+    <string name="rate_on_hold">Отложено</string>
+    <string name="rate_dropped">Брошено</string>
+    <string name="rate_watching_with_count">Смотрю (%s)</string>
+    <string name="rate_reading_with_count">Читаю (%s)</string>
+    <string name="rate_rereading_with_count">Перечитываю (%s)</string>
+    <string name="rate_readed_with_count">Прочитано (%s)</string>
+    <string name="rate_planned_with_count">Запланировано (%s)</string>
+    <string name="rate_rewatch_with_count">Пересматриваю (%s)</string>
+    <string name="rate_completed_with_count">Просмотрено (%s)</string>
+    <string name="rate_on_hold_with_count">Отложено (%s)</string>
+    <string name="rate_dropped_with_count">Брошено (%s)</string>
+    <string name="rate_remove">Удалить из списка</string>
+
     <string name="search_nothing">Ничего не найдено.\n Попробуйте поискать что-нибудь другое</string>
 
     <string name="common_this_week">На этой неделе</string>
@@ -51,6 +73,45 @@
     <string name="volumes_format">\n[%s-%s]</string>
     <string name="episode_number">%d эпизод</string>
     <string name="episode_in">через %s</string>
+
+    <string-array name="anime_rate_stasuses_empty">
+        <item>@string/rate_add</item>
+        <item>@string/rate_watching</item>
+        <item>@string/rate_planned</item>
+        <item>@string/rate_rewatch</item>
+        <item>@string/rate_completed</item>
+        <item>@string/rate_on_hold</item>
+        <item>@string/rate_dropped</item>
+    </string-array>
+
+    <string-array name="anime_rate_stasuses">
+        <item>@string/rate_watching</item>
+        <item>@string/rate_planned</item>
+        <item>@string/rate_rewatch</item>
+        <item>@string/rate_completed</item>
+        <item>@string/rate_on_hold</item>
+        <item>@string/rate_dropped</item>
+    </string-array>
+
+    <string-array name="anime_rate_stasuses_with_delete">
+        <item>@string/rate_watching</item>
+        <item>@string/rate_planned</item>
+        <item>@string/rate_rewatch</item>
+        <item>@string/rate_completed</item>
+        <item>@string/rate_on_hold</item>
+        <item>@string/rate_dropped</item>
+        <item>@string/rate_remove</item>
+    </string-array>
+
+
+    <string-array name="manga_rate_stasuses">
+        <item>@string/rate_reading</item>
+        <item>@string/rate_planned</item>
+        <item>@string/rate_rereading</item>
+        <item>@string/rate_readed</item>
+        <item>@string/rate_on_hold</item>
+        <item>@string/rate_dropped</item>
+    </string-array>
 
 
 </resources>

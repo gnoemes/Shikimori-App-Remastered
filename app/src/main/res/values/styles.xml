@@ -9,6 +9,10 @@
         <item name="colorSecondary">@color/colorSecondary</item>
         <item name="colorSurface">@color/colorBackground</item>
         <item name="colorOnSurface">@color/colorOnSurface</item>
+        <item name="android:textColor">@color/colorOnSurface</item>
+
+        <item name="colorRate">@color/rate_default</item>
+        <item name="colorRateDark">@color/rate_default_dark</item>
     </style>
 
     <style name="PopupMenuTheme" parent="ThemeOverlay.AppCompat.Light">
@@ -20,6 +24,13 @@
         <item name="android:fontFamily">@font/open_sans_semibold</item>
         <item name="android:textColor">?colorOnSurface</item>
         <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="RateChooserTextAppearence">
+        <item name="android:fontFamily">@font/open_sans_semibold</item>
+        <item name="android:textColor">?colorOnSurface</item>
+        <item name="android:gravity">start</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
     <style name="TextHeadlineStyle">

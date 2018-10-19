@@ -13,5 +13,14 @@
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
 
+    <color name="rate_default">#daf1ff</color>
+    <color name="rate_default_dark">#176093</color>
+    <color name="rate_watched">#eef6dc</color>
+    <color name="rate_watched_dark">#419541</color>
+    <color name="rate_on_hold">#ebeef1</color>
+    <color name="rate_on_hold_dark">#7b8084</color>
+    <color name="rate_dropped">#fedddf</color>
+    <color name="rate_dropped_dark">#fc575e</color>
+
     <color name="ic_launcher_background">#FFFFFF</color>
 </resources>

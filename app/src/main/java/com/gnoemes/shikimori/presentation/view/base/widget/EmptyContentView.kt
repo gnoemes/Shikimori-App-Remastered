@@ -18,8 +18,8 @@ class EmptyContentView @JvmOverloads constructor(context: Context,
 
     override fun getLayout(): Int = R.layout.view_empty
 
-    override fun init(context: Context) {
-        super.init(context)
+    override fun init(context: Context, attrs: AttributeSet?) {
+        super.init(context, attrs)
         btnView.setOnClickListener {
             if (::callback.isInitialized) {
                 callback.invoke(it)

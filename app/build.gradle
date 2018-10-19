@@ -89,4 +89,5 @@ dependencies {
     implementation 'ru.terrakok.cicerone:cicerone:' + versions.cicerone
     implementation 'com.afollestad:aesthetic:' + versions.aestheric
     implementation 'com.github.ybq:Android-SpinKit:' + versions.spinKit
+    implementation 'com.github.santalu:respinner:' + versions.reSpinner
 }

@@ -2,4 +2,10 @@
 <resources>
     <attr name="colorSurface" format="color" />
     <attr name="colorOnSurface" format="color" />
+    <attr name="colorRate" format="color" />
+    <attr name="colorRateDark" format="color" />
+
+    <declare-styleable name="RateSpinnerView">
+        <attr name="anime" format="boolean" />
+    </declare-styleable>
 </resources>
