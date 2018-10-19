@@ -44,8 +44,10 @@ class RateSpinnerView @JvmOverloads constructor(context: Context,
             )
         }
 
-        updateColor()
-        spinnerView.background.tint(context.color(R.color.rate_default_dark))
+        if (!isInEditMode) {
+            updateColor()
+        }
+
         editBtn.setOnClickListener {
             if (::callback.isInitialized && status != null) {
                 callback.invoke(SpinnerAction.RATE_EDIT, status!!)
@@ -93,24 +95,21 @@ class RateSpinnerView @JvmOverloads constructor(context: Context,
         }
 
         initAdapter()
+
         container.setBackgroundColor(context.color(colorRes))
         indicatorView.setBackgroundColor(context.color(colorDarkRes))
         rateImage.setImageResource(item?.iconRes ?: R.drawable.ic_plus)
         rateImage.tintWithRes(colorDarkRes)
         editBtn.tintWithRes(colorDarkRes)
+
         (spinnerView.getChildAt(0) as? TextView)?.apply {
             setBackgroundColor(context.color(colorRes))
             setTextColor(context.color(colorDarkRes))
         }
-        spinnerView.background.tint(context.color(colorDarkRes))
-        editBtn.visibleIf { item != null }
-    }
 
-    private fun onDroppedStatus() {
-        val color = R.color.rate_dropped_dark
-        rateImage.setImageResource(R.drawable.ic_close)
-        rateImage.tintWithRes(color)
-        indicatorView.setBackgroundColor(context.color(color))
+        spinnerView.background.tint(context.color(colorDarkRes))
+
+        editBtn.visibleIf { item != null }
     }
 
 

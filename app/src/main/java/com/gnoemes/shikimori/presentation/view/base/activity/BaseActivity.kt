@@ -77,7 +77,7 @@ abstract class BaseActivity<Presenter : BasePresenter<View>, View : BaseView> : 
                 toolbarTitleColorRes(R.color.colorOnPrimary)
                 toolbarIconColor(R.color.colorOnPrimary)
                 textColorPrimaryRes(R.color.colorOnSurface)
-                textColorSecondaryRes(R.color.colorSecondary)
+                textColorSecondaryRes(R.color.colorOnProtector)
                 lightStatusBarMode(AutoSwitchMode.AUTO)
                 colorCardViewBackgroundRes(R.color.colorSurface)
             }

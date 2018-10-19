@@ -19,7 +19,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:padding="8dp"
+        android:paddingStart="8dp"
+        android:paddingLeft="8dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="0dp"
+        android:paddingRight="0dp"
+        android:paddingBottom="8dp"
         android:tint="?colorRateDark"
         app:srcCompat="@drawable/ic_plus" />
 
@@ -29,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_weight="1"
-        tools:entries="@array/anime_rate_stasuses_empty" />
+        tools:entries="@array/anime_rate_stasuses" />
 
     <ImageView
         android:id="@+id/editBtn"

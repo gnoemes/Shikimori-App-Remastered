@@ -29,7 +29,7 @@
             android:background="@drawable/background_protector_right"
             android:padding="4dp"
             android:textAllCaps="true"
-            android:textColor="@color/colorSecondary"
+            android:textColor="@color/colorOnProtector"
             app:layout_constraintStart_toStartOf="@+id/imageView"
             app:layout_constraintTop_toTopOf="@+id/imageView"
             tools:text="TV" />
@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/background_protector_left"
             android:padding="4dp"
-            android:textColor="@color/colorSecondary"
+            android:textColor="@color/colorOnProtector"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="3 эпизод" />
@@ -52,7 +52,7 @@
             android:background="@color/colorTextProtector"
             android:gravity="center"
             android:padding="4dp"
-            android:textColor="@color/colorSecondary"
+            android:textColor="@color/colorOnProtector"
             app:layout_constraintBottom_toBottomOf="@+id/imageView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
