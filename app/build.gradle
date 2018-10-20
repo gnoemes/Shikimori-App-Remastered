@@ -90,6 +90,6 @@ dependencies {
     implementation 'com.afollestad:aesthetic:' + versions.aestheric
     implementation 'com.github.ybq:Android-SpinKit:' + versions.spinKit
     implementation 'com.github.santalu:respinner:' + versions.reSpinner
-    implementation 'com.hannesdorfmann:adapterdelegates3:' + versions.adapterDelegate
+    implementation 'com.hannesdorfmann:adapterdelegates4:' + versions.adapterDelegate
     implementation 'com.google.android:flexbox:' + versions.flexbox
 }

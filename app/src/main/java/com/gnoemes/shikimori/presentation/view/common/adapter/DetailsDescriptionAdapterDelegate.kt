@@ -10,20 +10,20 @@ import com.gnoemes.shikimori.entity.common.presentation.DetailsDescriptionItem
 import com.gnoemes.shikimori.utils.inflate
 import com.gnoemes.shikimori.utils.onClick
 import com.gnoemes.shikimori.utils.visibleIf
-import com.hannesdorfmann.adapterdelegates3.AdapterDelegate
+import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
 import kotlinx.android.synthetic.main.item_details_description.view.*
 
 
-class DetailsDescriptionAdapterDelegate : AdapterDelegate<MutableList<Any>>() {
+class DetailsDescriptionAdapterDelegate : AbsListItemAdapterDelegate<DetailsDescriptionItem, Any, DetailsDescriptionAdapterDelegate.ViewHolder>() {
 
-    override fun isForViewType(items: MutableList<Any>, position: Int): Boolean =
-            items[position] is DetailsDescriptionItem
+    override fun isForViewType(item: Any, items: MutableList<Any>, position: Int): Boolean =
+            item is DetailsDescriptionItem
 
-    override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder =
+    override fun onCreateViewHolder(parent: ViewGroup): ViewHolder =
             ViewHolder(parent.inflate(R.layout.item_details_description))
 
-    override fun onBindViewHolder(items: MutableList<Any>, pos: Int, holder: RecyclerView.ViewHolder, p3: MutableList<Any>) {
-        (holder as ViewHolder).bind(items[pos] as DetailsDescriptionItem)
+    override fun onBindViewHolder(item: DetailsDescriptionItem, holder: ViewHolder, payloads: MutableList<Any>) {
+        holder.bind(item)
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {

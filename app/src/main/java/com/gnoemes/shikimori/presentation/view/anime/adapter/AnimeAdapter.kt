@@ -10,7 +10,7 @@ import com.gnoemes.shikimori.presentation.view.common.adapter.DetailsContentAdap
 import com.gnoemes.shikimori.presentation.view.common.adapter.DetailsDescriptionAdapterDelegate
 import com.gnoemes.shikimori.presentation.view.common.adapter.DetailsMoreAdapterDelegate
 import com.gnoemes.shikimori.utils.images.ImageLoader
-import com.hannesdorfmann.adapterdelegates3.ListDelegationAdapter
+import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 
 class AnimeAdapter(
         imageLoader: ImageLoader,
@@ -29,7 +29,6 @@ class AnimeAdapter(
 
         setItems(mutableListOf())
     }
-
 
     fun bindItems(newItems: List<Any>) {
         val callback = DiffCallback(items, newItems)

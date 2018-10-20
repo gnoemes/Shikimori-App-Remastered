@@ -16,7 +16,7 @@ import com.gnoemes.shikimori.utils.gone
 import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.gnoemes.shikimori.utils.inflate
 import com.gnoemes.shikimori.utils.visible
-import com.hannesdorfmann.adapterdelegates3.AdapterDelegate
+import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
 import kotlinx.android.synthetic.main.item_details_content.view.*
 
 class DetailsContentAdapterDelegate(
@@ -24,17 +24,17 @@ class DetailsContentAdapterDelegate(
         private val settings: SettingsSource,
         private val navigationCallback: (Type, Long) -> Unit,
         private val detailsCallback: (DetailsAction) -> Unit
-) : AdapterDelegate<MutableList<Any>>() {
+) : AbsListItemAdapterDelegate<DetailsContentItem, Any, DetailsContentAdapterDelegate.ViewHolder>() {
     private val pool = RecyclerView.RecycledViewPool()
 
-    override fun isForViewType(items: MutableList<Any>, position: Int): Boolean =
-            items[position] is DetailsContentItem
+    override fun isForViewType(item: Any, items: MutableList<Any>, position: Int): Boolean =
+            item is DetailsContentItem
 
-    override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder =
+    override fun onCreateViewHolder(parent: ViewGroup): ViewHolder =
             ViewHolder(parent.inflate(R.layout.item_details_content))
 
-    override fun onBindViewHolder(items: MutableList<Any>, pos: Int, holder: RecyclerView.ViewHolder, p3: MutableList<Any>) {
-        (holder as ViewHolder).bind(items[pos] as DetailsContentItem)
+    override fun onBindViewHolder(item: DetailsContentItem, holder: ViewHolder, payloads: MutableList<Any>) {
+        holder.bind(item)
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {

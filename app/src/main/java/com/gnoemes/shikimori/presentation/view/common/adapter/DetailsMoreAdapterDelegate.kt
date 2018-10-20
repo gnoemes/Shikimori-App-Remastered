@@ -8,20 +8,22 @@ import com.gnoemes.shikimori.entity.common.presentation.DetailsAction
 import com.gnoemes.shikimori.entity.common.presentation.DetailsMoreItem
 import com.gnoemes.shikimori.utils.inflate
 import com.gnoemes.shikimori.utils.onClick
-import com.hannesdorfmann.adapterdelegates3.AdapterDelegate
+import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
 import kotlinx.android.synthetic.main.item_details_more.view.*
 
 class DetailsMoreAdapterDelegate(
         private val detailsCallback: (DetailsAction) -> Unit
-) : AdapterDelegate<MutableList<Any>>() {
-    override fun isForViewType(items: MutableList<Any>, position: Int): Boolean =
-            items[position] is DetailsMoreItem
+) : AbsListItemAdapterDelegate<DetailsMoreItem, Any, DetailsMoreAdapterDelegate.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder =
+    override fun isForViewType(item: Any, items: MutableList<Any>, position: Int): Boolean =
+            item is DetailsMoreItem
+
+    override fun onBindViewHolder(item: DetailsMoreItem, holder: ViewHolder, payloads: MutableList<Any>) {
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup): ViewHolder =
             ViewHolder(parent.inflate(R.layout.item_details_more))
 
-    override fun onBindViewHolder(items: MutableList<Any>, pos: Int, holder: RecyclerView.ViewHolder, p3: MutableList<Any>) {
-    }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 

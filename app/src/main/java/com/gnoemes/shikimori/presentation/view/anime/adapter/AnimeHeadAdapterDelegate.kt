@@ -17,24 +17,23 @@ import com.gnoemes.shikimori.presentation.view.common.adapter.GenreAdapter
 import com.gnoemes.shikimori.utils.*
 import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.google.android.flexbox.FlexboxLayoutManager
-import com.hannesdorfmann.adapterdelegates3.AdapterDelegate
+import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
 import kotlinx.android.synthetic.main.item_details_head.view.*
 
 class AnimeHeadAdapterDelegate(private val imageLoader: ImageLoader,
                                private val detailsCallback: (DetailsAction) -> Unit,
                                private val settings: SettingsSource
-) : AdapterDelegate<MutableList<Any>>() {
+) : AbsListItemAdapterDelegate<AnimeHeadItem, Any, AnimeHeadAdapterDelegate.ViewHolder>() {
 
-    override fun isForViewType(items: MutableList<Any>, position: Int): Boolean =
-            items[position] is AnimeHeadItem
+    override fun isForViewType(item: Any, items: MutableList<Any>, position: Int): Boolean =
+            item is AnimeHeadItem
 
-    override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder =
-            ViewHolder(parent.inflate(R.layout.item_details_head))
-
-    override fun onBindViewHolder(items: MutableList<Any>, pos: Int, holder: RecyclerView.ViewHolder, p3: MutableList<Any>) {
-        (holder as ViewHolder).bind(items[pos] as AnimeHeadItem)
+    override fun onBindViewHolder(item: AnimeHeadItem, holder: ViewHolder, payloads: MutableList<Any>) {
+        holder.bind(item)
     }
 
+    override fun onCreateViewHolder(parent: ViewGroup): ViewHolder =
+            ViewHolder(parent.inflate(R.layout.item_details_head))
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
@@ -94,7 +93,6 @@ class AnimeHeadAdapterDelegate(private val imageLoader: ImageLoader,
             }
 
         }
-
 
         private fun String.toBold(): SpannableStringBuilder {
             val builder = SpannableStringBuilder()
