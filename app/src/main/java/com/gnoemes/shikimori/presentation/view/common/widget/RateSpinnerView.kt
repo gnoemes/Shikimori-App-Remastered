@@ -1,4 +1,4 @@
-package com.gnoemes.shikimori.presentation.view.base.widget
+package com.gnoemes.shikimori.presentation.view.common.widget
 
 import android.content.Context
 import android.util.AttributeSet
@@ -9,6 +9,7 @@ import com.afollestad.aesthetic.Aesthetic
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.common.domain.SpinnerAction
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
+import com.gnoemes.shikimori.presentation.view.base.widget.BaseView
 import com.gnoemes.shikimori.utils.color
 import com.gnoemes.shikimori.utils.tint
 import com.gnoemes.shikimori.utils.tintWithRes

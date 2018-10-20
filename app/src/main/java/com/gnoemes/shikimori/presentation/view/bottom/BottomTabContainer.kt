@@ -15,6 +15,7 @@ import com.gnoemes.shikimori.entity.auth.AuthType
 import com.gnoemes.shikimori.entity.common.domain.Screens
 import com.gnoemes.shikimori.entity.main.BottomScreens
 import com.gnoemes.shikimori.entity.main.LocalCiceroneHolder
+import com.gnoemes.shikimori.presentation.view.anime.AnimeFragment
 import com.gnoemes.shikimori.presentation.view.auth.AuthActivity
 import com.gnoemes.shikimori.presentation.view.base.fragment.BackButtonListener
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragmentView
@@ -110,6 +111,7 @@ class BottomTabContainer : MvpFragment(), RouterProvider, BackButtonListener, Ha
 //                    BottomScreens.SEARCH ->
 //                    BottomScreens.MAIN ->
 //                    BottomScreens.MORE ->
+                    Screens.ANIME_DETAILS -> AnimeFragment.newInstance(data as Long)
                     else -> null
                 }
             }

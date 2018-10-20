@@ -4,6 +4,7 @@ import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.club.data.ClubResponse
 import com.gnoemes.shikimori.entity.rates.data.RateResponse
 import com.gnoemes.shikimori.entity.rates.data.UserRateCreateOrUpdateRequest
+import com.gnoemes.shikimori.entity.rates.data.UserRateResponse
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.user.data.*
 import com.gnoemes.shikimori.entity.user.domain.MessageType
@@ -36,6 +37,9 @@ interface UserApi {
                           @Query("page") page: Int,
                           @Query("limit") limit: Int,
                           @Query("status") status: RateStatus): Single<List<RateResponse>>
+
+    @GET("/api/v2/user_rates/{id}")
+    fun getRate(@Path("id") id: Long): Single<UserRateResponse>
 
     @DELETE("/api/v2/user_rates/{id}")
     fun deleteRate(@Path("id") id: Long): Completable

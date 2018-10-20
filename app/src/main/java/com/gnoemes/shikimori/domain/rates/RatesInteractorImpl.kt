@@ -32,6 +32,11 @@ class RatesInteractorImpl @Inject constructor(
             repository.updateRate(rate)
                     .applyErrorHandlerAndSchedulers()
 
+    override fun changeRateStatus(rateId: Long, newStatus: RateStatus): Completable =
+            repository.getRate(rateId)
+                    .flatMapCompletable { repository.updateRate(it.copy(status = newStatus)) }
+                    .applyErrorHandlerAndSchedulers()
+
     override fun increment(rateId: Long): Completable =
             repository.increment(rateId)
                     .applyErrorHandlerAndSchedulers()

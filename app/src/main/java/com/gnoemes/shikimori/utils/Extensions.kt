@@ -73,8 +73,8 @@ fun Drawable.tint(@ColorInt color: Int) {
 fun ViewGroup.inflate(@LayoutRes layoutResId: Int, attachToRoot: Boolean = false): View =
         inflateView(context, layoutResId, this, attachToRoot)
 
-fun Toolbar.addBackButton() {
-    this.navigationIcon = this.context.drawable(R.drawable.ic_arrow_back)
+fun Toolbar?.addBackButton() {
+    this?.navigationIcon = this?.context?.drawable(R.drawable.ic_arrow_back)
 }
 
 fun <T> Single<T>.appendLoadingLogic(viewState: BaseView): Single<T> =

@@ -3,7 +3,6 @@ package com.gnoemes.shikimori.presentation.view.calendar.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.calendar.presentation.CalendarAnimeItem
@@ -15,10 +14,10 @@ import kotlinx.android.synthetic.main.item_calendar_anime.view.*
 
 class CalendarAnimeAdapter(
         private val imageLoader: ImageLoader,
-        private val callback: (id: Long) -> Unit
+        private val callback: (id: Long) -> Unit,
+        private val items: List<CalendarAnimeItem>
 ) : RecyclerView.Adapter<CalendarAnimeAdapter.ViewHolder>() {
 
-    val items = mutableListOf<CalendarAnimeItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val item = LayoutInflater
@@ -32,27 +31,6 @@ class CalendarAnimeAdapter(
     }
 
     override fun getItemCount(): Int = items.size
-
-    fun bindItems(animeViewModels: List<CalendarAnimeItem>) {
-        items.clear()
-        items.addAll(animeViewModels)
-        DiffUtil.calculateDiff(DiffCallback(items, animeViewModels))
-                .dispatchUpdatesTo(this)
-    }
-
-    private inner class DiffCallback(
-            private val newItems: List<CalendarAnimeItem>,
-            private val oldItems: List<CalendarAnimeItem>
-    ) : DiffUtil.Callback() {
-        override fun getNewListSize(): Int = newItems.size
-        override fun getOldListSize(): Int = oldItems.size
-
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-                oldItems[oldItemPosition] == newItems[newItemPosition]
-
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-                oldItems[oldItemPosition] == newItems[newItemPosition]
-    }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 

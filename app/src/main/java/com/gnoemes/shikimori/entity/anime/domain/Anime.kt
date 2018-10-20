@@ -18,4 +18,4 @@ data class Anime(
         val episodesAired: Int,
         val dateAired: DateTime?,
         val dateReleased: DateTime?
-) : LinkedContent(id, Type.MANGA, image.original, name)
+) : LinkedContent(id, Type.ANIME, image.original, name)

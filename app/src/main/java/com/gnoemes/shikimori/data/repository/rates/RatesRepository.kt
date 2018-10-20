@@ -21,4 +21,5 @@ interface RatesRepository {
 
     fun increment(rateId: Long): Completable
 
+    fun getRate(id: Long): Single<UserRate>
 }

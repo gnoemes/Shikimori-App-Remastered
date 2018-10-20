@@ -1,10 +1,11 @@
-package com.gnoemes.shikimori.presentation.view.base.widget
+package com.gnoemes.shikimori.presentation.view.common.widget
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.StringRes
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.presentation.view.base.widget.BaseView
 import com.gnoemes.shikimori.utils.gone
 import com.gnoemes.shikimori.utils.visible
 import kotlinx.android.synthetic.main.view_empty.view.*

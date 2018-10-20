@@ -9,6 +9,7 @@
         <item name="colorSurface">@color/colorBackground</item>
         <item name="colorOnSurface">@color/colorOnSurface</item>
         <item name="colorOnAccent">@color/colorOnSurface</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
         <item name="android:textColor">@color/colorOnSurface</item>
 
         <item name="colorRate">@color/rate_default</item>
@@ -22,7 +23,7 @@
 
     <style name="ToolbarTextAppearance">
         <item name="android:fontFamily">@font/open_sans_semibold</item>
-        <item name="android:textColor">?colorOnSurface</item>
+        <item name="android:textColor">?colorOnPrimary</item>
         <item name="android:textSize">20sp</item>
     </style>
 
@@ -30,7 +31,7 @@
         <item name="android:fontFamily">@font/open_sans_semibold</item>
         <item name="android:textColor">?colorOnSurface</item>
         <item name="android:gravity">start</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="TextHeadlineStyle">

@@ -23,7 +23,7 @@ class GlideImageLoader @Inject constructor(
                 .encodeFormat(Bitmap.CompressFormat.PNG)
                 .priority(Priority.NORMAL)
                 .error(R.drawable.missing_original)
-                .override(140, 190)
+//                .override(140, 190)
                 .centerCrop()
                 .placeholder(android.R.color.transparent)
                 .thumbnail(0.25f)

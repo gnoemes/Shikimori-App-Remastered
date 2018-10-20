@@ -59,4 +59,8 @@ class RatesRepositoryImpl @Inject constructor(
                         return@map converter.convertCreateOrUpdateRequest(id, Type.MANGA, rate, userId)
                     }
                     .flatMapCompletable { api.createRate(it) }
+
+    override fun getRate(id: Long): Single<UserRate> =
+            api.getRate(id)
+                    .map { converter.convertUserRateResponse(it) }
 }

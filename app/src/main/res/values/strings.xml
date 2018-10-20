@@ -24,12 +24,25 @@
     <string name="common_sign_in">Войти</string>
     <string name="common_sign_up">Регистрация</string>
     <string name="common_sign_as_guest">Войти как гость</string>
+    <string name="common_characters">Персонажи</string>
+    <string name="common_chronology">Порядок просмотра</string>
+    <string name="common_similar">Похожие</string>
+    <string name="common_related">Связанные</string>
+    <string name="common_links">Ссылки</string>
+    <string name="common_discussion">Обсуждение</string>
+    <string name="common_anime">Аниме</string>
+    <string name="common_manga">Манга</string>
+    <string name="common_video">Видео</string>
 
 
     <string name="season_autumn">Осень</string>
     <string name="season_winter">Зима</string>
     <string name="season_spring">Весна</string>
     <string name="season_summer">Лето</string>
+
+    <string name="status_anons">Анонс</string>
+    <string name="status_ongoing">Онгоинг</string>
+    <string name="status_released">Завершен</string>
 
     <string name="rate_add">Добавить</string>
     <string name="rate_empty">Здесь пока ничего нет</string>
@@ -73,6 +86,32 @@
     <string name="volumes_format">\n[%s-%s]</string>
     <string name="episode_number">%d эпизод</string>
     <string name="episode_in">через %s</string>
+    <string name="type_pattern">%s (%s эп.), %d мин.</string>
+    <string name="error_no_data">Нет данных</string>
+    <string name="details_type">Тип:</string>
+    <string name="details_season">Сезон:</string>
+    <string name="details_status">Статус:</string>
+    <string name="details_studio">Студия:</string>
+    <string name="details_watch_online">Смотреть онлайн</string>
+
+    <string name="opening">Опенинг</string>
+    <string name="ending">Эндинг</string>
+    <string name="promo">Промо</string>
+    <string name="other">Другое</string>
+
+    <string name="type_tv_translatable">TV сериал</string>
+    <string name="type_movie_translatable">Фильм</string>
+    <string name="type_special_translatable">Спешл</string>
+    <string name="type_music_translatable">Музыка</string>
+    <string name="type_ova" translatable="false">OVA</string>
+    <string name="type_ona" translatable="false">ONA</string>
+
+    <string name="type_manga_translatable">Манга</string>
+    <string name="type_novel_translatable">Новела</string>
+    <string name="type_one_shot_translatable">Ваншот</string>
+    <string name="type_doujin_translatable">Додзинси</string>
+    <string name="type_manhua_translatable">Маньхуа</string>
+    <string name="type_manhwa_translatable">Манхва</string>
 
     <string-array name="anime_rate_stasuses_empty">
         <item>@string/rate_add</item>

@@ -4,6 +4,7 @@ import com.gnoemes.shikimori.data.repository.common.CharacterResponseConverter
 import com.gnoemes.shikimori.data.repository.common.GenreResponseConverter
 import com.gnoemes.shikimori.data.repository.common.ImageResponseConverter
 import com.gnoemes.shikimori.data.repository.common.RateResponseConverter
+import com.gnoemes.shikimori.data.repository.studio.StudioResponseConverter
 import com.gnoemes.shikimori.entity.anime.data.AnimeDetailsResponse
 import com.gnoemes.shikimori.entity.anime.data.AnimeVideoResponse
 import com.gnoemes.shikimori.entity.anime.domain.AnimeDetails
@@ -16,7 +17,8 @@ class AnimeDetailsResponseConverterImpl @Inject constructor(
         private val charactersConverter: CharacterResponseConverter,
         private val imageConverter: ImageResponseConverter,
         private val genreConverter: GenreResponseConverter,
-        private val rateResponseConverter: RateResponseConverter
+        private val rateResponseConverter: RateResponseConverter,
+        private val studioConverter: StudioResponseConverter
 ) : AnimeDetailsResponseConverter {
 
     override fun convertResponse(details: AnimeDetailsResponse, characters: List<RolesResponse>): AnimeDetails = AnimeDetails(
@@ -42,7 +44,8 @@ class AnimeDetailsResponseConverterImpl @Inject constructor(
             genreConverter.apply(details.genres),
             rateResponseConverter.convertUserRateResponse(details.userRate),
             convertVideos(details.videoResponses),
-            charactersConverter.convertRoles(characters)
+            charactersConverter.convertRoles(characters),
+            studioConverter.apply(details.studioResponses ?: emptyList())
     )
 
     private fun convertVideos(videoResponses: List<AnimeVideoResponse>?): List<AnimeVideo>? {
@@ -50,6 +53,6 @@ class AnimeDetailsResponseConverterImpl @Inject constructor(
             return null
         }
 
-        return videoResponses.map { AnimeVideo(it.id, it.name, it.url, it.type, it.hosting) }
+        return videoResponses.map { AnimeVideo(it.id, it.name, it.imageUrl, it.url, it.type, it.hosting) }
     }
 }
