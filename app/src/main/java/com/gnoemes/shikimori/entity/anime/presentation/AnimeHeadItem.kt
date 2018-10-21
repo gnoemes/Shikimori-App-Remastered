@@ -15,6 +15,6 @@ data class AnimeHeadItem(
         val score: Double,
         val rateStatus: RateStatus?,
         val genres: List<Genre>,
-        val studio: Studio?
-
+        val studio: Studio?,
+        val isGuest: Boolean
 )

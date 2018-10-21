@@ -26,6 +26,7 @@ import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResour
 import com.gnoemes.shikimori.presentation.view.anime.AnimeView
 import com.gnoemes.shikimori.utils.appendLightLoadingLogic
 import com.gnoemes.shikimori.utils.appendLoadingLogic
+import io.reactivex.Completable
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -50,8 +51,8 @@ class AnimePresenter @Inject constructor(
     private lateinit var currentAnime: AnimeDetails
 
     override fun initData() {
-        loadData()
         loadUser()
+        loadData()
     }
 
     private fun loadData() =
@@ -72,7 +73,8 @@ class AnimePresenter @Inject constructor(
 
     private fun loadUser() =
             userInteractor.getMyUserBrief()
-                    .subscribe({ userId = it.id }, this::processErrors)
+                    .doOnSuccess { userId = it.id }
+                    .subscribe({}, this::processUserErrors)
 
     private fun loadAnime(showLoading: Boolean = true) =
             animeInteractor.getDetails(id)
@@ -81,7 +83,7 @@ class AnimePresenter @Inject constructor(
                         else Single.just(it)
                     }
                     .doOnSuccess { currentAnime = it; rateId = it.userRate?.id ?: Constants.NO_ID }
-                    .map(viewModelConverter)
+                    .map { viewModelConverter.convertDetails(it, userId == Constants.NO_ID) }
 
     private fun loadCharacters() =
             animeInteractor.getRoles(id)
@@ -119,23 +121,17 @@ class AnimePresenter @Inject constructor(
     private fun createRate(newStatus: RateStatus) {
         if (userId != Constants.NO_ID) {
             ratesInteractor.createRate(id, Type.ANIME, UserRate(status = newStatus), userId)
-                    .andThen(loadAnime(false))
-                    .subscribe({ viewState.updateHead(it.first()) }, this::processErrors)
-                    .addToDisposables()
+                    .updateAnimeData()
+        } else {
+            router.showSystemMessage(resourceProvider.needAuth)
         }
     }
-
 
     private fun updateRate(newStatus: RateStatus) {
-        if (userId != Constants.NO_ID) {
-            ratesInteractor.changeRateStatus(rateId, newStatus)
-                    .andThen(loadAnime(false))
-                    .subscribe({ viewState.updateHead(it.first()) }, this::processErrors)
-                    .addToDisposables()
-        } else {
-            //TODO if user not authorized
-        }
+        ratesInteractor.changeRateStatus(rateId, newStatus)
+                .updateAnimeData()
     }
+
 
     fun onAction(action: DetailsAction) {
         when (action) {
@@ -198,6 +194,12 @@ class AnimePresenter @Inject constructor(
         }
     }
 
+    private fun processUserErrors(throwable: Throwable) {
+        when ((throwable as? BaseException)?.tag) {
+            NetworkException.TAG -> viewState.showNetworkView()
+            else -> super.processErrors(throwable)
+        }
+    }
 
     private fun processEpisodeErrors(throwable: Throwable) {
         when ((throwable as? BaseException)?.tag) {
@@ -205,5 +207,11 @@ class AnimePresenter @Inject constructor(
             ServiceCodeException.TAG -> viewState.setEpisodes(listOf(PlaceholderItem()))
             else -> super.processErrors(throwable)
         }
+    }
+
+    private fun Completable.updateAnimeData() {
+        this.andThen(loadAnime(false))
+                .subscribe({ viewState.updateHead(it.first()) }, this@AnimePresenter::processErrors)
+                .addToDisposables()
     }
 }

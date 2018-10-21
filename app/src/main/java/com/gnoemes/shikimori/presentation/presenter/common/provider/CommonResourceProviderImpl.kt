@@ -10,4 +10,7 @@ class CommonResourceProviderImpl @Inject constructor(
 
     override val emptyMessage: String
         get() = context.getString(R.string.common_empty)
+
+    override val needAuth: String
+        get() = context.getString(R.string.common_need_auth)
 }

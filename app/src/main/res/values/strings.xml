@@ -34,6 +34,7 @@
     <string name="common_manga">Манга</string>
     <string name="common_video">Видео</string>
     <string name="common_empty">Ничего не найдено</string>
+    <string name="common_need_auth">Для данного действия необходима авторизация</string>
 
 
     <string name="season_autumn">Осень</string>
@@ -113,7 +114,6 @@
     <string name="type_doujin_translatable">Додзинси</string>
     <string name="type_manhua_translatable">Маньхуа</string>
     <string name="type_manhwa_translatable">Манхва</string>
-
 
     <string-array name="anime_rate_stasuses_empty">
         <item>@string/rate_add</item>

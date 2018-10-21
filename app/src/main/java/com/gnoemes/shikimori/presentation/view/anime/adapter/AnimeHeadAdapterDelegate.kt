@@ -4,6 +4,7 @@ import android.graphics.Typeface
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.StyleSpan
+import android.text.style.URLSpan
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -58,8 +59,8 @@ class AnimeHeadAdapterDelegate(private val imageLoader: ImageLoader,
                 val typeText = context.getString(R.string.details_type).toBold().append(" ").append(item.type)
                 val seasonText = context.getString(R.string.details_season).toBold().append(" ").append(item.season)
                 val statusText = context.getString(R.string.details_status).toBold().append(" ").append(item.status)
-                val studioText = context.getString(R.string.details_studio).toBold().append(" ").append(item.studio?.name
-                        ?: "")
+                val studioText = context.getString(R.string.details_studio).toBold().append(" ").append((item.studio?.name
+                        ?: "").toLink())
 
                 typeView.text = typeText
                 seasonView.text = seasonText
@@ -76,6 +77,7 @@ class AnimeHeadAdapterDelegate(private val imageLoader: ImageLoader,
                         SpinnerAction.RATE_EDIT -> detailsCallback.invoke(DetailsAction.EditRate)
                     }
                 }
+                rateSpinnerView.visibleIf { !item.isGuest }
 
                 val onlineDrawable = context.drawable(R.drawable.ic_play_circle_outline).also { it.tint(context.colorAttr(R.attr.colorOnAccent)) }
                 watchOnlineBtn.apply {
@@ -100,6 +102,15 @@ class AnimeHeadAdapterDelegate(private val imageLoader: ImageLoader,
             builder.setSpan(StyleSpan(Typeface.BOLD), 0, length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
             return builder
         }
+
+
+        private fun String.toLink(): SpannableStringBuilder {
+            val builder = SpannableStringBuilder()
+                    .append(this)
+            builder.setSpan(URLSpan(""), 0, length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            return builder
+        }
     }
 
 }
+

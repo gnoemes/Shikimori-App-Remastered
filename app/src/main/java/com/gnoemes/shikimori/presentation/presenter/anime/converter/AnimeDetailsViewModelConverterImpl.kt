@@ -22,10 +22,10 @@ class AnimeDetailsViewModelConverterImpl @Inject constructor(
         private val converter: DateTimeConverter
 ) : AnimeDetailsViewModelConverter {
 
-    override fun apply(t: AnimeDetails): List<Any> {
+    override fun convertDetails(t: AnimeDetails, guest: Boolean): List<Any> {
         val items = mutableListOf<Any>()
 
-        val head = convertHeadItem(t)
+        val head = convertHeadItem(t, guest)
         items.add(head)
 
         items.add(DetailsMoreItem())
@@ -65,7 +65,7 @@ class AnimeDetailsViewModelConverterImpl @Inject constructor(
         }
     }
 
-    private fun convertHeadItem(t: AnimeDetails): AnimeHeadItem =
+    private fun convertHeadItem(t: AnimeDetails, guest: Boolean): AnimeHeadItem =
             AnimeHeadItem(
                     t.name,
                     t.nameRu,
@@ -76,7 +76,8 @@ class AnimeDetailsViewModelConverterImpl @Inject constructor(
                     t.score,
                     t.userRate?.status,
                     t.genres,
-                    t.studios.firstOrNull()
+                    t.studios.firstOrNull(),
+                    guest
             )
 
     private fun convertStatus(status: Status): String {
