@@ -5,6 +5,7 @@ import com.gnoemes.shikimori.data.local.db.EpisodeDbSource
 import com.gnoemes.shikimori.data.network.AnimeApi
 import com.gnoemes.shikimori.data.repository.anime.converter.AnimeDetailsResponseConverter
 import com.gnoemes.shikimori.data.repository.common.AnimeResponseConverter
+import com.gnoemes.shikimori.data.repository.common.CharacterResponseConverter
 import com.gnoemes.shikimori.data.repository.common.FranchiseResponseConverter
 import com.gnoemes.shikimori.data.repository.common.LinkResponseConverter
 import com.gnoemes.shikimori.entity.anime.domain.Anime
@@ -12,11 +13,10 @@ import com.gnoemes.shikimori.entity.anime.domain.AnimeDetails
 import com.gnoemes.shikimori.entity.anime.domain.Screenshot
 import com.gnoemes.shikimori.entity.common.domain.FranchiseNode
 import com.gnoemes.shikimori.entity.common.domain.Link
+import com.gnoemes.shikimori.entity.roles.domain.Character
 import com.gnoemes.shikimori.utils.appendHostIfNeed
 import io.reactivex.Completable
 import io.reactivex.Single
-import io.reactivex.functions.BiFunction
-import org.joda.time.DateTimeComparator
 import javax.inject.Inject
 
 class AnimeRepositoryImpl @Inject constructor(
@@ -26,12 +26,18 @@ class AnimeRepositoryImpl @Inject constructor(
         private val linkConverter: LinkResponseConverter,
         private val animeConverter: AnimeResponseConverter,
         private val franchiseConverter: FranchiseResponseConverter,
-        private val detailsConverter: AnimeDetailsResponseConverter
+        private val detailsConverter: AnimeDetailsResponseConverter,
+        private val characterConverter: CharacterResponseConverter
 ) : AnimeRepository {
 
     override fun getDetails(id: Long): Single<AnimeDetails> =
-            Single.zip(api.getDetails(id), api.getRoles(id), BiFunction(detailsConverter::convertResponse))
+            api.getDetails(id)
+                    .map(detailsConverter)
                     .flatMap { syncRate(it).toSingleDefault(it) }
+
+    override fun getRoles(id: Long): Single<List<Character>> =
+            api.getRoles(id)
+                    .map { characterConverter.convertRoles(it) }
 
     override fun getLinks(id: Long): Single<List<Link>> =
             api.getLinks(id)
@@ -44,7 +50,7 @@ class AnimeRepositoryImpl @Inject constructor(
     override fun getFranchiseNodes(id: Long): Single<List<FranchiseNode>> =
             api.getFranchise(id)
                     .map(franchiseConverter)
-                    .map { it.sortedWith(DateTimeComparator.getInstance()) }
+                    .map { list -> list.sortedBy { it.date.millis } }
 
     override fun getScreenshots(id: Long): Single<List<Screenshot>> =
             api.getScreenshots(id)

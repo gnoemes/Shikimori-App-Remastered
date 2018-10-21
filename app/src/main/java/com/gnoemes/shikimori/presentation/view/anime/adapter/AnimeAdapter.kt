@@ -2,6 +2,7 @@ package com.gnoemes.shikimori.presentation.view.anime.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.gnoemes.shikimori.data.local.preference.SettingsSource
+import com.gnoemes.shikimori.entity.anime.presentation.AnimeHeadItem
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.common.presentation.DetailsAction
 import com.gnoemes.shikimori.entity.common.presentation.DetailsContentItem
@@ -38,30 +39,36 @@ class AnimeAdapter(
                 .dispatchUpdatesTo(this)
     }
 
+    fun updateCharacters(it: Any) {
+        updateItemWithContentType(it, DetailsContentType.CHARACTERS)
+    }
 
     fun updateSimilar(it: Any) {
-        if (it is DetailsContentItem.Empty) {
-            val index = items.indexOfFirst { it is DetailsContentItem.Loading && it.contentType == DetailsContentType.SIMILAR }
-            items.removeAt(index)
-            notifyItemRemoved(index)
-        } else {
-            val index = items.indexOfFirst { it is DetailsContentItem.Loading && it.contentType == DetailsContentType.SIMILAR }
-            items[index] = it
-            notifyItemChanged(index)
-        }
+        updateItemWithContentType(it, DetailsContentType.SIMILAR)
     }
 
     fun updateRelated(it: Any) {
+        updateItemWithContentType(it, DetailsContentType.RELATED)
+    }
+
+    fun updateHead(it: Any) {
+        val index = items.indexOfFirst { it is AnimeHeadItem }
+        items[index] = it
+//        notifyItemChanged(index)
+    }
+
+    private fun updateItemWithContentType(it: Any, type: DetailsContentType) {
         if (it is DetailsContentItem.Empty) {
-            val index = items.indexOfFirst { it is DetailsContentItem.Loading && it.contentType == DetailsContentType.RELATED }
+            val index = items.indexOfFirst { it is DetailsContentItem.Loading && it.contentType == type }
             items.removeAt(index)
             notifyItemRemoved(index)
         } else {
-            val index = items.indexOfFirst { it is DetailsContentItem.Loading && it.contentType == DetailsContentType.RELATED }
+            val index = items.indexOfFirst { it is DetailsContentItem.Loading && it.contentType == type }
             items[index] = it
             notifyItemChanged(index)
         }
     }
+
 
     private inner class DiffCallback(
             private val oldItems: List<Any>,

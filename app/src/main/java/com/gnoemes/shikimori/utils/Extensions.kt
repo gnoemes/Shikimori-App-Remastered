@@ -84,6 +84,11 @@ fun <T> Single<T>.appendLoadingLogic(viewState: BaseView): Single<T> =
                 .doAfterTerminate { viewState.onHideLoading() }
                 .doOnEvent { _, _ -> viewState.onHideLoading() }
 
+fun <T> Single<T>.appendLightLoadingLogic(viewState: BaseView): Single<T> =
+        this.doOnSubscribe { viewState.onShowLightLoading() }
+                .doAfterTerminate { viewState.onHideLightLoading() }
+                .doOnEvent { _, _ -> viewState.onHideLightLoading() }
+
 inline fun <T : Fragment> T.withArgs(
         argsBuilder: Bundle.() -> Unit): T =
         this.apply {

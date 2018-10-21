@@ -5,6 +5,7 @@ import com.gnoemes.shikimori.entity.common.data.FranchiseNodeResponse
 import com.gnoemes.shikimori.entity.common.data.FranchiseResponse
 import com.gnoemes.shikimori.entity.common.domain.FranchiseNode
 import com.gnoemes.shikimori.utils.appendHostIfNeed
+import org.joda.time.DateTime
 import javax.inject.Inject
 
 class FranchiseResponseConverterImpl @Inject constructor() : FranchiseResponseConverter {
@@ -13,7 +14,7 @@ class FranchiseResponseConverterImpl @Inject constructor() : FranchiseResponseCo
 
     private fun convertResponse(it: FranchiseNodeResponse): FranchiseNode = FranchiseNode(
             it.id,
-            it.date,
+            DateTime(it.date),
             it.name,
             it.imageUrl?.appendHostIfNeed(),
             it.url.appendHostIfNeed(),

@@ -12,14 +12,21 @@ import com.gnoemes.shikimori.entity.app.domain.exceptions.BaseException
 import com.gnoemes.shikimori.entity.app.domain.exceptions.NetworkException
 import com.gnoemes.shikimori.entity.app.domain.exceptions.ServiceCodeException
 import com.gnoemes.shikimori.entity.common.domain.Genre
+import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.common.presentation.DetailsAction
 import com.gnoemes.shikimori.entity.common.presentation.PlaceholderItem
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
+import com.gnoemes.shikimori.entity.rates.domain.UserRate
 import com.gnoemes.shikimori.presentation.presenter.anime.converter.AnimeDetailsViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.anime.converter.EpisodeViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
+import com.gnoemes.shikimori.presentation.presenter.common.converter.FranchiseNodeViewModelConverter
+import com.gnoemes.shikimori.presentation.presenter.common.converter.LinkViewModelConverter
+import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResourceProvider
 import com.gnoemes.shikimori.presentation.view.anime.AnimeView
+import com.gnoemes.shikimori.utils.appendLightLoadingLogic
 import com.gnoemes.shikimori.utils.appendLoadingLogic
+import io.reactivex.Single
 import javax.inject.Inject
 
 @InjectViewState
@@ -29,8 +36,11 @@ class AnimePresenter @Inject constructor(
         private val ratesInteractor: RatesInteractor,
         private val userInteractor: UserInteractor,
         private val relatedInteractor: RelatedInteractor,
+        private val resourceProvider: CommonResourceProvider,
         private val viewModelConverter: AnimeDetailsViewModelConverter,
-        private val episodeConverter: EpisodeViewModelConverter
+        private val episodeConverter: EpisodeViewModelConverter,
+        private val linkConverter: LinkViewModelConverter,
+        private val nodeConverter: FranchiseNodeViewModelConverter
 ) : BaseNetworkPresenter<AnimeView>() {
 
     var id: Long = Constants.NO_ID
@@ -47,6 +57,7 @@ class AnimePresenter @Inject constructor(
     private fun loadData() =
             loadAnime()
                     .doOnSuccess { loadEpisodes() }
+                    .doOnSuccess { loadCharacters() }
                     .doOnSuccess { loadSimilar() }
                     .doOnSuccess { loadRelated() }
                     .subscribe({ viewState.setAnime(it) }, this::processErrors)
@@ -63,11 +74,19 @@ class AnimePresenter @Inject constructor(
             userInteractor.getMyUserBrief()
                     .subscribe({ userId = it.id }, this::processErrors)
 
-    private fun loadAnime() =
+    private fun loadAnime(showLoading: Boolean = true) =
             animeInteractor.getDetails(id)
-                    .appendLoadingLogic(viewState)
+                    .flatMap {
+                        if (showLoading) Single.just(it).appendLoadingLogic(viewState)
+                        else Single.just(it)
+                    }
                     .doOnSuccess { currentAnime = it; rateId = it.userRate?.id ?: Constants.NO_ID }
                     .map(viewModelConverter)
+
+    private fun loadCharacters() =
+            animeInteractor.getRoles(id)
+                    .map { viewModelConverter.convertCharacters(it) }
+                    .subscribe({ viewState.updateCharacters(it) }, this::processErrors)
 
     private fun loadSimilar() =
             animeInteractor.getSimilar(id)
@@ -79,12 +98,43 @@ class AnimePresenter @Inject constructor(
                     .map { viewModelConverter.convertRelated(it) }
                     .subscribe({ viewState.updateRelated(it) }, this::processErrors)
 
-    private fun loadLinks() {
+    private fun loadLinks() =
+            animeInteractor.getLinks(id)
+                    .appendLightLoadingLogic(viewState)
+                    .map(linkConverter)
+                    .subscribe({
+                        if (it.isNotEmpty()) viewState.showLinks(it)
+                        else router.showSystemMessage(resourceProvider.emptyMessage)
+                    }, this::processErrors)
 
+    private fun loadChronology() =
+            animeInteractor.getFranchiseNodes(id)
+                    .appendLightLoadingLogic(viewState)
+                    .map(nodeConverter)
+                    .subscribe({
+                        if (it.isNotEmpty()) viewState.showChronology(it)
+                        else router.showSystemMessage(resourceProvider.emptyMessage)
+                    }, this::processErrors)
+
+    private fun createRate(newStatus: RateStatus) {
+        if (userId != Constants.NO_ID) {
+            ratesInteractor.createRate(id, Type.ANIME, UserRate(status = newStatus), userId)
+                    .andThen(loadAnime(false))
+                    .subscribe({ viewState.updateHead(it.first()) }, this::processErrors)
+                    .addToDisposables()
+        }
     }
 
-    private fun loadChronology() {
 
+    private fun updateRate(newStatus: RateStatus) {
+        if (userId != Constants.NO_ID) {
+            ratesInteractor.changeRateStatus(rateId, newStatus)
+                    .andThen(loadAnime(false))
+                    .subscribe({ viewState.updateHead(it.first()) }, this::processErrors)
+                    .addToDisposables()
+        } else {
+            //TODO if user not authorized
+        }
     }
 
     fun onAction(action: DetailsAction) {
@@ -117,7 +167,10 @@ class AnimePresenter @Inject constructor(
     }
 
     private fun onChangeRateStatus(newStatus: RateStatus) {
-
+        when (rateId) {
+            Constants.NO_ID -> createRate(newStatus)
+            else -> updateRate(newStatus)
+        }
     }
 
     private fun onGenreClicked(genre: Genre) {
@@ -128,16 +181,14 @@ class AnimePresenter @Inject constructor(
 
     }
 
-    private fun onOpenInBrowser() {
-
-    }
+    private fun onOpenInBrowser() = onOpenWeb(currentAnime.url)
 
     private fun onWatchOnline() {
 
     }
 
     private fun onEditRate() {
-
+        viewState.showRateDialog(currentAnime.userRate)
     }
 
     override fun processErrors(throwable: Throwable) {

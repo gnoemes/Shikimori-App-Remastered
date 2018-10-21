@@ -10,10 +10,12 @@ import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.entity.app.domain.AppExtras
+import com.gnoemes.shikimori.entity.rates.domain.UserRate
 import com.gnoemes.shikimori.presentation.presenter.anime.AnimePresenter
 import com.gnoemes.shikimori.presentation.view.anime.adapter.AnimeAdapter
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragment
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
+import com.gnoemes.shikimori.presentation.view.common.fragment.ListDialogFragment
 import com.gnoemes.shikimori.utils.*
 import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.gnoemes.shikimori.utils.widgets.ViewStatePagerAdapter
@@ -21,7 +23,8 @@ import kotlinx.android.synthetic.main.fragment_details.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import javax.inject.Inject
 
-class AnimeFragment : BaseFragment<AnimePresenter, AnimeView>(), AnimeView {
+class AnimeFragment : BaseFragment<AnimePresenter, AnimeView>(), AnimeView,
+        ListDialogFragment.DialogCallback, ListDialogFragment.DialogIdCallback {
 
     @Inject
     lateinit var imageLoader: ImageLoader
@@ -74,8 +77,14 @@ class AnimeFragment : BaseFragment<AnimePresenter, AnimeView>(), AnimeView {
             layoutManager = LinearLayoutManager(context)
 //            layoutManager = FlexboxLayoutManager(context, FlexDirection.COLUMN)
         }
+    }
 
+    override fun dialogItemIdCallback(tag: String?, id: Long) {
+        getPresenter().onAnimeClicked(id)
+    }
 
+    override fun dialogItemCallback(tag: String?, url: String) {
+        getPresenter().onOpenWeb(url)
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -97,11 +106,33 @@ class AnimeFragment : BaseFragment<AnimePresenter, AnimeView>(), AnimeView {
     override fun setEpisodes(items: List<Any>) {
     }
 
-    override fun updateSimilar(it: Any) = animeAdapter.updateSimilar(it)
+    override fun updateCharacters(it: Any) = animeAdapter.updateCharacters(it)
 
+    override fun updateSimilar(it: Any) = animeAdapter.updateSimilar(it)
 
     override fun updateRelated(it: Any) = animeAdapter.updateRelated(it)
 
+    override fun updateHead(it: Any) = animeAdapter.updateHead(it)
+
+    override fun showRateDialog(userRate: UserRate?) {
+
+    }
+
+    override fun showLinks(it: List<Pair<String, String>>) {
+        val dialog = ListDialogFragment.newInstance()
+        dialog.apply {
+            setTitle(R.string.common_links)
+            setItems(it)
+        }.show(childFragmentManager, "LinksTag")
+    }
+
+    override fun showChronology(it: List<Pair<String, String>>) {
+        val dialog = ListDialogFragment.newInstance()
+        dialog.apply {
+            setTitle(R.string.common_chronology)
+            setItems(it)
+        }.show(childFragmentManager, "ChronologyTag")
+    }
 
     override fun onShowLoading() {
         progressBar.visible()
@@ -111,6 +142,14 @@ class AnimeFragment : BaseFragment<AnimePresenter, AnimeView>(), AnimeView {
     override fun onHideLoading() {
         progressBar.gone()
         pageContainerView.visible()
+    }
+
+    override fun onShowLightLoading() {
+        progressBar.visible()
+    }
+
+    override fun onHideLightLoading() {
+        progressBar.gone()
     }
 
     override fun showEpisodeLoading() {

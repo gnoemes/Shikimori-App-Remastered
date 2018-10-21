@@ -6,6 +6,7 @@ import com.gnoemes.shikimori.entity.anime.domain.AnimeDetails
 import com.gnoemes.shikimori.entity.anime.domain.Screenshot
 import com.gnoemes.shikimori.entity.common.domain.FranchiseNode
 import com.gnoemes.shikimori.entity.common.domain.Link
+import com.gnoemes.shikimori.entity.roles.domain.Character
 import com.gnoemes.shikimori.utils.applyErrorHandlerAndSchedulers
 import io.reactivex.Single
 import javax.inject.Inject
@@ -16,6 +17,10 @@ class AnimeInteractorImpl @Inject constructor(
 
     override fun getDetails(id: Long): Single<AnimeDetails> =
             repository.getDetails(id)
+                    .applyErrorHandlerAndSchedulers()
+
+    override fun getRoles(id: Long): Single<List<Character>> =
+            repository.getRoles(id)
                     .applyErrorHandlerAndSchedulers()
 
     override fun getLinks(id: Long): Single<List<Link>> =

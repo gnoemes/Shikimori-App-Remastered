@@ -2,6 +2,7 @@ package com.gnoemes.shikimori.presentation.view.bottom
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -119,6 +120,8 @@ class BottomTabContainer : MvpFragment(), RouterProvider, BackButtonListener, Ha
             override fun createActivityIntent(context: Context?, screenKey: String?, data: Any?): Intent? {
                 return when (screenKey) {
                     Screens.AUTHORIZATION -> AuthActivity.newIntent(context, data as AuthType)
+                    //TODO check settings to open in internal on external browser
+                    Screens.WEB -> Intent(Intent.ACTION_VIEW, Uri.parse(data as String))
                     else -> null
                 }
             }

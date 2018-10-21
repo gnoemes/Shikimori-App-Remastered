@@ -37,4 +37,8 @@ interface BaseView : MvpView {
     fun showNetworkView() = Unit
 
     fun hideNetworkView() = Unit
+
+    fun onShowLightLoading() = Unit
+
+    fun onHideLightLoading() = Unit
 }

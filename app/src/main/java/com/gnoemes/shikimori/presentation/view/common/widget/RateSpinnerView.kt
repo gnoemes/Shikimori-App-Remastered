@@ -1,12 +1,15 @@
 package com.gnoemes.shikimori.presentation.view.common.widget
 
 import android.content.Context
+import android.os.Bundle
+import android.os.Parcelable
 import android.util.AttributeSet
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.afollestad.aesthetic.Aesthetic
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.entity.app.domain.AppExtras
 import com.gnoemes.shikimori.entity.common.domain.SpinnerAction
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.presentation.view.base.widget.BaseView
@@ -113,6 +116,24 @@ class RateSpinnerView @JvmOverloads constructor(context: Context,
         editBtn.visibleIf { item != null }
     }
 
+
+    override fun onSaveInstanceState(): Parcelable? {
+        return Bundle()
+                .apply {
+                    putParcelable("superState", super.onSaveInstanceState())
+                    putSerializable(AppExtras.ARGUMENT_RATE_STATUS, status)
+                }
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable?) {
+        when (state) {
+            is Bundle -> {
+                this.status = state.getSerializable(AppExtras.ARGUMENT_RATE_STATUS) as? RateStatus
+                super.onRestoreInstanceState(state.getParcelable("superState"))
+            }
+            else -> super.onRestoreInstanceState(state)
+        }
+    }
 
     private data class ViewModel(
             val iconRes: Int,

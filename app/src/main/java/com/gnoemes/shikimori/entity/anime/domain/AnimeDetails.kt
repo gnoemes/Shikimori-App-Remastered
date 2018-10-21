@@ -4,7 +4,6 @@ import com.gnoemes.shikimori.entity.common.domain.Genre
 import com.gnoemes.shikimori.entity.common.domain.Image
 import com.gnoemes.shikimori.entity.common.domain.Status
 import com.gnoemes.shikimori.entity.rates.domain.UserRate
-import com.gnoemes.shikimori.entity.roles.domain.Character
 import com.gnoemes.shikimori.entity.studio.Studio
 import org.joda.time.DateTime
 
@@ -31,6 +30,5 @@ data class AnimeDetails(
         val genres: List<Genre>,
         val userRate: UserRate?,
         val videos: List<AnimeVideo>?,
-        val characters: List<Character>,
         val studios: List<Studio>
 )

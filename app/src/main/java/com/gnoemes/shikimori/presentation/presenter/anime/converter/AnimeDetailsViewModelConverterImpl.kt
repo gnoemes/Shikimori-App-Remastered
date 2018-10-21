@@ -12,6 +12,7 @@ import com.gnoemes.shikimori.entity.common.presentation.DetailsContentItem
 import com.gnoemes.shikimori.entity.common.presentation.DetailsContentType
 import com.gnoemes.shikimori.entity.common.presentation.DetailsDescriptionItem
 import com.gnoemes.shikimori.entity.common.presentation.DetailsMoreItem
+import com.gnoemes.shikimori.entity.roles.domain.Character
 import com.gnoemes.shikimori.utils.date.DateTimeConverter
 import com.gnoemes.shikimori.utils.unknownIfZero
 import javax.inject.Inject
@@ -37,29 +38,30 @@ class AnimeDetailsViewModelConverterImpl @Inject constructor(
             items.add(DetailsContentItem.Content(DetailsContentType.VIDEO, t.videos))
         }
 
-        if (t.characters.isNotEmpty()) {
-            items.add(DetailsContentItem.Content(DetailsContentType.CHARACTERS, t.characters))
-        }
-
+        items.add(DetailsContentItem.Loading(DetailsContentType.CHARACTERS))
         items.add(DetailsContentItem.Loading(DetailsContentType.SIMILAR))
         items.add(DetailsContentItem.Loading(DetailsContentType.RELATED))
 
         return items
     }
 
+    override fun convertCharacters(it: List<Character>): Any {
+        return convertItemWithType(it, DetailsContentType.CHARACTERS)
+    }
+
     override fun convertSimilar(it: List<Anime>): Any {
-        return if (it.isNotEmpty()) {
-            DetailsContentItem.Content(DetailsContentType.SIMILAR, it)
-        } else {
-            DetailsContentItem.Empty(DetailsContentType.SIMILAR)
-        }
+        return convertItemWithType(it, DetailsContentType.SIMILAR)
     }
 
     override fun convertRelated(it: List<Related>): Any {
+        return convertItemWithType(it, DetailsContentType.RELATED)
+    }
+
+    private fun convertItemWithType(it: List<Any>, type: DetailsContentType): Any {
         return if (it.isNotEmpty()) {
-            DetailsContentItem.Content(DetailsContentType.RELATED, it)
+            DetailsContentItem.Content(type, it)
         } else {
-            DetailsContentItem.Empty(DetailsContentType.RELATED)
+            DetailsContentItem.Empty(type)
         }
     }
 

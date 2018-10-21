@@ -2,9 +2,6 @@ package com.gnoemes.shikimori.data.repository.anime.converter
 
 import com.gnoemes.shikimori.entity.anime.data.AnimeDetailsResponse
 import com.gnoemes.shikimori.entity.anime.domain.AnimeDetails
-import com.gnoemes.shikimori.entity.common.data.RolesResponse
+import io.reactivex.functions.Function
 
-interface AnimeDetailsResponseConverter {
-
-    fun convertResponse(details: AnimeDetailsResponse, characters: List<RolesResponse>): AnimeDetails
-}
+interface AnimeDetailsResponseConverter : Function<AnimeDetailsResponse, AnimeDetails>
