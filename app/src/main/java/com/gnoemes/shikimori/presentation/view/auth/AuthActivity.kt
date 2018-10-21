@@ -7,7 +7,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
-import android.view.ViewGroup
 import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
@@ -50,7 +49,6 @@ class AuthActivity : BaseActivity<AuthPresenter, AuthView>(), AuthView {
 
     private val client by lazy { ShikimoriAuthClient() }
 
-    private lateinit var webView: WebView
 
     companion object {
         private const val PATTERN = "https?://(?:www\\.)?shikimori\\.org/oauth/authorize/(?:.*)"
@@ -67,9 +65,9 @@ class AuthActivity : BaseActivity<AuthPresenter, AuthView>(), AuthView {
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun initWebView() {
-        webView = WebView(this)
-        webView.setTag(R.id.aesthetic_ignore, "webView")
-        container.addView(webView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+//        webView = WebView(this)
+//        webView.setTag(R.id.aesthetic_ignore, "webView")
+//        container.addView(webView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
         webView.apply {
             settings.setAppCacheEnabled(false)
             settings.cacheMode = WebSettings.LOAD_NO_CACHE
