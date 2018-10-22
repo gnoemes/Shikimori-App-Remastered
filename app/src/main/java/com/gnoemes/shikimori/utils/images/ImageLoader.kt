@@ -6,5 +6,7 @@ interface ImageLoader {
 
     fun setImageWithPlaceHolder(image: ImageView, url: String?)
 
+    fun setImageListItem(image: ImageView, url: String?)
+
     fun clearImage(image: ImageView)
 }

@@ -6,6 +6,7 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.list.listItems
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.presentation.view.base.fragment.MvpDialogFragment
+import com.gnoemes.shikimori.utils.withArgs
 
 class ListDialogFragment : MvpDialogFragment() {
 
@@ -14,6 +15,7 @@ class ListDialogFragment : MvpDialogFragment() {
     private var titleRes: Int = Constants.NO_ID.toInt()
     private var idCallback: DialogIdCallback? = null
     private var callback: DialogCallback? = null
+    private var isIdCallback: Boolean = false
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -23,10 +25,11 @@ class ListDialogFragment : MvpDialogFragment() {
     }
 
     companion object {
-        fun newInstance() = ListDialogFragment()
+        fun newInstance(isIdCallback: Boolean = false) = ListDialogFragment().withArgs { putBoolean(ARGUMENT_IS_IDS, isIdCallback) }
         private const val ARGUMENT_ITEMS = "ARGUMENT_ITEMS"
         private const val ARGUMENT_TITLE_ID = "ARGUMENT_TITLE_ID"
         private const val ARGUMENT_TITLE = "ARGUMENT_TITLE"
+        private const val ARGUMENT_IS_IDS = "ARGUMENT_IS_IDS"
     }
 
     fun setTitle(title: String) {
@@ -49,6 +52,8 @@ class ListDialogFragment : MvpDialogFragment() {
             title = savedInstanceState.getString(ARGUMENT_TITLE, "").takeIf { !it.isNullOrBlank() }
         }
 
+        isIdCallback = arguments?.getBoolean(ARGUMENT_IS_IDS, false) ?: false
+
         idCallback = parentFragment as? DialogIdCallback
         callback = parentFragment as? DialogCallback
 
@@ -56,8 +61,9 @@ class ListDialogFragment : MvpDialogFragment() {
             if (hasTitle()) title(titleRes, title)
             listItems(items = items.map { it.first }) { _, index, _ ->
                 val action = items[index].second
-                idCallback?.dialogItemIdCallback(tag, action.toLongOrNull() ?: Constants.NO_ID)
-                callback?.dialogItemCallback(tag, action)
+                if (isIdCallback) idCallback?.dialogItemIdCallback(tag, action.toLongOrNull()
+                        ?: Constants.NO_ID)
+                else callback?.dialogItemCallback(tag, action)
             }
         }
     }

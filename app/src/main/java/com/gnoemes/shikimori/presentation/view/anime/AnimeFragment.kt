@@ -74,7 +74,8 @@ class AnimeFragment : BaseFragment<AnimePresenter, AnimeView>(), AnimeView,
 
         with(animeRecyclerView) {
             adapter = animeAdapter
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = LinearLayoutManager(context).apply { initialPrefetchItemCount = 5 }
+            setHasFixedSize(true)
 //            layoutManager = FlexboxLayoutManager(context, FlexDirection.COLUMN)
         }
     }
@@ -127,7 +128,7 @@ class AnimeFragment : BaseFragment<AnimePresenter, AnimeView>(), AnimeView,
     }
 
     override fun showChronology(it: List<Pair<String, String>>) {
-        val dialog = ListDialogFragment.newInstance()
+        val dialog = ListDialogFragment.newInstance(true)
         dialog.apply {
             setTitle(R.string.common_chronology)
             setItems(it)

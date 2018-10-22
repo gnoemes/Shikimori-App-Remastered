@@ -37,7 +37,7 @@ class CalendarAnimeAdapter(
         fun bind(item: CalendarAnimeItem) {
             with(itemView) {
                 imageLoader.clearImage(imageView)
-                imageLoader.setImageWithPlaceHolder(imageView, item.image.original)
+                imageLoader.setImageListItem(imageView, item.image.original)
 
                 val episodes = String.format(context.getString(R.string.episodes_format), item.episodesAired.unknownIfZero(), item.episodes.unknownIfZero())
                 val nameText = item.name + episodes

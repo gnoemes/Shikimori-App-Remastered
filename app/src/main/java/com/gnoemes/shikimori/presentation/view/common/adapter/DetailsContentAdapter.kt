@@ -55,7 +55,7 @@ class DetailsContentAdapter(private val imageLoader: ImageLoader,
 
         fun bindAnime(item: Anime) {
             with(itemView) {
-                imageLoader.setImageWithPlaceHolder(imageView, item.image.original)
+                imageLoader.setImageListItem(imageView, item.image.original)
 
                 typeView.text = item.type.type
                 typeView.visible()
@@ -71,7 +71,7 @@ class DetailsContentAdapter(private val imageLoader: ImageLoader,
 
         fun bindManga(item: Manga) {
             with(itemView) {
-                imageLoader.setImageWithPlaceHolder(imageView, item.image.original)
+                imageLoader.setImageListItem(imageView, item.image.original)
 
                 typeView.text = item.type.type
                 typeView.visible()
@@ -87,7 +87,7 @@ class DetailsContentAdapter(private val imageLoader: ImageLoader,
 
         fun bindCharacter(item: Character) {
             with(itemView) {
-                imageLoader.setImageWithPlaceHolder(imageView, item.image.original)
+                imageLoader.setImageListItem(imageView, item.image.original)
 
                 typeView.gone()
 
@@ -102,7 +102,7 @@ class DetailsContentAdapter(private val imageLoader: ImageLoader,
 
         fun bindPerson(item: Person) {
             with(itemView) {
-                imageLoader.setImageWithPlaceHolder(imageView, item.image.original)
+                imageLoader.setImageListItem(imageView, item.image.original)
 
                 typeView.gone()
 
@@ -117,7 +117,7 @@ class DetailsContentAdapter(private val imageLoader: ImageLoader,
 
         fun bindVideo(item: AnimeVideo) {
             with(itemView) {
-                imageLoader.setImageWithPlaceHolder(imageView, item.imageUrl)
+                imageLoader.setImageListItem(imageView, item.imageUrl)
 
                 typeView.text = item.hosting
                 typeView.visible()
@@ -135,7 +135,7 @@ class DetailsContentAdapter(private val imageLoader: ImageLoader,
         fun bindRelated(item: Related) {
             with(itemView) {
                 val isAnime = item.type == Type.ANIME
-                imageLoader.setImageWithPlaceHolder(imageView, if (isAnime) item.anime?.image?.original else item.manga?.image?.original)
+                imageLoader.setImageListItem(imageView, if (isAnime) item.anime?.image?.original else item.manga?.image?.original)
 
                 typeView.text = if (isAnime) item.anime?.type?.type else item.manga?.type?.type
                 typeView.visible()
