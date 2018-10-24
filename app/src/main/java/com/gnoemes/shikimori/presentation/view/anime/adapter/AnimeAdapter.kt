@@ -54,7 +54,7 @@ class AnimeAdapter(
     fun updateHead(it: Any) {
         val index = items.indexOfFirst { it is AnimeHeadItem }
         items[index] = it
-//        notifyItemChanged(index)
+        notifyItemChanged(index)
     }
 
     private fun updateItemWithContentType(it: Any, type: DetailsContentType) {

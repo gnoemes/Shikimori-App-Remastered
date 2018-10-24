@@ -10,6 +10,7 @@
 
     <declare-styleable name="RateSpinnerView">
         <attr name="anime" format="boolean" />
+        <attr name="showEdit" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="NetworkErrorView">

@@ -118,20 +118,36 @@ class AnimePresenter @Inject constructor(
                         else router.showSystemMessage(resourceProvider.emptyMessage)
                     }, this::processErrors)
 
-    private fun createRate(newStatus: RateStatus) {
+    private fun createRate(rate: UserRate?, newStatus: RateStatus? = null) {
         if (userId != Constants.NO_ID) {
-            ratesInteractor.createRate(id, Type.ANIME, UserRate(status = newStatus), userId)
+            ratesInteractor.createRate(id, Type.ANIME, rate ?: UserRate(status = newStatus), userId)
                     .updateAnimeData()
         } else {
             router.showSystemMessage(resourceProvider.needAuth)
         }
     }
 
-    private fun updateRate(newStatus: RateStatus) {
+    private fun updateRate(rate: UserRate) {
+        ratesInteractor.updateRate(rate)
+                .updateAnimeData()
+    }
+
+    private fun changeRateStatus(newStatus: RateStatus) {
         ratesInteractor.changeRateStatus(rateId, newStatus)
                 .updateAnimeData()
     }
 
+    fun onUpdateOrCreateRate(rate: UserRate) {
+        when (rate.id) {
+            Constants.NO_ID -> createRate(rate)
+            else -> updateRate(rate)
+        }
+    }
+
+    fun onDeleteRate(id: Long) {
+        ratesInteractor.deleteRate(id)
+                .updateAnimeData()
+    }
 
     fun onAction(action: DetailsAction) {
         when (action) {
@@ -164,10 +180,11 @@ class AnimePresenter @Inject constructor(
 
     private fun onChangeRateStatus(newStatus: RateStatus) {
         when (rateId) {
-            Constants.NO_ID -> createRate(newStatus)
-            else -> updateRate(newStatus)
+            Constants.NO_ID -> createRate(null, newStatus)
+            else -> changeRateStatus(newStatus)
         }
     }
+
 
     private fun onGenreClicked(genre: Genre) {
 

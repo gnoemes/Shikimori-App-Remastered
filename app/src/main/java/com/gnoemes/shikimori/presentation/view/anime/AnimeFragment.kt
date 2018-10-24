@@ -16,6 +16,7 @@ import com.gnoemes.shikimori.presentation.view.anime.adapter.AnimeAdapter
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragment
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
 import com.gnoemes.shikimori.presentation.view.common.fragment.ListDialogFragment
+import com.gnoemes.shikimori.presentation.view.common.fragment.RateDialogFragment
 import com.gnoemes.shikimori.utils.*
 import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.gnoemes.shikimori.utils.widgets.ViewStatePagerAdapter
@@ -24,7 +25,7 @@ import kotlinx.android.synthetic.main.layout_toolbar.*
 import javax.inject.Inject
 
 class AnimeFragment : BaseFragment<AnimePresenter, AnimeView>(), AnimeView,
-        ListDialogFragment.DialogCallback, ListDialogFragment.DialogIdCallback {
+        ListDialogFragment.DialogCallback, ListDialogFragment.DialogIdCallback, RateDialogFragment.RateDialogCallback {
 
     @Inject
     lateinit var imageLoader: ImageLoader
@@ -88,6 +89,14 @@ class AnimeFragment : BaseFragment<AnimePresenter, AnimeView>(), AnimeView,
         getPresenter().onOpenWeb(url)
     }
 
+    override fun onUpdateRate(rate: UserRate) {
+        getPresenter().onUpdateOrCreateRate(rate)
+    }
+
+    override fun onDeleteRate(id: Long) {
+        getPresenter().onDeleteRate(id)
+    }
+
     ///////////////////////////////////////////////////////////////////////////
     // GETTERS
     ///////////////////////////////////////////////////////////////////////////
@@ -116,7 +125,9 @@ class AnimeFragment : BaseFragment<AnimePresenter, AnimeView>(), AnimeView,
     override fun updateHead(it: Any) = animeAdapter.updateHead(it)
 
     override fun showRateDialog(userRate: UserRate?) {
-
+        val dialog = RateDialogFragment.newInstance(rate = userRate)
+        dialog.show(childFragmentManager, "RateTag")
+        hideSoftInput()
     }
 
     override fun showLinks(it: List<Pair<String, String>>) {

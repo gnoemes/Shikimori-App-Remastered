@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <TextView
+        android:id="@+id/statusLabelView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/open_sans_semibold"
+        android:text="@string/common_status"
+        android:textSize="16sp" />
+
+    <com.gnoemes.shikimori.presentation.view.common.widget.RateSpinnerView
+        android:id="@+id/rateSpinnerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="@+id/statusLabelView"
+        app:layout_constraintTop_toBottomOf="@+id/statusLabelView"
+        app:showEdit="false" />
+
+    <TextView
+        android:id="@+id/ratingLabelView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/open_sans_semibold"
+        android:text="@string/rate_rating"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/rateSpinnerView"
+        app:layout_constraintTop_toBottomOf="@+id/rateSpinnerView" />
+
+    <TextView
+        android:id="@+id/episodesLabelView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/open_sans_semibold"
+        android:text="@string/common_episodes"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/ratingBar"
+        app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/episodesView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:minWidth="40dp"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="@+id/episodesLabelView"
+        app:layout_constraintStart_toStartOf="@+id/episodesLabelView"
+        app:layout_constraintTop_toBottomOf="@+id/episodesLabelView"
+        tools:text="404" />
+
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:numStars="5"
+        android:stepSize="0.5"
+        app:layout_constraintStart_toStartOf="@+id/ratingLabelView"
+        app:layout_constraintTop_toBottomOf="@+id/ratingLabelView" />
+
+    <TextView
+        android:id="@+id/ratingValueView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="1dp"
+        android:fontFamily="@font/open_sans_semibold"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toTopOf="@+id/ratingDescriptionView"
+        app:layout_constraintEnd_toEndOf="@+id/ratingBar"
+        app:layout_constraintStart_toEndOf="@+id/episodesLabelView"
+        app:layout_constraintTop_toBottomOf="@+id/ratingBar"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="5" />
+
+    <TextView
+        android:id="@+id/ratingDescriptionView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="@+id/ratingValueView"
+        app:layout_constraintStart_toStartOf="@+id/ratingValueView"
+        app:layout_constraintTop_toBottomOf="@+id/ratingValueView"
+        tools:text="Более-менее" />
+
+    <TextView
+        android:id="@+id/commentLabelView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/open_sans_semibold"
+        android:text="@string/rate_comment"
+        android:textSize="16sp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="@+id/ratingBar"
+        app:layout_constraintTop_toBottomOf="@+id/episodesView" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/commentView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:hint="@string/rate_comment_hint"
+        android:textSize="12sp"
+        android:inputType="text"
+        android:textColorHint="@color/colorOnSurface"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/commentLabelView" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -25,6 +25,7 @@ class RateSpinnerView @JvmOverloads constructor(context: Context,
 ) : BaseView(context, attrs, defStyleInt) {
 
     var isAnime: Boolean = true
+    var hasEdit: Boolean = true
     lateinit var callback: (SpinnerAction, RateStatus) -> Unit
     private var status: RateStatus? = null
     private lateinit var items: MutableList<ViewModel>
@@ -35,6 +36,7 @@ class RateSpinnerView @JvmOverloads constructor(context: Context,
         super.init(context, attrs)
         val ta = context.obtainStyledAttributes(attrs, R.styleable.RateSpinnerView)
         isAnime = ta.getBoolean(R.styleable.RateSpinnerView_anime, true)
+        hasEdit = ta.getBoolean(R.styleable.RateSpinnerView_showEdit, true)
         ta.recycle()
 
         if (isAnime) {
@@ -50,6 +52,8 @@ class RateSpinnerView @JvmOverloads constructor(context: Context,
 
         if (!isInEditMode) {
             updateColor()
+        } else {
+            editBtn.visibleIf { hasEdit }
         }
 
         editBtn.setOnClickListener {
@@ -113,7 +117,7 @@ class RateSpinnerView @JvmOverloads constructor(context: Context,
 
         spinnerView.background.tint(context.color(colorDarkRes))
 
-        editBtn.visibleIf { item != null }
+        editBtn.visibleIf { hasEdit && item != null }
     }
 
 
