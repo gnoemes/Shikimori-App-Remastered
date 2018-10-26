@@ -23,7 +23,7 @@ class DetailsContentAdapterDelegate(
         private val imageLoader: ImageLoader,
         private val settings: SettingsSource,
         private val navigationCallback: (Type, Long) -> Unit,
-        private val detailsCallback: (DetailsAction) -> Unit
+        private val detailsCallback: ((DetailsAction) -> Unit)?
 ) : AbsListItemAdapterDelegate<DetailsContentItem, Any, DetailsContentAdapterDelegate.ViewHolder>() {
     private val pool = RecyclerView.RecycledViewPool()
 
@@ -52,6 +52,9 @@ class DetailsContentAdapterDelegate(
                 DetailsContentType.RELATED -> R.string.common_related
                 DetailsContentType.SIMILAR -> R.string.common_similar
                 DetailsContentType.VIDEO -> R.string.common_video
+                DetailsContentType.MANGAS -> R.string.common_manga
+                DetailsContentType.ANIMES -> R.string.common_anime
+                DetailsContentType.SEYUS -> R.string.common_seyu
             }
 
             itemView.contentLabelView.setText(stringRes)

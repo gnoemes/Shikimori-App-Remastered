@@ -35,7 +35,7 @@ abstract class BaseNavigationPresenter<View : BaseView> : BasePresenter<View>() 
     open fun onPersonClicked(id: Long) = router.navigateTo(Screens.PERSON_DETAILS, id)
 
 
-    open fun onOpenWeb(url: String) = router.navigateTo(Screens.WEB, url)
+    open fun onOpenWeb(url: String?) = router.navigateTo(Screens.WEB, url)
 
 
     fun onContentClicked(type: Type, id: Long) {

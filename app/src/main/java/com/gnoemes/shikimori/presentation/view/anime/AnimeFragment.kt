@@ -17,9 +17,11 @@ import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragment
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
 import com.gnoemes.shikimori.presentation.view.common.fragment.ListDialogFragment
 import com.gnoemes.shikimori.presentation.view.common.fragment.RateDialogFragment
-import com.gnoemes.shikimori.utils.*
+import com.gnoemes.shikimori.utils.addBackButton
+import com.gnoemes.shikimori.utils.ifNotNull
 import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.gnoemes.shikimori.utils.widgets.ViewStatePagerAdapter
+import com.gnoemes.shikimori.utils.withArgs
 import kotlinx.android.synthetic.main.fragment_details.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import javax.inject.Inject
@@ -127,7 +129,6 @@ class AnimeFragment : BaseFragment<AnimePresenter, AnimeView>(), AnimeView,
     override fun showRateDialog(userRate: UserRate?) {
         val dialog = RateDialogFragment.newInstance(rate = userRate)
         dialog.show(childFragmentManager, "RateTag")
-        hideSoftInput()
     }
 
     override fun showLinks(it: List<Pair<String, String>>) {
@@ -144,24 +145,6 @@ class AnimeFragment : BaseFragment<AnimePresenter, AnimeView>(), AnimeView,
             setTitle(R.string.common_chronology)
             setItems(it)
         }.show(childFragmentManager, "ChronologyTag")
-    }
-
-    override fun onShowLoading() {
-        progressBar.visible()
-        pageContainerView.gone()
-    }
-
-    override fun onHideLoading() {
-        progressBar.gone()
-        pageContainerView.visible()
-    }
-
-    override fun onShowLightLoading() {
-        progressBar.visible()
-    }
-
-    override fun onHideLightLoading() {
-        progressBar.gone()
     }
 
     override fun showEpisodeLoading() {

@@ -3,8 +3,6 @@ package com.gnoemes.shikimori.presentation.presenter.calendar
 import com.arellomobile.mvp.InjectViewState
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.domain.calendar.CalendarInteractor
-import com.gnoemes.shikimori.entity.app.domain.exceptions.BaseException
-import com.gnoemes.shikimori.entity.app.domain.exceptions.NetworkException
 import com.gnoemes.shikimori.entity.calendar.presentation.CalendarViewModel
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
 import com.gnoemes.shikimori.presentation.presenter.calendar.converter.CalendarViewModelConverter
@@ -63,13 +61,4 @@ class CalendarPresenter @Inject constructor(
             viewState.showEmptyView()
         }
     }
-
-    override fun processErrors(throwable: Throwable) {
-        when ((throwable as? BaseException)?.tag) {
-            NetworkException.TAG -> viewState.showNetworkView()
-            else -> super.processErrors(throwable)
-        }
-    }
-
-
 }

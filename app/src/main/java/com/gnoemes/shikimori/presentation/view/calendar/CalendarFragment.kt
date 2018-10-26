@@ -15,8 +15,9 @@ import com.gnoemes.shikimori.utils.gone
 import com.gnoemes.shikimori.utils.ifNotNull
 import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.gnoemes.shikimori.utils.visible
-import kotlinx.android.synthetic.main.fragment_calendar.*
+import kotlinx.android.synthetic.main.fragment_base.*
 import kotlinx.android.synthetic.main.layout_default_list.*
+import kotlinx.android.synthetic.main.layout_default_placeholders.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import javax.inject.Inject
 
@@ -51,8 +52,7 @@ class CalendarFragment : BaseFragment<CalendarPresenter, CalendarView>(), Calend
     }
 
     private fun initViews() {
-        toolbar?.setTitle(R.string.common_calendar)
-
+        progressBar?.gone()
         with(recyclerView) {
             adapter = this@CalendarFragment.adapter
             layoutManager = LinearLayoutManager(context).apply { initialPrefetchItemCount = 3 }
@@ -60,6 +60,7 @@ class CalendarFragment : BaseFragment<CalendarPresenter, CalendarView>(), Calend
         }
 
         toolbar.apply {
+            setTitle(R.string.common_calendar)
             inflateMenu(R.menu.menu_calendar)
             setOnMenuItemClickListener {
                 getPresenter().onSwitchFilter()
@@ -70,8 +71,7 @@ class CalendarFragment : BaseFragment<CalendarPresenter, CalendarView>(), Calend
 
         refreshLayout.setOnRefreshListener { getPresenter().onRefresh() }
         emptyContentView.setText(R.string.calendar_nothing)
-        emptyContentView.gone()
-        networkErrorView.gone()
+        networkErrorView.setText(R.string.common_error_message)
     }
 
 
@@ -81,7 +81,7 @@ class CalendarFragment : BaseFragment<CalendarPresenter, CalendarView>(), Calend
 
     override fun getPresenter(): CalendarPresenter = calendarPresenter
 
-    override fun getFragmentLayout(): Int = R.layout.fragment_calendar
+    override fun getFragmentLayout(): Int = R.layout.layout_default_list
 
     ///////////////////////////////////////////////////////////////////////////
     // MVP
@@ -102,11 +102,13 @@ class CalendarFragment : BaseFragment<CalendarPresenter, CalendarView>(), Calend
         refreshLayout.isRefreshing = false
     }
 
-    override fun showEmptyView() = emptyContentView.visible()
+    override fun showNetworkView(block: Boolean) {
+        super<BaseFragment>.showNetworkView(false)
+        recyclerView.gone()
+    }
 
-    override fun hideEmptyView() = emptyContentView.gone()
-
-    override fun showNetworkView() = networkErrorView.visible()
-
-    override fun hideNetworkView() = networkErrorView.gone()
+    override fun hideNetworkView() {
+        super<BaseFragment>.hideNetworkView()
+        recyclerView.visible()
+    }
 }

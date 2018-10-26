@@ -25,11 +25,13 @@
     <string name="common_sign_up">Регистрация</string>
     <string name="common_sign_as_guest">Войти как гость</string>
     <string name="common_characters">Персонажи</string>
+    <string name="common_character">Персонаж</string>
     <string name="common_chronology">Порядок просмотра</string>
     <string name="common_similar">Похожие</string>
     <string name="common_related">Связанные</string>
     <string name="common_links">Ссылки</string>
     <string name="common_discussion">Обсуждение</string>
+    <string name="common_seyu">Сэйю</string>
     <string name="common_anime">Аниме</string>
     <string name="common_manga">Манга</string>
     <string name="common_video">Видео</string>
@@ -39,7 +41,8 @@
     <string name="common_save">Сохранить</string>
     <string name="common_delete">Удалить</string>
     <string name="common_chapters">Главы</string>
-
+    <string name="common_open_in_browser">Открыть в браузере</string>
+    <string name="common_source">Источник</string>
 
     <string name="season_autumn">Осень</string>
     <string name="season_winter">Зима</string>
@@ -119,6 +122,10 @@
     <string name="ending">Эндинг</string>
     <string name="promo">Промо</string>
     <string name="other">Другое</string>
+
+    <string name="others">Прочие:</string>
+    <string name="on_jp">По-японски:</string>
+    <string name="on_ru">По-русски:</string>
 
     <string name="type_tv_translatable">TV сериал</string>
     <string name="type_movie_translatable">Фильм</string>

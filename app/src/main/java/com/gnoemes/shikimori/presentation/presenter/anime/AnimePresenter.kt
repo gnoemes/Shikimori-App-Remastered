@@ -9,7 +9,6 @@ import com.gnoemes.shikimori.domain.user.UserInteractor
 import com.gnoemes.shikimori.entity.anime.domain.AnimeDetails
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.app.domain.exceptions.BaseException
-import com.gnoemes.shikimori.entity.app.domain.exceptions.NetworkException
 import com.gnoemes.shikimori.entity.app.domain.exceptions.ServiceCodeException
 import com.gnoemes.shikimori.entity.common.domain.Genre
 import com.gnoemes.shikimori.entity.common.domain.Type
@@ -74,7 +73,7 @@ class AnimePresenter @Inject constructor(
     private fun loadUser() =
             userInteractor.getMyUserBrief()
                     .doOnSuccess { userId = it.id }
-                    .subscribe({}, this::processUserErrors)
+                    .subscribe({}, this::processErrors)
 
     private fun loadAnime(showLoading: Boolean = true) =
             animeInteractor.getDetails(id)
@@ -204,23 +203,8 @@ class AnimePresenter @Inject constructor(
         viewState.showRateDialog(currentAnime.userRate)
     }
 
-    override fun processErrors(throwable: Throwable) {
-        when ((throwable as? BaseException)?.tag) {
-            NetworkException.TAG -> viewState.showNetworkView()
-            else -> super.processErrors(throwable)
-        }
-    }
-
-    private fun processUserErrors(throwable: Throwable) {
-        when ((throwable as? BaseException)?.tag) {
-            NetworkException.TAG -> viewState.showNetworkView()
-            else -> super.processErrors(throwable)
-        }
-    }
-
     private fun processEpisodeErrors(throwable: Throwable) {
         when ((throwable as? BaseException)?.tag) {
-            NetworkException.TAG -> viewState.showNetworkView()
             ServiceCodeException.TAG -> viewState.setEpisodes(listOf(PlaceholderItem()))
             else -> super.processErrors(throwable)
         }

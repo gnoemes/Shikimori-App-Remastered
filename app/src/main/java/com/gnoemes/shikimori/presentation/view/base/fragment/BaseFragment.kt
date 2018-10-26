@@ -4,13 +4,19 @@ import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
+import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.presentation.presenter.base.BasePresenter
 import com.gnoemes.shikimori.presentation.view.base.activity.BaseNetworkView
+import com.gnoemes.shikimori.utils.gone
 import com.gnoemes.shikimori.utils.inputMethodManager
+import com.gnoemes.shikimori.utils.visible
+import com.gnoemes.shikimori.utils.visibleIf
 import dagger.android.support.AndroidSupportInjection
+import kotlinx.android.synthetic.main.fragment_base.*
+import kotlinx.android.synthetic.main.layout_default_placeholders.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import javax.inject.Inject
 import javax.inject.Provider
@@ -37,6 +43,14 @@ abstract class BaseFragment<Presenter : BasePresenter<View>, View : BaseNetworkV
             inflater.inflate(getFragmentLayout(), view.findViewById(R.id.fragment_content), true)
         }
         return view
+    }
+
+    override fun onViewCreated(view: android.view.View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        networkErrorView?.setText(R.string.common_error_message_without_pull)
+        networkErrorView?.gone()
+        emptyContentView?.gone()
     }
 
     override fun onDestroyView() {
@@ -84,5 +98,41 @@ abstract class BaseFragment<Presenter : BasePresenter<View>, View : BaseNetworkV
 
     override fun setTitle(stringRes: Int) {
         toolbar?.setTitle(stringRes)
+    }
+
+    override fun onShowLoading() {
+        progressBar?.visible()
+        fragment_content?.gone()
+    }
+
+    override fun onHideLoading() {
+        progressBar?.gone()
+        fragment_content?.visible()
+    }
+
+    override fun onShowLightLoading() {
+        progressBar?.visible()
+    }
+
+    override fun onHideLightLoading() {
+        progressBar?.gone()
+    }
+
+    override fun showNetworkView(block: Boolean) {
+        networkErrorView?.visible()
+        fragment_content?.visibleIf { !block }
+    }
+
+    override fun hideNetworkView() {
+        networkErrorView?.gone()
+        fragment_content?.visible()
+    }
+
+    override fun showEmptyView() {
+        emptyContentView?.visible()
+    }
+
+    override fun hideEmptyView() {
+        emptyContentView?.gone()
     }
 }

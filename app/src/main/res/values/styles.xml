@@ -20,9 +20,10 @@
         <item name="md_font_title">@font/open_sans_semibold</item>
     </style>
 
-    <style name="PopupMenuTheme" parent="ThemeOverlay.AppCompat.Light">
-        <item name="android:colorBackground">?background</item>
-        <item name="android:textColor">?colorSecondary</item>
+    <style name="PopupMenuTheme" parent="ThemeOverlay.MaterialComponents.Light">
+        <item name="android:colorBackground">?colorSurface</item>
+        <item name="android:textColor">?colorOnSurface</item>
+        <item name="android:background">@drawable/menu_rounded</item>
     </style>
 
     <style name="ToolbarTextAppearance">

@@ -2,7 +2,6 @@ package com.gnoemes.shikimori.presentation.view.bottom
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,17 +11,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.di.base.modules.BaseFragmentModule
-import com.gnoemes.shikimori.entity.auth.AuthType
-import com.gnoemes.shikimori.entity.common.domain.Screens
-import com.gnoemes.shikimori.entity.main.BottomScreens
 import com.gnoemes.shikimori.entity.main.LocalCiceroneHolder
-import com.gnoemes.shikimori.presentation.view.anime.AnimeFragment
-import com.gnoemes.shikimori.presentation.view.auth.AuthActivity
+import com.gnoemes.shikimori.presentation.presenter.common.RouteHolder
 import com.gnoemes.shikimori.presentation.view.base.fragment.BackButtonListener
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragmentView
 import com.gnoemes.shikimori.presentation.view.base.fragment.MvpFragment
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
-import com.gnoemes.shikimori.presentation.view.calendar.CalendarFragment
 import com.gnoemes.shikimori.utils.navigation.SupportAppNavigator
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -105,26 +99,11 @@ class BottomTabContainer : MvpFragment(), RouterProvider, BackButtonListener, Ha
 
     override val localNavigator: Navigator
         get() = object : SupportAppNavigator(activity, childFM, R.id.fragment_container) {
-            override fun createFragment(screenKey: String?, data: Any?): Fragment? {
-                return when (screenKey) {
-//                    BottomScreens.RATES ->
-                    BottomScreens.CALENDAR -> CalendarFragment.newInstance()
-//                    BottomScreens.SEARCH ->
-//                    BottomScreens.MAIN ->
-//                    BottomScreens.MORE ->
-                    Screens.ANIME_DETAILS -> AnimeFragment.newInstance(data as Long)
-                    else -> null
-                }
-            }
+            override fun createFragment(screenKey: String?, data: Any?): Fragment? =
+                    RouteHolder.createFragment(screenKey, data)
 
-            override fun createActivityIntent(context: Context?, screenKey: String?, data: Any?): Intent? {
-                return when (screenKey) {
-                    Screens.AUTHORIZATION -> AuthActivity.newIntent(context, data as AuthType)
-                    //TODO check settings to open in internal on external browser
-                    Screens.WEB -> Intent(Intent.ACTION_VIEW, Uri.parse(data as String))
-                    else -> null
-                }
-            }
+            override fun createActivityIntent(context: Context?, screenKey: String?, data: Any?): Intent? =
+                    RouteHolder.createActivityIntent(context, screenKey, data)
 
             override fun showSystemMessage(message: String?) {
                 Toast.makeText(context, message, Toast.LENGTH_LONG).show()

@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.item_content.view.*
 class DetailsContentAdapter(private val imageLoader: ImageLoader,
                             private val settings: SettingsSource,
                             private val navigationCallback: (Type, Long) -> Unit,
-                            private val detailsCallback: (DetailsAction) -> Unit
+                            private val detailsCallback: ((DetailsAction) -> Unit)?
 ) : RecyclerView.Adapter<DetailsContentAdapter.ViewHolder>() {
 
     private val items = mutableListOf<Any>()
@@ -127,7 +127,7 @@ class DetailsContentAdapter(private val imageLoader: ImageLoader,
                 desctiptionView.text = null
                 desctiptionView.gone()
 
-                cardView.onClick { detailsCallback.invoke(DetailsAction.Video(item.url)) }
+                cardView.onClick { detailsCallback?.invoke(DetailsAction.Video(item.url)) }
             }
         }
 

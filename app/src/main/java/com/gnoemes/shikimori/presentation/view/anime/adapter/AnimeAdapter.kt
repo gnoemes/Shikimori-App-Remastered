@@ -1,6 +1,5 @@
 package com.gnoemes.shikimori.presentation.view.anime.adapter
 
-import androidx.recyclerview.widget.DiffUtil
 import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.entity.anime.presentation.AnimeHeadItem
 import com.gnoemes.shikimori.entity.common.domain.Type
@@ -32,11 +31,9 @@ class AnimeAdapter(
     }
 
     fun bindItems(newItems: List<Any>) {
-        val callback = DiffCallback(items, newItems)
         items.clear()
         items.addAll(newItems)
-        DiffUtil.calculateDiff(callback)
-                .dispatchUpdatesTo(this)
+        notifyDataSetChanged()
     }
 
     fun updateCharacters(it: Any) {
@@ -67,21 +64,5 @@ class AnimeAdapter(
             items[index] = it
             notifyItemChanged(index)
         }
-    }
-
-
-    private inner class DiffCallback(
-            private val oldItems: List<Any>,
-            private val newItems: List<Any>
-    ) : DiffUtil.Callback() {
-        override fun getOldListSize(): Int = oldItems.size
-
-        override fun getNewListSize(): Int = newItems.size
-
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-                oldItems[oldItemPosition] == newItems[newItemPosition]
-
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-                oldItems[oldItemPosition] == newItems[newItemPosition]
     }
 }

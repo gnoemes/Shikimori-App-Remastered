@@ -34,7 +34,7 @@ interface BaseView : MvpView {
 
     fun hideEmptyView() = Unit
 
-    fun showNetworkView() = Unit
+    fun showNetworkView(block: Boolean = true) = Unit
 
     fun hideNetworkView() = Unit
 
