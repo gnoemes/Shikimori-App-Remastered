@@ -43,6 +43,8 @@
     <string name="common_chapters">Главы</string>
     <string name="common_open_in_browser">Открыть в браузере</string>
     <string name="common_source">Источник</string>
+    <string name="common_person">Человек</string>
+    <string name="common_roles">Роли</string>
 
     <string name="season_autumn">Осень</string>
     <string name="season_winter">Зима</string>
@@ -126,6 +128,11 @@
     <string name="others">Прочие:</string>
     <string name="on_jp">По-японски:</string>
     <string name="on_ru">По-русски:</string>
+    <string name="on_eng">По-английски:</string>
+
+    <string name="person_best_works">Лучшие работы</string>
+    <string name="person_best_roles">Лучшие роли</string>
+    <string name="person_birthday">Дата рождения:</string>
 
     <string name="type_tv_translatable">TV сериал</string>
     <string name="type_movie_translatable">Фильм</string>

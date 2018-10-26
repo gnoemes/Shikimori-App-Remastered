@@ -54,7 +54,11 @@ class DateTimeConverterImpl @Inject constructor(
         }
     }
 
-    override fun convertToFullHumanDateString(dateTime: DateTime): String {
+    override fun convertToFullHumanDateString(dateTime: DateTime?): String? {
+        if (dateTime == null) {
+            return null
+        }
+
         val dateFormatter = DateTimeFormat.forPattern("dd MMMM yyyy")
         return dateFormatter.print(dateTime)
     }

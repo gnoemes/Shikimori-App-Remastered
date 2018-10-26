@@ -55,6 +55,8 @@ class DetailsContentAdapterDelegate(
                 DetailsContentType.MANGAS -> R.string.common_manga
                 DetailsContentType.ANIMES -> R.string.common_anime
                 DetailsContentType.SEYUS -> R.string.common_seyu
+                DetailsContentType.WORKS -> R.string.person_best_works
+                DetailsContentType.ROLES -> R.string.person_best_roles
             }
 
             itemView.contentLabelView.setText(stringRes)

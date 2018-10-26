@@ -10,7 +10,7 @@ interface DateTimeConverter {
 
     fun convertCommentDateTimeToString(dateTime: DateTime): String
 
-    fun convertToFullHumanDateString(dateTime: DateTime): String
+    fun convertToFullHumanDateString(dateTime: DateTime?): String?
 
     fun convertHistoryDateToString(actionDate: DateTime): String
 

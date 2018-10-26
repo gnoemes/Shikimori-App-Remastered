@@ -77,7 +77,7 @@ class AnimeFragment : BaseFragment<AnimePresenter, AnimeView>(), AnimeView,
 
         with(animeRecyclerView) {
             adapter = animeAdapter
-            layoutManager = LinearLayoutManager(context).apply { initialPrefetchItemCount = 5 }
+            layoutManager = LinearLayoutManager(context).apply { initialPrefetchItemCount = 7 }
             setHasFixedSize(true)
 //            layoutManager = FlexboxLayoutManager(context, FlexDirection.COLUMN)
         }

@@ -11,6 +11,7 @@ import com.gnoemes.shikimori.presentation.view.anime.AnimeFragment
 import com.gnoemes.shikimori.presentation.view.auth.AuthActivity
 import com.gnoemes.shikimori.presentation.view.calendar.CalendarFragment
 import com.gnoemes.shikimori.presentation.view.character.CharacterFragment
+import com.gnoemes.shikimori.presentation.view.person.PersonFragment
 
 object RouteHolder {
 
@@ -23,6 +24,7 @@ object RouteHolder {
 //                    BottomScreens.MORE ->
             Screens.ANIME_DETAILS -> AnimeFragment.newInstance(data as Long)
             Screens.CHARACTER_DETAILS -> CharacterFragment.newInstance(data as Long)
+            Screens.PERSON_DETAILS -> PersonFragment.newInstance(data as Long)
             else -> null
         }
     }

@@ -16,6 +16,7 @@ import com.gnoemes.shikimori.entity.manga.domain.Manga
 import com.gnoemes.shikimori.entity.manga.domain.MangaType
 import com.gnoemes.shikimori.entity.roles.domain.Character
 import com.gnoemes.shikimori.entity.roles.domain.Person
+import com.gnoemes.shikimori.entity.roles.domain.Work
 import com.gnoemes.shikimori.utils.*
 import com.gnoemes.shikimori.utils.images.ImageLoader
 import kotlinx.android.synthetic.main.item_content.view.*
@@ -48,6 +49,7 @@ class DetailsContentAdapter(private val imageLoader: ImageLoader,
             is Person -> holder.bindPerson(item)
             is Related -> holder.bindRelated(item)
             is AnimeVideo -> holder.bindVideo(item)
+            is Work -> holder.bindWork(item)
         }
     }
 
@@ -131,6 +133,26 @@ class DetailsContentAdapter(private val imageLoader: ImageLoader,
             }
         }
 
+        fun bindWork(item: Work) {
+            with(itemView) {
+                val isAnime = item.type == Type.ANIME
+                imageLoader.setImageListItem(imageView, if (isAnime) item.anime?.image?.original else item.manga?.image?.original)
+
+                typeView.text = if (isAnime) item.anime?.type?.type else item.manga?.type?.type
+                typeView.visible()
+
+                nameView.text = when (settings.isRomadziNaming) {
+                    true -> if (isAnime) item.anime?.name else item.manga?.name
+                    else -> if (isAnime) item.anime?.nameRu
+                            ?: item.anime?.name else item.manga?.nameRu ?: item.manga?.name
+                }
+
+                desctiptionView.text = item.role
+                desctiptionView.visible()
+                cardView.onClick { navigationCallback.invoke(item.type, if (isAnime) item.anime?.id!! else item.manga?.id!!) }
+            }
+        }
+
         //Todo delegate or more readable
         fun bindRelated(item: Related) {
             with(itemView) {
@@ -191,8 +213,6 @@ class DetailsContentAdapter(private val imageLoader: ImageLoader,
                 AnimeVideoType.OTHER -> R.string.other
             }
         }
-
-
     }
 
 

@@ -14,12 +14,12 @@ import com.gnoemes.shikimori.entity.roles.domain.Work
 import com.gnoemes.shikimori.utils.appendHostIfNeed
 import javax.inject.Inject
 
-class PersonDetailsConverterImpl @Inject constructor(
+class PersonDetailsResponseConverterImpl @Inject constructor(
         private val imageConverter: ImageResponseConverter,
         private val animeConverter: AnimeResponseConverter,
         private val mangaConverter: MangaResponseConverter,
         private val characterConverter: CharacterResponseConverter
-) : PersonDetailsConverter {
+) : PersonDetailsResponseConverter {
 
     override fun convertResponse(it: PersonDetailsResponse): PersonDetails = PersonDetails(
             it.id,
