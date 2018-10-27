@@ -8,7 +8,6 @@ import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.calendar.presentation.CalendarAnimeItem
 import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.gnoemes.shikimori.utils.onClick
-import com.gnoemes.shikimori.utils.unknownIfZero
 import com.gnoemes.shikimori.utils.visibleIf
 import kotlinx.android.synthetic.main.item_calendar_anime.view.*
 
@@ -24,6 +23,14 @@ class CalendarAnimeAdapter(
                 .from(parent.context)
                 .inflate(R.layout.item_calendar_anime, parent, false)
         return ViewHolder(item)
+                .apply { initListeners(this) }
+    }
+
+    private fun initListeners(viewHolder: ViewHolder) {
+        viewHolder.itemView.cardView.onClick {
+            val item = items[viewHolder.adapterPosition]
+            callback.invoke(item.id)
+        }
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -32,31 +39,28 @@ class CalendarAnimeAdapter(
 
     override fun getItemCount(): Int = items.size
 
+    override fun onViewRecycled(holder: ViewHolder) {
+        super.onViewRecycled(holder)
+        holder.itemView.apply {
+            imageLoader.clearImage(imageView)
+            nameView.text = null
+            typeView.text = null
+            episodeView.text = null
+            nextEpisodeDateView.text = null
+        }
+    }
+
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         fun bind(item: CalendarAnimeItem) {
             with(itemView) {
-                imageLoader.clearImage(imageView)
                 imageLoader.setImageListItem(imageView, item.image.original)
-
-                val episodes = String.format(context.getString(R.string.episodes_format), item.episodesAired.unknownIfZero(), item.episodes.unknownIfZero())
-                val nameText = item.name + episodes
-
-                nameView.text = nameText
+                nameView.text = item.name
                 typeView.text = item.type.type
-
-                val episodeText = String.format(context.getString(R.string.episode_number), item.episodeNext)
-                episodeView.text = episodeText
-
-                val nextEpisodeText =
-                        if (item.durationToAired.isNullOrEmpty()) context.getText(R.string.calendar_must_aired)
-                        else String.format(context.getString(R.string.episode_in), item.durationToAired)
-                nextEpisodeDateView.text = nextEpisodeText
-
+                episodeView.text = item.episodeText
+                nextEpisodeDateView.text = item.nextEpisode
                 nextEpisodeDateView.visibleIf { item.isToday }
-                cardView.onClick { callback.invoke(item.id) }
             }
         }
-
     }
 }

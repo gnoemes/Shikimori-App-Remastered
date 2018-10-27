@@ -56,7 +56,7 @@ class CalendarFragment : BaseFragment<CalendarPresenter, CalendarView>(), Calend
         with(recyclerView) {
             adapter = this@CalendarFragment.adapter
             layoutManager = LinearLayoutManager(context).apply { initialPrefetchItemCount = 3 }
-            setHasFixedSize(true)
+            setItemViewCacheSize(20)
         }
 
         toolbar.apply {

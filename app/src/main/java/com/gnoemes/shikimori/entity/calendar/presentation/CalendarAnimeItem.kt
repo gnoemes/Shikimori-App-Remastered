@@ -8,12 +8,10 @@ data class CalendarAnimeItem(
         val id: Long,
         val name: String,
         val image: Image,
-        val url: String,
         val type: AnimeType,
         val status: Status,
-        val episodes: Int,
-        val episodesAired: Int,
-        val episodeNext: Int,
+        val episodeText: String,
+        val nextEpisode: String,
         val durationToAired: String?,
         val isToday: Boolean
 )
