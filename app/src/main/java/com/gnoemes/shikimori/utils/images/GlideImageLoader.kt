@@ -4,6 +4,9 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.widget.ImageView
 import com.gnoemes.shikimori.R
+import com.bumptech.glide.Priority
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.target.BitmapImageViewTarget
 import javax.inject.Inject
 
 class GlideImageLoader @Inject constructor(
