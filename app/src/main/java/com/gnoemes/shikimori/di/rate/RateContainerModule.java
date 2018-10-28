@@ -1,0 +1,43 @@
+package com.gnoemes.shikimori.di.rate;
+
+import com.arellomobile.mvp.MvpPresenter;
+import com.gnoemes.shikimori.di.anime.EpisodeModule;
+import com.gnoemes.shikimori.di.base.modules.BaseChildFragmentModule;
+import com.gnoemes.shikimori.di.base.scopes.BottomChildScope;
+import com.gnoemes.shikimori.di.manga.ChapterModule;
+import com.gnoemes.shikimori.di.user.UserInteractorModule;
+import com.gnoemes.shikimori.di.user.UserUtilModule;
+import com.gnoemes.shikimori.presentation.presenter.rates.RatesContainerPresenter;
+import com.gnoemes.shikimori.presentation.presenter.rates.converter.RateCountConverter;
+import com.gnoemes.shikimori.presentation.presenter.rates.converter.RateCountConverterImpl;
+import com.gnoemes.shikimori.presentation.view.rates.RatesContainerFragment;
+
+import javax.inject.Named;
+
+import androidx.fragment.app.Fragment;
+import dagger.Binds;
+import dagger.Module;
+import dagger.Reusable;
+
+@Module(includes = {
+        ChapterModule.class,
+        EpisodeModule.class,
+        UserInteractorModule.class,
+        UserUtilModule.class,
+        RateInteractorModule.class,
+        RateUtilModule.class
+})
+public interface RateContainerModule {
+
+    @Binds
+    @Reusable
+    RateCountConverter bindRateCountConverter(RateCountConverterImpl converter);
+
+    @Binds
+    MvpPresenter bindMvpPresenter(RatesContainerPresenter presenter);
+
+    @Binds
+    @Named(BaseChildFragmentModule.CHILD_FRAGMENT)
+    @BottomChildScope
+    Fragment bindFragment(RatesContainerFragment fragment);
+}

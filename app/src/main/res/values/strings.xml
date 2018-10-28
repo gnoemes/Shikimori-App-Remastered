@@ -148,6 +148,11 @@
     <string name="type_manhua_translatable">Маньхуа</string>
     <string name="type_manhwa_translatable">Манхва</string>
 
+    <string-array name="rate_types">
+        <item>@string/common_anime</item>
+        <item>@string/common_manga</item>
+    </string-array>
+
     <string-array name="anime_rate_stasuses_empty">
         <item>@string/rate_add</item>
         <item>@string/rate_watching</item>
@@ -177,6 +182,14 @@
         <item>@string/rate_remove</item>
     </string-array>
 
+    <string-array name="anime_rate_stasuses_with_count">
+        <item>@string/rate_watching_with_count</item>
+        <item>@string/rate_planned_with_count</item>
+        <item>@string/rate_rewatch_with_count</item>
+        <item>@string/rate_completed_with_count</item>
+        <item>@string/rate_on_hold_with_count</item>
+        <item>@string/rate_dropped_with_count</item>
+    </string-array>
 
     <string-array name="manga_rate_stasuses">
         <item>@string/rate_reading</item>
@@ -187,5 +200,13 @@
         <item>@string/rate_dropped</item>
     </string-array>
 
+    <string-array name="manga_rate_stasuses_with_count">
+        <item>@string/rate_reading_with_count</item>
+        <item>@string/rate_planned_with_count</item>
+        <item>@string/rate_rereading_with_count</item>
+        <item>@string/rate_readed_with_count</item>
+        <item>@string/rate_on_hold_with_count</item>
+        <item>@string/rate_dropped_with_count</item>
+    </string-array>
 
 </resources>

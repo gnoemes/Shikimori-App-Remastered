@@ -3,7 +3,9 @@ package com.gnoemes.shikimori.di.anime;
 import com.arellomobile.mvp.MvpPresenter;
 import com.gnoemes.shikimori.di.base.modules.BaseChildFragmentModule;
 import com.gnoemes.shikimori.di.base.scopes.BottomChildScope;
-import com.gnoemes.shikimori.di.rate.RateModule;
+import com.gnoemes.shikimori.di.rate.RateContainerModule;
+import com.gnoemes.shikimori.di.rate.RateInteractorModule;
+import com.gnoemes.shikimori.di.rate.RateUtilModule;
 import com.gnoemes.shikimori.di.related.RelatedModule;
 import com.gnoemes.shikimori.di.studio.StudioUtilModule;
 import com.gnoemes.shikimori.di.user.UserInteractorModule;
@@ -22,11 +24,14 @@ import dagger.Module;
         AnimeUtilModule.class,
         AnimeRepositoryModule.class,
         AnimeInteractorModule.class,
-        RateModule.class,
+        RateContainerModule.class,
         UserUtilModule.class,
         UserInteractorModule.class,
         StudioUtilModule.class,
-        RelatedModule.class
+        RelatedModule.class,
+        EpisodeModule.class,
+        RateInteractorModule.class,
+        RateUtilModule.class
 })
 public interface AnimeModule {
 

@@ -12,12 +12,13 @@ import com.gnoemes.shikimori.presentation.view.auth.AuthActivity
 import com.gnoemes.shikimori.presentation.view.calendar.CalendarFragment
 import com.gnoemes.shikimori.presentation.view.character.CharacterFragment
 import com.gnoemes.shikimori.presentation.view.person.PersonFragment
+import com.gnoemes.shikimori.presentation.view.rates.RatesContainerFragment
 
 object RouteHolder {
 
     fun createFragment(screenKey: String?, data: Any?): Fragment? {
         return when (screenKey) {
-//                    BottomScreens.RATES ->
+            BottomScreens.RATES -> RatesContainerFragment.newInstance(data as? Long)
             BottomScreens.CALENDAR -> CalendarFragment.newInstance()
 //                    BottomScreens.SEARCH ->
 //                    BottomScreens.MAIN ->

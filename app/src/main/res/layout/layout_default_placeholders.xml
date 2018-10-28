@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.gnoemes.shikimori.presentation.view.common.widget.EmptyContentView
         android:id="@+id/emptyContentView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        app:layout_behavior="@string/appBarFixScrollingFooterBehavior" />
 
     <com.gnoemes.shikimori.presentation.view.common.widget.NetworkErrorView
         android:id="@+id/networkErrorView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        app:layout_behavior="@string/appBarFixScrollingFooterBehavior" />
 
 </merge>

@@ -23,6 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        app:SpinKit_Color="?colorAccent" />
+        app:SpinKit_Color="?colorAccent"
+        app:layout_behavior="@string/appBarFixScrollingFooterBehavior" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
