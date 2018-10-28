@@ -54,7 +54,6 @@ class RatesContainerFragment : BaseFragment<RatesContainerPresenter, RatesContai
         }
 
         private const val SPINNER_KEY = "SPINNER_KEY"
-        private const val VIEW_PAGER_KEY = "VIEW_PAGER_KEY"
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
