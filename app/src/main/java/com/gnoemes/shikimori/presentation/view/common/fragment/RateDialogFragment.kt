@@ -36,6 +36,7 @@ class RateDialogFragment : MvpDialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         arguments.ifNotNull {
             rate = it.getParcelable(AppExtras.ARGUMENT_RATE)
+            isAnime = it.getBoolean(ARGUMENT_IS_ANIME)
         }
 
         customView = View.inflate(context, R.layout.dialog_rate, null)
@@ -67,6 +68,7 @@ class RateDialogFragment : MvpDialogFragment() {
     private fun initView() {
         with(customView) {
             with(rateSpinnerView) {
+                isAnime = this@RateDialogFragment.isAnime
                 hasEdit = false
                 setRateStatus(rate?.status)
                 callback = { action, status -> if (action == SpinnerAction.RATE_CHANGE) rate = rate?.copy(status = status) }

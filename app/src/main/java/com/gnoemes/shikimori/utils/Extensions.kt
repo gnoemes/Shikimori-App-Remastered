@@ -57,7 +57,7 @@ fun Context.themeDrawable(@DrawableRes drawableResId: Int, @AttrRes attrResId: I
 
 @ColorInt
 fun Context.color(@ColorRes colorRes: Int): Int {
-    return this.resources.getColor(colorRes)
+    return ContextCompat.getColor(this, colorRes)
 }
 
 fun Context.calculateColumns(@DimenRes itemWidth: Int): Int {
@@ -81,6 +81,7 @@ fun <T> Single<T>.appendLoadingLogic(viewState: BaseView): Single<T> =
         this.doOnSubscribe { viewState.onShowLoading() }
                 .doOnSubscribe { viewState.hideEmptyView() }
                 .doOnSubscribe { viewState.hideNetworkView() }
+                .doAfterTerminate { viewState.onHideLoading() }
                 .doOnEvent { _, _ -> viewState.onHideLoading() }
 
 fun <T> Single<T>.appendLightLoadingLogic(viewState: BaseView): Single<T> =

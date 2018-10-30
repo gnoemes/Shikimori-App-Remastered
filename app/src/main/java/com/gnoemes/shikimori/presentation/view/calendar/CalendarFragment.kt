@@ -15,9 +15,9 @@ import com.gnoemes.shikimori.utils.gone
 import com.gnoemes.shikimori.utils.ifNotNull
 import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.gnoemes.shikimori.utils.visible
-import kotlinx.android.synthetic.main.fragment_base.*
 import kotlinx.android.synthetic.main.layout_default_list.*
 import kotlinx.android.synthetic.main.layout_default_placeholders.*
+import kotlinx.android.synthetic.main.layout_progress.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import javax.inject.Inject
 

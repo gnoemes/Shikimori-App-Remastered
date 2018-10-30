@@ -74,7 +74,7 @@ class AnimeHeadAdapterDelegate(private val imageLoader: ImageLoader,
                 rateSpinnerView.callback = { spinnerAction, rateStatus ->
                     when (spinnerAction) {
                         SpinnerAction.RATE_CHANGE -> detailsCallback.invoke(DetailsAction.ChangeRateStatus(rateStatus))
-                        SpinnerAction.RATE_EDIT -> detailsCallback.invoke(DetailsAction.EditRate)
+                        SpinnerAction.RATE_EDIT -> detailsCallback.invoke(DetailsAction.EditRate())
                     }
                 }
                 rateSpinnerView.visibleIf { !item.isGuest }
@@ -83,7 +83,7 @@ class AnimeHeadAdapterDelegate(private val imageLoader: ImageLoader,
                 watchOnlineBtn.apply {
                     setCompoundDrawablesWithIntrinsicBounds(onlineDrawable, null, null, null)
                     setText(R.string.details_watch_online)
-                    setOnClickListener { detailsCallback.invoke(DetailsAction.WatchOnline) }
+                    setOnClickListener { detailsCallback.invoke(DetailsAction.WatchOnline()) }
                 }
 
                 with(genreList) {

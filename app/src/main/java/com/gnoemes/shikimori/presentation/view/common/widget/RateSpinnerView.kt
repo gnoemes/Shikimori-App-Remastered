@@ -5,9 +5,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.util.AttributeSet
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.TextView
-import com.afollestad.aesthetic.Aesthetic
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.app.domain.AppExtras
 import com.gnoemes.shikimori.entity.common.domain.SpinnerAction
@@ -17,6 +15,7 @@ import com.gnoemes.shikimori.utils.color
 import com.gnoemes.shikimori.utils.tint
 import com.gnoemes.shikimori.utils.tintWithRes
 import com.gnoemes.shikimori.utils.visibleIf
+import com.gnoemes.shikimori.utils.widgets.SpinnerArrayAdapter
 import kotlinx.android.synthetic.main.view_rates_chooser.view.*
 
 class RateSpinnerView @JvmOverloads constructor(context: Context,
@@ -30,6 +29,9 @@ class RateSpinnerView @JvmOverloads constructor(context: Context,
     private var status: RateStatus? = null
     private lateinit var items: MutableList<ViewModel>
 
+    private var colorRes: Int = R.color.rate_default
+    private var colorDarkRes: Int = R.color.rate_default_dark
+
     override fun getLayout(): Int = R.layout.view_rates_chooser
 
     override fun init(context: Context, attrs: AttributeSet?) {
@@ -39,16 +41,14 @@ class RateSpinnerView @JvmOverloads constructor(context: Context,
         hasEdit = ta.getBoolean(R.styleable.RateSpinnerView_showEdit, true)
         ta.recycle()
 
-        if (isAnime) {
-            items = mutableListOf(
-                    ViewModel(R.drawable.ic_plus, R.color.rate_default, R.color.rate_default_dark, RateStatus.WATCHING, 0),
-                    ViewModel(R.drawable.ic_plus, R.color.rate_default, R.color.rate_default_dark, RateStatus.PLANNED, 1),
-                    ViewModel(R.drawable.ic_replay, R.color.rate_default, R.color.rate_default_dark, RateStatus.REWATCHING, 2),
-                    ViewModel(R.drawable.ic_check, R.color.rate_watched, R.color.rate_watched_dark, RateStatus.COMPLETED, 3),
-                    ViewModel(R.drawable.ic_pause, R.color.rate_on_hold, R.color.rate_on_hold_dark, RateStatus.ON_HOLD, 4),
-                    ViewModel(R.drawable.ic_close, R.color.rate_dropped, R.color.rate_dropped_dark, RateStatus.DROPPED, 5)
-            )
-        }
+        items = mutableListOf(
+                ViewModel(R.drawable.ic_plus, R.color.rate_default, R.color.rate_default_dark, RateStatus.WATCHING, 0),
+                ViewModel(R.drawable.ic_plus, R.color.rate_default, R.color.rate_default_dark, RateStatus.PLANNED, 1),
+                ViewModel(R.drawable.ic_replay, R.color.rate_default, R.color.rate_default_dark, RateStatus.REWATCHING, 2),
+                ViewModel(R.drawable.ic_check, R.color.rate_watched, R.color.rate_watched_dark, RateStatus.COMPLETED, 3),
+                ViewModel(R.drawable.ic_pause, R.color.rate_on_hold, R.color.rate_on_hold_dark, RateStatus.ON_HOLD, 4),
+                ViewModel(R.drawable.ic_close, R.color.rate_dropped, R.color.rate_dropped_dark, RateStatus.DROPPED, 5)
+        )
 
         if (!isInEditMode) {
             updateColor()
@@ -65,17 +65,21 @@ class RateSpinnerView @JvmOverloads constructor(context: Context,
     }
 
     private fun initAdapter() {
-        val arrayRes = when (status) {
-            null -> R.array.anime_rate_stasuses_empty
-            else -> R.array.anime_rate_stasuses
-        }
+        val arrayRes =
+                if (isAnime) when (status) {
+                    null -> R.array.anime_rate_stasuses_empty
+                    else -> R.array.anime_rate_stasuses
+                } else when (status) {
+                    null -> R.array.manga_rate_stasuses_empty
+                    else -> R.array.manga_rate_stasuses
+                }
 
-        spinnerView.adapter = ArrayAdapter(context, R.layout.item_rate_spinner, context.resources.getStringArray(arrayRes).toMutableList())
+        spinnerView.adapter = SpinnerArrayAdapter(colorRes, colorDarkRes, context, R.layout.item_rate_spinner, context.resources.getStringArray(arrayRes).toMutableList())
         val selection = items.firstOrNull { it.status == status }?.pos ?: 0
         spinnerView.setSelection(selection, false)
         spinnerView.itemClickListener = AdapterView.OnItemClickListener { _, _, pos, _ ->
 
-            val position = if (arrayRes == R.array.anime_rate_stasuses_empty) pos - 1 else pos
+            val position = if (arrayRes == R.array.anime_rate_stasuses_empty || arrayRes == R.array.manga_rate_stasuses_empty) pos - 1 else pos
             status = items.firstOrNull { it.pos == position }?.status
 
             updateColor()
@@ -94,13 +98,8 @@ class RateSpinnerView @JvmOverloads constructor(context: Context,
     private fun updateColor() {
         val item = items.firstOrNull { it.status == status }
 
-        val colorRes = item?.colorRes ?: R.color.rate_default
-        val colorDarkRes = item?.colorDarkRes ?: R.color.rate_default_dark
-
-        Aesthetic.config {
-            attributeRes(R.attr.colorRate, colorRes)
-            attributeRes(R.attr.colorRateDark, colorDarkRes)
-        }
+        colorRes = item?.colorRes ?: R.color.rate_default
+        colorDarkRes = item?.colorDarkRes ?: R.color.rate_default_dark
 
         initAdapter()
 
@@ -115,7 +114,9 @@ class RateSpinnerView @JvmOverloads constructor(context: Context,
             setTextColor(context.color(colorDarkRes))
         }
 
-        spinnerView.background.tint(context.color(colorDarkRes))
+        val background = spinnerView.background
+        spinnerView.background = background.apply { tint(context.color(colorDarkRes)); mutate() }
+        spinnerView.postInvalidate()
 
         editBtn.visibleIf { hasEdit && item != null }
     }

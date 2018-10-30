@@ -12,7 +12,7 @@ interface ViewController<T> {
 
     fun showPageProgress(show: Boolean)
 
-    fun showEmptyProgress(show: Boolean)
+    fun showEmptyProgress(show: Boolean) = Unit
 
     fun showError(throwable: Throwable)
 }

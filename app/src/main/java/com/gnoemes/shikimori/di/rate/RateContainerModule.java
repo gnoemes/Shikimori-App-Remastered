@@ -10,6 +10,7 @@ import com.gnoemes.shikimori.di.user.UserUtilModule;
 import com.gnoemes.shikimori.presentation.presenter.rates.RatesContainerPresenter;
 import com.gnoemes.shikimori.presentation.presenter.rates.converter.RateCountConverter;
 import com.gnoemes.shikimori.presentation.presenter.rates.converter.RateCountConverterImpl;
+import com.gnoemes.shikimori.presentation.view.rates.RateFragment;
 import com.gnoemes.shikimori.presentation.view.rates.RatesContainerFragment;
 
 import javax.inject.Named;
@@ -18,8 +19,10 @@ import androidx.fragment.app.Fragment;
 import dagger.Binds;
 import dagger.Module;
 import dagger.Reusable;
+import dagger.android.ContributesAndroidInjector;
 
 @Module(includes = {
+        BaseChildFragmentModule.class,
         ChapterModule.class,
         EpisodeModule.class,
         UserInteractorModule.class,
@@ -35,6 +38,9 @@ public interface RateContainerModule {
 
     @Binds
     MvpPresenter bindMvpPresenter(RatesContainerPresenter presenter);
+
+    @ContributesAndroidInjector(modules = RateModule.class)
+    RateFragment rateFragmentInjector();
 
     @Binds
     @Named(BaseChildFragmentModule.CHILD_FRAGMENT)

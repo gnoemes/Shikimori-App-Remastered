@@ -6,5 +6,5 @@ import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragmentView
 
 interface RatesContainerView : BaseFragmentView {
 
-    fun setData(type: Type, it: List<Pair<RateStatus, String>>)
+    fun setData(id: Long, type: Type, it: List<Pair<RateStatus, String>>)
 }

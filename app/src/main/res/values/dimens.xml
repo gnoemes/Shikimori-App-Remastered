@@ -2,5 +2,8 @@
 <resources>
     <dimen name="image_calendar_height">190dp</dimen>
     <dimen name="image_calendar_width">140dp</dimen>
+    <dimen name="image_rate_height">170dp</dimen>
+    <dimen name="image_rate_width">120dp</dimen>
     <dimen name="margin_normal">8dp</dimen>
+    <dimen name="item_min_width">380dp</dimen>
 </resources>

@@ -2,6 +2,7 @@ package com.gnoemes.shikimori.presentation.view.base.fragment
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -17,6 +18,7 @@ import com.gnoemes.shikimori.utils.visibleIf
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_base.*
 import kotlinx.android.synthetic.main.layout_default_placeholders.*
+import kotlinx.android.synthetic.main.layout_progress.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import javax.inject.Inject
 import javax.inject.Provider
@@ -26,6 +28,8 @@ abstract class BaseFragment<Presenter : BasePresenter<View>, View : BaseNetworkV
 
     @Inject
     lateinit var presenterProvider: Provider<Presenter>
+
+    private val viewHandler = Handler()
 
     override fun onAttach(context: Context?) {
         AndroidSupportInjection.inject(this)
@@ -55,6 +59,7 @@ abstract class BaseFragment<Presenter : BasePresenter<View>, View : BaseNetworkV
 
     override fun onDestroyView() {
         hideSoftInput()
+        viewHandler.removeCallbacksAndMessages(null)
         super.onDestroyView()
     }
 
@@ -71,6 +76,9 @@ abstract class BaseFragment<Presenter : BasePresenter<View>, View : BaseNetworkV
     // UI METHODS
     ///////////////////////////////////////////////////////////////////////////
 
+    protected fun postViewAction(action: () -> Unit) {
+        viewHandler.post { action.invoke() }
+    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {

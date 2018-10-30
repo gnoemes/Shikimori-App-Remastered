@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/coordinator"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/rateAppBarLayout"
@@ -11,9 +14,9 @@
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            app:tabContentStart="20dp"
             app:tabMode="scrollable"
             app:tabPadding="4dp"
-            app:tabContentStart="20dp"
             app:tabTextAppearance="@style/TextHeadlineStyle" />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -24,4 +27,4 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appBarFixScrollingFooterBehavior" />
 
-</merge>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

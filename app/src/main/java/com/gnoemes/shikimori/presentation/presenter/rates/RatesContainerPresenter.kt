@@ -8,7 +8,7 @@ import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
 import com.gnoemes.shikimori.presentation.presenter.rates.converter.RateCountConverter
 import com.gnoemes.shikimori.presentation.view.rates.RatesContainerView
-import com.gnoemes.shikimori.utils.appendLoadingLogic
+import com.gnoemes.shikimori.utils.appendLightLoadingLogic
 import javax.inject.Inject
 
 @InjectViewState
@@ -35,12 +35,12 @@ class RatesContainerPresenter @Inject constructor(
 
     private fun loadRateCategories() =
             interactor.getDetails(userId)
-                    .appendLoadingLogic(viewState)
+                    .appendLightLoadingLogic(viewState)
                     .map {
                         if (isAnime) converter.countAnimeRates(it)
                         else converter.countMangaRates(it)
                     }
-                    .subscribe({ viewState.setData(type, it) }, this::processErrors)
+                    .subscribe({ viewState.setData(userId, type, it) }, this::processErrors)
                     .addToDisposables()
 
     override fun processErrors(throwable: Throwable) {

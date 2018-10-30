@@ -20,12 +20,12 @@ class RatesRepositoryImpl @Inject constructor(
 ) : RatesRepository {
 
     override fun getAnimeRates(id: Long, page: Int, limit: Int, rateStatus: RateStatus): Single<List<Rate>> =
-            api.getUserAnimeRates(id, page, limit, rateStatus)
+            api.getUserAnimeRates(id, page, limit, rateStatus.status)
                     .map(converter)
                     .doOnSuccess { if (it.isNotEmpty() && page > 1) it.toMutableList().removeAt(0) }
 
     override fun getMangaRates(id: Long, page: Int, limit: Int, rateStatus: RateStatus): Single<List<Rate>> =
-            api.getUserMangaRates(id, page, limit, rateStatus)
+            api.getUserMangaRates(id, page, limit, rateStatus.status)
                     .map(converter)
                     .doOnSuccess { if (it.isNotEmpty() && page > 1) it.toMutableList().removeAt(0) }
 

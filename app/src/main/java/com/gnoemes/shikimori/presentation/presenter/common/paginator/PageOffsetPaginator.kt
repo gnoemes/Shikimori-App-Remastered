@@ -21,7 +21,6 @@ class PageOffsetPaginator<T>(
     override fun loadNewPage() = currentState.loadNewPage()
     override fun release() = currentState.release()
 
-
     private fun loadPage(page: Int) {
         disposable?.dispose()
         disposable = requestFactory.invoke(page)

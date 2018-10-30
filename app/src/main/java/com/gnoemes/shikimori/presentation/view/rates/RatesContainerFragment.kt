@@ -19,13 +19,22 @@ import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragment
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
 import com.gnoemes.shikimori.utils.*
 import com.santalu.widget.ReSpinner
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.fragment_rates_container.*
 import kotlinx.android.synthetic.main.layout_default_placeholders.*
+import kotlinx.android.synthetic.main.layout_progress.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.Router
+import javax.inject.Inject
 
-class RatesContainerFragment : BaseFragment<RatesContainerPresenter, RatesContainerView>(), RatesContainerView, RouterProvider {
+
+class RatesContainerFragment : BaseFragment<RatesContainerPresenter, RatesContainerView>(), RatesContainerView, RouterProvider, HasSupportFragmentInjector {
+
+    @Inject
+    lateinit var childFragmentInjector: DispatchingAndroidInjector<Fragment>
 
     @InjectPresenter
     lateinit var containerPresenter: RatesContainerPresenter
@@ -45,8 +54,9 @@ class RatesContainerFragment : BaseFragment<RatesContainerPresenter, RatesContai
         return containerPresenter
     }
 
+    override fun supportFragmentInjector(): AndroidInjector<Fragment> = childFragmentInjector
+
     private lateinit var spinner: ReSpinner
-    private lateinit var adapter: RatePagerAdapter
 
     companion object {
         fun newInstance(id: Long?) = RatesContainerFragment().withArgs {
@@ -65,7 +75,7 @@ class RatesContainerFragment : BaseFragment<RatesContainerPresenter, RatesContai
         toolbar?.apply {
             spinner = ReSpinner(context)
             spinner.adapter = ArrayAdapter<String>(context, R.layout.item_spinner_toolbar, context.resources.getStringArray(R.array.rate_types))
-            spinner.background = spinner.background.apply { tint(context.colorAttr(R.attr.colorOnSurface)) }
+            spinner.background = spinner.background.apply { tint(context.colorAttr(R.attr.colorOnSurface)); mutate() }
             spinner.itemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
                 when (position) {
                     0 -> getPresenter().onChangeType(Type.ANIME)
@@ -76,21 +86,17 @@ class RatesContainerFragment : BaseFragment<RatesContainerPresenter, RatesContai
             addView(spinner)
 
         }
-        adapter = RatePagerAdapter(childFragmentManager)
         savedInstanceState.ifNotNull {
             spinner.setSelection(it.getInt(SPINNER_KEY, 0), false)
         }
         emptyContentView.setText(R.string.rate_empty)
-        ratesContainer.adapter = this@RatesContainerFragment.adapter
-        ratesContainer.offscreenPageLimit = 6
-        tabLayout.setupWithViewPager(ratesContainer)
+        progressBar?.gone()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putInt(SPINNER_KEY, spinner.selectedItemPosition)
     }
-
 
     ///////////////////////////////////////////////////////////////////////////
     // GETTERS
@@ -109,49 +115,40 @@ class RatesContainerFragment : BaseFragment<RatesContainerPresenter, RatesContai
     // MVP
     ///////////////////////////////////////////////////////////////////////////
 
-    override fun setData(type: Type, it: List<Pair<RateStatus, String>>) {
-        adapter.setItems(type, it)
-        ratesContainer.setCurrentItem(0, true)
+    override fun setData(id: Long, type: Type, it: List<Pair<RateStatus, String>>) {
+        ratesContainer.adapter = RatePagerAdapter(childFragmentManager, id, type, it)
+        ratesContainer.offscreenPageLimit = it.size
+        tabLayout.setupWithViewPager(ratesContainer)
     }
 
     override fun onShowLoading() {
         super<BaseFragment>.onShowLoading()
-        rateAppBarLayout.gone()
-        ratesContainer.gone()
+        coordinator.gone()
     }
 
     override fun onHideLoading() {
         super<BaseFragment>.onHideLoading()
-        rateAppBarLayout.visible()
-        ratesContainer.visible()
+        coordinator.visible()
     }
 
     override fun showNetworkView(block: Boolean) {
         super<BaseFragment>.showNetworkView(block)
-        rateAppBarLayout.gone()
-        ratesContainer.gone()
+        coordinator.gone()
     }
 
     override fun hideNetworkView() {
         super<BaseFragment>.hideNetworkView()
-        rateAppBarLayout.visible()
-        ratesContainer.visible()
+        coordinator.visible()
     }
 
-    inner class RatePagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
-
-        private var type: Type = Type.ANIME
-        private var items = mutableListOf<Pair<RateStatus, String>>()
-
-        fun setItems(newType: Type, newItems: List<Pair<RateStatus, String>>) {
-            type = newType
-            items.clear()
-            items.addAll(newItems)
-            notifyDataSetChanged()
-        }
+    inner class RatePagerAdapter(fm: FragmentManager,
+                                 val userId: Long,
+                                 val type: Type,
+                                 val items: List<Pair<RateStatus, String>>
+    ) : FragmentStatePagerAdapter(fm) {
 
         override fun getItem(position: Int): Fragment {
-            return Fragment()
+            return RateFragment.newInstance(userId, type, items[position].first)
         }
 
         override fun getCount(): Int = items.size
