@@ -6,16 +6,20 @@ import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.common.presentation.DetailsAction
 import com.gnoemes.shikimori.entity.common.presentation.ProgressItem
+import com.gnoemes.shikimori.entity.common.presentation.RateSort
+import com.gnoemes.shikimori.entity.common.presentation.SortItem
 import com.gnoemes.shikimori.entity.rates.domain.Rate
 import com.gnoemes.shikimori.presentation.view.common.adapter.ProgressAdapterDelegate
+import com.gnoemes.shikimori.presentation.view.common.adapter.SortAdapterDelegate
 import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 
 class RateAdapter(
-        settings : SettingsSource,
+        settings: SettingsSource,
         imageLoader: ImageLoader,
         navigationCallback: (Type, Long) -> Unit,
         callback: (DetailsAction) -> Unit,
+        sortCallback: (RateSort, Boolean) -> Unit,
         private val nextPageListener: () -> Unit
 ) : ListDelegationAdapter<MutableList<Any>>() {
 
@@ -25,6 +29,7 @@ class RateAdapter(
             addDelegate(AnimeRateAdapterDelegate(settings, imageLoader, navigationCallback, callback))
             addDelegate(MangaRateAdapterDelegate(settings, imageLoader, navigationCallback, callback))
             addDelegate(ProgressAdapterDelegate())
+            addDelegate(SortAdapterDelegate(sortCallback))
         }
     }
 
@@ -80,6 +85,8 @@ class RateAdapter(
 
             return if (newItem is Rate && oldItem is Rate) {
                 newItem.id == oldItem.id
+            } else if (newItem is SortItem && oldItem is SortItem) {
+                newItem.currentSort == oldItem.currentSort
             } else {
                 newItem is ProgressItem && oldItem is ProgressItem
             }
@@ -90,6 +97,8 @@ class RateAdapter(
             val newItem = newItems[newItemPosition]
 
             return if (newItem is Rate && oldItem is Rate) {
+                newItem == oldItem
+            } else if (newItem is SortItem && oldItem is SortItem) {
                 newItem == oldItem
             } else {
                 false

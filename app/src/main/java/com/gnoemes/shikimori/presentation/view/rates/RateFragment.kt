@@ -10,7 +10,6 @@ import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.entity.app.domain.AppExtras
 import com.gnoemes.shikimori.entity.common.domain.Type
-import com.gnoemes.shikimori.entity.rates.domain.Rate
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.rates.domain.UserRate
 import com.gnoemes.shikimori.presentation.presenter.rates.RatePresenter
@@ -57,7 +56,7 @@ class RateFragment : BaseFragment<RatePresenter, RateView>(), RateView, RateDial
         return ratePresenter
     }
 
-    private val adapter by lazy { RateAdapter(settings, imageLoader, getPresenter()::onContentClicked, { getPresenter().onAction(it) }, { getPresenter().loadNewPage() }) }
+    private val adapter by lazy { RateAdapter(settings, imageLoader, getPresenter()::onContentClicked, { getPresenter().onAction(it) }, { sort, des -> getPresenter().onSortChanged(sort, des) }, { getPresenter().loadNewPage() }) }
 
     companion object {
         fun newInstance(userId: Long, type: Type, status: RateStatus) = RateFragment().withArgs {
@@ -77,6 +76,7 @@ class RateFragment : BaseFragment<RatePresenter, RateView>(), RateView, RateDial
             adapter = this@RateFragment.adapter
             layoutManager = LinearLayoutManager(context)
             itemAnimator = DefaultItemAnimator()
+            setHasFixedSize(false)
         }
 
         emptyContentView.setText(R.string.rate_empty)
@@ -105,9 +105,12 @@ class RateFragment : BaseFragment<RatePresenter, RateView>(), RateView, RateDial
     // MVP
     ///////////////////////////////////////////////////////////////////////////
 
-    override fun showData(data: List<Rate>) {
+    override fun showData(data: List<Any>) {
+        //fix auto scroll on sort
+        val parcelable = recyclerView.layoutManager?.onSaveInstanceState()
         adapter.setData(data)
         recyclerView.visible()
+        recyclerView.layoutManager?.onRestoreInstanceState(parcelable)
     }
 
     override fun showRateDialog(userRate: UserRate) {

@@ -148,6 +148,17 @@
     <string name="type_manhua_translatable">Маньхуа</string>
     <string name="type_manhwa_translatable">Манхва</string>
 
+    <string name="sort_id">По порядку</string>
+    <string name="sort_type">По типу</string>
+    <string name="sort_date_aired">По дате выхода</string>
+    <string name="sort_status">По статусу</string>
+    <string name="sort_episodes">По кол-ву эпизодов</string>
+    <string name="sort_chapters">По кол-ву глав</string>
+    <string name="sort_episodes_watched">По эпизодам</string>
+    <string name="sort_chapters_readed">По главам</string>
+    <string name="sort_score">По оценке</string>
+    <string name="sort_random">Рандом</string>
+
     <string-array name="rate_types">
         <item>@string/common_anime</item>
         <item>@string/common_manga</item>
@@ -218,5 +229,18 @@
         <item>@string/rate_on_hold_with_count</item>
         <item>@string/rate_dropped_with_count</item>
     </string-array>
+
+    <string-array name="anime_rate_sorts">
+        <item>@string/sort_id</item>
+        <item>@string/sort_type</item>
+        <item>@string/sort_date_aired</item>
+        <item>@string/sort_status</item>
+        <item>@string/sort_episodes</item>
+        <item>@string/sort_episodes_watched</item>
+        <item>@string/sort_score</item>
+        <item>@string/sort_random</item>
+    </string-array>
+
+
 
 </resources>

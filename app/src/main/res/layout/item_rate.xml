@@ -50,6 +50,7 @@
             android:layout_marginLeft="8dp"
             android:fontFamily="@font/open_sans_semibold"
             android:textSize="16sp"
+            android:maxLines="3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageContainerView"
             app:layout_constraintTop_toTopOf="parent"

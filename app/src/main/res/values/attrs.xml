@@ -4,6 +4,7 @@
     <attr name="colorOnSurface" format="color" />
     <attr name="colorOnAccent" format="color" />
     <attr name="colorOnPrimary" format="color" />
+    <attr name="colorOnBackground" format="color" />
 
     <attr name="colorRate" format="color" />
     <attr name="colorRateDark" format="color" />

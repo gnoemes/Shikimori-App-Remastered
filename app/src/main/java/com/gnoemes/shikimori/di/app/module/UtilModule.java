@@ -4,6 +4,8 @@ import com.gnoemes.shikimori.data.repository.club.ClubResponseConverter;
 import com.gnoemes.shikimori.data.repository.club.ClubResponseConverterImpl;
 import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResourceProvider;
 import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResourceProviderImpl;
+import com.gnoemes.shikimori.presentation.presenter.common.provider.SortResourceProvider;
+import com.gnoemes.shikimori.presentation.presenter.common.provider.SortResourceProviderImpl;
 import com.gnoemes.shikimori.utils.date.DateTimeConverter;
 import com.gnoemes.shikimori.utils.date.DateTimeResourceProvider;
 import com.gnoemes.shikimori.utils.date.DateTimeUtils;
@@ -45,4 +47,8 @@ public interface UtilModule {
     @Binds
     @Reusable
     CommonResourceProvider bindCommonResourceProvider(CommonResourceProviderImpl provider);
+
+    @Binds
+    @Reusable
+    SortResourceProvider bindSortResourceProvider(SortResourceProviderImpl provider);
 }

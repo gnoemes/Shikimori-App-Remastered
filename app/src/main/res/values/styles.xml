@@ -10,6 +10,7 @@
         <item name="colorOnSurface">@color/colorOnSurface</item>
         <item name="colorOnAccent">@color/colorOnSurface</item>
         <item name="colorOnPrimary">@color/colorOnPrimary</item>
+        <item name="colorOnBackground">@color/colorOnBackground</item>
         <item name="android:textColor">@color/colorOnSurface</item>
 
         <item name="colorRate">@color/rate_default</item>
