@@ -56,7 +56,7 @@ class RatesContainerFragment : BaseFragment<RatesContainerPresenter, RatesContai
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = childFragmentInjector
 
-    private lateinit var spinner: ReSpinner
+    private var spinner: ReSpinner? = null
 
     companion object {
         fun newInstance(id: Long?) = RatesContainerFragment().withArgs {
@@ -72,22 +72,24 @@ class RatesContainerFragment : BaseFragment<RatesContainerPresenter, RatesContai
     }
 
     private fun initView(savedInstanceState: Bundle?) {
-        toolbar?.apply {
-            spinner = ReSpinner(context)
-            spinner.adapter = ArrayAdapter<String>(context, R.layout.item_spinner_toolbar, context.resources.getStringArray(R.array.rate_types))
-            spinner.background = spinner.background.apply { tint(context.colorAttr(R.attr.colorOnSurface)); mutate() }
-            spinner.itemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-                when (position) {
-                    0 -> getPresenter().onChangeType(Type.ANIME)
-                    1 -> getPresenter().onChangeType(Type.MANGA)
+        spinner = ReSpinner(context!!)
+                .apply {
+                    adapter = ArrayAdapter<String>(context, R.layout.item_spinner_toolbar, context.resources.getStringArray(R.array.rate_types))
+                    background = background.apply { tint(context.colorAttr(R.attr.colorOnSurface)); mutate() }
+                    itemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+                        when (position) {
+                            0 -> getPresenter().onChangeType(Type.ANIME)
+                            1 -> getPresenter().onChangeType(Type.MANGA)
+                        }
+                    }
                 }
-            }
+
+        toolbar?.apply {
             title = null
             addView(spinner)
-
         }
         savedInstanceState.ifNotNull {
-            spinner.setSelection(it.getInt(SPINNER_KEY, 0), false)
+            spinner?.setSelection(it.getInt(SPINNER_KEY, 0), false)
         }
         emptyContentView.setText(R.string.rate_empty)
         progressBar?.gone()
@@ -95,7 +97,7 @@ class RatesContainerFragment : BaseFragment<RatesContainerPresenter, RatesContai
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt(SPINNER_KEY, spinner.selectedItemPosition)
+        outState.putInt(SPINNER_KEY, spinner?.selectedItemPosition ?: 0)
     }
 
     ///////////////////////////////////////////////////////////////////////////
