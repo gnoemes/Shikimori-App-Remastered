@@ -44,6 +44,7 @@ class CalendarAdapter(
 
     override fun onViewRecycled(holder: ViewHolder) {
         super.onViewRecycled(holder)
+
         holder.itemView.apply {
             recyclerView.adapter = null
             dateTextView.text = null
@@ -52,14 +53,24 @@ class CalendarAdapter(
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
+        lateinit var item: CalendarViewModel
+
+        private val adapter by lazy {
+            CalendarAnimeAdapter(itemView.context, imageLoader, callback, item.items)
+        }
+        val manager by lazy {
+            LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false).apply { initialPrefetchItemCount = 3 }
+        }
 
         fun bind(item: CalendarViewModel) {
+            this.item = item
             with(itemView) {
                 dateTextView.text = item.date
 
                 with(recyclerView) {
-                    adapter = CalendarAnimeAdapter(imageLoader, callback, item.items)
-                    layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false).apply { initialPrefetchItemCount = 3 }
+
+                    adapter = this@ViewHolder.adapter
+                    layoutManager = manager
                     setHasFixedSize(true)
                     setRecycledViewPool(sharedPool)
                     setItemViewCacheSize(20)

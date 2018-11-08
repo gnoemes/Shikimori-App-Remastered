@@ -76,7 +76,7 @@ class RateFragment : BaseFragment<RatePresenter, RateView>(), RateView, RateDial
             adapter = this@RateFragment.adapter
             layoutManager = LinearLayoutManager(context)
             itemAnimator = DefaultItemAnimator()
-            setHasFixedSize(false)
+            setHasFixedSize(true)
         }
 
         emptyContentView.setText(R.string.rate_empty)

@@ -1,5 +1,6 @@
 package com.gnoemes.shikimori.presentation.view.calendar.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,16 +8,23 @@ import androidx.recyclerview.widget.RecyclerView
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.calendar.presentation.CalendarAnimeItem
 import com.gnoemes.shikimori.utils.images.ImageLoader
+import com.gnoemes.shikimori.utils.images.Prefetcher
+import com.gnoemes.shikimori.utils.images.SimplePrefetcher
 import com.gnoemes.shikimori.utils.onClick
 import com.gnoemes.shikimori.utils.visibleIf
 import kotlinx.android.synthetic.main.item_calendar_anime.view.*
 
 class CalendarAnimeAdapter(
+        context: Context,
         private val imageLoader: ImageLoader,
         private val callback: (id: Long) -> Unit,
         private val items: List<CalendarAnimeItem>
 ) : RecyclerView.Adapter<CalendarAnimeAdapter.ViewHolder>() {
 
+    init {
+        val prefetcher: Prefetcher = SimplePrefetcher(context)
+        prefetcher.prefetch(items.map { it.image.original })
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val item = LayoutInflater
