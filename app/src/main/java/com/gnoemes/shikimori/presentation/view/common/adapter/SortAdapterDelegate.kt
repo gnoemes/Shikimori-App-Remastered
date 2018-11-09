@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.common.presentation.RateSort
 import com.gnoemes.shikimori.entity.common.presentation.SortItem
+import com.gnoemes.shikimori.utils.colorAttr
 import com.gnoemes.shikimori.utils.inflate
+import com.gnoemes.shikimori.utils.tint
 import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
 import kotlinx.android.synthetic.main.item_sort.view.*
 
@@ -43,6 +45,7 @@ class SortAdapterDelegate(
                 }
 
                 sortSpinnerView.apply {
+                    background.tint(context.colorAttr(R.attr.colorOnBackground))
                     adapter = ArrayAdapter(context, R.layout.item_sort_spinner, item.sorts.map { it.second })
                     itemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
                         sortCallback.invoke(item.sorts[position].first, isDescending)

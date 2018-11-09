@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <attr name="colorOnPrimary" format="color" />
+    <attr name="colorSecondaryVariant" format="color" />
+    <attr name="colorOnSecondary" format="color" />
+    <attr name="colorBackground" format="color" />
+    <attr name="colorOnBackground" format="color" />
     <attr name="colorSurface" format="color" />
     <attr name="colorOnSurface" format="color" />
-    <attr name="colorOnAccent" format="color" />
-    <attr name="colorOnPrimary" format="color" />
-    <attr name="colorOnBackground" format="color" />
-
-    <attr name="colorRate" format="color" />
-    <attr name="colorRateDark" format="color" />
 
     <declare-styleable name="RateSpinnerView">
         <attr name="anime" format="boolean" />

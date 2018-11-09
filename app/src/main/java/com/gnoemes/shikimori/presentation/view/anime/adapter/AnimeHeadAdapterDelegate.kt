@@ -8,15 +8,16 @@ import android.text.style.URLSpan
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.afollestad.aesthetic.utils.tint
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.entity.anime.presentation.AnimeHeadItem
 import com.gnoemes.shikimori.entity.common.domain.SpinnerAction
 import com.gnoemes.shikimori.entity.common.presentation.DetailsAction
 import com.gnoemes.shikimori.presentation.view.common.adapter.GenreAdapter
-import com.gnoemes.shikimori.utils.*
 import com.gnoemes.shikimori.utils.images.ImageLoader
+import com.gnoemes.shikimori.utils.inflate
+import com.gnoemes.shikimori.utils.onClick
+import com.gnoemes.shikimori.utils.visibleIf
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
 import kotlinx.android.synthetic.main.item_details_head.view.*
@@ -79,9 +80,7 @@ class AnimeHeadAdapterDelegate(private val imageLoader: ImageLoader,
                 }
                 rateSpinnerView.visibleIf { !item.isGuest }
 
-                val onlineDrawable = context.drawable(R.drawable.ic_play_circle_outline).also { it.tint(context.colorAttr(R.attr.colorOnAccent)) }
                 watchOnlineBtn.apply {
-                    setCompoundDrawablesWithIntrinsicBounds(onlineDrawable, null, null, null)
                     setText(R.string.details_watch_online)
                     setOnClickListener { detailsCallback.invoke(DetailsAction.WatchOnline()) }
                 }

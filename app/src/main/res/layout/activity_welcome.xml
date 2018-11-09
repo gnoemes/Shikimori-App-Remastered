@@ -53,7 +53,7 @@
         android:layout_height="wrap_content"
         android:text="@string/common_sign_as_guest"
         app:cornerRadius="4dp"
-        android:textColor="@color/colorOnSurface"
+        android:textColor="@color/default_colorOnSurface"
         app:backgroundTint="@color/colorOnProtector"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

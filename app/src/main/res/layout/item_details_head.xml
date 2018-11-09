@@ -117,17 +117,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ratingView" />
 
-        <TextView
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/watchOnlineBtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:background="?colorAccent"
+            android:background="?colorSecondary"
             android:drawablePadding="4dp"
             android:fontFamily="@font/open_sans"
             android:gravity="center"
             android:padding="8dp"
-            android:textColor="?colorOnAccent"
+            android:textColor="?colorOnSecondary"
+            app:iconPadding="3dp"
+            app:iconTint="?colorOnSecondary"
+            app:icon="@drawable/ic_play_circle_outline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/statusView"
             app:layout_constraintTop_toBottomOf="@+id/studioView"

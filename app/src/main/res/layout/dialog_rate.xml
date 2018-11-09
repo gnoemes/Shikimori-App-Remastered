@@ -121,7 +121,7 @@
         android:hint="@string/rate_comment_hint"
         android:textSize="12sp"
         android:inputType="text"
-        android:textColorHint="@color/colorOnSurface"
+        android:textColorHint="@color/default_colorOnSurface"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
