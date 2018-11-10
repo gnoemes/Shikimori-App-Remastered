@@ -13,12 +13,13 @@ import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.entity.anime.presentation.AnimeHeadItem
 import com.gnoemes.shikimori.entity.common.domain.SpinnerAction
 import com.gnoemes.shikimori.entity.common.presentation.DetailsAction
-import com.gnoemes.shikimori.presentation.view.common.adapter.GenreAdapter
+import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.gnoemes.shikimori.utils.inflate
 import com.gnoemes.shikimori.utils.onClick
 import com.gnoemes.shikimori.utils.visibleIf
-import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.FlexboxLayout
+import com.google.android.material.chip.Chip
 import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
 import kotlinx.android.synthetic.main.item_details_head.view.*
 
@@ -31,15 +32,14 @@ class AnimeHeadAdapterDelegate(private val imageLoader: ImageLoader,
             item is AnimeHeadItem
 
     override fun onBindViewHolder(item: AnimeHeadItem, holder: ViewHolder, payloads: MutableList<Any>) {
-        holder.bind(item)
+        if (payloads.isNotEmpty() && payloads.firstOrNull() is RateStatus) holder.itemView.rateSpinnerView.setRateStatus(payloads.firstOrNull() as? RateStatus)
+        else holder.bind(item)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup): ViewHolder =
             ViewHolder(parent.inflate(R.layout.item_details_head))
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-
-        private val genreAdapter by lazy { GenreAdapter(detailsCallback) }
 
         fun bind(item: AnimeHeadItem) {
             with(itemView) {
@@ -85,14 +85,18 @@ class AnimeHeadAdapterDelegate(private val imageLoader: ImageLoader,
                     setOnClickListener { detailsCallback.invoke(DetailsAction.WatchOnline()) }
                 }
 
-                with(genreList) {
-                    adapter = genreAdapter
-                    layoutManager = FlexboxLayoutManager(context)
+                genreList.removeAllViews()
+                item.genres.forEach { genre ->
+                    val view = View.inflate(context, R.layout.item_genre, null) as Chip
+                    view.text = genre.russianName
+                    view.onClick { detailsCallback.invoke(DetailsAction.GenreClicked(genre)) }
+                    view.layoutParams = FlexboxLayout.LayoutParams(FlexboxLayout.LayoutParams.WRAP_CONTENT, FlexboxLayout.LayoutParams.WRAP_CONTENT).apply {
+                        val margin = resources.getDimension(R.dimen.margin_small).toInt()
+                        setMargins(margin, margin, margin, margin)
+                    }
+                    genreList.addView(view)
                 }
-
-                genreAdapter.bindItems(item.genres)
             }
-
         }
 
         private fun String.toBold(): SpannableStringBuilder {

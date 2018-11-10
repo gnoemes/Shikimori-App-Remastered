@@ -72,9 +72,8 @@ class DetailsContentAdapterDelegate(
                     adapter = contentAdapter
                     layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false).apply { initialPrefetchItemCount = 4 }
                     setRecycledViewPool(pool)
+                    setHasFixedSize(true)
                 }
-
-
 
                 contentAdapter.bindItems(item.items)
             }

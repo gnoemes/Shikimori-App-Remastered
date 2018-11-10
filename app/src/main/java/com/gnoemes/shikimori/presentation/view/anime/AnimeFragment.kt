@@ -77,7 +77,7 @@ class AnimeFragment : BaseFragment<AnimePresenter, AnimeView>(), AnimeView,
 
         with(animeRecyclerView) {
             adapter = animeAdapter
-            layoutManager = LinearLayoutManager(context).apply { initialPrefetchItemCount = 7 }
+            layoutManager = LinearLayoutManager(context).apply { initialPrefetchItemCount = 8 }
             setHasFixedSize(true)
 //            layoutManager = FlexboxLayoutManager(context, FlexDirection.COLUMN)
         }
@@ -117,14 +117,6 @@ class AnimeFragment : BaseFragment<AnimePresenter, AnimeView>(), AnimeView,
 
     override fun setEpisodes(items: List<Any>) {
     }
-
-    override fun updateCharacters(it: Any) = animeAdapter.updateCharacters(it)
-
-    override fun updateSimilar(it: Any) = animeAdapter.updateSimilar(it)
-
-    override fun updateRelated(it: Any) = animeAdapter.updateRelated(it)
-
-    override fun updateHead(it: Any) = animeAdapter.updateHead(it)
 
     override fun showRateDialog(userRate: UserRate?) {
         val dialog = RateDialogFragment.newInstance(rate = userRate)

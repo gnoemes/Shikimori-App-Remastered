@@ -6,6 +6,8 @@ import com.gnoemes.shikimori.entity.roles.domain.PersonDetails
 import com.gnoemes.shikimori.entity.roles.presentation.PersonDescriptionItem
 import com.gnoemes.shikimori.entity.roles.presentation.PersonHeadItem
 import com.gnoemes.shikimori.utils.date.DateTimeConverter
+import org.joda.time.DateTime
+import org.joda.time.Years
 import javax.inject.Inject
 
 class PersonDetailsViewModelConverterImpl @Inject constructor(
@@ -56,6 +58,14 @@ class PersonDetailsViewModelConverterImpl @Inject constructor(
             t.nameJp,
             t.image,
             t.jobTitle,
-            dateTimeConverter.convertToFullHumanDateString(t.birthDay)
+            convertBirthDay(t.birthDay)
     )
+
+    private fun convertBirthDay(birthDay: DateTime?): String? {
+        val date = dateTimeConverter.convertToFullHumanDateString(birthDay)
+        return if (date != null) {
+            val years = Years.yearsBetween(birthDay, DateTime.now()).years
+            "$date ($years)"
+        } else null
+    }
 }

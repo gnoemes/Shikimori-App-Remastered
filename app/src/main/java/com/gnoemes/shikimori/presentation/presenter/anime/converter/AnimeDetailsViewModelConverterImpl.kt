@@ -8,6 +8,7 @@ import com.gnoemes.shikimori.entity.anime.domain.AnimeType
 import com.gnoemes.shikimori.entity.anime.presentation.AnimeHeadItem
 import com.gnoemes.shikimori.entity.common.domain.Related
 import com.gnoemes.shikimori.entity.common.domain.Status
+import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.common.presentation.DetailsContentItem
 import com.gnoemes.shikimori.entity.common.presentation.DetailsContentType
 import com.gnoemes.shikimori.entity.common.presentation.DetailsDescriptionItem
@@ -28,10 +29,10 @@ class AnimeDetailsViewModelConverterImpl @Inject constructor(
         val head = convertHeadItem(t, guest)
         items.add(head)
 
-        items.add(DetailsMoreItem())
+        items.add(DetailsMoreItem(Type.ANIME))
 
         if (!t.description.isNullOrBlank()) {
-            items.add(DetailsDescriptionItem(t.description!!))
+            items.add(DetailsDescriptionItem(t.description))
         }
 
         if (t.videos != null && t.videos.isNotEmpty()) {
@@ -45,19 +46,19 @@ class AnimeDetailsViewModelConverterImpl @Inject constructor(
         return items
     }
 
-    override fun convertCharacters(it: List<Character>): Any {
+    override fun convertCharacters(it: List<Character>): DetailsContentItem {
         return convertItemWithType(it, DetailsContentType.CHARACTERS)
     }
 
-    override fun convertSimilar(it: List<Anime>): Any {
+    override fun convertSimilar(it: List<Anime>): DetailsContentItem {
         return convertItemWithType(it, DetailsContentType.SIMILAR)
     }
 
-    override fun convertRelated(it: List<Related>): Any {
+    override fun convertRelated(it: List<Related>): DetailsContentItem {
         return convertItemWithType(it, DetailsContentType.RELATED)
     }
 
-    private fun convertItemWithType(it: List<Any>, type: DetailsContentType): Any {
+    private fun convertItemWithType(it: List<Any>, type: DetailsContentType): DetailsContentItem {
         return if (it.isNotEmpty()) {
             DetailsContentItem.Content(type, it)
         } else {

@@ -6,4 +6,5 @@
     <dimen name="image_rate_width">120dp</dimen>
     <dimen name="margin_normal">8dp</dimen>
     <dimen name="item_min_width">380dp</dimen>
+    <dimen name="margin_small">4dp</dimen>
 </resources>

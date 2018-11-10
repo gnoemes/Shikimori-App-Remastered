@@ -1,3 +1,5 @@
 package com.gnoemes.shikimori.entity.common.presentation
 
-class DetailsMoreItem
+import com.gnoemes.shikimori.entity.common.domain.Type
+
+data class DetailsMoreItem(val type: Type)

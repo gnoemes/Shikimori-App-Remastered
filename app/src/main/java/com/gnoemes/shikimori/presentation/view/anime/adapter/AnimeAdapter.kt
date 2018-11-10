@@ -1,11 +1,13 @@
 package com.gnoemes.shikimori.presentation.view.anime.adapter
 
+import androidx.recyclerview.widget.DiffUtil
 import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.entity.anime.presentation.AnimeHeadItem
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.common.presentation.DetailsAction
 import com.gnoemes.shikimori.entity.common.presentation.DetailsContentItem
-import com.gnoemes.shikimori.entity.common.presentation.DetailsContentType
+import com.gnoemes.shikimori.entity.common.presentation.DetailsDescriptionItem
+import com.gnoemes.shikimori.entity.common.presentation.DetailsMoreItem
 import com.gnoemes.shikimori.presentation.view.common.adapter.DetailsContentAdapterDelegate
 import com.gnoemes.shikimori.presentation.view.common.adapter.DetailsDescriptionAdapterDelegate
 import com.gnoemes.shikimori.presentation.view.common.adapter.DetailsMoreAdapterDelegate
@@ -27,42 +29,74 @@ class AnimeAdapter(
             addDelegate(DetailsContentAdapterDelegate(imageLoader, settings, navigationCallback, detailsCallback))
         }
 
-        setItems(mutableListOf())
+        items = mutableListOf()
     }
 
     fun bindItems(newItems: List<Any>) {
+        val oldData = items.toMutableList()
         items.clear()
         items.addAll(newItems)
-        notifyDataSetChanged()
+
+        DiffUtil
+                .calculateDiff(DiffCallback(items, oldData), false)
+                .dispatchUpdatesTo(this)
     }
 
-    fun updateCharacters(it: Any) {
-        updateItemWithContentType(it, DetailsContentType.CHARACTERS)
-    }
+    private inner class DiffCallback(
+            private val oldItems: MutableList<Any>,
+            private val newItems: MutableList<Any>
+    ) : DiffUtil.Callback() {
 
-    fun updateSimilar(it: Any) {
-        updateItemWithContentType(it, DetailsContentType.SIMILAR)
-    }
+        override fun getOldListSize(): Int = oldItems.size
+        override fun getNewListSize(): Int = newItems.size
 
-    fun updateRelated(it: Any) {
-        updateItemWithContentType(it, DetailsContentType.RELATED)
-    }
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            val oldItem = oldItems[oldItemPosition]
+            val newItem = newItems[newItemPosition]
 
-    fun updateHead(it: Any) {
-        val index = items.indexOfFirst { it is AnimeHeadItem }
-        items[index] = it
-        notifyItemChanged(index)
-    }
+            return if (newItem is AnimeHeadItem && oldItem is AnimeHeadItem) {
+                newItem.name == oldItem.name
+            } else if (newItem is DetailsDescriptionItem && oldItem is DetailsDescriptionItem) {
+                newItem.description == oldItem.description
+            } else if (newItem is DetailsMoreItem && oldItem is DetailsMoreItem) {
+                newItem.type == oldItem.type
+            } else if (newItem is DetailsContentItem.Loading && oldItem is DetailsContentItem.Loading) {
+                newItem.contentType == oldItem.contentType
+            } else if (newItem is DetailsContentItem.Content && oldItem is DetailsContentItem.Content) {
+                newItem.contentType == oldItem.contentType
+            } else {
+                false
+            }
+        }
 
-    private fun updateItemWithContentType(it: Any, type: DetailsContentType) {
-        if (it is DetailsContentItem.Empty) {
-            val index = items.indexOfFirst { it is DetailsContentItem.Loading && it.contentType == type }
-            items.removeAt(index)
-            notifyItemRemoved(index)
-        } else {
-            val index = items.indexOfFirst { it is DetailsContentItem.Loading && it.contentType == type }
-            items[index] = it
-            notifyItemChanged(index)
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            val oldItem = oldItems[oldItemPosition]
+            val newItem = newItems[newItemPosition]
+
+            return if (newItem is AnimeHeadItem && oldItem is AnimeHeadItem) {
+                newItem == oldItem
+            } else if (newItem is DetailsDescriptionItem && oldItem is DetailsDescriptionItem) {
+                newItem == oldItem
+            } else if (newItem is DetailsMoreItem && oldItem is DetailsMoreItem) {
+                newItem == oldItem
+            } else if (newItem is DetailsContentItem.Loading && oldItem is DetailsContentItem.Loading) {
+                newItem == oldItem
+            } else if (newItem is DetailsContentItem.Content && oldItem is DetailsContentItem.Content) {
+                newItem == oldItem
+            } else {
+                false
+            }
+        }
+
+        override fun getChangePayload(oldItemPosition: Int, newItemPosition: Int): Any? {
+            val oldItem = oldItems[oldItemPosition]
+            val newItem = newItems[newItemPosition]
+
+            if (newItem is AnimeHeadItem && oldItem is AnimeHeadItem && newItem.rateStatus != oldItem.rateStatus) {
+                return oldItem.rateStatus
+            }
+
+            return super.getChangePayload(oldItemPosition, newItemPosition)
         }
     }
 }

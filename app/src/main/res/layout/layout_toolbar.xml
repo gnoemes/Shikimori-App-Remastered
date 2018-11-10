@@ -8,6 +8,7 @@
     android:fitsSystemWindows="true"
     android:background="?colorPrimary"
     app:elevation="4dp"
+    app:layout_collapseMode="pin"
     tools:showIn="@layout/fragment_base">
 
     <androidx.appcompat.widget.Toolbar

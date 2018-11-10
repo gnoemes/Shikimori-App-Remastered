@@ -150,11 +150,13 @@
             app:layout_constraintTop_toTopOf="@+id/ratingView"
             tools:text="9.53" />
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.google.android.flexbox.FlexboxLayout
             android:id="@+id/genreList"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            app:flexWrap="wrap"
+            app:flexDirection="row"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -15,14 +15,6 @@ interface AnimeView : BaseFragmentView {
 
     fun hideEpisodeLoading()
 
-    fun updateCharacters(it: Any)
-
-    fun updateSimilar(it: Any)
-
-    fun updateRelated(it: Any)
-
-    fun updateHead(it: Any)
-
     @StateStrategyType(SkipStrategy::class)
     fun showRateDialog(userRate: UserRate?)
 
