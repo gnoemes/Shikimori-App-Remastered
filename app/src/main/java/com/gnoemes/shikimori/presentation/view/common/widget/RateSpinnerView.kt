@@ -23,14 +23,23 @@ class RateSpinnerView @JvmOverloads constructor(context: Context,
                                                 defStyleInt: Int = 0
 ) : BaseView(context, attrs, defStyleInt) {
 
+    companion object {
+        const val SMALL_SIZE = 0
+        const val NORMAL_SIZE = 1
+    }
+
     var isAnime: Boolean = true
     var hasEdit: Boolean = true
+    var hasIcon: Boolean = true
+    var itemSize : Int = NORMAL_SIZE
+
     lateinit var callback: (SpinnerAction, RateStatus) -> Unit
     private var status: RateStatus? = null
     private lateinit var items: MutableList<ViewModel>
 
     private var colorRes: Int = R.color.rate_default
     private var colorDarkRes: Int = R.color.rate_default_dark
+    private var spinnerItemLayout: Int = 0
 
     override fun getLayout(): Int = R.layout.view_rates_chooser
 
@@ -39,6 +48,9 @@ class RateSpinnerView @JvmOverloads constructor(context: Context,
         val ta = context.obtainStyledAttributes(attrs, R.styleable.RateSpinnerView)
         isAnime = ta.getBoolean(R.styleable.RateSpinnerView_anime, true)
         hasEdit = ta.getBoolean(R.styleable.RateSpinnerView_showEdit, true)
+        hasIcon = ta.getBoolean(R.styleable.RateSpinnerView_showIcon, true)
+        itemSize = ta.getInt(R.styleable.RateSpinnerView_itemSize, NORMAL_SIZE)
+        spinnerItemLayout = if (itemSize == SMALL_SIZE) R.layout.item_rate_spinner_small else R.layout.item_rate_spinner
         ta.recycle()
 
         items = mutableListOf(
@@ -49,6 +61,8 @@ class RateSpinnerView @JvmOverloads constructor(context: Context,
                 ViewModel(R.drawable.ic_pause, R.color.rate_on_hold, R.color.rate_on_hold_dark, RateStatus.ON_HOLD, 4),
                 ViewModel(R.drawable.ic_close, R.color.rate_dropped, R.color.rate_dropped_dark, RateStatus.DROPPED, 5)
         )
+
+        rateImage.visibleIf { hasIcon }
 
         if (!isInEditMode) {
             updateColor()
@@ -74,7 +88,7 @@ class RateSpinnerView @JvmOverloads constructor(context: Context,
                     else -> R.array.manga_rate_stasuses
                 }
 
-        spinnerView.adapter = SpinnerArrayAdapter(colorRes, colorDarkRes, context, R.layout.item_rate_spinner, context.resources.getStringArray(arrayRes).toMutableList())
+        spinnerView.adapter = SpinnerArrayAdapter(colorRes, colorDarkRes, context, spinnerItemLayout, context.resources.getStringArray(arrayRes).toMutableList())
         val selection = items.firstOrNull { it.status == status }?.pos ?: 0
         spinnerView.setSelection(selection, false)
         spinnerView.itemClickListener = AdapterView.OnItemClickListener { _, _, pos, _ ->

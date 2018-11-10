@@ -36,11 +36,18 @@
         <item name="android:textSize">20sp</item>
     </style>
 
-    <style name="RateChooserTextAppearence">
+    <style name="RateChooserTextAppearance">
         <item name="android:fontFamily">@font/open_sans_semibold</item>
         <item name="android:textColor">?colorOnSurface</item>
         <item name="android:gravity">start</item>
+    </style>
+
+    <style name="RateChooserTextAppearance.Normal" parent="RateChooserTextAppearance">
         <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="RateChooserTextAppearance.Small" parent="RateChooserTextAppearance">
+        <item name="android:textSize">12sp</item>
     </style>
 
     <style name="TextHeadlineStyle">

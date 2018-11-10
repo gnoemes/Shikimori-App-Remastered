@@ -24,7 +24,7 @@ ext.versions = [
     storIO            : '3.0.0',
     jodaDateTime      : '2.9.9.3',
     moxy              : '1.5.5',
-    aestheric         : '1.0.0-beta03',
+    aestheric         : '1.0.0-beta04',
     materialDialogs   : '2.0.0-beta4',
     glide             : '4.8.0',
     spinKit           : '1.1.0',
