@@ -91,6 +91,8 @@ class RatesContainerFragment : BaseFragment<RatesContainerPresenter, RatesContai
         savedInstanceState.ifNotNull {
             spinner?.setSelection(it.getInt(SPINNER_KEY, 0), false)
         }
+
+        tabLayout.setupWithViewPager(ratesContainer)
         emptyContentView.setText(R.string.rate_empty)
         progressBar?.gone()
     }
@@ -118,9 +120,9 @@ class RatesContainerFragment : BaseFragment<RatesContainerPresenter, RatesContai
     ///////////////////////////////////////////////////////////////////////////
 
     override fun setData(id: Long, type: Type, it: List<Pair<RateStatus, String>>) {
+        ratesContainer.adapter = null
         ratesContainer.adapter = RatePagerAdapter(childFragmentManager, id, type, it)
         ratesContainer.offscreenPageLimit = it.size
-        tabLayout.setupWithViewPager(ratesContainer)
     }
 
     override fun onShowLoading() {

@@ -12,6 +12,7 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:foreground="?selectableItemBackgroundBorderless"
         android:padding="8dp">
 
         <com.google.android.material.card.MaterialCardView
@@ -49,8 +50,6 @@
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:fontFamily="@font/open_sans_semibold"
-            android:textSize="16sp"
-            android:maxLines="3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageContainerView"
             app:layout_constraintTop_toTopOf="parent"
@@ -63,13 +62,18 @@
             android:layout_marginTop="8dp"
             android:text="@string/rate_rating"
             android:textStyle="bold"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/ratingView"
             app:layout_constraintStart_toStartOf="@+id/nameView"
-            app:layout_constraintTop_toBottomOf="@+id/nameView" />
+            app:layout_constraintTop_toBottomOf="@+id/nameView"
+            app:layout_constraintVertical_chainStyle="packed" />
 
         <TextView
             android:id="@+id/ratingView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/episodesLabelView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/ratingLabelView"
             app:layout_constraintTop_toBottomOf="@+id/ratingLabelView"
@@ -81,7 +85,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/common_episodes"
+            android:textSize="12sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/episodesView"
             app:layout_constraintStart_toStartOf="@+id/nameView"
             app:layout_constraintTop_toBottomOf="@+id/ratingView" />
 
@@ -89,7 +95,9 @@
             android:id="@+id/episodesView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/rateSpinnerView"
             app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="12sp"
             app:layout_constraintStart_toStartOf="@+id/episodesLabelView"
             app:layout_constraintTop_toBottomOf="@+id/episodesLabelView"
             tools:text="0 / 25 (xxx)" />
@@ -99,9 +107,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/imageContainerView"
-            app:layout_constraintTop_toBottomOf="@+id/imageContainerView"
+            app:layout_constraintTop_toTopOf="@+id/barrier"
             tools:text="Гавно, но может кому-нибудь зайдет." />
 
         <com.gnoemes.shikimori.presentation.view.common.widget.RateSpinnerView
@@ -109,12 +119,20 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            app:showIcon="false"
             app:itemSize="small"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/imageContainerView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/commentView" />
+            app:layout_constraintStart_toStartOf="@+id/episodesLabelView"
+            app:layout_constraintTop_toBottomOf="@+id/episodesView"
+            app:showIcon="false" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="imageContainerView, rateSpinnerView"
+            />
 
         <ImageView
             android:id="@+id/watchView"
