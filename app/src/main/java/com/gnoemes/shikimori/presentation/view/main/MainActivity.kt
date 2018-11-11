@@ -21,11 +21,12 @@ import com.gnoemes.shikimori.utils.navigation.SupportAppNavigator
 import kotlinx.android.synthetic.main.layout_bottom_bar.*
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder
+import ru.terrakok.cicerone.Router
 import ru.terrakok.cicerone.commands.Command
 import ru.terrakok.cicerone.commands.Replace
 import javax.inject.Inject
 
-class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
+class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView, RouterProvider {
 
     @InjectPresenter
     lateinit var mainPresenter: MainPresenter
@@ -151,6 +152,12 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
     }
 
     override fun getNavigatorHolder(): NavigatorHolder = localNavigatorHolder
+
+    override val localRouter: Router
+        get() = presenter.router
+
+    override val localNavigator: Navigator
+        get() = getNavigator()
 
     ///////////////////////////////////////////////////////////////////////////
     // MVP
