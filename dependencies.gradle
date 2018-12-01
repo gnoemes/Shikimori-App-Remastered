@@ -31,5 +31,6 @@ ext.versions = [
     reSpinner         : '1.0.5',
     adapterDelegate   : '4.0.0',
     flexbox           : '1.1.0',
+    drawerBehavior    : '0.0.5',
 
 ]

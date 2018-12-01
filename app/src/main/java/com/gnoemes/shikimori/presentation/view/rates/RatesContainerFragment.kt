@@ -1,12 +1,16 @@
 package com.gnoemes.shikimori.presentation.view.rates
 
 import android.os.Bundle
+import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.FrameLayout
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentStatePagerAdapter
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
@@ -18,12 +22,12 @@ import com.gnoemes.shikimori.presentation.presenter.rates.RatesContainerPresente
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragment
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
 import com.gnoemes.shikimori.utils.*
+import com.google.android.material.internal.NavigationMenuView
 import com.santalu.widget.ReSpinner
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.fragment_rates_container.*
-import kotlinx.android.synthetic.main.layout_appbar_tabs.*
 import kotlinx.android.synthetic.main.layout_default_placeholders.*
 import kotlinx.android.synthetic.main.layout_progress.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
@@ -65,6 +69,11 @@ class RatesContainerFragment : BaseFragment<RatesContainerPresenter, RatesContai
         }
 
         private const val SPINNER_KEY = "SPINNER_KEY"
+        private const val DRAWER_KEY = "DRAWER_KEY"
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(getFragmentLayout(), container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -88,19 +97,60 @@ class RatesContainerFragment : BaseFragment<RatesContainerPresenter, RatesContai
         toolbar?.apply {
             title = null
             addView(spinner)
-        }
-        savedInstanceState.ifNotNull {
-            spinner?.setSelection(it.getInt(SPINNER_KEY, 0), false)
+            setNavigationOnClickListener { toggleDrawer() }
         }
 
-        tabLayout.setupWithViewPager(ratesContainer)
-        emptyContentView.setText(R.string.rate_empty)
+        drawer.apply {
+            val toggle = ActionBarDrawerToggle(
+                    activity, drawer, toolbar, R.string.rate_drawer_open, R.string.rate_drawer_close)
+
+            addDrawerListener(toggle)
+            setViewScale(Gravity.START, 0.9f)
+            setRadius(Gravity.START, 35f)
+            setViewElevation(Gravity.START, 20f)
+            toggle.syncState()
+        }
+
+        savedInstanceState.ifNotNull {
+            spinner?.setSelection(it.getInt(SPINNER_KEY, 0), false)
+            drawer.post {
+                if (it.getBoolean(DRAWER_KEY)) openDrawer()
+                else closeDrawer()
+            }
+        }
+
+        emptyContentView?.setText(R.string.rate_empty)
         progressBar?.gone()
+
+        navView.setNavigationItemSelectedListener {
+            getPresenter().onChangeStatus(RateStatus.values()[it.itemId])
+            true
+        }
+
+        val menuContainer = navView.findViewById<NavigationMenuView>(R.id.design_navigation_view)
+        menuContainer.layoutParams = FrameLayout.LayoutParams(menuContainer.layoutParams).apply { height = ViewGroup.LayoutParams.WRAP_CONTENT; gravity = Gravity.CENTER_VERTICAL }
+    }
+
+    private fun toggleDrawer() {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            closeDrawer()
+        } else {
+            openDrawer()
+        }
+    }
+
+    private fun openDrawer() {
+        drawer.openDrawer(GravityCompat.START)
+    }
+
+    private fun closeDrawer() {
+        drawer.closeDrawer(GravityCompat.START)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putInt(SPINNER_KEY, spinner?.selectedItemPosition ?: 0)
+        outState.putBoolean(DRAWER_KEY, drawer.isDrawerOpen(GravityCompat.START))
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -120,47 +170,49 @@ class RatesContainerFragment : BaseFragment<RatesContainerPresenter, RatesContai
     // MVP
     ///////////////////////////////////////////////////////////////////////////
 
-    override fun setData(id: Long, type: Type, it: List<Pair<RateStatus, String>>) {
-        ratesContainer.adapter = null
-        ratesContainer.adapter = RatePagerAdapter(childFragmentManager, id, type, it)
-        ratesContainer.offscreenPageLimit = it.size
+    override fun onBackPressed() {
+        if (drawer.isDrawerOpen(GravityCompat.START)) closeDrawer()
+        else super.onBackPressed()
     }
 
-    override fun onShowLoading() {
-        super<BaseFragment>.onShowLoading()
-        coordinator.gone()
+    override fun showStatusFragment(id: Long, type: Type, status: RateStatus) {
+        closeDrawer()
+        val oldFragment = childFragmentManager.findFragmentByTag(type.name.plus(status.status))
+        if (oldFragment == null) {
+            val newFragment = RateFragment.newInstance(id, type, status)
+            childFragmentManager.beginTransaction()
+                    .replace(R.id.rateContainer, newFragment, type.name.plus(status.status))
+                    .commitNow()
+        }
     }
 
-    override fun onHideLoading() {
-        super<BaseFragment>.onHideLoading()
-        coordinator.visible()
+    override fun setNavigationItems(items: List<Pair<RateStatus, String>>) {
+        navView.menu.apply {
+            clear()
+            items.forEach { add(0, it.first.ordinal, it.first.ordinal, it.second) }
+            if (items.isEmpty()) {
+                add(R.string.rate_empty)
+            }
+        }
     }
 
     override fun showNetworkView(block: Boolean) {
         super<BaseFragment>.showNetworkView(block)
-        coordinator.gone()
+        rateContainer.gone()
     }
 
     override fun hideNetworkView() {
         super<BaseFragment>.hideNetworkView()
-        coordinator.visible()
+        rateContainer.visible()
     }
 
-    inner class RatePagerAdapter(fm: FragmentManager,
-                                 val userId: Long,
-                                 val type: Type,
-                                 val items: List<Pair<RateStatus, String>>
-    ) : FragmentStatePagerAdapter(fm) {
-
-        override fun getItem(position: Int): Fragment {
-            return RateFragment.newInstance(userId, type, items[position].first)
-        }
-
-        override fun getCount(): Int = items.size
-
-        override fun getPageTitle(position: Int): CharSequence? {
-            return items[position].second
-        }
+    override fun showEmptyView() {
+        super<BaseFragment>.showEmptyView()
+        rateContainer.gone()
     }
 
+    override fun hideEmptyView() {
+        super<BaseFragment>.hideEmptyView()
+        rateContainer.visible()
+    }
 }

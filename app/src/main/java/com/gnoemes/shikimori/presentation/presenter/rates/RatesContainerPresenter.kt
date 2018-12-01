@@ -5,6 +5,7 @@ import com.arellomobile.mvp.InjectViewState
 import com.gnoemes.shikimori.domain.user.UserInteractor
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.common.domain.Type
+import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
 import com.gnoemes.shikimori.presentation.presenter.rates.converter.RateCountConverter
 import com.gnoemes.shikimori.presentation.view.rates.RatesContainerView
@@ -40,11 +41,17 @@ class RatesContainerPresenter @Inject constructor(
                         if (isAnime) converter.countAnimeRates(it)
                         else converter.countMangaRates(it)
                     }
-                    .subscribe({ viewState.setData(userId, type, it) }, this::processErrors)
+                    .subscribe(this::setData, this::processErrors)
                     .addToDisposables()
 
-    override fun processErrors(throwable: Throwable) {
-        super.processErrors(throwable)
+    private fun setData(items: List<Pair<RateStatus, String>>) {
+        viewState.setNavigationItems(items)
+        if (items.isNotEmpty()) {
+            onChangeStatus(items.first().first)
+            viewState.hideEmptyView()
+        } else {
+            viewState.showEmptyView()
+        }
     }
 
     private fun processUserErrors(throwable: Throwable) {
@@ -54,5 +61,9 @@ class RatesContainerPresenter @Inject constructor(
     fun onChangeType(type: Type) {
         this.type = type
         loadRateCategories()
+    }
+
+    fun onChangeStatus(rateStatus: RateStatus) {
+        viewState.showStatusFragment(userId, type, rateStatus)
     }
 }

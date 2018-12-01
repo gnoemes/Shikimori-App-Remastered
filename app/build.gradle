@@ -93,4 +93,5 @@ dependencies {
     implementation 'com.github.santalu:respinner:' + versions.reSpinner
     implementation 'com.hannesdorfmann:adapterdelegates4:' + versions.adapterDelegate
     implementation 'com.google.android:flexbox:' + versions.flexbox
+    implementation 'com.infideap.drawerbehavior:drawer-behavior:' + versions.drawerBehavior
 }

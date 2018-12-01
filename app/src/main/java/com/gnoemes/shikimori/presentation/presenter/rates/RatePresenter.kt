@@ -80,6 +80,10 @@ class RatePresenter @Inject constructor(
         processErrors(throwable)
     }
 
+    override fun showEmptyProgress(show: Boolean) {
+       showRefreshProgress(show)
+    }
+
     fun onRefresh() {
         paginator.refresh()
     }
