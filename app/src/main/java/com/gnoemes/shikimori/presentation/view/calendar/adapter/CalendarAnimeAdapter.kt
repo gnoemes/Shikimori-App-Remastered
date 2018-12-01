@@ -1,7 +1,6 @@
 package com.gnoemes.shikimori.presentation.view.calendar.adapter
 
 import android.content.Context
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -10,6 +9,7 @@ import com.gnoemes.shikimori.entity.calendar.presentation.CalendarAnimeItem
 import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.gnoemes.shikimori.utils.images.Prefetcher
 import com.gnoemes.shikimori.utils.images.SimplePrefetcher
+import com.gnoemes.shikimori.utils.inflate
 import com.gnoemes.shikimori.utils.onClick
 import com.gnoemes.shikimori.utils.visibleIf
 import kotlinx.android.synthetic.main.item_calendar_anime.view.*
@@ -26,20 +26,9 @@ class CalendarAnimeAdapter(
         prefetcher.prefetch(items.map { it.image.original })
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val item = LayoutInflater
-                .from(parent.context)
-                .inflate(R.layout.item_calendar_anime, parent, false)
-        return ViewHolder(item)
-                .apply { initListeners(this) }
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
+            ViewHolder(parent.inflate(R.layout.item_calendar_anime))
 
-    private fun initListeners(viewHolder: ViewHolder) {
-        viewHolder.itemView.cardView.onClick {
-            val item = items[viewHolder.adapterPosition]
-            callback.invoke(item.id)
-        }
-    }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(items[position])
@@ -62,12 +51,14 @@ class CalendarAnimeAdapter(
 
         fun bind(item: CalendarAnimeItem) {
             with(itemView) {
+                imageLoader.clearImage(imageView)
                 imageLoader.setImageListItem(imageView, item.image.original)
                 nameView.text = item.name
                 typeView.text = item.type.type
                 episodeView.text = item.episodeText
                 nextEpisodeDateView.text = item.nextEpisode
                 nextEpisodeDateView.visibleIf { item.isToday }
+                cardView.onClick { callback.invoke(item.id) }
             }
         }
     }

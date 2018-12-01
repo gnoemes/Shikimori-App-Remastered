@@ -1,13 +1,15 @@
 package com.gnoemes.shikimori.presentation.presenter.calendar
 
 import com.arellomobile.mvp.InjectViewState
-import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.domain.calendar.CalendarInteractor
+import com.gnoemes.shikimori.entity.app.domain.exceptions.BaseException
+import com.gnoemes.shikimori.entity.app.domain.exceptions.NetworkException
+import com.gnoemes.shikimori.entity.calendar.presentation.CalendarPage
 import com.gnoemes.shikimori.entity.calendar.presentation.CalendarViewModel
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
 import com.gnoemes.shikimori.presentation.presenter.calendar.converter.CalendarViewModelConverter
 import com.gnoemes.shikimori.presentation.view.calendar.CalendarView
-import com.gnoemes.shikimori.utils.appendLoadingLogic
+import io.reactivex.Single
 import javax.inject.Inject
 
 @InjectViewState
@@ -16,49 +18,71 @@ class CalendarPresenter @Inject constructor(
         private val converter: CalendarViewModelConverter
 ) : BaseNetworkPresenter<CalendarView>() {
 
-    private var isMyOngoings = false
-
     override fun initData() {
-        if (isMyOngoings) {
-            loadMyCalendar()
-            viewState.setTitle(R.string.calendar_my_ongoings)
-        } else {
-            loadData()
-            viewState.setTitle(R.string.common_calendar)
-        }
+        loadData()
+        loadMyCalendar()
     }
 
     private fun loadMyCalendar() {
+        val page = CalendarPage.MY_ONGOINGS
         interactor.getMyCalendarData()
-                .appendLoadingLogic(viewState)
+                .appendLoadingLogic(page)
                 .map(converter)
-                .subscribe(this::setData, this::processErrors)
+                .subscribe({ setOngoings(page, it) }, this::processMyOngoings)
                 .addToDisposables()
     }
 
     private fun loadData() {
+        val page = CalendarPage.ALL
         interactor.getCalendarData()
-                .appendLoadingLogic(viewState)
+                .appendLoadingLogic(page)
                 .map(converter)
-                .subscribe(this::setData, this::processErrors)
+                .subscribe({ setOngoings(page, it) }, this::processErrors)
                 .addToDisposables()
     }
 
+    fun onRefreshMyOngoings() {
+        loadMyCalendar()
+    }
+
     fun onRefresh() {
-        initData()
+        loadData()
     }
 
-    fun onSwitchFilter() {
-        isMyOngoings = !isMyOngoings
-        onRefresh()
-    }
-
-    private fun setData(items: List<CalendarViewModel>) {
-        if (items.isNotEmpty()) {
-            viewState.showItems(items)
-        } else {
-            viewState.hideList()
-            viewState.showEmptyView()
+    private fun processMyOngoings(throwable: Throwable) {
+        when ((throwable as? BaseException)?.tag) {
+            NetworkException.TAG -> {
+                viewState.hideOngoings(CalendarPage.MY_ONGOINGS)
+                viewState.onShowNetworkError(CalendarPage.MY_ONGOINGS)
+            }
+            else -> super.processErrors(throwable)
         }
     }
+
+    override fun processErrors(throwable: Throwable) {
+        when ((throwable as? BaseException)?.tag) {
+            NetworkException.TAG -> {
+                viewState.hideOngoings(CalendarPage.ALL)
+                viewState.onShowNetworkError(CalendarPage.ALL)
+            }
+            else -> super.processErrors(throwable)
+        }
+    }
+
+    private fun setOngoings(page: CalendarPage, items: List<CalendarViewModel>) {
+        if (items.isNotEmpty()) {
+            viewState.showOngoings(page, items)
+        } else {
+            viewState.hideOngoings(page)
+            viewState.onShowEmptyView(page)
+        }
+    }
+
+    private fun <T> Single<T>.appendLoadingLogic(page: CalendarPage): Single<T> =
+            this.doOnSubscribe { viewState.onShowOngoingsLoading(page) }
+                    .doOnSubscribe { viewState.onHideNetworkError(page) }
+                    .doOnSubscribe { viewState.onHideEmptyView(page) }
+                    .doAfterTerminate { viewState.onHideOngoingsLoading(page) }
+                    .doOnEvent { _, _ -> viewState.onHideOngoingsLoading(page) }
 }
+

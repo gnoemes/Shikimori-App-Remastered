@@ -45,6 +45,7 @@
     <string name="common_source">Источник</string>
     <string name="common_person">Человек</string>
     <string name="common_roles">Роли</string>
+    <string name="common_all">Все</string>
 
     <string name="season_autumn">Осень</string>
     <string name="season_winter">Зима</string>
@@ -158,6 +159,7 @@
     <string name="sort_chapters_readed">По главам</string>
     <string name="sort_score">По оценке</string>
     <string name="sort_random">Рандом</string>
+
 
     <string-array name="rate_types">
         <item>@string/common_anime</item>

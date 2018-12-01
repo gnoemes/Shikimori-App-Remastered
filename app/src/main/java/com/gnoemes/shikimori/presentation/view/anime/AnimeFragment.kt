@@ -2,7 +2,6 @@ package com.gnoemes.shikimori.presentation.view.anime
 
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.arellomobile.mvp.presenter.InjectPresenter
@@ -15,12 +14,12 @@ import com.gnoemes.shikimori.presentation.presenter.anime.AnimePresenter
 import com.gnoemes.shikimori.presentation.view.anime.adapter.AnimeAdapter
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragment
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
+import com.gnoemes.shikimori.presentation.view.common.adapter.PageAdapter
 import com.gnoemes.shikimori.presentation.view.common.fragment.ListDialogFragment
 import com.gnoemes.shikimori.presentation.view.common.fragment.RateDialogFragment
 import com.gnoemes.shikimori.utils.addBackButton
 import com.gnoemes.shikimori.utils.ifNotNull
 import com.gnoemes.shikimori.utils.images.ImageLoader
-import com.gnoemes.shikimori.utils.widgets.ViewStatePagerAdapter
 import com.gnoemes.shikimori.utils.withArgs
 import kotlinx.android.synthetic.main.fragment_details.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
@@ -143,18 +142,6 @@ class AnimeFragment : BaseFragment<AnimePresenter, AnimeView>(), AnimeView,
     }
 
     override fun hideEpisodeLoading() {
-    }
-
-    internal class PageAdapter(val pages: List<View>) : ViewStatePagerAdapter() {
-
-        override fun createView(container: ViewGroup?, position: Int): View {
-            return pages[position]
-        }
-
-        override fun getCount(): Int {
-            return pages.count()
-        }
-
     }
 
 }

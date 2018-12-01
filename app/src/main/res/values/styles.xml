@@ -56,4 +56,10 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="TabsTextStyle">
+        <item name="android:fontFamily">@font/open_sans_semibold</item>
+        <item name="android:textColor">?colorOnSurface</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
 </resources>

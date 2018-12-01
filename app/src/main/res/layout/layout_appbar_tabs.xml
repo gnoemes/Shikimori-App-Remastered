@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.appbar.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/appBarLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fitsSystemWindows="true"
+    >
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        app:tabContentStart="20dp"
+        app:tabMode="scrollable"
+        app:tabPadding="4dp"
+        app:tabIndicatorColor="?attr/colorAccent"
+        app:tabIndicatorHeight="4dp"
+        app:tabIndicatorFullWidth="true"
+        app:tabTextAppearance="@style/TabsTextStyle" />
+
+</com.google.android.material.appbar.AppBarLayout>

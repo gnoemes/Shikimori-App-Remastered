@@ -8,10 +8,10 @@ import com.gnoemes.shikimori.entity.calendar.presentation.CalendarAnimeItem
 import com.gnoemes.shikimori.entity.calendar.presentation.CalendarViewModel
 import com.gnoemes.shikimori.utils.date.DateTimeConverter
 import com.gnoemes.shikimori.utils.date.DateTimeUtils
+import com.gnoemes.shikimori.utils.toHoursAndMinutesAndSeconds
 import com.gnoemes.shikimori.utils.unknownIfZero
 import org.joda.time.DateTime
 import org.joda.time.Interval
-import org.joda.time.format.PeriodFormatterBuilder
 import javax.inject.Inject
 
 class CalendarViewModelConverterImpl @Inject constructor(
@@ -21,19 +21,6 @@ class CalendarViewModelConverterImpl @Inject constructor(
         private val settings: SettingsSource
 ) : CalendarViewModelConverter {
 
-    private val hoursAndMinutesAndSeconds = PeriodFormatterBuilder()
-            .printZeroAlways()
-            .minimumPrintedDigits(2)
-            .appendHours()
-            .appendSeparator(":")
-            .minimumPrintedDigits(2)
-            .appendMinutes()
-            .appendSeparator(":")
-            .minimumPrintedDigits(2)
-            .appendSeconds()
-            .toFormatter()
-
-
     override fun apply(t: List<CalendarItem>): List<CalendarViewModel> {
         val list = mutableListOf<CalendarViewModel>()
         var animeList = mutableListOf<CalendarAnimeItem>()
@@ -41,14 +28,22 @@ class CalendarViewModelConverterImpl @Inject constructor(
         if (t.isNotEmpty()) {
             var groupDate = t.firstOrNull()?.nextEpisodeDate
 
+            fun addItem() {
+                list.add(CalendarViewModel(dateTimeConverter.convertCalendarDateToString(groupDate), animeList))
+            }
+
             t.forEach { item ->
                 if (!dateTimeUtils.isSameDay(groupDate, item.nextEpisodeDate)) {
-                    list.add(CalendarViewModel(dateTimeConverter.convertCalendarDateToString(groupDate), animeList))
+                    addItem()
                     animeList = mutableListOf()
                 }
 
                 animeList.add(convertItem(item))
                 groupDate = item.nextEpisodeDate
+            }
+
+            if (animeList.isNotEmpty()) {
+                addItem()
             }
         }
 
@@ -80,7 +75,7 @@ class CalendarViewModelConverterImpl @Inject constructor(
     private fun convertDuration(nextEpisodeDate: DateTime): String? {
         val now = dateTimeUtils.nowDateTime
         return when (now.isBefore(nextEpisodeDate)) {
-            true -> hoursAndMinutesAndSeconds.print(Interval(now, nextEpisodeDate).toDuration().toPeriod())
+            true -> Interval(now, nextEpisodeDate).toDuration().toHoursAndMinutesAndSeconds()
             else -> null
         }
 

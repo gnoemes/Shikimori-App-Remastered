@@ -1,5 +1,6 @@
 package com.gnoemes.shikimori.presentation.view.calendar.adapter
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,7 +9,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.calendar.presentation.CalendarViewModel
+import com.gnoemes.shikimori.presentation.view.common.adapter.StartSnapHelper
 import com.gnoemes.shikimori.utils.images.ImageLoader
+import com.gnoemes.shikimori.utils.widgets.HorizontalSpaceItemDecorator
+import com.gnoemes.shikimori.utils.widgets.SparseIntArrayParcelable
 import kotlinx.android.synthetic.main.item_calendar.view.*
 
 class CalendarAdapter(
@@ -16,8 +20,12 @@ class CalendarAdapter(
         private val callback: (id: Long) -> Unit
 ) : RecyclerView.Adapter<CalendarAdapter.ViewHolder>() {
 
-    private val sharedPool = RecyclerView.RecycledViewPool()
+    private companion object {
+        const val NESTED_STATES_KEY = "NESTED_STATES_KEY"
+    }
 
+    private val sharedPool =  RecyclerView.RecycledViewPool()
+    private var nestedStates = SparseIntArrayParcelable()
     private val items = mutableListOf<CalendarViewModel>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -46,34 +54,65 @@ class CalendarAdapter(
         super.onViewRecycled(holder)
 
         holder.itemView.apply {
+            recyclerView.removeOnScrollListener(holder.nestedScrollListener)
             recyclerView.adapter = null
             dateTextView.text = null
         }
     }
 
+    override fun getItemId(position: Int): Long {
+        return items[position].date.hashCode().toLong()
+    }
+
+    fun onSaveInstanceState(): Bundle {
+        val bundle = Bundle()
+        bundle.putParcelable(NESTED_STATES_KEY, nestedStates)
+        return bundle
+    }
+
+    fun onRestoreInstanceState(bundle: Bundle) {
+        val restoredStates = bundle.getParcelable<SparseIntArrayParcelable>(NESTED_STATES_KEY)
+        if (restoredStates != null) {
+            nestedStates = restoredStates
+        }
+    }
+
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        lateinit var item: CalendarViewModel
+        private val snapOffset = itemView.resources.getDimension(R.dimen.margin_normal).toInt()
 
-        private val adapter by lazy {
-            CalendarAnimeAdapter(itemView.context, imageLoader, callback, item.items)
+        val nestedScrollListener = object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val layoutManager = itemView.recyclerView.layoutManager as? LinearLayoutManager
+                if (layoutManager != null) {
+                    nestedStates.put(itemId.toInt(), layoutManager.findFirstCompletelyVisibleItemPosition())
+                }
+            }
         }
-        val manager by lazy {
-            LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false).apply { initialPrefetchItemCount = 3 }
+
+        init {
+            val snapHelper = StartSnapHelper(snapOffset)
+            snapHelper.attachToRecyclerView(itemView.recyclerView)
+            itemView.recyclerView.apply {
+                setHasFixedSize(true)
+                setRecycledViewPool(sharedPool)
+                setItemViewCacheSize(20)
+                addItemDecoration(HorizontalSpaceItemDecorator(resources.getDimension(R.dimen.margin_small).toInt()))
+            }
         }
 
         fun bind(item: CalendarViewModel) {
-            this.item = item
             with(itemView) {
                 dateTextView.text = item.date
 
                 with(recyclerView) {
+                    adapter = CalendarAnimeAdapter(itemView.context, imageLoader, callback, item.items)
+                    layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false).apply { initialPrefetchItemCount = 3 }
+                    addOnScrollListener(nestedScrollListener)
 
-                    adapter = this@ViewHolder.adapter
-                    layoutManager = manager
-                    setHasFixedSize(true)
-                    setRecycledViewPool(sharedPool)
-                    setItemViewCacheSize(20)
+                    val savedPosition = nestedStates[itemId.toInt()]
+                    (layoutManager as? LinearLayoutManager)?.scrollToPositionWithOffset(savedPosition, snapOffset)
                 }
             }
         }
