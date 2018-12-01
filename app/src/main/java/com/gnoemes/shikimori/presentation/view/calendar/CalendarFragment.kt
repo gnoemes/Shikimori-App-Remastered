@@ -16,8 +16,6 @@ import com.gnoemes.shikimori.presentation.view.common.adapter.PageTitleAdapter
 import com.gnoemes.shikimori.utils.gone
 import com.gnoemes.shikimori.utils.ifNotNull
 import com.gnoemes.shikimori.utils.images.ImageLoader
-import com.gnoemes.shikimori.utils.images.Prefetcher
-import com.gnoemes.shikimori.utils.images.SimplePrefetcher
 import com.gnoemes.shikimori.utils.visible
 import kotlinx.android.synthetic.main.fragment_calendar.*
 import kotlinx.android.synthetic.main.layout_appbar_tabs.*
@@ -129,11 +127,6 @@ class CalendarFragment : BaseFragment<CalendarPresenter, CalendarView>(), Calend
     ///////////////////////////////////////////////////////////////////////////
 
     override fun showOngoings(calendarPage: CalendarPage, items: List<CalendarViewModel>) {
-            val prefetcher: Prefetcher = SimplePrefetcher(context!!)
-        val images = mutableListOf<String?>()
-        items.forEach { it.items.forEach { images.add(it.image.original) } }
-            prefetcher.prefetch(images)
-
         getPage(calendarPage).recyclerView.apply {
             visible()
             (adapter as? CalendarAdapter)?.bindItems(items)

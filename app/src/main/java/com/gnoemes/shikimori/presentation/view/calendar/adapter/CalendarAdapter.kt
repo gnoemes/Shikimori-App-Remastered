@@ -24,7 +24,7 @@ class CalendarAdapter(
         const val NESTED_STATES_KEY = "NESTED_STATES_KEY"
     }
 
-    private val sharedPool =  RecyclerView.RecycledViewPool()
+    private val sharedPool = RecyclerView.RecycledViewPool()
     private var nestedStates = SparseIntArrayParcelable()
     private val items = mutableListOf<CalendarViewModel>()
 
@@ -80,6 +80,8 @@ class CalendarAdapter(
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         private val snapOffset = itemView.resources.getDimension(R.dimen.margin_normal).toInt()
+        private lateinit var item: CalendarViewModel
+        private val adapter by lazy { CalendarAnimeAdapter(itemView.context, imageLoader, callback, item.items).apply { if (!hasObservers()) setHasStableIds(true) } }
 
         val nestedScrollListener = object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -103,11 +105,12 @@ class CalendarAdapter(
         }
 
         fun bind(item: CalendarViewModel) {
+            this.item = item
             with(itemView) {
                 dateTextView.text = item.date
 
                 with(recyclerView) {
-                    adapter = CalendarAnimeAdapter(itemView.context, imageLoader, callback, item.items)
+                    adapter = this@ViewHolder.adapter
                     layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false).apply { initialPrefetchItemCount = 3 }
                     addOnScrollListener(nestedScrollListener)
 

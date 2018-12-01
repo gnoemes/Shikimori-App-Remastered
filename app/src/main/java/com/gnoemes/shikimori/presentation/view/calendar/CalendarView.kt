@@ -6,20 +6,20 @@ import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragmentView
 
 interface CalendarView : BaseFragmentView {
 
-    fun showOngoings(calendarPage : CalendarPage, items: List<CalendarViewModel>)
+    fun showOngoings(calendarPage: CalendarPage, items: List<CalendarViewModel>)
 
-    fun hideOngoings(calendarPage : CalendarPage)
+    fun hideOngoings(calendarPage: CalendarPage)
 
-    fun onShowOngoingsLoading(calendarPage : CalendarPage)
+    fun onShowOngoingsLoading(calendarPage: CalendarPage)
 
-    fun onHideOngoingsLoading(calendarPage : CalendarPage)
+    fun onHideOngoingsLoading(calendarPage: CalendarPage)
 
-    fun onShowNetworkError(calendarPage : CalendarPage)
+    fun onShowNetworkError(calendarPage: CalendarPage)
 
-    fun onHideNetworkError(calendarPage : CalendarPage)
+    fun onHideNetworkError(calendarPage: CalendarPage)
 
-    fun onShowEmptyView(calendarPage : CalendarPage)
+    fun onShowEmptyView(calendarPage: CalendarPage)
 
-    fun onHideEmptyView(calendarPage : CalendarPage)
+    fun onHideEmptyView(calendarPage: CalendarPage)
 
 }
