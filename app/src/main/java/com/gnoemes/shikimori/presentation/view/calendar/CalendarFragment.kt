@@ -64,43 +64,46 @@ class CalendarFragment : BaseFragment<CalendarPresenter, CalendarView>(), Calend
     }
 
     private fun initViews() {
-        toolbar?.gone()
+        appBarLayout?.gone()
         progressBar?.gone()
-        val ongoingsPage = layoutInflater?.inflate(R.layout.page_calendar, null)!!
-        val myOngoingsPage = layoutInflater?.inflate(R.layout.page_calendar, null)!!
 
-        pages = listOf(
-                Pair(getString(R.string.common_all), ongoingsPage),
-                Pair(getString(R.string.calendar_my_ongoings), myOngoingsPage)
-        )
+        if (!::pages.isInitialized) {
+            val ongoingsPage = layoutInflater?.inflate(R.layout.page_calendar, null)!!
+            val myOngoingsPage = layoutInflater?.inflate(R.layout.page_calendar, null)!!
+
+            pages = listOf(
+                    Pair(getString(R.string.common_all), ongoingsPage),
+                    Pair(getString(R.string.calendar_my_ongoings), myOngoingsPage)
+            )
+
+            fun initRecycler(page: CalendarPage) {
+                val isAll = page == CalendarPage.ALL
+                val pageLayout = if (isAll) ongoingsPage else myOngoingsPage
+                val pageAdapter = if (isAll) ongoingsAdapter else myOngoingsAdapter
+
+                with(pageLayout.recyclerView) {
+                    adapter = pageAdapter.apply { if (!hasObservers()) setHasStableIds(true) }
+                    layoutManager = LinearLayoutManager(context).apply { initialPrefetchItemCount = 3 }
+                    setHasFixedSize(true)
+                    setItemViewCacheSize(20)
+                }
+            }
+
+            initRecycler(CalendarPage.ALL)
+            initRecycler(CalendarPage.MY_ONGOINGS)
+
+            ongoingsPage.refreshLayout.setOnRefreshListener { getPresenter().onRefresh() }
+            myOngoingsPage.refreshLayout.setOnRefreshListener { getPresenter().onRefreshMyOngoings() }
+
+            ongoingsPage.networkErrorView.setText(R.string.common_error_message)
+            myOngoingsPage.emptyContentView.setText(R.string.calendar_nothing)
+            myOngoingsPage.networkErrorView.setText(R.string.common_error_message)
+        }
 
         pagesContainerView.offscreenPageLimit = 2
         pagesContainerView.adapter = PageTitleAdapter(pages)
 
         tabLayout.setupWithViewPager(pagesContainerView)
-
-        fun initRecycler(page: CalendarPage) {
-            val isAll = page == CalendarPage.ALL
-            val pageLayout = if (isAll) ongoingsPage else myOngoingsPage
-            val pageAdapter = if (isAll) ongoingsAdapter else myOngoingsAdapter
-
-            with(pageLayout.recyclerView) {
-                adapter = pageAdapter.apply { if (!hasObservers()) setHasStableIds(true) }
-                layoutManager = LinearLayoutManager(context).apply { initialPrefetchItemCount = 3 }
-                setHasFixedSize(true)
-                setItemViewCacheSize(20)
-            }
-        }
-
-        initRecycler(CalendarPage.ALL)
-        initRecycler(CalendarPage.MY_ONGOINGS)
-
-        ongoingsPage.refreshLayout.setOnRefreshListener { getPresenter().onRefresh() }
-        myOngoingsPage.refreshLayout.setOnRefreshListener { getPresenter().onRefreshMyOngoings() }
-
-        ongoingsPage.networkErrorView.setText(R.string.common_error_message)
-        myOngoingsPage.emptyContentView.setText(R.string.calendar_nothing)
-        myOngoingsPage.networkErrorView.setText(R.string.common_error_message)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -110,6 +113,11 @@ class CalendarFragment : BaseFragment<CalendarPresenter, CalendarView>(), Calend
         outState.putBundle("ongoingsState", ongoingsState)
         val myOngoingsState = myOngoingsAdapter.onSaveInstanceState()
         outState.putBundle("myOngoingsState", myOngoingsState)
+    }
+
+    override fun onDestroyView() {
+        pagesContainerView.adapter = null
+        super.onDestroyView()
     }
 
     ///////////////////////////////////////////////////////////////////////////
