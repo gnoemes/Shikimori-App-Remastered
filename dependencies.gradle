@@ -9,7 +9,7 @@ ext.versions = [
     constraint        : '1.1.3',
     androidx          : '1.0.0',
 
-    dagger            : '2.16',
+    dagger            : '2.19',
     rxJava            : '2.1.6',
     rxAndroid         : '2.0.2',
 
