@@ -1,9 +1,10 @@
 package com.gnoemes.shikimori.presentation.presenter.rates
 
-import android.util.Log
 import com.arellomobile.mvp.InjectViewState
 import com.gnoemes.shikimori.domain.user.UserInteractor
 import com.gnoemes.shikimori.entity.app.domain.Constants
+import com.gnoemes.shikimori.entity.app.domain.exceptions.BaseException
+import com.gnoemes.shikimori.entity.app.domain.exceptions.ContentException
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
@@ -55,7 +56,9 @@ class RatesContainerPresenter @Inject constructor(
     }
 
     private fun processUserErrors(throwable: Throwable) {
-        Log.i("DEVE", "user err $throwable")
+      when ((throwable as? BaseException)?.tag) {
+          ContentException.TAG -> viewState.showEmptyView()
+      }
     }
 
     fun onChangeType(type: Type) {

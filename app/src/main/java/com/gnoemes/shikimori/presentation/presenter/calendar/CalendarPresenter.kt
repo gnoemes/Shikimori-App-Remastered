@@ -3,6 +3,7 @@ package com.gnoemes.shikimori.presentation.presenter.calendar
 import com.arellomobile.mvp.InjectViewState
 import com.gnoemes.shikimori.domain.calendar.CalendarInteractor
 import com.gnoemes.shikimori.entity.app.domain.exceptions.BaseException
+import com.gnoemes.shikimori.entity.app.domain.exceptions.ContentException
 import com.gnoemes.shikimori.entity.app.domain.exceptions.NetworkException
 import com.gnoemes.shikimori.entity.calendar.presentation.CalendarPage
 import com.gnoemes.shikimori.entity.calendar.presentation.CalendarViewModel
@@ -54,6 +55,10 @@ class CalendarPresenter @Inject constructor(
             NetworkException.TAG -> {
                 viewState.hideOngoings(CalendarPage.MY_ONGOINGS)
                 viewState.onShowNetworkError(CalendarPage.MY_ONGOINGS)
+            }
+            ContentException.TAG -> {
+                viewState.hideOngoings(CalendarPage.MY_ONGOINGS)
+                viewState.onShowEmptyView(CalendarPage.MY_ONGOINGS)
             }
             else -> super.processErrors(throwable)
         }

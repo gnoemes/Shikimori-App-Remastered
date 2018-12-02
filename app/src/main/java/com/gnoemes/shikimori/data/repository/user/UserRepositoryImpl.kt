@@ -22,13 +22,15 @@ class UserRepositoryImpl @Inject constructor(
 ) : UserRepository {
 
     override fun getMyUserBrief(): Single<UserBrief> =
-            Single.fromCallable { userSource.getUser()!! }
+            Single.fromCallable { userSource.getUserStatus() }
+                    .filter { it == UserStatus.AUTHORIZED }
+                    .map { userSource.getUser()!! }
+                    .toSingle()
                     .onErrorResumeNext { _ ->
                         api.getCurrentUserBrief()
                                 .map { converter.convertResponse(it)!! }
                                 .doOnSuccess { userSource.setUser(it) }
                     }
-
 
     override fun getUserMessages(type: MessageType): Single<List<Message>> =
             getMyUserBrief()

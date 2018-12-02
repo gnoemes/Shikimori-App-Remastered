@@ -38,6 +38,7 @@ class AuthHolder @Inject constructor(
         if (throwable is HttpException) {
             if (throwable.code() == HttpStatusCode.UNAUTHORISED) {
                 userRepository.clearUser()
+                tokenRepository.saveToken(null).subscribe()
             }
         }
     }
