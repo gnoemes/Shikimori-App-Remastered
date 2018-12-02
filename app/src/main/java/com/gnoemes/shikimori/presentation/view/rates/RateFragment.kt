@@ -3,6 +3,7 @@ package com.gnoemes.shikimori.presentation.view.rates
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
@@ -72,12 +73,14 @@ class RateFragment : BaseFragment<RatePresenter, RateView>(), RateView, RateDial
     }
 
     private fun initView() {
-        with(recyclerView) {
-            adapter = this@RateFragment.adapter
-            layoutManager = LinearLayoutManager(context)
-            itemAnimator = DefaultItemAnimator()
-            setHasFixedSize(true)
-        }
+        if (recyclerView.layoutManager == null)
+            with(recyclerView) {
+                adapter = this@RateFragment.adapter
+                layoutManager = LinearLayoutManager(context).apply { initialPrefetchItemCount = 5 }
+                itemAnimator = DefaultItemAnimator()
+                addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+                setHasFixedSize(true)
+            }
 
         emptyContentView.setText(R.string.rate_empty)
         refreshLayout.setOnRefreshListener { getPresenter().onRefresh() }
@@ -91,6 +94,11 @@ class RateFragment : BaseFragment<RatePresenter, RateView>(), RateView, RateDial
 
     override fun onDeleteRate(id: Long) {
         getPresenter().onDeleteRate(id)
+    }
+
+    override fun onDestroyView() {
+        recyclerView.adapter = null
+        super.onDestroyView()
     }
 
     ///////////////////////////////////////////////////////////////////////////

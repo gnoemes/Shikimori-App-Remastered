@@ -35,7 +35,22 @@ class AnimeRateAdapterDelegate(
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+        private lateinit var item: Rate
+
+        init {
+            with(itemView) {
+                watchView.onClick { callback.invoke(DetailsAction.WatchOnline(item.anime?.id)) }
+                container.onClick { navigationCallback.invoke(item.type, item.anime?.id!!) }
+                rateSpinnerView.callback = { action, status ->
+                    if (action == SpinnerAction.RATE_CHANGE) callback.invoke(DetailsAction.ChangeRateStatus(status, item.id))
+                    else callback.invoke(DetailsAction.EditRate(item))
+                }
+            }
+        }
+
         fun bind(item: Rate) {
+            this.item = item
             with(itemView) {
                 imageLoader.setImageWithPlaceHolder(imageView, item.anime?.image?.original)
 
@@ -53,13 +68,6 @@ class AnimeRateAdapterDelegate(
 
                 commentView.text = item.text
                 commentView.visibleIf { !item.text.isNullOrBlank() }
-
-                watchView.onClick { callback.invoke(DetailsAction.WatchOnline(item.anime?.id)) }
-                container.onClick { navigationCallback.invoke(item.type, item.anime?.id!!) }
-                rateSpinnerView.callback = { action, status ->
-                    if (action == SpinnerAction.RATE_CHANGE) callback.invoke(DetailsAction.ChangeRateStatus(status, item.id))
-                    else callback.invoke(DetailsAction.EditRate(item))
-                }
             }
         }
 

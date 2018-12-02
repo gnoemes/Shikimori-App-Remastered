@@ -11,7 +11,9 @@
         <item name="colorSecondaryVariant">@color/default_colorSecondaryVariant</item>
         <item name="colorOnSecondary">@color/default_colorOnSecondary</item>
         <item name="android:colorBackground">@color/default_colorBackground</item>
+        <item name="android:windowBackground">@color/default_colorBackground</item>
         <item name="colorOnBackground">@color/default_colorOnBackground</item>
+        <item name="colorBackground">@color/default_colorBackground</item>
         <item name="colorSurface">@color/default_colorSurface</item>
         <item name="colorOnSurface">@color/default_colorOnSurface</item>
         <item name="android:textColor">@color/default_colorOnSurface</item>

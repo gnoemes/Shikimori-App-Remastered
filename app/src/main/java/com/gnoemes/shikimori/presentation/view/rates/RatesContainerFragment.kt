@@ -150,7 +150,7 @@ class RatesContainerFragment : BaseFragment<RatesContainerPresenter, RatesContai
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putInt(SPINNER_KEY, spinner?.selectedItemPosition ?: 0)
-        outState.putBoolean(DRAWER_KEY, drawer.isDrawerOpen(GravityCompat.START))
+        outState.putBoolean(DRAWER_KEY, drawer?.isDrawerOpen(GravityCompat.START) ?: false)
     }
 
     ///////////////////////////////////////////////////////////////////////////

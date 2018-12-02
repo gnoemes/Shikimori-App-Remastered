@@ -1,27 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="4dp"
-    app:cardCornerRadius="8dp"
-    app:cardPreventCornerOverlap="false">
+    android:background="?attr/colorSurface"
+    android:foreground="?selectableItemBackgroundBorderless"
+    android:padding="8dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/container"
-        android:layout_width="match_parent"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/imageContainerView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:foreground="?selectableItemBackgroundBorderless"
-        android:padding="8dp">
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/imageContainerView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="8dp"
-            app:cardPreventCornerOverlap="false"
-            >
+        app:cardCornerRadius="8dp"
+        app:cardPreventCornerOverlap="false">
 
         <ImageView
             android:id="@+id/imageView"
@@ -41,118 +34,116 @@
             app:layout_constraintTop_toTopOf="@+id/imageView"
             tools:text="TV" />
 
-        </com.google.android.material.card.MaterialCardView>
+    </com.google.android.material.card.MaterialCardView>
 
-        <TextView
-            android:id="@+id/nameView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:fontFamily="@font/open_sans_semibold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageContainerView"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Алиса или Алиса: Брат-сисконщик и сёстры близняшки" />
+    <TextView
+        android:id="@+id/nameView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:fontFamily="@font/open_sans_semibold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageContainerView"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Алиса или Алиса: Брат-сисконщик и сёстры близняшки" />
 
-        <TextView
-            android:id="@+id/ratingLabelView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/rate_rating"
-            android:textStyle="bold"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toTopOf="@+id/ratingView"
-            app:layout_constraintStart_toStartOf="@+id/nameView"
-            app:layout_constraintTop_toBottomOf="@+id/nameView"
-            app:layout_constraintVertical_chainStyle="packed" />
+    <TextView
+        android:id="@+id/ratingLabelView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/rate_rating"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/ratingView"
+        app:layout_constraintStart_toStartOf="@+id/nameView"
+        app:layout_constraintTop_toBottomOf="@+id/nameView"
+        app:layout_constraintVertical_chainStyle="packed" />
 
-        <TextView
-            android:id="@+id/ratingView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toTopOf="@+id/episodesLabelView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/ratingLabelView"
-            app:layout_constraintTop_toBottomOf="@+id/ratingLabelView"
-            tools:text="Без оценки (0)" />
+    <TextView
+        android:id="@+id/ratingView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/episodesLabelView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/ratingLabelView"
+        app:layout_constraintTop_toBottomOf="@+id/ratingLabelView"
+        tools:text="Без оценки (0)" />
 
-        <TextView
-            android:id="@+id/episodesLabelView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/common_episodes"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/episodesView"
-            app:layout_constraintStart_toStartOf="@+id/nameView"
-            app:layout_constraintTop_toBottomOf="@+id/ratingView" />
+    <TextView
+        android:id="@+id/episodesLabelView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/common_episodes"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/episodesView"
+        app:layout_constraintStart_toStartOf="@+id/nameView"
+        app:layout_constraintTop_toBottomOf="@+id/ratingView" />
 
-        <TextView
-            android:id="@+id/episodesView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/rateSpinnerView"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@+id/episodesLabelView"
-            app:layout_constraintTop_toBottomOf="@+id/episodesLabelView"
-            tools:text="0 / 25 (xxx)" />
+    <TextView
+        android:id="@+id/episodesView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/rateSpinnerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/episodesLabelView"
+        app:layout_constraintTop_toBottomOf="@+id/episodesLabelView"
+        tools:text="0 / 25 (xxx)" />
 
-        <TextView
-            android:id="@+id/commentView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/imageContainerView"
-            app:layout_constraintTop_toTopOf="@+id/barrier"
-            tools:text="Гавно, но может кому-нибудь зайдет." />
+    <TextView
+        android:id="@+id/commentView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/imageContainerView"
+        app:layout_constraintTop_toTopOf="@+id/barrier"
+        tools:text="Гавно, но может кому-нибудь зайдет." />
 
-        <com.gnoemes.shikimori.presentation.view.common.widget.RateSpinnerView
-            android:id="@+id/rateSpinnerView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:itemSize="small"
-            app:layout_constraintBottom_toBottomOf="@+id/imageContainerView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/episodesLabelView"
-            app:layout_constraintTop_toBottomOf="@+id/episodesView"
-            app:showIcon="false" />
+    <com.gnoemes.shikimori.presentation.view.common.widget.RateSpinnerView
+        android:id="@+id/rateSpinnerView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:itemSize="small"
+        app:layout_constraintBottom_toBottomOf="@+id/imageContainerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/episodesLabelView"
+        app:layout_constraintTop_toBottomOf="@+id/episodesView"
+        app:showIcon="false" />
 
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/barrier"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:barrierDirection="bottom"
-            app:constraint_referenced_ids="imageContainerView, rateSpinnerView"
-            />
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="imageContainerView, rateSpinnerView" />
 
-        <ImageView
-            android:id="@+id/watchView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:foreground="?selectableItemBackgroundBorderless"
-            android:tint="?colorAccent"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/rateSpinnerView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/guideLine"
-            app:layout_constraintTop_toTopOf="@+id/rateSpinnerView"
-            app:srcCompat="@drawable/ic_play_circle_outline" />
+    <ImageView
+        android:id="@+id/watchView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:foreground="?selectableItemBackgroundBorderless"
+        android:tint="?colorAccent"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/rateSpinnerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideLine"
+        app:layout_constraintTop_toTopOf="@+id/rateSpinnerView"
+        app:srcCompat="@drawable/ic_play_circle_outline" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideLine"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.8" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.8" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</com.google.android.material.card.MaterialCardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
