@@ -66,20 +66,20 @@ abstract class BaseActivity<Presenter : BasePresenter<View>, View : BaseView> : 
         if (Aesthetic.isFirstTime) {
             Aesthetic.config {
                 activityTheme(R.style.AppTheme)
-                colorPrimaryRes(R.color.default_colorPrimary)
-                colorPrimaryDarkRes(R.color.default_colorPrimaryVariant)
-                colorAccentRes(R.color.default_colorSecondary)
-                colorWindowBackgroundRes(R.color.default_colorBackground)
+                colorPrimary(res = R.color.default_colorPrimary)
+                colorPrimaryDark(res = R.color.default_colorPrimaryVariant)
+                colorAccent(res = R.color.default_colorSecondary)
+                colorWindowBackground(res = R.color.default_colorBackground)
                 colorStatusBarAuto()
                 colorNavigationBarAuto()
                 bottomNavigationBackgroundMode(BottomNavBgMode.PRIMARY)
                 bottomNavigationIconTextMode(BottomNavIconTextMode.SELECTED_ACCENT)
-                toolbarTitleColorRes(R.color.default_colorOnSurface)
+                toolbarTitleColor(res = R.color.default_colorOnSurface)
                 toolbarIconColor(R.color.default_colorOnSurface)
-                textColorPrimaryRes(R.color.default_colorOnSurface)
-                textColorSecondaryRes(R.color.default_colorOnSecondary)
+                textColorPrimary(res = R.color.default_colorOnSurface)
+                textColorSecondary(res = R.color.default_colorOnSecondary)
                 lightStatusBarMode(AutoSwitchMode.AUTO)
-                colorCardViewBackgroundRes(R.color.default_colorSurface)
+                colorCardViewBackground(res = R.color.default_colorSurface)
             }
         }
     }
