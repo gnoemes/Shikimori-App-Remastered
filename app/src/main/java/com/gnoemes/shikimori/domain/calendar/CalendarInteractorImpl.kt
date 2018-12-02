@@ -25,11 +25,8 @@ class CalendarInteractorImpl @Inject constructor(
     override fun getMyCalendarData(): Single<List<CalendarItem>> =
             Single.fromCallable { userRepository.getUserStatus() }
                     .filter { it == UserStatus.AUTHORIZED }
-                    .isEmpty
-                    .flatMap {
-                        if (it) Single.just(emptyList())
-                        else repository.getData()
-                    }
+                    .toSingle()
+                    .flatMap { repository.getData() }
                     .flatMap { items ->
                         val ids = items.asSequence().map { it.anime.id }.toMutableList()
                         Observable.concat(
