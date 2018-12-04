@@ -65,7 +65,7 @@ abstract class BaseActivity<Presenter : BasePresenter<View>, View : BaseView> : 
     private fun configureAesthetic() {
         if (Aesthetic.isFirstTime) {
             Aesthetic.config {
-                activityTheme(R.style.AppTheme)
+                activityTheme(R.style.ShikimoriAppTheme_Default)
                 colorPrimary(res = R.color.default_colorPrimary)
                 colorPrimaryDark(res = R.color.default_colorPrimaryVariant)
                 colorAccent(res = R.color.default_colorSecondary)
