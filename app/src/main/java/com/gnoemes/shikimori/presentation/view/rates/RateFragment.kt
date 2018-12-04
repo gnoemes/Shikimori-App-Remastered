@@ -145,4 +145,8 @@ class RateFragment : BaseFragment<RatePresenter, RateView>(), RateView, RateDial
     override fun hideRefresh() {
         refreshLayout.isRefreshing = false
     }
+
+    override fun showNetworkView(block: Boolean) {}
+
+    override fun hideNetworkView() {}
 }

@@ -5,6 +5,7 @@ import com.gnoemes.shikimori.domain.user.UserInteractor
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.app.domain.exceptions.BaseException
 import com.gnoemes.shikimori.entity.app.domain.exceptions.ContentException
+import com.gnoemes.shikimori.entity.app.domain.exceptions.NetworkException
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
@@ -50,15 +51,32 @@ class RatesContainerPresenter @Inject constructor(
         if (items.isNotEmpty()) {
             onChangeStatus(items.first().first)
             viewState.hideEmptyView()
+            viewState.hideNetworkView()
+            viewState.showContainer()
         } else {
             viewState.showEmptyView()
+            viewState.hideNetworkView()
+            viewState.hideContainer()
         }
     }
 
     private fun processUserErrors(throwable: Throwable) {
-      when ((throwable as? BaseException)?.tag) {
-          ContentException.TAG -> viewState.showEmptyView()
-      }
+        when ((throwable as? BaseException)?.tag) {
+            ContentException.TAG -> {
+                viewState.showEmptyView()
+                viewState.hideContainer()
+            }
+        }
+    }
+
+    override fun processErrors(throwable: Throwable) {
+        when ((throwable as? BaseException)?.tag) {
+            NetworkException.TAG -> {
+                viewState.showNetworkView()
+                viewState.hideContainer()
+            }
+            else -> super.processErrors(throwable)
+        }
     }
 
     fun onChangeType(type: Type) {

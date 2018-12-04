@@ -12,4 +12,9 @@ interface RatesContainerView : BaseFragmentView {
     fun showStatusFragment(id: Long, type: Type, status: RateStatus)
 
     fun setNavigationItems(items: List<Pair<RateStatus, String>>)
+
+    fun showContainer()
+
+    fun hideContainer()
+
 }

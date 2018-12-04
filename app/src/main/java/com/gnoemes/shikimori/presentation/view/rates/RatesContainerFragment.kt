@@ -120,6 +120,11 @@ class RatesContainerFragment : BaseFragment<RatesContainerPresenter, RatesContai
         }
 
         emptyContentView?.setText(R.string.rate_empty)
+        networkErrorView.apply {
+            setText(R.string.common_error_message_without_pull)
+            callback = {getPresenter().initData()}
+            showButton()
+        }
         progressBar?.gone()
 
         navView.setNavigationItemSelectedListener {
@@ -196,23 +201,11 @@ class RatesContainerFragment : BaseFragment<RatesContainerPresenter, RatesContai
         }
     }
 
-    override fun showNetworkView(block: Boolean) {
-        super<BaseFragment>.showNetworkView(block)
-        rateContainer.gone()
-    }
-
-    override fun hideNetworkView() {
-        super<BaseFragment>.hideNetworkView()
+    override fun showContainer() {
         rateContainer.visible()
     }
 
-    override fun showEmptyView() {
-        super<BaseFragment>.showEmptyView()
+    override fun hideContainer() {
         rateContainer.gone()
-    }
-
-    override fun hideEmptyView() {
-        super<BaseFragment>.hideEmptyView()
-        rateContainer.visible()
     }
 }
