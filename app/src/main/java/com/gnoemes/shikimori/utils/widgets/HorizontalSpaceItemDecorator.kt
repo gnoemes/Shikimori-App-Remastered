@@ -16,7 +16,7 @@ class HorizontalSpaceItemDecorator(
         }
 
         if (parent.getChildAdapterPosition(view) == parent.adapter?.itemCount?.minus(1)) {
-            outRect.right = space
+            outRect.right = firstItemSpacing
         }
     }
 }

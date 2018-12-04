@@ -100,7 +100,7 @@ class CalendarAdapter(
                 setHasFixedSize(true)
                 setRecycledViewPool(sharedPool)
                 setItemViewCacheSize(20)
-                addItemDecoration(HorizontalSpaceItemDecorator(resources.getDimension(R.dimen.margin_small).toInt()))
+                addItemDecoration(HorizontalSpaceItemDecorator(resources.getDimension(R.dimen.margin_small).toInt(), snapOffset))
             }
         }
 
