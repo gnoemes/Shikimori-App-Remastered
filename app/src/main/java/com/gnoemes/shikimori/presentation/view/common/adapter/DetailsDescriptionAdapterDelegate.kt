@@ -11,7 +11,7 @@ import com.gnoemes.shikimori.utils.inflate
 import com.gnoemes.shikimori.utils.onClick
 import com.gnoemes.shikimori.utils.visibleIf
 import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
-import kotlinx.android.synthetic.main.item_details_description.view.*
+import kotlinx.android.synthetic.main.layout_details_description.view.*
 
 
 class DetailsDescriptionAdapterDelegate : AbsListItemAdapterDelegate<DetailsDescriptionItem, Any, DetailsDescriptionAdapterDelegate.ViewHolder>() {
@@ -20,7 +20,7 @@ class DetailsDescriptionAdapterDelegate : AbsListItemAdapterDelegate<DetailsDesc
             item is DetailsDescriptionItem
 
     override fun onCreateViewHolder(parent: ViewGroup): ViewHolder =
-            ViewHolder(parent.inflate(R.layout.item_details_description))
+            ViewHolder(parent.inflate(R.layout.layout_details_description))
 
     override fun onBindViewHolder(item: DetailsDescriptionItem, holder: ViewHolder, payloads: MutableList<Any>) {
         holder.bind(item)

@@ -2,84 +2,56 @@ package com.gnoemes.shikimori.presentation.presenter.anime.converter
 
 import android.content.Context
 import com.gnoemes.shikimori.R
-import com.gnoemes.shikimori.entity.anime.domain.Anime
+import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.entity.anime.domain.AnimeDetails
 import com.gnoemes.shikimori.entity.anime.domain.AnimeType
-import com.gnoemes.shikimori.entity.anime.presentation.AnimeHeadItem
-import com.gnoemes.shikimori.entity.common.domain.Related
 import com.gnoemes.shikimori.entity.common.domain.Status
 import com.gnoemes.shikimori.entity.common.domain.Type
-import com.gnoemes.shikimori.entity.common.presentation.DetailsContentItem
-import com.gnoemes.shikimori.entity.common.presentation.DetailsContentType
-import com.gnoemes.shikimori.entity.common.presentation.DetailsDescriptionItem
-import com.gnoemes.shikimori.entity.common.presentation.DetailsMoreItem
-import com.gnoemes.shikimori.entity.roles.domain.Character
+import com.gnoemes.shikimori.entity.common.presentation.DetailsHeadItem
+import com.gnoemes.shikimori.entity.common.presentation.DetailsOptionsItem
 import com.gnoemes.shikimori.utils.date.DateTimeConverter
 import com.gnoemes.shikimori.utils.unknownIfZero
 import javax.inject.Inject
 
 class AnimeDetailsViewModelConverterImpl @Inject constructor(
         private val context: Context,
+        private val settings: SettingsSource,
         private val converter: DateTimeConverter
 ) : AnimeDetailsViewModelConverter {
 
-    override fun convertDetails(t: AnimeDetails, guest: Boolean): List<Any> {
-        val items = mutableListOf<Any>()
+    override fun convertHead(it: AnimeDetails): DetailsHeadItem {
 
-        val head = convertHeadItem(t, guest)
-        items.add(head)
+        val name = if (settings.isRomadziNaming) it.name else it.nameRu ?: it.name
+        val nameSecond = if (settings.isRomadziNaming) it.nameRu ?: it.name else it.name
 
-        items.add(DetailsMoreItem(Type.ANIME))
+        val type = convertType(it.type, it.episodes, it.duration)
+        val season = converter.convertAnimeSeasonToString(it.dateAired)
+        val status = convertStatus(it.status)
 
-        if (!t.description.isNullOrBlank()) {
-            items.add(DetailsDescriptionItem(t.description))
-        }
-
-        if (t.videos != null && t.videos.isNotEmpty()) {
-            items.add(DetailsContentItem.Content(DetailsContentType.VIDEO, t.videos))
-        }
-
-        items.add(DetailsContentItem.Loading(DetailsContentType.CHARACTERS))
-        items.add(DetailsContentItem.Loading(DetailsContentType.SIMILAR))
-        items.add(DetailsContentItem.Loading(DetailsContentType.RELATED))
-
-        return items
+        return DetailsHeadItem(
+                Type.ANIME,
+                name,
+                nameSecond,
+                it.image,
+                type,
+                season,
+                status,
+                it.score,
+                it.genres,
+                it.studios.firstOrNull()
+        )
     }
 
-    override fun convertCharacters(it: List<Character>): DetailsContentItem {
-        return convertItemWithType(it, DetailsContentType.CHARACTERS)
+    override fun convertOptions(it: AnimeDetails, isGuest: Boolean): DetailsOptionsItem {
+        return DetailsOptionsItem(
+                it.userRate?.status,
+                true,
+                isGuest,
+                context.getString(R.string.details_watch_online),
+                context.getString(R.string.common_chronology
+                )
+        )
     }
-
-    override fun convertSimilar(it: List<Anime>): DetailsContentItem {
-        return convertItemWithType(it, DetailsContentType.SIMILAR)
-    }
-
-    override fun convertRelated(it: List<Related>): DetailsContentItem {
-        return convertItemWithType(it, DetailsContentType.RELATED)
-    }
-
-    private fun convertItemWithType(it: List<Any>, type: DetailsContentType): DetailsContentItem {
-        return if (it.isNotEmpty()) {
-            DetailsContentItem.Content(type, it)
-        } else {
-            DetailsContentItem.Empty(type)
-        }
-    }
-
-    private fun convertHeadItem(t: AnimeDetails, guest: Boolean): AnimeHeadItem =
-            AnimeHeadItem(
-                    t.name,
-                    t.nameRu,
-                    t.image,
-                    convertType(t.type, t.episodes, t.duration),
-                    converter.convertAnimeSeasonToString(t.dateAired),
-                    convertStatus(t.status),
-                    t.score,
-                    t.userRate?.status,
-                    t.genres,
-                    t.studios.firstOrNull(),
-                    guest
-            )
 
     private fun convertStatus(status: Status): String {
         return when (status) {

@@ -1,10 +1,15 @@
 package com.gnoemes.shikimori.utils
 
 import android.content.Context
+import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableStringBuilder
 import android.text.TextUtils
+import android.text.style.StyleSpan
+import android.text.style.URLSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +29,21 @@ fun String.appendHostIfNeed(host: String = BuildConfig.ShikimoriBaseUrl): String
 
 fun String.firstUpperCase(): String? {
     return if (TextUtils.isEmpty(this)) null else this.substring(0, 1).toUpperCase() + this.substring(1)
+}
+
+fun String.toBold(): SpannableStringBuilder {
+    val builder = SpannableStringBuilder()
+            .append(this)
+    builder.setSpan(StyleSpan(Typeface.BOLD), 0, length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+    return builder
+}
+
+
+fun String.toLink(): SpannableStringBuilder {
+    val builder = SpannableStringBuilder()
+            .append(this)
+    builder.setSpan(URLSpan(""), 0, length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+    return builder
 }
 
 fun String.toUri() = Uri.parse(this)
@@ -68,6 +88,7 @@ fun Context.calculateColumns(@DimenRes itemWidth: Int): Int {
 
 fun Drawable.tint(@ColorInt color: Int) {
     DrawableCompat.setTint(this, color)
+    mutate()
 }
 
 fun ViewGroup.inflate(@LayoutRes layoutResId: Int, attachToRoot: Boolean = false): View =

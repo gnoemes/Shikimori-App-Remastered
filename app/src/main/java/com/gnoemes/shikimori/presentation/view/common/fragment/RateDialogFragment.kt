@@ -10,6 +10,8 @@ import com.gnoemes.shikimori.entity.app.domain.AppExtras
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.common.domain.SpinnerAction
 import com.gnoemes.shikimori.entity.rates.domain.UserRate
+import com.gnoemes.shikimori.presentation.presenter.common.provider.RatingResourceProvider
+import com.gnoemes.shikimori.presentation.presenter.common.provider.RatingResourceProviderImpl
 import com.gnoemes.shikimori.presentation.view.base.fragment.MvpDialogFragment
 import com.gnoemes.shikimori.utils.ifNotNull
 import com.gnoemes.shikimori.utils.withArgs
@@ -22,6 +24,8 @@ class RateDialogFragment : MvpDialogFragment() {
     private var isAnime: Boolean = true
     private lateinit var customView: View
     private var rate: UserRate? = null
+
+    private val ratingResourceProvider: RatingResourceProvider by lazy { RatingResourceProviderImpl(context!!) }
 
     companion object {
         fun newInstance(isAnime: Boolean = true, rate: UserRate?) = RateDialogFragment()
@@ -96,23 +100,7 @@ class RateDialogFragment : MvpDialogFragment() {
 
     private fun countRating(rating: Int) {
         customView.ratingValueView.text = rating.toString()
-        customView.ratingDescriptionView.text = getRatingDescription(rating)
-    }
-
-    private fun getRatingDescription(rating: Int): String {
-        return when (rating) {
-            1 -> context!!.getString(R.string.rating_bad_ass)
-            2 -> context!!.getString(R.string.rating_awful)
-            3 -> context!!.getString(R.string.rating_very_bad)
-            4 -> context!!.getString(R.string.rating_bad)
-            5 -> context!!.getString(R.string.rating_not_bad)
-            6 -> context!!.getString(R.string.rating_normal)
-            7 -> context!!.getString(R.string.rating_good)
-            8 -> context!!.getString(R.string.rating_fine)
-            9 -> context!!.getString(R.string.rating_nuts)
-            10 -> context!!.getString(R.string.rating_perfect)
-            else -> context!!.getString(R.string.rating_empty)
-        }
+        customView.ratingDescriptionView.text = ratingResourceProvider.getRatingDescription(rating)
     }
 
     interface RateDialogCallback {

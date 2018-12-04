@@ -9,6 +9,7 @@ import com.gnoemes.shikimori.entity.common.domain.SpinnerAction
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.common.presentation.DetailsAction
 import com.gnoemes.shikimori.entity.rates.domain.Rate
+import com.gnoemes.shikimori.presentation.presenter.common.provider.RatingResourceProvider
 import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.gnoemes.shikimori.utils.inflate
 import com.gnoemes.shikimori.utils.onClick
@@ -20,6 +21,7 @@ import kotlinx.android.synthetic.main.item_rate.view.*
 class AnimeRateAdapterDelegate(
         private val settings: SettingsSource,
         private val imageLoader: ImageLoader,
+        private val resourceProvider: RatingResourceProvider,
         private val navigationCallback: (Type, Long) -> Unit,
         private val callback: (DetailsAction) -> Unit
 ) : AbsListItemAdapterDelegate<Rate, Any, AnimeRateAdapterDelegate.ViewHolder>() {
@@ -58,7 +60,7 @@ class AnimeRateAdapterDelegate(
                         ?: item.anime?.name
 
                 rateSpinnerView.setRateStatus(item.status)
-                val ratingText = "${getRatingDescription(item.score)} (${item.score})"
+                val ratingText = "${resourceProvider.getRatingDescription(item.score)} (${item.score})"
                 ratingView.text = ratingText
 
                 typeView.text = item.anime?.type?.type
@@ -70,24 +72,5 @@ class AnimeRateAdapterDelegate(
                 commentView.visibleIf { !item.text.isNullOrBlank() }
             }
         }
-
-        private fun getRatingDescription(rating: Int): String {
-            with(itemView) {
-                return when (rating) {
-                    1 -> context!!.getString(R.string.rating_bad_ass)
-                    2 -> context!!.getString(R.string.rating_awful)
-                    3 -> context!!.getString(R.string.rating_very_bad)
-                    4 -> context!!.getString(R.string.rating_bad)
-                    5 -> context!!.getString(R.string.rating_not_bad)
-                    6 -> context!!.getString(R.string.rating_normal)
-                    7 -> context!!.getString(R.string.rating_good)
-                    8 -> context!!.getString(R.string.rating_fine)
-                    9 -> context!!.getString(R.string.rating_nuts)
-                    10 -> context!!.getString(R.string.rating_perfect)
-                    else -> context!!.getString(R.string.rating_empty)
-                }
-            }
-        }
-
     }
 }

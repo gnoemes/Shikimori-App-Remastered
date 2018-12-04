@@ -4,7 +4,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.gnoemes.shikimori.R
-import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.entity.anime.domain.Anime
 import com.gnoemes.shikimori.entity.anime.domain.AnimeType
 import com.gnoemes.shikimori.entity.anime.domain.AnimeVideo
@@ -22,7 +21,6 @@ import com.gnoemes.shikimori.utils.images.ImageLoader
 import kotlinx.android.synthetic.main.item_content.view.*
 
 class DetailsContentAdapter(private val imageLoader: ImageLoader,
-                            private val settings: SettingsSource,
                             private val navigationCallback: (Type, Long) -> Unit,
                             private val detailsCallback: ((DetailsAction) -> Unit)?
 ) : RecyclerView.Adapter<DetailsContentAdapter.ViewHolder>() {
@@ -35,6 +33,10 @@ class DetailsContentAdapter(private val imageLoader: ImageLoader,
         items.clear()
         items.addAll(newItems)
         notifyDataSetChanged()
+    }
+
+    override fun getItemId(position: Int): Long {
+        return items[position].hashCode().toLong()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
@@ -62,8 +64,8 @@ class DetailsContentAdapter(private val imageLoader: ImageLoader,
                 typeView.text = item.type.type
                 typeView.visible()
 
-                nameView.text = if (settings.isRomadziNaming) item.name else item.nameRu
-                        ?: item.name
+//                nameView.text = if (settings.isRomadziNaming) item.name else item.nameRu
+//                        ?: item.name
 
                 desctiptionView.text = null
                 desctiptionView.gone()
@@ -78,8 +80,8 @@ class DetailsContentAdapter(private val imageLoader: ImageLoader,
                 typeView.text = item.type.type
                 typeView.visible()
 
-                nameView.text = if (settings.isRomadziNaming) item.name else item.nameRu
-                        ?: item.name
+//                nameView.text = if (settings.isRomadziNaming) item.name else item.nameRu
+//                        ?: item.name
 
                 desctiptionView.text = null
                 desctiptionView.gone()
@@ -93,8 +95,8 @@ class DetailsContentAdapter(private val imageLoader: ImageLoader,
 
                 typeView.gone()
 
-                nameView.text = if (settings.isRomadziNaming) item.name else item.nameRu
-                        ?: item.name
+//                nameView.text = if (settings.isRomadziNaming) item.name else item.nameRu
+//                        ?: item.name
 
                 desctiptionView.text = null
                 desctiptionView.gone()
@@ -108,8 +110,8 @@ class DetailsContentAdapter(private val imageLoader: ImageLoader,
 
                 typeView.gone()
 
-                nameView.text = if (settings.isRomadziNaming) item.name else item.nameRu
-                        ?: item.name
+//                nameView.text = if (settings.isRomadziNaming) item.name else item.nameRu
+//                        ?: item.name
 
                 desctiptionView.text = null
                 desctiptionView.gone()
@@ -140,12 +142,12 @@ class DetailsContentAdapter(private val imageLoader: ImageLoader,
 
                 typeView.text = if (isAnime) item.anime?.type?.type else item.manga?.type?.type
                 typeView.visible()
-
-                nameView.text = when (settings.isRomadziNaming) {
-                    true -> if (isAnime) item.anime?.name else item.manga?.name
-                    else -> if (isAnime) item.anime?.nameRu
-                            ?: item.anime?.name else item.manga?.nameRu ?: item.manga?.name
-                }
+//
+//                nameView.text = when (settings.isRomadziNaming) {
+//                    true -> if (isAnime) item.anime?.name else item.manga?.name
+//                    else -> if (isAnime) item.anime?.nameRu
+//                            ?: item.anime?.name else item.manga?.nameRu ?: item.manga?.name
+//                }
 
                 desctiptionView.text = item.role
                 desctiptionView.visible()
@@ -162,11 +164,11 @@ class DetailsContentAdapter(private val imageLoader: ImageLoader,
                 typeView.text = if (isAnime) item.anime?.type?.type else item.manga?.type?.type
                 typeView.visible()
 
-                nameView.text = when (settings.isRomadziNaming) {
-                    true -> if (isAnime) item.anime?.name else item.manga?.name
-                    else -> if (isAnime) item.anime?.nameRu
-                            ?: item.anime?.name else item.manga?.nameRu ?: item.manga?.name
-                }
+//                nameView.text = when (settings.isRomadziNaming) {
+//                    true -> if (isAnime) item.anime?.name else item.manga?.name
+//                    else -> if (isAnime) item.anime?.nameRu
+//                            ?: item.anime?.name else item.manga?.nameRu ?: item.manga?.name
+//                }
 
                 val descriptionText = "${item.relationRu}\n(${
                 if (isAnime) getLocalizedType(item.anime?.type)

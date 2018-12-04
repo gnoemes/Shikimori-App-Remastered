@@ -1,18 +1,13 @@
 package com.gnoemes.shikimori.presentation.presenter.anime.converter
 
-import com.gnoemes.shikimori.entity.anime.domain.Anime
 import com.gnoemes.shikimori.entity.anime.domain.AnimeDetails
-import com.gnoemes.shikimori.entity.common.domain.Related
-import com.gnoemes.shikimori.entity.common.presentation.DetailsContentItem
-import com.gnoemes.shikimori.entity.roles.domain.Character
+import com.gnoemes.shikimori.entity.common.presentation.DetailsHeadItem
+import com.gnoemes.shikimori.entity.common.presentation.DetailsOptionsItem
 
 interface AnimeDetailsViewModelConverter {
 
-    fun convertDetails(it: AnimeDetails, guest: Boolean): List<Any>
+    fun convertHead(it: AnimeDetails): DetailsHeadItem
 
-    fun convertSimilar(it: List<Anime>): DetailsContentItem
+    fun convertOptions(it: AnimeDetails, isGuest : Boolean): DetailsOptionsItem
 
-    fun convertRelated(it: List<Related>): DetailsContentItem
-
-    fun convertCharacters(it: List<Character>): DetailsContentItem
 }

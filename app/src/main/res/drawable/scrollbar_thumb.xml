@@ -6,6 +6,8 @@
         android:endColor="@color/colorDivider"
         android:startColor="@color/colorDivider" />
 
+    <padding android:top="8dp" />
+
     <corners android:radius="6dp" />
 
 </shape>

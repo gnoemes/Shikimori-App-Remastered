@@ -1,7 +1,5 @@
 package com.gnoemes.shikimori.presentation.presenter.character.converter
 
-import com.gnoemes.shikimori.entity.common.presentation.DetailsContentItem
-import com.gnoemes.shikimori.entity.common.presentation.DetailsContentType
 import com.gnoemes.shikimori.entity.common.presentation.DetailsDescriptionItem
 import com.gnoemes.shikimori.entity.roles.domain.CharacterDetails
 import com.gnoemes.shikimori.entity.roles.presentation.CharacterHeadItem
@@ -20,15 +18,15 @@ class CharacterDetailsViewModelConverterImpl @Inject constructor() : CharacterDe
         }
 
         if (t.seyu != null && t.seyu.isNotEmpty()) {
-            items.add(DetailsContentItem.Content(DetailsContentType.SEYUS, t.seyu))
+//            items.add(DetailsContentItem.Content(DetailsContentType.SEYUS, t.seyu))
         }
 
         if (t.animes.isNotEmpty()) {
-            items.add(DetailsContentItem.Content(DetailsContentType.ANIMES, t.animes))
+//            items.add(DetailsContentItem.Content(DetailsContentType.ANIMES, t.animes))
         }
 
         if (t.mangas.isNotEmpty()) {
-            items.add(DetailsContentItem.Content(DetailsContentType.MANGAS, t.mangas))
+//            items.add(DetailsContentItem.Content(DetailsContentType.MANGAS, t.mangas))
         }
 
         return items

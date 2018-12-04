@@ -8,6 +8,7 @@ import com.gnoemes.shikimori.entity.common.domain.Genre
 import com.gnoemes.shikimori.entity.common.presentation.DetailsAction
 import com.gnoemes.shikimori.utils.inflate
 import com.gnoemes.shikimori.utils.onClick
+import com.gnoemes.shikimori.utils.toLink
 import kotlinx.android.synthetic.main.item_genre.view.*
 
 class GenreAdapter(
@@ -33,11 +34,17 @@ class GenreAdapter(
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
+        private lateinit var genre: Genre
+
+        init {
+            itemView.genreView.onClick { detailsCallback.invoke(DetailsAction.GenreClicked(genre)) }
+        }
+
         fun bind(genre: Genre) {
-            itemView.chipView.apply {
-                text = genre.russianName
-                onClick { detailsCallback.invoke(DetailsAction.GenreClicked(genre)) }
-            }
+            this.genre = genre
+            val text = genre.russianName.toLink()
+            if (adapterPosition != items.lastIndex) text.append(", ")
+            itemView.genreView.text = text
         }
     }
 }

@@ -7,15 +7,12 @@ import com.gnoemes.shikimori.domain.related.RelatedInteractor
 import com.gnoemes.shikimori.domain.series.SeriesInteractor
 import com.gnoemes.shikimori.domain.user.UserInteractor
 import com.gnoemes.shikimori.entity.anime.domain.AnimeDetails
-import com.gnoemes.shikimori.entity.anime.presentation.AnimeHeadItem
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.app.domain.exceptions.BaseException
 import com.gnoemes.shikimori.entity.app.domain.exceptions.ServiceCodeException
 import com.gnoemes.shikimori.entity.common.domain.Genre
 import com.gnoemes.shikimori.entity.common.domain.Type
-import com.gnoemes.shikimori.entity.common.presentation.DetailsAction
-import com.gnoemes.shikimori.entity.common.presentation.DetailsContentItem
-import com.gnoemes.shikimori.entity.common.presentation.PlaceholderItem
+import com.gnoemes.shikimori.entity.common.presentation.*
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.rates.domain.UserRate
 import com.gnoemes.shikimori.presentation.presenter.anime.converter.AnimeDetailsViewModelConverter
@@ -48,7 +45,6 @@ class AnimePresenter @Inject constructor(
     var id: Long = Constants.NO_ID
     private var rateId: Long = Constants.NO_ID
     private var userId: Long = Constants.NO_ID
-    private var items: MutableList<Any> = mutableListOf()
 
     private lateinit var currentAnime: AnimeDetails
 
@@ -63,8 +59,7 @@ class AnimePresenter @Inject constructor(
                     .doOnSuccess { loadCharacters() }
                     .doOnSuccess { loadSimilar() }
                     .doOnSuccess { loadRelated() }
-                    .doOnSuccess { items = it.toMutableList() }
-                    .subscribe({ viewState.setAnime(it) }, this::processErrors)
+                    .subscribe({ viewState.setHeadItem(it) }, this::processErrors)
 
     private fun loadEpisodes() =
             seriesInteractor.getSeries(id)
@@ -77,7 +72,7 @@ class AnimePresenter @Inject constructor(
     private fun loadUser() =
             userInteractor.getMyUserBrief()
                     .doOnSuccess { userId = it.id }
-                    .subscribe({}, this::processErrors)
+                    .subscribe({}, this::processUserErrors)
 
     private fun loadAnime(showLoading: Boolean = true) =
             animeInteractor.getDetails(id)
@@ -86,25 +81,25 @@ class AnimePresenter @Inject constructor(
                         else Single.just(it)
                     }
                     .doOnSuccess { currentAnime = it; rateId = it.userRate?.id ?: Constants.NO_ID }
-                    .map { viewModelConverter.convertDetails(it, userId == Constants.NO_ID) }
+                    .doOnSuccess { loadVideo() }
+                    .doOnSuccess { loadDescription() }
+                    .doOnSuccess { loadOptions() }
+                    .map { viewModelConverter.convertHead(it) }
 
     private fun loadCharacters() =
             animeInteractor.getRoles(id)
-                    .map { viewModelConverter.convertCharacters(it) }
-                    .doOnSuccess { updateAndSetData(it) }
-                    .subscribe({ viewState.setAnime(items) }, this::processErrors)
+                    .map { DetailsContentItem(it) }
+                    .subscribe({ viewState.setContentItem(DetailsContentType.CHARACTERS, it) }, this::processErrors)
 
     private fun loadSimilar() =
             animeInteractor.getSimilar(id)
-                    .map { viewModelConverter.convertSimilar(it) }
-                    .doOnSuccess { updateAndSetData(it) }
-                    .subscribe({ viewState.setAnime(items) }, this::processErrors)
+                    .map { DetailsContentItem(it) }
+                    .subscribe({ viewState.setContentItem(DetailsContentType.SIMILAR, it) }, this::processErrors)
 
     private fun loadRelated() =
             relatedInteractor.getAnime(id)
-                    .map { viewModelConverter.convertRelated(it) }
-                    .doOnSuccess { updateAndSetData(it) }
-                    .subscribe({ viewState.setAnime(items) }, this::processErrors)
+                    .map { DetailsContentItem(it) }
+                    .subscribe({ viewState.setContentItem(DetailsContentType.RELATED, it) }, this::processErrors)
 
     private fun loadLinks() =
             animeInteractor.getLinks(id)
@@ -123,6 +118,20 @@ class AnimePresenter @Inject constructor(
                         if (it.isNotEmpty()) viewState.showChronology(it)
                         else router.showSystemMessage(resourceProvider.emptyMessage)
                     }, this::processErrors)
+
+    private fun loadVideo() {
+        val items = currentAnime.videos ?: emptyList()
+        viewState.setContentItem(DetailsContentType.VIDEO, DetailsContentItem(items))
+    }
+
+    private fun loadDescription() {
+        viewState.setDescriptionItem(DetailsDescriptionItem(currentAnime.description))
+    }
+
+    private fun loadOptions() {
+        val optionsItem = viewModelConverter.convertOptions(currentAnime, userId == Constants.NO_ID)
+        viewState.setOptionsItem(optionsItem)
+    }
 
     private fun createRate(rate: UserRate?, newStatus: RateStatus? = null) {
         if (userId != Constants.NO_ID) {
@@ -210,6 +219,10 @@ class AnimePresenter @Inject constructor(
         viewState.showRateDialog(currentAnime.userRate)
     }
 
+    private fun processUserErrors(throwable: Throwable) {
+        throwable.printStackTrace()
+    }
+
     private fun processEpisodeErrors(throwable: Throwable) {
         when ((throwable as? BaseException)?.tag) {
             ServiceCodeException.TAG -> viewState.setEpisodes(listOf(PlaceholderItem()))
@@ -219,23 +232,8 @@ class AnimePresenter @Inject constructor(
 
     private fun Completable.updateAnimeData() {
         this.andThen(loadAnime(false))
-                .doOnSuccess { updateAndSetData(it.first()) }
+                .doOnSuccess { viewState.setHeadItem(it) }
                 .subscribe({ }, this@AnimePresenter::processErrors)
                 .addToDisposables()
-    }
-
-    private fun updateAndSetData(item: Any) {
-        val index = when (item) {
-            is AnimeHeadItem -> items.indexOfFirst { it is AnimeHeadItem }
-            is DetailsContentItem.Content -> items.indexOfFirst { it is DetailsContentItem.Loading && it.contentType == item.contentType }
-            is DetailsContentItem.Empty -> items.indexOfFirst { it is DetailsContentItem.Loading && it.contentType == item.contentType }
-            else -> -1
-        }
-
-        if (index != -1) {
-            items[index] = item
-            if (item is DetailsContentItem.Empty) items.removeAt(index)
-            viewState.setAnime(items)
-        }
     }
 }

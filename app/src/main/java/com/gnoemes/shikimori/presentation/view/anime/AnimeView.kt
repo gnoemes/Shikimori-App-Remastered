@@ -3,11 +3,9 @@ package com.gnoemes.shikimori.presentation.view.anime
 import com.arellomobile.mvp.viewstate.strategy.SkipStrategy
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
 import com.gnoemes.shikimori.entity.rates.domain.UserRate
-import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragmentView
+import com.gnoemes.shikimori.presentation.view.common.fragment.BaseDetailsView
 
-interface AnimeView : BaseFragmentView {
-
-    fun setAnime(items: List<Any>)
+interface AnimeView : BaseDetailsView {
 
     fun setEpisodes(items: List<Any>)
 

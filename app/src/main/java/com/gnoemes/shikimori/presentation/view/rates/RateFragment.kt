@@ -13,6 +13,7 @@ import com.gnoemes.shikimori.entity.app.domain.AppExtras
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.rates.domain.UserRate
+import com.gnoemes.shikimori.presentation.presenter.common.provider.RatingResourceProvider
 import com.gnoemes.shikimori.presentation.presenter.rates.RatePresenter
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragment
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
@@ -37,6 +38,9 @@ class RateFragment : BaseFragment<RatePresenter, RateView>(), RateView, RateDial
     @Inject
     lateinit var settings: SettingsSource
 
+    @Inject
+    lateinit var resourceProvider: RatingResourceProvider
+
     @InjectPresenter
     lateinit var ratePresenter: RatePresenter
 
@@ -57,7 +61,7 @@ class RateFragment : BaseFragment<RatePresenter, RateView>(), RateView, RateDial
         return ratePresenter
     }
 
-    private val adapter by lazy { RateAdapter(settings, imageLoader, getPresenter()::onContentClicked, { getPresenter().onAction(it) }, { sort, des -> getPresenter().onSortChanged(sort, des) }, { getPresenter().loadNewPage() }) }
+    private val adapter by lazy { RateAdapter(settings, imageLoader, resourceProvider, getPresenter()::onContentClicked, { getPresenter().onAction(it) }, { sort, des -> getPresenter().onSortChanged(sort, des) }, { getPresenter().loadNewPage() }) }
 
     companion object {
         fun newInstance(userId: Long, type: Type, status: RateStatus) = RateFragment().withArgs {
