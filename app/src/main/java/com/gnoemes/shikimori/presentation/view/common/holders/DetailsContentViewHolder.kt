@@ -5,8 +5,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.common.presentation.DetailsContentItem
 import com.gnoemes.shikimori.entity.common.presentation.DetailsContentType
-import com.gnoemes.shikimori.presentation.view.common.adapter.DetailsContentAdapter
 import com.gnoemes.shikimori.presentation.view.common.adapter.StartSnapHelper
+import com.gnoemes.shikimori.presentation.view.common.adapter.content.ContentAdapter
 import com.gnoemes.shikimori.utils.gone
 import com.gnoemes.shikimori.utils.visible
 import com.gnoemes.shikimori.utils.widgets.HorizontalSpaceItemDecorator
@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.layout_details_content.view.*
 
 class DetailsContentViewHolder(
         private val view: View,
-        private val adapter: DetailsContentAdapter
+        private val adapter: ContentAdapter
 ) {
 
     init {

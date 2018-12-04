@@ -5,6 +5,8 @@ import com.gnoemes.shikimori.data.repository.anime.converter.AnimeDetailsRespons
 import com.gnoemes.shikimori.data.repository.anime.converter.AnimeDetailsResponseConverterImpl;
 import com.gnoemes.shikimori.presentation.presenter.anime.converter.AnimeDetailsViewModelConverter;
 import com.gnoemes.shikimori.presentation.presenter.anime.converter.AnimeDetailsViewModelConverterImpl;
+import com.gnoemes.shikimori.presentation.presenter.common.converter.DetailsContentViewModelConverter;
+import com.gnoemes.shikimori.presentation.presenter.common.converter.DetailsContentViewModelConverterImpl;
 import com.gnoemes.shikimori.presentation.presenter.common.converter.FranchiseNodeViewModelConverter;
 import com.gnoemes.shikimori.presentation.presenter.common.converter.FranchiseNodeViewModelConverterImpl;
 import com.gnoemes.shikimori.presentation.presenter.common.converter.LinkViewModelConverter;
@@ -32,4 +34,8 @@ public interface AnimeUtilModule {
     @Binds
     @Reusable
     FranchiseNodeViewModelConverter bindFranchiseNodeViewModelConverter(FranchiseNodeViewModelConverterImpl converter);
+
+    @Binds
+    @Reusable
+    DetailsContentViewModelConverter bindDetailsContentViewModelConverter(DetailsContentViewModelConverterImpl converter);
 }

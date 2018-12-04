@@ -12,12 +12,16 @@ import com.gnoemes.shikimori.entity.app.domain.exceptions.BaseException
 import com.gnoemes.shikimori.entity.app.domain.exceptions.ServiceCodeException
 import com.gnoemes.shikimori.entity.common.domain.Genre
 import com.gnoemes.shikimori.entity.common.domain.Type
-import com.gnoemes.shikimori.entity.common.presentation.*
+import com.gnoemes.shikimori.entity.common.presentation.DetailsAction
+import com.gnoemes.shikimori.entity.common.presentation.DetailsContentType
+import com.gnoemes.shikimori.entity.common.presentation.DetailsDescriptionItem
+import com.gnoemes.shikimori.entity.common.presentation.PlaceholderItem
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.rates.domain.UserRate
 import com.gnoemes.shikimori.presentation.presenter.anime.converter.AnimeDetailsViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.anime.converter.EpisodeViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
+import com.gnoemes.shikimori.presentation.presenter.common.converter.DetailsContentViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.common.converter.FranchiseNodeViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.common.converter.LinkViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResourceProvider
@@ -39,7 +43,8 @@ class AnimePresenter @Inject constructor(
         private val viewModelConverter: AnimeDetailsViewModelConverter,
         private val episodeConverter: EpisodeViewModelConverter,
         private val linkConverter: LinkViewModelConverter,
-        private val nodeConverter: FranchiseNodeViewModelConverter
+        private val nodeConverter: FranchiseNodeViewModelConverter,
+        private val contentConverter: DetailsContentViewModelConverter
 ) : BaseNetworkPresenter<AnimeView>() {
 
     var id: Long = Constants.NO_ID
@@ -88,17 +93,17 @@ class AnimePresenter @Inject constructor(
 
     private fun loadCharacters() =
             animeInteractor.getRoles(id)
-                    .map { DetailsContentItem(it) }
+                    .map(contentConverter)
                     .subscribe({ viewState.setContentItem(DetailsContentType.CHARACTERS, it) }, this::processErrors)
 
     private fun loadSimilar() =
             animeInteractor.getSimilar(id)
-                    .map { DetailsContentItem(it) }
+                    .map(contentConverter)
                     .subscribe({ viewState.setContentItem(DetailsContentType.SIMILAR, it) }, this::processErrors)
 
     private fun loadRelated() =
             relatedInteractor.getAnime(id)
-                    .map { DetailsContentItem(it) }
+                    .map(contentConverter)
                     .subscribe({ viewState.setContentItem(DetailsContentType.RELATED, it) }, this::processErrors)
 
     private fun loadLinks() =
@@ -121,7 +126,7 @@ class AnimePresenter @Inject constructor(
 
     private fun loadVideo() {
         val items = currentAnime.videos ?: emptyList()
-        viewState.setContentItem(DetailsContentType.VIDEO, DetailsContentItem(items))
+        viewState.setContentItem(DetailsContentType.VIDEO, contentConverter.apply(items))
     }
 
     private fun loadDescription() {

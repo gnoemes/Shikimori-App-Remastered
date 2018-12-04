@@ -17,8 +17,8 @@ import com.gnoemes.shikimori.presentation.presenter.anime.AnimePresenter
 import com.gnoemes.shikimori.presentation.presenter.common.provider.RatingResourceProvider
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragment
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
-import com.gnoemes.shikimori.presentation.view.common.adapter.DetailsContentAdapter
 import com.gnoemes.shikimori.presentation.view.common.adapter.GenreAdapter
+import com.gnoemes.shikimori.presentation.view.common.adapter.content.ContentAdapter
 import com.gnoemes.shikimori.presentation.view.common.fragment.ListDialogFragment
 import com.gnoemes.shikimori.presentation.view.common.fragment.RateDialogFragment
 import com.gnoemes.shikimori.presentation.view.common.holders.DetailsContentViewHolder
@@ -85,10 +85,10 @@ class AnimeFragment : BaseFragment<AnimePresenter, AnimeView>(), AnimeView,
 
     private val genreAdapter by lazy { GenreAdapter(getPresenter()::onAction) }
 
-    private val videoAdapter by lazy { DetailsContentAdapter(imageLoader, getPresenter()::onContentClicked, getPresenter()::onAction) }
-    private val charactersAdapter by lazy { DetailsContentAdapter(imageLoader, getPresenter()::onContentClicked, getPresenter()::onAction) }
-    private val similarAdapter by lazy { DetailsContentAdapter(imageLoader, getPresenter()::onContentClicked, getPresenter()::onAction) }
-    private val relatedAdapter by lazy { DetailsContentAdapter(imageLoader, getPresenter()::onContentClicked, getPresenter()::onAction) }
+    private val videoAdapter by lazy { ContentAdapter(imageLoader, getPresenter()::onContentClicked, getPresenter()::onAction) }
+    private val charactersAdapter by lazy { ContentAdapter(imageLoader, getPresenter()::onContentClicked, getPresenter()::onAction) }
+    private val similarAdapter by lazy { ContentAdapter(imageLoader, getPresenter()::onContentClicked, getPresenter()::onAction) }
+    private val relatedAdapter by lazy { ContentAdapter(imageLoader, getPresenter()::onContentClicked, getPresenter()::onAction) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(getFragmentLayout(), container, false)
