@@ -1,15 +1,18 @@
 package com.gnoemes.shikimori.presentation.presenter.person.converter
 
+import com.gnoemes.shikimori.entity.common.presentation.DetailsContentType
 import com.gnoemes.shikimori.entity.roles.domain.PersonDetails
 import com.gnoemes.shikimori.entity.roles.presentation.PersonDescriptionItem
 import com.gnoemes.shikimori.entity.roles.presentation.PersonHeadItem
+import com.gnoemes.shikimori.presentation.presenter.common.converter.DetailsContentViewModelConverter
 import com.gnoemes.shikimori.utils.date.DateTimeConverter
 import org.joda.time.DateTime
 import org.joda.time.Years
 import javax.inject.Inject
 
 class PersonDetailsViewModelConverterImpl @Inject constructor(
-        private val dateTimeConverter: DateTimeConverter
+        private val dateTimeConverter: DateTimeConverter,
+        private val contentConverter : DetailsContentViewModelConverter
 ) : PersonDetailsViewModelConverter {
 
     override fun apply(t: PersonDetails): List<Any> {
@@ -24,11 +27,13 @@ class PersonDetailsViewModelConverterImpl @Inject constructor(
         }
 
         if (t.characters != null && t.characters.isNotEmpty()) {
-//            items.add(DetailsContentItem.Content(DetailsContentType.ROLES, t.characters))
+            val item = contentConverter.apply(t.characters)
+            items.add(Pair(DetailsContentType.CHARACTERS, item))
         }
 
         if (t.works != null && t.works.isNotEmpty()) {
-//            items.add(DetailsContentItem.Content(DetailsContentType.WORKS, t.works))
+            val item = contentConverter.apply(t.works)
+            items.add(Pair(DetailsContentType.WORKS, item))
         }
 
         return items

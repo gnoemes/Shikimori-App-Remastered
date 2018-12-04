@@ -1,11 +1,15 @@
 package com.gnoemes.shikimori.presentation.presenter.character.converter
 
+import com.gnoemes.shikimori.entity.common.presentation.DetailsContentType
 import com.gnoemes.shikimori.entity.common.presentation.DetailsDescriptionItem
 import com.gnoemes.shikimori.entity.roles.domain.CharacterDetails
 import com.gnoemes.shikimori.entity.roles.presentation.CharacterHeadItem
+import com.gnoemes.shikimori.presentation.presenter.common.converter.DetailsContentViewModelConverter
 import javax.inject.Inject
 
-class CharacterDetailsViewModelConverterImpl @Inject constructor() : CharacterDetailsViewModelConverter {
+class CharacterDetailsViewModelConverterImpl @Inject constructor(
+        private val contentConverter : DetailsContentViewModelConverter
+) : CharacterDetailsViewModelConverter {
 
     override fun apply(t: CharacterDetails): List<Any> {
         val items = mutableListOf<Any>()
@@ -14,19 +18,22 @@ class CharacterDetailsViewModelConverterImpl @Inject constructor() : CharacterDe
         items.add(head)
 
         if (!t.description.isNullOrBlank()) {
-            items.add(DetailsDescriptionItem(t.description!!))
+            items.add(DetailsDescriptionItem(t.description))
         }
 
         if (t.seyu != null && t.seyu.isNotEmpty()) {
-//            items.add(DetailsContentItem.Content(DetailsContentType.SEYUS, t.seyu))
+            val item = contentConverter.apply(t.seyu)
+            items.add(Pair(DetailsContentType.SEYUS, item))
         }
 
         if (t.animes.isNotEmpty()) {
-//            items.add(DetailsContentItem.Content(DetailsContentType.ANIMES, t.animes))
+            val item = contentConverter.apply(t.animes)
+            items.add(Pair(DetailsContentType.ANIMES, item))
         }
 
         if (t.mangas.isNotEmpty()) {
-//            items.add(DetailsContentItem.Content(DetailsContentType.MANGAS, t.mangas))
+            val item = contentConverter.apply(t.mangas)
+            items.add(Pair(DetailsContentType.MANGAS, item))
         }
 
         return items

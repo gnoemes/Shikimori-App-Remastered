@@ -9,6 +9,8 @@ import com.gnoemes.shikimori.di.base.modules.BaseChildFragmentModule;
 import com.gnoemes.shikimori.di.base.scopes.BottomChildScope;
 import com.gnoemes.shikimori.domain.roles.PersonInteractor;
 import com.gnoemes.shikimori.domain.roles.PersonInteractorImpl;
+import com.gnoemes.shikimori.presentation.presenter.common.converter.DetailsContentViewModelConverter;
+import com.gnoemes.shikimori.presentation.presenter.common.converter.DetailsContentViewModelConverterImpl;
 import com.gnoemes.shikimori.presentation.presenter.person.PersonPresenter;
 import com.gnoemes.shikimori.presentation.presenter.person.converter.PersonDetailsViewModelConverter;
 import com.gnoemes.shikimori.presentation.presenter.person.converter.PersonDetailsViewModelConverterImpl;
@@ -19,6 +21,7 @@ import javax.inject.Named;
 import androidx.fragment.app.Fragment;
 import dagger.Binds;
 import dagger.Module;
+import dagger.Reusable;
 
 @Module(includes = {
         BaseChildFragmentModule.class,
@@ -36,6 +39,10 @@ public interface PersonModule {
 
     @Binds
     PersonDetailsViewModelConverter bindPersonDetailsViewModelConverter(PersonDetailsViewModelConverterImpl conterter);
+
+    @Binds
+    @Reusable
+    DetailsContentViewModelConverter bindDetailsContentViewModelConverter(DetailsContentViewModelConverterImpl converter);
 
     @Binds
     MvpPresenter bindPresenter(PersonPresenter presenter);

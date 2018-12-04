@@ -46,7 +46,7 @@ class CharacterFragment : BaseFragment<CharacterPresenter, CharacterView>(), Cha
         return characterPresenter
     }
 
-    private val characterAdapter by lazy { CharacterAdapter(imageLoader, settings, getPresenter()::onContentClicked) }
+    private val characterAdapter by lazy { CharacterAdapter(imageLoader, getPresenter()::onContentClicked) }
 
     companion object {
         fun newInstance(id: Long) = CharacterFragment().withArgs { putLong(AppExtras.ARGUMENT_CHARACTER_ID, id) }

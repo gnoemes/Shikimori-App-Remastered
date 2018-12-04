@@ -1,6 +1,8 @@
 package com.gnoemes.shikimori.presentation.presenter.main
 
 import com.arellomobile.mvp.InjectViewState
+import com.gnoemes.shikimori.entity.auth.AuthType
+import com.gnoemes.shikimori.entity.common.domain.Screens
 import com.gnoemes.shikimori.entity.main.BottomScreens
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNavigationPresenter
 import com.gnoemes.shikimori.presentation.view.main.MainView
@@ -36,8 +38,9 @@ class MainPresenter @Inject constructor(
             BottomScreens.SEARCH -> router.replaceScreen(BottomScreens.SEARCH)
             BottomScreens.MAIN -> router.replaceScreen(BottomScreens.MAIN)
             BottomScreens.MORE -> {
-                viewState.clearMoreBackStack()
-                router.replaceScreen(BottomScreens.MORE)
+//                viewState.clearMoreBackStack()
+//                router.replaceScreen(BottomScreens.MORE)
+                router.navigateTo(Screens.AUTHORIZATION, AuthType.SIGN_IN)
             }
         }
     }

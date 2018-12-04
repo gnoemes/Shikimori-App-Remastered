@@ -12,6 +12,8 @@ import com.gnoemes.shikimori.domain.roles.CharacterInteractorImpl;
 import com.gnoemes.shikimori.presentation.presenter.character.CharacterPresenter;
 import com.gnoemes.shikimori.presentation.presenter.character.converter.CharacterDetailsViewModelConverter;
 import com.gnoemes.shikimori.presentation.presenter.character.converter.CharacterDetailsViewModelConverterImpl;
+import com.gnoemes.shikimori.presentation.presenter.common.converter.DetailsContentViewModelConverter;
+import com.gnoemes.shikimori.presentation.presenter.common.converter.DetailsContentViewModelConverterImpl;
 import com.gnoemes.shikimori.presentation.view.character.CharacterFragment;
 
 import javax.inject.Named;
@@ -19,6 +21,7 @@ import javax.inject.Named;
 import androidx.fragment.app.Fragment;
 import dagger.Binds;
 import dagger.Module;
+import dagger.Reusable;
 
 @Module(includes = {
         BaseChildFragmentModule.class,
@@ -36,6 +39,10 @@ public interface CharacterModule {
 
     @Binds
     CharacterDetailsViewModelConverter bindCharacterDetailsViewModelConterter(CharacterDetailsViewModelConverterImpl conterter);
+
+    @Binds
+    @Reusable
+    DetailsContentViewModelConverter bindDetailsContentViewModelConverter(DetailsContentViewModelConverterImpl converter);
 
     @Binds
     MvpPresenter bindPresenter(CharacterPresenter presenter);

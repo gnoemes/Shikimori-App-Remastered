@@ -46,7 +46,7 @@ class PersonFragment : BaseFragment<PersonPresenter, PersonView>(), PersonView {
         return personPresenter
     }
 
-    private val adapter by lazy { PersonAdapter(imageLoader, settings, getPresenter()::onContentClicked) }
+    private val adapter by lazy { PersonAdapter(imageLoader, getPresenter()::onContentClicked) }
 
     companion object {
         fun newInstance(id: Long) = PersonFragment().withArgs { putLong(AppExtras.ARGUMENT_PERSON_ID, id) }
