@@ -32,5 +32,6 @@ ext.versions = [
     adapterDelegate   : '4.0.0',
     flexbox           : '1.1.0',
     drawerBehavior    : '0.0.5',
+    shimmer           : '0.3.0',
 
 ]

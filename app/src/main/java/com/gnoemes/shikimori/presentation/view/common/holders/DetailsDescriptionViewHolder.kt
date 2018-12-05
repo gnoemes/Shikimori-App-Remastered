@@ -3,16 +3,20 @@ package com.gnoemes.shikimori.presentation.view.common.holders
 import android.animation.ObjectAnimator
 import android.view.View
 import android.widget.TextView
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.common.presentation.DetailsDescriptionItem
 import com.gnoemes.shikimori.utils.gone
 import com.gnoemes.shikimori.utils.onClick
 import com.gnoemes.shikimori.utils.visible
 import kotlinx.android.synthetic.main.layout_details_description.view.*
+import kotlinx.android.synthetic.main.layout_details_description_content.view.*
 
 class DetailsDescriptionViewHolder(
         private val view: View
 ) {
+
+    private val placeholder by lazy { DetailsPlaceholderViewHolder(view.descriptionContent, view.descriptionPlaceholder as ShimmerFrameLayout) }
 
     private companion object {
         private const val COLLAPSED_MAX_LINES = 4
@@ -26,6 +30,8 @@ class DetailsDescriptionViewHolder(
             view.gone()
             return
         }
+
+        placeholder.showContent()
 
         with(view) {
             descriptionTextView.text = item.description

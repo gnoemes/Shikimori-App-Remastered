@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.facebook.shimmer.ShimmerFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/headShimmerContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:shimmer_auto_start="true"
+    tools:ignore="HardcodedText">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Space
+            android:id="@+id/spaceMock"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/ageRatingViewMock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:background="@color/colorShimmer"
+            android:padding="2dp"
+            android:text="18+"
+            android:textColor="@android:color/transparent"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toTopOf="@+id/nameViewMock"
+            app:layout_constraintStart_toStartOf="@+id/nameViewMock"
+            tools:ignore="SmallSp"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/nameViewMock"
+            style="@style/TextHeadlineStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/colorShimmer"
+            android:text="Алиса или Алиса: Брат-си"
+            android:textColor="@android:color/transparent"
+            android:textSize="22sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spaceMock" />
+
+        <RatingBar
+            android:id="@+id/ratingViewMock"
+            style="?attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:isIndicator="true"
+            android:numStars="5"
+            android:stepSize="0.1"
+            android:textColor="@android:color/transparent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="@+id/nameViewMock"
+            app:layout_constraintTop_toBottomOf="@+id/nameViewMock" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/imageContainerViewMock"
+            android:layout_width="@dimen/image_details_width"
+            android:layout_height="@dimen/image_details_height"
+            app:cardBackgroundColor="@color/colorShimmer"
+            app:cardCornerRadius="4dp"
+            android:layout_marginTop="8dp"
+            app:cardPreventCornerOverlap="false"
+            app:layout_constraintStart_toStartOf="@+id/nameViewMock"
+            app:layout_constraintTop_toBottomOf="@+id/ratingViewMock" />
+
+        <TextView
+            android:id="@+id/nameSecondViewMock"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:background="@color/colorShimmer"
+            android:fontFamily="@font/open_sans"
+            android:text="Alice or Alice: Siscon "
+            android:textColor="@android:color/transparent"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageContainerViewMock"
+            app:layout_constraintTop_toTopOf="@+id/imageContainerViewMock" />
+
+        <TextView
+            android:id="@+id/typeViewMock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@color/colorShimmer"
+            android:text="Тип: TV (24 эп.), 26 мин."
+            android:textColor="@android:color/transparent"
+            app:layout_constraintStart_toStartOf="@+id/nameSecondViewMock"
+            app:layout_constraintTop_toBottomOf="@+id/nameSecondViewMock" />
+
+        <TextView
+            android:id="@+id/seasonViewMock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:background="@color/colorShimmer"
+            android:text="Сезон: Лето 2018"
+            android:textColor="@android:color/transparent"
+            app:layout_constraintStart_toStartOf="@+id/typeViewMock"
+            app:layout_constraintTop_toBottomOf="@+id/typeViewMock" />
+
+        <TextView
+            android:id="@+id/statusViewMock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:background="@color/colorShimmer"
+
+            android:text="Статус: Онгоинг"
+            android:textColor="@android:color/transparent"
+            app:layout_constraintStart_toStartOf="@+id/seasonViewMock"
+            app:layout_constraintTop_toBottomOf="@+id/seasonViewMock" />
+
+        <TextView
+            android:id="@+id/studioViewMock"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:background="@color/colorShimmer"
+            android:text="Студия: Bones"
+            android:textColor="@android:color/transparent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/statusViewMock"
+            app:layout_constraintTop_toBottomOf="@+id/statusViewMock" />
+
+        <TextView
+            android:id="@+id/genresMock"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@color/colorShimmer"
+            android:text="Студия: Bones"
+            android:textColor="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageContainerViewMock" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.facebook.shimmer.ShimmerFrameLayout>

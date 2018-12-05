@@ -94,4 +94,5 @@ dependencies {
     implementation 'com.hannesdorfmann:adapterdelegates4:' + versions.adapterDelegate
     implementation 'com.google.android:flexbox:' + versions.flexbox
     implementation 'com.infideap.drawerbehavior:drawer-behavior:' + versions.drawerBehavior
+    implementation 'com.facebook.shimmer:shimmer:' + versions.shimmer
 }

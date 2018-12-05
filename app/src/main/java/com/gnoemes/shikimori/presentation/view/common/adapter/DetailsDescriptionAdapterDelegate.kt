@@ -7,11 +7,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.common.presentation.DetailsDescriptionItem
+import com.gnoemes.shikimori.utils.gone
 import com.gnoemes.shikimori.utils.inflate
 import com.gnoemes.shikimori.utils.onClick
 import com.gnoemes.shikimori.utils.visibleIf
 import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
 import kotlinx.android.synthetic.main.layout_details_description.view.*
+import kotlinx.android.synthetic.main.layout_details_description_content.view.*
 
 
 class DetailsDescriptionAdapterDelegate : AbsListItemAdapterDelegate<DetailsDescriptionItem, Any, DetailsDescriptionAdapterDelegate.ViewHolder>() {
@@ -32,6 +34,7 @@ class DetailsDescriptionAdapterDelegate : AbsListItemAdapterDelegate<DetailsDesc
 
         fun bind(item: DetailsDescriptionItem) {
             with(itemView) {
+                descriptionPlaceholder.gone()
                 descriptionTextView.text = item.description
                 expandView.onClick {
                     isExpanded = !isExpanded

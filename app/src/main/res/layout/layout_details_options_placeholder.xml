@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.facebook.shimmer.ShimmerFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/headShimmerContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:shimmer_auto_start="true"
+    tools:ignore="HardcodedText">
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/optionsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp">
+
+        <View
+            android:id="@+id/rateSpinnerViewMock"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/colorShimmer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/watchOnlineBtnMock"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/colorShimmer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rateSpinnerViewMock" />
+
+        <View
+            android:id="@+id/chronologyViewMock"
+            android:layout_width="99dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginRight="4dp"
+            android:background="@color/colorShimmer"
+            app:layout_constraintBottom_toBottomOf="@+id/linksViewMock"
+            app:layout_constraintEnd_toStartOf="@+id/linksViewMock"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintHorizontal_weight="0.3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/linksViewMock" />
+
+        <View
+            android:id="@+id/linksViewMock"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="4dp"
+            android:background="@color/colorShimmer"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/discussionViewMock"
+            app:layout_constraintHorizontal_weight="0.3"
+            app:layout_constraintStart_toEndOf="@+id/chronologyViewMock"
+            app:layout_constraintTop_toBottomOf="@+id/watchOnlineBtnMock" />
+
+        <View
+            android:id="@+id/discussionViewMock"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginLeft="4dp"
+            android:background="@color/colorShimmer"
+            app:layout_constraintBottom_toBottomOf="@+id/linksViewMock"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="0.3"
+            app:layout_constraintStart_toEndOf="@+id/linksViewMock"
+            app:layout_constraintTop_toTopOf="@+id/linksViewMock" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.facebook.shimmer.ShimmerFrameLayout>

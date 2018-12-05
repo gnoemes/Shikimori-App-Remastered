@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <Space
+        android:id="@+id/space"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/ageRatingView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_protector"
+        android:padding="2dp"
+        android:textColor="@color/colorOnProtector"
+        android:textSize="10sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/nameView"
+        app:layout_constraintStart_toStartOf="@+id/nameView"
+        tools:ignore="SmallSp"
+        tools:text="18+"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/nameView"
+        style="@style/TextHeadlineStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/space"
+        tools:text="Алиса или Алиса: Брат-сисконщик и сёстры близняшки" />
+
+    <RatingBar
+        android:id="@+id/ratingView"
+        style="?attr/ratingBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:isIndicator="true"
+        android:numStars="5"
+        android:stepSize="0.1"
+        app:layout_constraintEnd_toStartOf="@+id/ratingValueView"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@+id/nameView"
+        app:layout_constraintTop_toBottomOf="@+id/nameView"
+        tools:rating="3.5" />
+
+    <TextView
+        android:id="@+id/ratingValueView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:fontFamily="@font/open_sans_semibold"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/ratingView"
+        app:layout_constraintStart_toEndOf="@+id/ratingView"
+        app:layout_constraintTop_toTopOf="@+id/ratingView"
+        tools:text="9.53" />
+
+    <TextView
+        android:id="@+id/ratingDescriptionView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/ratingValueView"
+        app:layout_constraintStart_toEndOf="@+id/ratingValueView"
+        tools:text="Великолепно" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/imageContainerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:cardCornerRadius="4dp"
+        app:cardPreventCornerOverlap="false"
+        app:layout_constraintStart_toStartOf="@+id/nameView"
+        app:layout_constraintTop_toBottomOf="@+id/ratingValueView">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="@dimen/image_details_width"
+            android:layout_height="@dimen/image_details_height"
+            tools:src="@drawable/test_preview2" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/nameSecondView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:fontFamily="@font/open_sans"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageContainerView"
+        app:layout_constraintTop_toTopOf="@+id/imageContainerView"
+        tools:text="Alice or Alice: Siscon Niisan to Futago no Imouto" />
+
+    <TextView
+        android:id="@+id/typeView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="@+id/nameSecondView"
+        app:layout_constraintTop_toBottomOf="@+id/nameSecondView"
+        tools:text="Тип: TV (24 эп.), 26 мин." />
+
+    <TextView
+        android:id="@+id/seasonView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/typeView"
+        app:layout_constraintTop_toBottomOf="@+id/typeView"
+        tools:text="Сезон: Лето 2018" />
+
+    <TextView
+        android:id="@+id/statusView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/seasonView"
+        app:layout_constraintTop_toBottomOf="@+id/seasonView"
+        tools:text="Статус: Онгоинг" />
+
+    <TextView
+        android:id="@+id/studioView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/statusView"
+        app:layout_constraintTop_toBottomOf="@+id/statusView"
+        tools:text="Студия: Bones" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="imageContainerView, studioView" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/genresList"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:minHeight="18dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/barrier2"
+        tools:itemCount="5"
+        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_genre"
+        tools:orientation="horizontal" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

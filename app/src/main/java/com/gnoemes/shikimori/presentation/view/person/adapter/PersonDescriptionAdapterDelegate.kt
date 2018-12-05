@@ -7,11 +7,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.roles.presentation.PersonDescriptionItem
+import com.gnoemes.shikimori.utils.gone
 import com.gnoemes.shikimori.utils.inflate
 import com.gnoemes.shikimori.utils.onClick
 import com.gnoemes.shikimori.utils.visibleIf
 import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
 import kotlinx.android.synthetic.main.layout_details_description.view.*
+import kotlinx.android.synthetic.main.layout_details_description_content.view.*
 
 class PersonDescriptionAdapterDelegate : AbsListItemAdapterDelegate<PersonDescriptionItem, Any, PersonDescriptionAdapterDelegate.ViewHolder>() {
 
@@ -31,6 +33,7 @@ class PersonDescriptionAdapterDelegate : AbsListItemAdapterDelegate<PersonDescri
 
         fun bind(item: PersonDescriptionItem) {
             with(itemView) {
+                descriptionPlaceholder.gone()
                 descriptionLabelView.setText(R.string.common_roles)
                 descriptionTextView.text = item.roles
                 expandView.onClick {

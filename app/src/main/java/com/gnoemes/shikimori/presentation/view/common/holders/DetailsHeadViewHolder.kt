@@ -2,6 +2,7 @@ package com.gnoemes.shikimori.presentation.view.common.holders
 
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.common.presentation.DetailsAction
@@ -11,25 +12,30 @@ import com.gnoemes.shikimori.presentation.view.common.adapter.GenreAdapter
 import com.gnoemes.shikimori.utils.*
 import com.gnoemes.shikimori.utils.images.ImageLoader
 import kotlinx.android.synthetic.main.layout_details_head.view.*
+import kotlinx.android.synthetic.main.layout_details_head_content.view.*
 import kotlin.math.roundToInt
 
 class DetailsHeadViewHolder(
         private val view: View,
         private val imageLoader: ImageLoader,
         private val resourceProvider: RatingResourceProvider,
-        private val genreAdapter : GenreAdapter,
+        private val genreAdapter: GenreAdapter,
         private val callback: (DetailsAction) -> Unit
 ) {
 
+    private val placeholder: DetailsPlaceholderViewHolder by lazy { DetailsPlaceholderViewHolder(view.headContent, view.headPlaceholder as ShimmerFrameLayout) }
+
     init {
-        view.genresList.apply {
+        view.headContent.genresList.apply {
             adapter = genreAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         }
     }
 
     fun bind(item: DetailsHeadItem) {
-        with(view) {
+        placeholder.showContent()
+
+        with(view.headContent) {
             if (!imageView.hasImage()) {
                 imageLoader.setImageWithPlaceHolder(imageView, item.image.original)
             }
