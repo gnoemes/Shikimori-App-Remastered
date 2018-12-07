@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.app.domain.AppExtras
+import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.search.presentation.SearchItem
 import com.gnoemes.shikimori.entity.search.presentation.SearchNavigationData
 import com.gnoemes.shikimori.presentation.presenter.search.SearchPresenter
@@ -57,7 +59,7 @@ class SearchFragment : BaseFragment<SearchPresenter, SearchView>(), SearchView {
 
     private var spinner: ReSpinner? = null
 
-    private val adapter by lazy { SearchAdapter(imageLoader, getPresenter()::onContentClicked) { getPresenter().loadNextPage() }.apply { if (!hasObservers()) setHasStableIds(true) } }
+    private val adapter by lazy { SearchAdapter(imageLoader, getPresenter()::onContentClicked).apply { if (!hasObservers()) setHasStableIds(true) } }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -82,9 +84,29 @@ class SearchFragment : BaseFragment<SearchPresenter, SearchView>(), SearchView {
             layoutManager = GridLayoutManager(context, spanCount)
             setHasFixedSize(true)
             addItemDecoration(GridItemDecorator(context.dimen(R.dimen.margin_small).toInt()))
+            addOnScrollListener(nextPageListener)
         }
 
         refreshLayout.setOnRefreshListener { getPresenter().onRefresh() }
+    }
+
+    private val nextPageListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+
+            val manager = (recyclerView.layoutManager as GridLayoutManager)
+            val visibleItemPosition = manager.findLastCompletelyVisibleItemPosition() + Constants.DEFAULT_LIMIT / 2
+            val itemCount = manager.itemCount
+
+            if (!adapter.isProgress() && visibleItemPosition >= itemCount) {
+                getPresenter().loadNextPage()
+            }
+        }
+    }
+
+    override fun onDestroyView() {
+        recyclerView.removeOnScrollListener(nextPageListener)
+        super.onDestroyView()
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -121,9 +143,11 @@ class SearchFragment : BaseFragment<SearchPresenter, SearchView>(), SearchView {
     }
 
     override fun showPageLoading() {
+        postViewAction { adapter.showProgress(true) }
     }
 
     override fun hidePageLoading() {
+        postViewAction { adapter.showProgress(false) }
     }
 
     override fun selectType(newTypePos: Int) {

@@ -1,8 +1,6 @@
 package com.gnoemes.shikimori.presentation.view.search.adapter
 
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
-import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.common.presentation.ProgressItem
 import com.gnoemes.shikimori.entity.search.presentation.SearchItem
@@ -12,8 +10,7 @@ import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 
 class SearchAdapter(
         imageLoader: ImageLoader,
-        callback: (Type, Long) -> Unit,
-        private val nextPageListener: () -> Unit
+        callback: (Type, Long) -> Unit
 ) : ListDelegationAdapter<MutableList<Any>>() {
 
     init {
@@ -30,24 +27,31 @@ class SearchAdapter(
 
     fun bindItems(newItems: List<SearchItem>) {
         val oldData = items.toList()
+        val progress = isProgress()
 
         items.clear()
         items.addAll(newItems)
+        if (progress) items.add(ProgressItem())
 
         DiffUtil
                 .calculateDiff(DiffCallback(items, oldData), false)
                 .dispatchUpdatesTo(this)
     }
 
-    override fun onBindViewHolder(
-            holder: RecyclerView.ViewHolder,
-            position: Int,
-            payloads: MutableList<Any?>
-    ) {
-        super.onBindViewHolder(holder, position, payloads)
+    fun showProgress(isVisible: Boolean) {
+        val oldData = items.toList()
+        val currentProgress = isProgress()
 
-        if (position == items.size - Constants.DEFAULT_LIMIT / 2) nextPageListener()
+        if (isVisible && !currentProgress) {
+            items.add(ProgressItem())
+            notifyItemInserted(items.lastIndex)
+        } else if (!isVisible && currentProgress) {
+            items.remove(items.last())
+            notifyItemRemoved(oldData.lastIndex)
+        }
     }
+
+    fun isProgress() = items.isNotEmpty() && items.last() is ProgressItem
 
     private inner class DiffCallback(
             private val newItems: List<Any>,
