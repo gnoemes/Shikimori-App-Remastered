@@ -56,10 +56,9 @@ class CharacterFragment : BaseFragment<CharacterPresenter, CharacterView>(), Cha
         super.onViewCreated(view, savedInstanceState)
 
         toolbar?.apply {
-            addBackButton()
+            addBackButton { getPresenter().onBackPressed() }
             setTitle(R.string.common_character)
             inflateMenu(R.menu.menu_character)
-            setNavigationOnClickListener { getPresenter().onBackPressed() }
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.item_open_in_browser -> getPresenter().onOpenInBrowser()

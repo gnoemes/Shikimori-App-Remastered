@@ -56,10 +56,9 @@ class PersonFragment : BaseFragment<PersonPresenter, PersonView>(), PersonView {
         super.onViewCreated(view, savedInstanceState)
 
         toolbar?.apply {
-            addBackButton()
+            addBackButton { getPresenter().onBackPressed() }
             setTitle(R.string.common_person)
             inflateMenu(R.menu.menu_browser)
-            setNavigationOnClickListener { getPresenter().onBackPressed() }
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.item_open_in_browser -> getPresenter().onOpenInBrowser()

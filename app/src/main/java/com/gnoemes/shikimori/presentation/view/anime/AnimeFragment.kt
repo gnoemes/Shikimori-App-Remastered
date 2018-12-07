@@ -99,9 +99,8 @@ class AnimeFragment : BaseFragment<AnimePresenter, AnimeView>(), AnimeView,
         super.onViewCreated(view, savedInstanceState)
 
         toolbar?.apply {
-            addBackButton()
+            addBackButton {getPresenter().onBackPressed() }
             title = null
-            setNavigationOnClickListener { getPresenter().onBackPressed() }
         }
 
         val params = appBarLayout.layoutParams as CoordinatorLayout.LayoutParams
