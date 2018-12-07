@@ -4,12 +4,14 @@ import android.content.Context
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.entity.anime.domain.Anime
+import com.gnoemes.shikimori.entity.common.domain.Status
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.manga.domain.Manga
 import com.gnoemes.shikimori.entity.roles.domain.Character
 import com.gnoemes.shikimori.entity.roles.domain.Person
 import com.gnoemes.shikimori.entity.search.presentation.SearchItem
 import com.gnoemes.shikimori.utils.nullIfEmpty
+import com.gnoemes.shikimori.utils.unknownIfZero
 import javax.inject.Inject
 
 class SearchViewModelConverterImpl @Inject constructor(
@@ -52,7 +54,7 @@ class SearchViewModelConverterImpl @Inject constructor(
 
     private fun convertManga(it: Manga): SearchItem {
         val name = if (settings.isRomadziNaming) it.name else it.nameRu.nullIfEmpty() ?: it.name
-        val nameText = name.plus(String.format(context.getString(R.string.volumes_format), it.volumes, it.chapters))
+        val nameText = name.plus(String.format(context.getString(R.string.volumes_format), it.volumes.unknownIfZero(), it.chapters.unknownIfZero()))
         return SearchItem(
                 it.id,
                 Type.MANGA,
@@ -64,7 +66,8 @@ class SearchViewModelConverterImpl @Inject constructor(
 
     private fun convertAnime(it: Anime): SearchItem {
         val name = if (settings.isRomadziNaming) it.name else it.nameRu.nullIfEmpty() ?: it.name
-        val nameText = name.plus(String.format(context.getString(R.string.episodes_format), it.episodesAired, it.episodes))
+        val aired = if (it.status == Status.RELEASED) it.episodes else it.episodesAired
+        val nameText = name.plus(String.format(context.getString(R.string.episodes_format), aired, it.episodes.unknownIfZero()))
         return SearchItem(
                 it.id,
                 Type.ANIME,
