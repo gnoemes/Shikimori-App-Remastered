@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
@@ -103,6 +104,15 @@ class AnimeFragment : BaseFragment<AnimePresenter, AnimeView>(), AnimeView,
             setNavigationOnClickListener { getPresenter().onBackPressed() }
         }
 
+        val params = appBarLayout.layoutParams as CoordinatorLayout.LayoutParams
+        params.behavior = AppBarLayout.Behavior().apply {
+            setDragCallback(object : AppBarLayout.Behavior.DragCallback() {
+                override fun canDrag(appBarLayout: AppBarLayout): Boolean {
+                    return false
+                }
+            })
+
+        }
         appBarLayout.addOnOffsetChangedListener(onOffsetChangedListener)
 
         headHolder = DetailsHeadViewHolder(headLayout, imageLoader, resourceProvider, genreAdapter, getPresenter()::onAction)
@@ -172,7 +182,7 @@ class AnimeFragment : BaseFragment<AnimePresenter, AnimeView>(), AnimeView,
         }
     }
 
-    override fun setOptionsItem(item : DetailsOptionsItem) {
+    override fun setOptionsItem(item: DetailsOptionsItem) {
         optionsHolder.bind(item)
     }
 
