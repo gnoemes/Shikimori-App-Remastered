@@ -7,12 +7,14 @@ import androidx.fragment.app.Fragment
 import com.gnoemes.shikimori.entity.auth.AuthType
 import com.gnoemes.shikimori.entity.common.domain.Screens
 import com.gnoemes.shikimori.entity.main.BottomScreens
+import com.gnoemes.shikimori.entity.search.presentation.SearchNavigationData
 import com.gnoemes.shikimori.presentation.view.anime.AnimeFragment
 import com.gnoemes.shikimori.presentation.view.auth.AuthActivity
 import com.gnoemes.shikimori.presentation.view.calendar.CalendarFragment
 import com.gnoemes.shikimori.presentation.view.character.CharacterFragment
 import com.gnoemes.shikimori.presentation.view.person.PersonFragment
 import com.gnoemes.shikimori.presentation.view.rates.RatesContainerFragment
+import com.gnoemes.shikimori.presentation.view.search.SearchFragment
 
 object RouteHolder {
 
@@ -20,7 +22,7 @@ object RouteHolder {
         return when (screenKey) {
             BottomScreens.RATES -> RatesContainerFragment.newInstance(data as? Long)
             BottomScreens.CALENDAR -> CalendarFragment.newInstance()
-//                    BottomScreens.SEARCH ->
+            BottomScreens.SEARCH -> SearchFragment.newInstance(data as? SearchNavigationData)
 //                    BottomScreens.MAIN ->
 //                    BottomScreens.MORE ->
             Screens.ANIME_DETAILS -> AnimeFragment.newInstance(data as Long)

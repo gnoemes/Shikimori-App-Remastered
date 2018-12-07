@@ -10,6 +10,7 @@ import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.common.presentation.DetailsHeadItem
 import com.gnoemes.shikimori.entity.common.presentation.DetailsOptionsItem
 import com.gnoemes.shikimori.utils.date.DateTimeConverter
+import com.gnoemes.shikimori.utils.nullIfEmpty
 import com.gnoemes.shikimori.utils.unknownIfZero
 import javax.inject.Inject
 
@@ -21,7 +22,7 @@ class AnimeDetailsViewModelConverterImpl @Inject constructor(
 
     override fun convertHead(it: AnimeDetails): DetailsHeadItem {
 
-        val name = if (settings.isRomadziNaming) it.name else it.nameRu ?: it.name
+        val name = if (settings.isRomadziNaming) it.name else it.nameRu.nullIfEmpty() ?: it.name
         val nameSecond = if (settings.isRomadziNaming) it.nameRu ?: it.name else it.name
 
         val type = convertType(it.type, it.episodes, it.duration)

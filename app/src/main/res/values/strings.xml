@@ -34,6 +34,7 @@
     <string name="common_seyu">Сэйю</string>
     <string name="common_anime">Аниме</string>
     <string name="common_manga">Манга</string>
+    <string name="common_ranobe">Ранобэ</string>
     <string name="common_video">Видео</string>
     <string name="common_empty">Ничего не найдено</string>
     <string name="common_need_auth">Для данного действия необходима авторизация</string>
@@ -162,6 +163,7 @@
     <string name="sort_random">Рандом</string>
     <string name="rate_drawer_open">rate_drawer_open</string>
     <string name="rate_drawer_close">rate_drawer_close</string>
+    <string name="search_need_query">Введите имя для поиска</string>
 
     <string-array name="rate_types">
         <item>@string/common_anime</item>
@@ -245,6 +247,13 @@
         <item>@string/sort_random</item>
     </string-array>
 
+    <string-array name="search_types">
+        <item>@string/common_anime</item>
+        <item>@string/common_manga</item>
+        <item>@string/common_ranobe</item>
+        <item>@string/common_character</item>
+        <item>@string/common_person</item>
+    </string-array>
 
 
 </resources>

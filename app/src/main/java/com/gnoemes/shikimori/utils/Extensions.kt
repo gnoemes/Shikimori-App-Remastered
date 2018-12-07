@@ -31,6 +31,10 @@ fun String.firstUpperCase(): String? {
     return if (TextUtils.isEmpty(this)) null else this.substring(0, 1).toUpperCase() + this.substring(1)
 }
 
+fun String?.nullIfEmpty(): String? {
+    return if (isNullOrEmpty()) null else this
+}
+
 fun String.toBold(): SpannableStringBuilder {
     val builder = SpannableStringBuilder()
             .append(this)
@@ -82,7 +86,6 @@ fun Context.color(@ColorRes colorRes: Int): Int {
 
 fun Context.calculateColumns(@DimenRes itemWidth: Int): Int {
     val metrics = this.resources.displayMetrics
-//    val width = metrics.widthPixels / metrics.density
     return (metrics.widthPixels / dimen(itemWidth)).toInt()
 }
 
