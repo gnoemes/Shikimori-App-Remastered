@@ -50,7 +50,7 @@ class SearchFragment : BaseFragment<SearchPresenter, SearchView>(), SearchView, 
         arguments.ifNotNull {
             val data = it.getParcelable<SearchNavigationData>(AppExtras.ARGUMENT_SEARCH_DATA)
             data?.let {
-                searchPresenter.genre = data.genre
+                searchPresenter.searchPayload = data.payload
                 searchPresenter.type = data.type
             }
         }

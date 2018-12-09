@@ -20,6 +20,7 @@ import com.gnoemes.shikimori.entity.main.BottomScreens
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.rates.domain.UserRate
 import com.gnoemes.shikimori.entity.search.presentation.SearchNavigationData
+import com.gnoemes.shikimori.entity.search.presentation.SearchPayload
 import com.gnoemes.shikimori.presentation.presenter.anime.converter.AnimeDetailsViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.anime.converter.EpisodeViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
@@ -189,7 +190,7 @@ class AnimePresenter @Inject constructor(
     }
 
     private fun onStudioClicked(id: Long) {
-
+        router.navigateTo(BottomScreens.SEARCH, SearchNavigationData(SearchPayload(studioId = id), Type.ANIME))
     }
 
     private fun onOpenDiscussion() {
@@ -208,7 +209,7 @@ class AnimePresenter @Inject constructor(
     }
 
     private fun onGenreClicked(genre: Genre) {
-        router.navigateTo(BottomScreens.SEARCH, SearchNavigationData(genre, Type.ANIME))
+        router.navigateTo(BottomScreens.SEARCH, SearchNavigationData(SearchPayload(genre), Type.ANIME))
     }
 
     private fun onClearHistory() {

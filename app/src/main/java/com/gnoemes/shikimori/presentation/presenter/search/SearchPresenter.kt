@@ -7,6 +7,7 @@ import com.gnoemes.shikimori.entity.common.domain.Genre
 import com.gnoemes.shikimori.entity.common.domain.SearchConstants
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.search.presentation.SearchItem
+import com.gnoemes.shikimori.entity.search.presentation.SearchPayload
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
 import com.gnoemes.shikimori.presentation.presenter.common.paginator.PageOffsetPaginator
 import com.gnoemes.shikimori.presentation.presenter.common.paginator.ViewController
@@ -25,15 +26,16 @@ class SearchPresenter @Inject constructor(
 
     private var paginator: PageOffsetPaginator<SearchItem>? = null
 
-    var genre: Genre? = null
+    var searchPayload: SearchPayload? = null
+
     var type: Type = Type.ANIME
     var filters = HashMap<String, MutableList<FilterItem>>()
 
     private val supportsPagination = listOf(Type.ANIME, Type.MANGA, Type.RANOBE)
 
     override fun initData() {
-        if (genre != null) {
-            onGenreSearch()
+        if (searchPayload != null) {
+            onPayloadSearch()
         }
 
         loadData()
@@ -178,11 +180,24 @@ class SearchPresenter @Inject constructor(
         onRefresh()
     }
 
-    private fun onGenreSearch() {
-        val id = if (type == Type.ANIME) genre?.animeId else genre?.mangaId
-        val filterItem = FilterItem(SearchConstants.GENRE, id, genre?.russianName)
-        filters[SearchConstants.GENRE] = mutableListOf(filterItem)
+    private fun onPayloadSearch() {
+        searchPayload?.let {
+            if (it.genre != null) onGenreSearch(it.genre)
+            else if (it.studioId != null) onStudioSearch(it.studioId)
+        }
         viewState.addBackButton()
+    }
+
+    private fun onStudioSearch(studioId: Long) {
+        val filterItem = FilterItem(SearchConstants.STUDIO, studioId.toString(), null)
+        filters[SearchConstants.STUDIO] = mutableListOf(filterItem)
+    }
+
+    private fun onGenreSearch(genre: Genre) {
+        val id = if (type == Type.ANIME) genre.animeId else genre.mangaId
+        val filterItem = FilterItem(SearchConstants.GENRE, id, genre.russianName)
+        filters[SearchConstants.GENRE] = mutableListOf(filterItem)
+
     }
 
 }
