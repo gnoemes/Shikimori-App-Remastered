@@ -5,6 +5,8 @@ import android.view.View
 import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.Fade
+import androidx.transition.TransitionManager
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
@@ -23,6 +25,8 @@ import com.gnoemes.shikimori.presentation.view.search.filter.FilterDialogFragmen
 import com.gnoemes.shikimori.utils.*
 import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.gnoemes.shikimori.utils.widgets.GridItemDecorator
+import com.lapism.searchview.SearchView.VERSION_MARGINS_MENU_ITEM
+import com.lapism.searchview.SearchView.VERSION_MENU_ITEM
 import com.santalu.widget.ReSpinner
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.layout_default_list.*
@@ -63,6 +67,7 @@ class SearchFragment : BaseFragment<SearchPresenter, SearchView>(), SearchView, 
     }
 
     private var spinner: ReSpinner? = null
+    private var searchView: com.lapism.searchview.SearchView? = null
 
     private val adapter by lazy { SearchAdapter(imageLoader, getPresenter()::onContentClicked).apply { if (!hasObservers()) setHasStableIds(true) } }
 
@@ -78,9 +83,29 @@ class SearchFragment : BaseFragment<SearchPresenter, SearchView>(), SearchView, 
                 ))
         spinner?.setOnItemClickListener { _, _, position, _ -> getPresenter().onTypeChanged(position) }
 
+        searchView = com.lapism.searchview.SearchView(context)
+                .apply {
+                    setNavigationIcon(context.themeDrawable(R.drawable.ic_arrow_back, R.attr.colorOnPrimary))
+                    setHint(R.string.common_search)
+                    setShadow(false)
+                    setVoice(false)
+                    version = VERSION_MENU_ITEM
+                    setVersionMargins(VERSION_MARGINS_MENU_ITEM)
+                    shouldHideOnKeyboardClose = true
+                    shouldClearOnClose = true
+                    setOnOpenCloseListener(searchViewOpenListener)
+                    setOnQueryTextListener(searchViewQueryListener)
+                }
+
         toolbar?.apply {
             title = null
             addView(spinner)
+            addView(searchView)
+            inflateMenu(R.menu.menu_search)
+            setOnMenuItemClickListener {
+                searchView?.open(true, it)
+                true
+            }
         }
 
         with(recyclerView) {
@@ -109,6 +134,32 @@ class SearchFragment : BaseFragment<SearchPresenter, SearchView>(), SearchView, 
                 getPresenter().loadNextPage()
             }
         }
+    }
+
+    private val searchViewOpenListener = object : com.lapism.searchview.SearchView.OnOpenCloseListener {
+        override fun onOpen(): Boolean {
+            TransitionManager.beginDelayedTransition(toolbar, Fade())
+            spinner?.gone()
+            toolbar?.menu?.getItem(0)?.isVisible = false
+            return false
+        }
+
+        override fun onClose(): Boolean {
+            TransitionManager.beginDelayedTransition(toolbar, Fade())
+            spinner?.visible()
+            toolbar?.menu?.getItem(0)?.isVisible = true
+            return false
+        }
+    }
+
+    private val searchViewQueryListener = object : com.lapism.searchview.SearchView.OnQueryTextListener {
+        override fun onQueryTextSubmit(query: String?): Boolean {
+            getPresenter().onQuerySearch(query)
+            searchView?.close(true)
+            return false
+        }
+
+        override fun onQueryTextChange(newText: String?): Boolean = false
     }
 
     override fun onDestroyView() {

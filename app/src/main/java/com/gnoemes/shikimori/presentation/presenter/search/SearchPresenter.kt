@@ -188,16 +188,28 @@ class SearchPresenter @Inject constructor(
         viewState.addBackButton()
     }
 
+    fun onQuerySearch(query: String?) {
+        val filterItem = FilterItem(SearchConstants.SEARCH, query, null)
+        putFilter(filterItem)
+        onRefresh()
+    }
+
     private fun onStudioSearch(studioId: Long) {
         val filterItem = FilterItem(SearchConstants.STUDIO, studioId.toString(), null)
-        filters[SearchConstants.STUDIO] = mutableListOf(filterItem)
+        putFilter(filterItem)
     }
 
     private fun onGenreSearch(genre: Genre) {
         val id = if (type == Type.ANIME) genre.animeId else genre.mangaId
         val filterItem = FilterItem(SearchConstants.GENRE, id, genre.russianName)
-        filters[SearchConstants.GENRE] = mutableListOf(filterItem)
-
+        putFilter(filterItem)
     }
 
+    private fun putFilter(filter: FilterItem) {
+        putFilter(filter.action, filter)
+    }
+
+    private fun putFilter(key: String, filter: FilterItem) {
+        filters[key] = mutableListOf(filter)
+    }
 }

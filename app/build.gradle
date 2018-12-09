@@ -95,4 +95,5 @@ dependencies {
     implementation 'com.google.android:flexbox:' + versions.flexbox
     implementation 'com.infideap.drawerbehavior:drawer-behavior:' + versions.drawerBehavior
     implementation 'com.facebook.shimmer:shimmer:' + versions.shimmer
+    implementation 'com.lapism:searchview:' + versions.searchView
 }
