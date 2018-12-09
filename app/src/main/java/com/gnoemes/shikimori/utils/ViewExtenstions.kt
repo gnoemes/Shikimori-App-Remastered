@@ -5,6 +5,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
 fun View.visible() {
     visibility = View.VISIBLE
@@ -40,6 +41,14 @@ fun TextView.tintCompoundDrawables(color: Int, pos: Int = 4) {
             it?.tint(color)
         }
     }
+}
+
+fun SwipeRefreshLayout.showRefresh() {
+    isRefreshing = true
+}
+
+fun SwipeRefreshLayout.hideRefresh() {
+    isRefreshing = false
 }
 
 @ColorInt

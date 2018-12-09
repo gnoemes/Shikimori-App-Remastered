@@ -32,6 +32,7 @@ class SearchQueryBuilderImpl @Inject constructor() : SearchQueryBuilder {
         val durationQuery = ArrayList<FilterItem>()
         val searchQuery = ArrayList<FilterItem>()
         val rateQuery = ArrayList<FilterItem>()
+        val ageQuery = ArrayList<FilterItem>()
 
         filters.flatMap { entry -> entry.value }
                 .forEach { item ->
@@ -44,6 +45,7 @@ class SearchQueryBuilderImpl @Inject constructor() : SearchQueryBuilder {
                         SearchConstants.DURATION -> durationQuery.add(item)
                         SearchConstants.SEARCH -> searchQuery.add(item)
                         SearchConstants.RATE -> rateQuery.add(item)
+                        SearchConstants.AGE_RATING -> ageQuery.add(item)
                     }
                 }
 
@@ -55,11 +57,12 @@ class SearchQueryBuilderImpl @Inject constructor() : SearchQueryBuilder {
         putToQuery(queryMap, durationQuery)
         putToQuery(queryMap, searchQuery)
         putToQuery(queryMap, rateQuery)
+        putToQuery(queryMap, ageQuery)
 
         queryMap[SearchConstants.PAGE] = page.toString()
         queryMap[SearchConstants.LIMIT] = limit.toString()
 
-        queryMap[SearchConstants.CENSORED] = true.toString()
+//        queryMap[SearchConstants.CENSORED] = true.toString()
 
 
 
@@ -82,7 +85,7 @@ class SearchQueryBuilderImpl @Inject constructor() : SearchQueryBuilder {
             queryMap[SearchConstants.PAGE] = page.toString()
             queryMap[SearchConstants.LIMIT] = limit.toString()
 
-            queryMap[SearchConstants.CENSORED] = true.toString()
+//            queryMap[SearchConstants.CENSORED] = true.toString()
         }
         return Single.just(queryMap)
     }

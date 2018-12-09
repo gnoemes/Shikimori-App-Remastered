@@ -154,39 +154,16 @@ class SearchFragment : BaseFragment<SearchPresenter, SearchView>(), SearchView, 
         }
     }
 
-    override fun showFilterButton() {
-        fab.show()
-    }
-
-    override fun hideFilterButton() {
-        fab.hide()
-    }
-
-    override fun onShowLoading() {
-        refreshLayout?.isRefreshing = true
-    }
-
-    override fun onHideLoading() {
-        refreshLayout?.isRefreshing = false
-    }
-
-    override fun showPageLoading() {
-        postViewAction { adapter.showProgress(true) }
-    }
-
-    override fun hidePageLoading() {
-        postViewAction { adapter.showProgress(false) }
-    }
-
     override fun selectType(newTypePos: Int) {
         spinner?.setSelection(newTypePos, false)
     }
 
-    override fun setSimpleEmptyText() {
-        emptyContentView.setText(R.string.search_need_query)
-    }
-
-    override fun setDefaultEmptyText() {
-        emptyContentView.setText(R.string.search_nothing)
-    }
+    override fun showFilterButton() = fab.show()
+    override fun hideFilterButton() = fab.hide()
+    override fun onShowLoading() = refreshLayout.showRefresh()
+    override fun onHideLoading() = refreshLayout.hideRefresh()
+    override fun showPageLoading() = postViewAction { adapter.showProgress(true) }
+    override fun hidePageLoading() = postViewAction { adapter.showProgress(false) }
+    override fun setSimpleEmptyText() = emptyContentView.setText(R.string.search_need_query)
+    override fun setDefaultEmptyText() = emptyContentView.setText(R.string.search_nothing)
 }

@@ -22,7 +22,8 @@ class FilterAnimeStrategy(
         listOf(
                 Pair(SearchConstants.STATUS, view.statusGroup),
                 Pair(SearchConstants.DURATION, view.durationGroup),
-                Pair(SearchConstants.RATE, view.rateGroup)
+                Pair(SearchConstants.RATE, view.rateGroup),
+                Pair(SearchConstants.AGE_RATING, view.ageGroup)
         )
     }
 

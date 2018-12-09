@@ -3,10 +3,7 @@ package com.gnoemes.shikimori.presentation.view.search.filter.provider
 import android.content.Context
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.anime.domain.AnimeType
-import com.gnoemes.shikimori.entity.common.domain.FilterItem
-import com.gnoemes.shikimori.entity.common.domain.Genre
-import com.gnoemes.shikimori.entity.common.domain.SearchConstants
-import com.gnoemes.shikimori.entity.common.domain.Status
+import com.gnoemes.shikimori.entity.common.domain.*
 import com.gnoemes.shikimori.entity.manga.domain.MangaType
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import java.util.*
@@ -24,6 +21,7 @@ class FilterResourceProviderImpl(
         filters[SearchConstants.TYPE] = Pair(getTypeString(), converter.convertAnimeFilters(getList(R.array.anime_types), getList(R.array.anime_types_name), AnimeType.values()))
         filters[SearchConstants.DURATION] = Pair(getDurationString(), converter.convertAnimeFilters(getList(R.array.duration), getList(R.array.duration_names), SearchConstants.DURATIONS.values()))
         filters[SearchConstants.RATE] = Pair(getRateStatusString(), converter.convertAnimeFilters(getList(R.array.anime_rate_stasuses), getList(RateStatus.values()), RateStatus.values()))
+        filters[SearchConstants.AGE_RATING] = Pair(getAgeRatingString(), converter.convertAnimeFilters(getList(R.array.age_ratings), getList(AgeRating.values()), AgeRating.values()))
 
         return filters
     }
@@ -54,6 +52,7 @@ class FilterResourceProviderImpl(
     private fun getTypeString(): String = context.getString(R.string.common_type)
     private fun getGenreString(): String = context.getString(R.string.common_genre)
     private fun getRateStatusString(): String = context.getString(R.string.rate_status)
+    private fun getAgeRatingString(): String = context.getString(R.string.common_age_rating)
 
     private fun getList(arrayRes: Int): MutableList<String> {
         return context.resources.getStringArray(arrayRes).toMutableList()
@@ -65,6 +64,10 @@ class FilterResourceProviderImpl(
 
     private fun getList(values: Array<Status>): MutableList<String> {
         return values.map { it.status.toLowerCase() }.toMutableList()
+    }
+
+    private fun getList(values: Array<AgeRating>): MutableList<String> {
+        return values.asSequence().filter { it.rating != AgeRating.NONE.rating }.map { it.rating.toLowerCase() }.toMutableList()
     }
 
 }

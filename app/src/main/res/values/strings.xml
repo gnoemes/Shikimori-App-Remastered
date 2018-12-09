@@ -51,6 +51,7 @@
     <string name="common_repeat">Повторить</string>
     <string name="common_reset">Сброс</string>
     <string name="common_accept">Принять</string>
+    <string name="common_age_rating">Возрастной рейтинг</string>
 
     <string name="season_autumn">Осень</string>
     <string name="season_winter">Зима</string>
@@ -359,6 +360,15 @@
         <item>manhua</item>
         <item>one_shot</item>
         <item>doujin</item>
+    </string-array>
+
+    <string-array name="age_ratings">
+        <item>G</item>
+        <item>PG</item>
+        <item>PG-13</item>
+        <item>R</item>
+        <item>R+</item>
+        <item>Rx</item>
     </string-array>
 
 

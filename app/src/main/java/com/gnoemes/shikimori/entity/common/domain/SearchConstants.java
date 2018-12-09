@@ -23,6 +23,7 @@ public class SearchConstants {
     public static final String ORDER = "order";
     public static final String IDS = "ids";
     public static final String CENSORED = "censored";
+    public static final String AGE_RATING = "rating";
 
     ////////////////////////////////////////////////////////////////////
     // Values

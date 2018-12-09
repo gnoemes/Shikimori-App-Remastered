@@ -1,10 +1,7 @@
 package com.gnoemes.shikimori.presentation.view.search.filter.provider
 
 import com.gnoemes.shikimori.entity.anime.domain.AnimeType
-import com.gnoemes.shikimori.entity.common.domain.FilterItem
-import com.gnoemes.shikimori.entity.common.domain.Genre
-import com.gnoemes.shikimori.entity.common.domain.SearchConstants
-import com.gnoemes.shikimori.entity.common.domain.Status
+import com.gnoemes.shikimori.entity.common.domain.*
 import com.gnoemes.shikimori.entity.manga.domain.MangaType
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 
@@ -38,6 +35,8 @@ class FilterResourceConverterImpl : FilterResourceConverter {
             SearchConstants.DURATION
         } else if (isRate(type)) {
             SearchConstants.RATE
+        } else if (isAge(type)) {
+            SearchConstants.AGE_RATING
         } else {
             null
         }
@@ -56,6 +55,7 @@ class FilterResourceConverterImpl : FilterResourceConverter {
             isOrder(type) -> SearchConstants.ORDER_BY.values().find { it.equalsType(typeName) }?.toString()
             isDuration(type) -> SearchConstants.DURATIONS.values().find { it.equalsDuration(typeName) }?.toString()
             isRate(type) -> RateStatus.values().find { it.status == typeName }?.status
+            isAge(type) -> AgeRating.values().find { it.rating == typeName }?.rating
             else -> null
         }
     }
@@ -68,4 +68,5 @@ class FilterResourceConverterImpl : FilterResourceConverter {
     private fun isOrder(enums: Array<*>): Boolean = enums.isArrayOf<SearchConstants.ORDER_BY>()
     private fun isDuration(enums: Array<*>): Boolean = enums.isArrayOf<SearchConstants.DURATIONS>()
     private fun isRate(enums: Array<*>): Boolean = enums.isArrayOf<RateStatus>()
+    private fun isAge(enums: Array<*>): Boolean = enums.isArrayOf<AgeRating>()
 }
