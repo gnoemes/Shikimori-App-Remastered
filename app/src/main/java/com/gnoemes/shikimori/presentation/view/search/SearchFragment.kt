@@ -158,6 +158,10 @@ class SearchFragment : BaseFragment<SearchPresenter, SearchView>(), SearchView, 
         spinner?.setSelection(newTypePos, false)
     }
 
+    override fun addBackButton() {
+        toolbar?.addBackButton { getPresenter().onBackPressed() }
+    }
+
     override fun showFilterButton() = fab.show()
     override fun hideFilterButton() = fab.hide()
     override fun onShowLoading() = refreshLayout.showRefresh()

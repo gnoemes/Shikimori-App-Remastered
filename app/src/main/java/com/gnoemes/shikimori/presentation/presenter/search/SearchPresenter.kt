@@ -4,6 +4,7 @@ import com.arellomobile.mvp.InjectViewState
 import com.gnoemes.shikimori.domain.search.SearchInteractor
 import com.gnoemes.shikimori.entity.common.domain.FilterItem
 import com.gnoemes.shikimori.entity.common.domain.Genre
+import com.gnoemes.shikimori.entity.common.domain.SearchConstants
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.search.presentation.SearchItem
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
@@ -31,9 +32,15 @@ class SearchPresenter @Inject constructor(
     private val supportsPagination = listOf(Type.ANIME, Type.MANGA, Type.RANOBE)
 
     override fun initData() {
+        if (genre != null) {
+            onGenreSearch()
+        }
+
         loadData()
+
         viewState.setDefaultEmptyText()
     }
+
 
     private fun loadData() {
         if (isPagination()) loadWithPaginator()
@@ -141,7 +148,7 @@ class SearchPresenter @Inject constructor(
             showData(emptyList())
             hideEmptyView()
             setDefaultEmptyText()
-            if(supportsPagination.contains(type)) showFilterButton()
+            if (supportsPagination.contains(type)) showFilterButton()
             else hideFilterButton()
         }
 
@@ -169,6 +176,13 @@ class SearchPresenter @Inject constructor(
     fun onFilterSelected(appliedFilters: HashMap<String, MutableList<FilterItem>>) {
         filters = appliedFilters
         onRefresh()
+    }
+
+    private fun onGenreSearch() {
+        val id = if (type == Type.ANIME) genre?.animeId else genre?.mangaId
+        val filterItem = FilterItem(SearchConstants.GENRE, id, genre?.russianName)
+        filters[SearchConstants.GENRE] = mutableListOf(filterItem)
+        viewState.addBackButton()
     }
 
 }

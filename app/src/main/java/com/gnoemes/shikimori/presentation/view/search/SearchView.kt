@@ -31,4 +31,6 @@ interface SearchView : BaseFragmentView {
     fun showFilterButton()
 
     fun hideFilterButton()
+
+    fun addBackButton()
 }
