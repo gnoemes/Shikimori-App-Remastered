@@ -25,7 +25,7 @@
         android:paddingEnd="0dp"
         android:paddingRight="0dp"
         android:paddingBottom="8dp"
-        android:tint="?attr/colorOnSecondary"
+        android:tint="@color/rate_default_dark"
         app:srcCompat="@drawable/ic_plus" />
 
     <com.santalu.widget.ReSpinner

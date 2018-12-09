@@ -174,7 +174,7 @@ abstract class BaseFilterStrategy(
 
         fun tintActive() {
             chip.background?.tint(context.colorAttr(R.attr.colorAccent))
-            chip.setTextColor(context.colorAttr(R.attr.colorOnSecondary))
+            chip.setTextColor(context.colorAttr(R.attr.colorOnAccent))
         }
 
         fun tintDefault() {
