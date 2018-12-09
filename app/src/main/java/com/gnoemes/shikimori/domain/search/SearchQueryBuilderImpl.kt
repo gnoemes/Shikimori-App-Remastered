@@ -6,7 +6,6 @@ import com.gnoemes.shikimori.entity.common.domain.FilterItem
 import com.gnoemes.shikimori.entity.common.domain.SearchConstants
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import io.reactivex.Single
-import java.util.regex.Pattern
 import javax.inject.Inject
 
 //TODO settings for 18+
@@ -14,57 +13,17 @@ class SearchQueryBuilderImpl @Inject constructor() : SearchQueryBuilder {
 
     companion object {
         private const val DIVIDER = ","
-        private const val SEASON_DIVIDER = "_"
     }
 
     override fun createQueryFromFilters(filters: Map<String, MutableList<FilterItem>>?, page: Int, limit: Int): Single<Map<String, String>> {
         val queryMap = ArrayMap<String, String>()
 
-        if (filters == null || filters.isEmpty()) {
-            return Single.fromCallable { getDefaultRequest(page, limit) }
-        }
+        if (filters.isNullOrEmpty()) return Single.fromCallable { getDefaultRequest(page, limit) }
 
-        val genreQuery = ArrayList<FilterItem>()
-        val typeQuery = ArrayList<FilterItem>()
-        val statusQuery = ArrayList<FilterItem>()
-        val orderQuery = ArrayList<FilterItem>()
-        val seasonQuery = ArrayList<FilterItem>()
-        val durationQuery = ArrayList<FilterItem>()
-        val searchQuery = ArrayList<FilterItem>()
-        val rateQuery = ArrayList<FilterItem>()
-        val ageQuery = ArrayList<FilterItem>()
-
-        filters.flatMap { entry -> entry.value }
-                .forEach { item ->
-                    when (item.action) {
-                        SearchConstants.GENRE -> genreQuery.add(item)
-                        SearchConstants.TYPE -> typeQuery.add(item)
-                        SearchConstants.STATUS -> statusQuery.add(item)
-                        SearchConstants.SEASON -> seasonQuery.add(item)
-                        SearchConstants.ORDER -> orderQuery.add(item)
-                        SearchConstants.DURATION -> durationQuery.add(item)
-                        SearchConstants.SEARCH -> searchQuery.add(item)
-                        SearchConstants.RATE -> rateQuery.add(item)
-                        SearchConstants.AGE_RATING -> ageQuery.add(item)
-                    }
-                }
-
-        putToQuery(queryMap, genreQuery)
-        putToQuery(queryMap, typeQuery)
-        putToQuery(queryMap, statusQuery)
-        putToQuery(queryMap, orderQuery)
-        putSeasonToQuery(queryMap, seasonQuery)
-        putToQuery(queryMap, durationQuery)
-        putToQuery(queryMap, searchQuery)
-        putToQuery(queryMap, rateQuery)
-        putToQuery(queryMap, ageQuery)
+        filters.forEach { entry -> queryMap[entry.key] = convertFilters(entry.value) }
 
         queryMap[SearchConstants.PAGE] = page.toString()
         queryMap[SearchConstants.LIMIT] = limit.toString()
-
-//        queryMap[SearchConstants.CENSORED] = true.toString()
-
-
 
         return Single.just(queryMap)
     }
@@ -77,6 +36,7 @@ class SearchQueryBuilderImpl @Inject constructor() : SearchQueryBuilder {
         }
 
         if (ids.isNotEmpty()) {
+            //TODO wtf? check and refactor when is time for use
             val builder = StringBuilder()
             ids.forEach { builder.append(it).append(DIVIDER) }
             builder.deleteCharAt(builder.length - 1)
@@ -98,6 +58,7 @@ class SearchQueryBuilderImpl @Inject constructor() : SearchQueryBuilder {
         }
 
         if (ids.isNotEmpty()) {
+            //TODO wtf? check and refactor when is time for use
             val builder = StringBuilder()
             ids.forEach { builder.append(it).append(DIVIDER) }
             builder.deleteCharAt(builder.length - 1)
@@ -119,35 +80,16 @@ class SearchQueryBuilderImpl @Inject constructor() : SearchQueryBuilder {
         return queryMap
     }
 
-    private fun putToQuery(map: MutableMap<String, String>, filters: List<FilterItem>?) {
-        if (filters != null && !filters.isEmpty()) {
-            val genreString = StringBuilder()
-            for (item in filters) {
-                genreString.append(item.value)
-                        .append(DIVIDER)
-            }
-
-            genreString.deleteCharAt(genreString.length - 1)
-            map[filters[0].action] = genreString.toString()
-        }
+    private fun convertFilters(values: MutableList<FilterItem>): String {
+        return convertQuery(values.mapNotNull { it.value })
     }
 
-    private fun putSeasonToQuery(map: MutableMap<String, String>, filters: List<FilterItem>?) {
-        if (filters != null && !filters.isEmpty()) {
-            val genreString = StringBuilder()
-            for (item in filters) {
-                val season = item.value
-                if (!Pattern.matches("\\d+", season)) {
-                    genreString.append(season)
-                    genreString.append(SEASON_DIVIDER)
-                } else {
-                    genreString.append(season)
-                    genreString.append(DIVIDER)
-                }
-            }
-
-            genreString.deleteCharAt(genreString.length - 1)
-            map[filters[0].action] = genreString.toString()
-        }
+    private fun convertQuery(values: List<String>): String {
+        return if (!values.isNullOrEmpty()) {
+            val builder = StringBuilder()
+            values.forEach { builder.append(it).append(DIVIDER) }
+            builder.replace(builder.lastIndexOf(DIVIDER), builder.length, "")
+            builder.toString()
+        } else ""
     }
 }
