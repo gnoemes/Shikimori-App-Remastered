@@ -46,6 +46,9 @@ class DetailsHeadViewHolder(
             }
             studioView.visibleIf { item.studio != null }
 
+            ageRatingView.text = item.ageRating
+            ageRatingView.visibleIf { item.ageRating != null }
+
             nameView.text = item.name
             nameSecondView.text = item.nameSecond
 

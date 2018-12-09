@@ -5,6 +5,7 @@ import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.entity.anime.domain.AnimeDetails
 import com.gnoemes.shikimori.entity.anime.domain.AnimeType
+import com.gnoemes.shikimori.entity.common.domain.AgeRating
 import com.gnoemes.shikimori.entity.common.domain.Status
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.common.presentation.DetailsHeadItem
@@ -29,6 +30,8 @@ class AnimeDetailsViewModelConverterImpl @Inject constructor(
         val season = converter.convertAnimeSeasonToString(it.dateAired)
         val status = convertStatus(it.status)
 
+        val rating = convertRating(it.ageRating)
+
         return DetailsHeadItem(
                 Type.ANIME,
                 name,
@@ -37,6 +40,7 @@ class AnimeDetailsViewModelConverterImpl @Inject constructor(
                 type,
                 season,
                 status,
+                rating,
                 it.score,
                 it.genres,
                 it.studios.firstOrNull()
@@ -66,5 +70,13 @@ class AnimeDetailsViewModelConverterImpl @Inject constructor(
     private fun convertType(type: AnimeType, episodes: Int, duration: Int): String {
         return String.format(context.getString(R.string.type_pattern), type.type.toUpperCase(),
                 episodes.unknownIfZero(), duration)
+    }
+
+    private fun convertRating(ageRating: AgeRating): String? {
+        val names = context.resources.getStringArray(R.array.age_ratings_values)
+        val values = AgeRating.values().filter { it.rating != AgeRating.NONE.rating }
+        return names.zip(values)
+                .find { it.second == ageRating }
+                ?.first
     }
 }

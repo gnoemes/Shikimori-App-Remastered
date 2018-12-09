@@ -3,6 +3,7 @@ package com.gnoemes.shikimori.entity.anime.data
 import com.gnoemes.shikimori.entity.anime.domain.AnimeType
 import com.gnoemes.shikimori.entity.common.data.GenreResponse
 import com.gnoemes.shikimori.entity.common.data.ImageResponse
+import com.gnoemes.shikimori.entity.common.domain.AgeRating
 import com.gnoemes.shikimori.entity.common.domain.Status
 import com.gnoemes.shikimori.entity.rates.data.UserRateResponse
 import com.gnoemes.shikimori.entity.studio.StudioResponse
@@ -23,6 +24,7 @@ data class AnimeDetailsResponse(
         @field:SerializedName("released_on") val dateReleased: DateTime?,
         @field:SerializedName("english") val namesEnglish: List<String?>?,
         @field:SerializedName("japanese") val namesJapanese: List<String?>?,
+        @field:SerializedName("rating") val ageRating: AgeRating,
         @field:SerializedName("score") val score: Double,
         @field:SerializedName("duration") val duration: Int,
         @field:SerializedName("description") val description: String?,

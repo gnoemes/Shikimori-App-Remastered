@@ -1,5 +1,6 @@
 package com.gnoemes.shikimori.entity.anime.domain
 
+import com.gnoemes.shikimori.entity.common.domain.AgeRating
 import com.gnoemes.shikimori.entity.common.domain.Genre
 import com.gnoemes.shikimori.entity.common.domain.Image
 import com.gnoemes.shikimori.entity.common.domain.Status
@@ -21,6 +22,7 @@ data class AnimeDetails(
         val dateReleased: DateTime?,
         val namesEnglish: List<String?>?,
         val namesJapanese: List<String?>?,
+        val ageRating: AgeRating,
         val score: Double,
         val duration: Int,
         val description: String?,

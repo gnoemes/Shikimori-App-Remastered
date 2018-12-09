@@ -13,6 +13,7 @@ data class DetailsHeadItem(
         val type: String,
         val season: String,
         val status: String,
+        val ageRating: String?,
         val score: Double,
         val genres: List<Genre>,
         val studio: Studio?
