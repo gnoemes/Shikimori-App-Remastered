@@ -13,7 +13,7 @@ class SortResourceProviderImpl @Inject constructor(
             listOf(
                     Pair(RateSort.Id, context.getString(R.string.sort_id)),
                     Pair(RateSort.Type, context.getString(R.string.sort_type)),
-                    Pair(RateSort.DateAired, context.getString(R.string.sort_date_aired)),
+                    Pair(RateSort.DateAired, context.getString(R.string.sort_date)),
                     Pair(RateSort.Status, context.getString(R.string.sort_status)),
                     Pair(RateSort.Episodes, context.getString(R.string.sort_episodes)),
                     Pair(RateSort.EpisodesWatched, context.getString(R.string.sort_episodes_watched)),
@@ -25,7 +25,7 @@ class SortResourceProviderImpl @Inject constructor(
             listOf(
                     Pair(RateSort.Id, context.getString(R.string.sort_id)),
                     Pair(RateSort.Type, context.getString(R.string.sort_type)),
-                    Pair(RateSort.DateAired, context.getString(R.string.sort_date_aired)),
+                    Pair(RateSort.DateAired, context.getString(R.string.sort_date)),
                     Pair(RateSort.Status, context.getString(R.string.sort_status)),
                     Pair(RateSort.Episodes, context.getString(R.string.sort_chapters)),
                     Pair(RateSort.EpisodesWatched, context.getString(R.string.sort_chapters_readed)),

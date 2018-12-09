@@ -6,7 +6,6 @@ import com.gnoemes.shikimori.entity.common.domain.FilterItem
 import com.gnoemes.shikimori.entity.common.domain.SearchConstants
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import io.reactivex.Single
-import java.util.*
 import java.util.regex.Pattern
 import javax.inject.Inject
 
@@ -32,6 +31,7 @@ class SearchQueryBuilderImpl @Inject constructor() : SearchQueryBuilder {
         val seasonQuery = ArrayList<FilterItem>()
         val durationQuery = ArrayList<FilterItem>()
         val searchQuery = ArrayList<FilterItem>()
+        val rateQuery = ArrayList<FilterItem>()
 
         filters.flatMap { entry -> entry.value }
                 .forEach { item ->
@@ -43,6 +43,7 @@ class SearchQueryBuilderImpl @Inject constructor() : SearchQueryBuilder {
                         SearchConstants.ORDER -> orderQuery.add(item)
                         SearchConstants.DURATION -> durationQuery.add(item)
                         SearchConstants.SEARCH -> searchQuery.add(item)
+                        SearchConstants.RATE -> rateQuery.add(item)
                     }
                 }
 
@@ -53,6 +54,7 @@ class SearchQueryBuilderImpl @Inject constructor() : SearchQueryBuilder {
         putSeasonToQuery(queryMap, seasonQuery)
         putToQuery(queryMap, durationQuery)
         putToQuery(queryMap, searchQuery)
+        putToQuery(queryMap, rateQuery)
 
         queryMap[SearchConstants.PAGE] = page.toString()
         queryMap[SearchConstants.LIMIT] = limit.toString()
@@ -101,7 +103,7 @@ class SearchQueryBuilderImpl @Inject constructor() : SearchQueryBuilder {
             queryMap[SearchConstants.PAGE] = page.toString()
             queryMap[SearchConstants.LIMIT] = limit.toString()
 
-            queryMap[SearchConstants.MY_LIST] = status.status
+            queryMap[SearchConstants.RATE] = status.status
         }
         return Single.just(queryMap)
     }

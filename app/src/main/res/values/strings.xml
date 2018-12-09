@@ -15,6 +15,7 @@
     <string name="common_status">Статус</string>
     <string name="common_season">Сезон</string>
     <string name="common_year">Год</string>
+    <string name="common_duration">Продолжительность</string>
     <string name="common_yesterday">Вчера</string>
     <string name="common_error_message">Похоже, что у Вас отсуствует интернет-соединение или произошла ошибка.\n Потяните, что бы обновить</string>
     <string name="common_error_message_without_pull">Похоже, что у Вас отсуствует интернет-соединение или произошла ошибка.</string>
@@ -48,6 +49,8 @@
     <string name="common_roles">Роли</string>
     <string name="common_all">Все</string>
     <string name="common_repeat">Повторить</string>
+    <string name="common_reset">Сброс</string>
+    <string name="common_accept">Принять</string>
 
     <string name="season_autumn">Осень</string>
     <string name="season_winter">Зима</string>
@@ -82,6 +85,7 @@
     <string name="rate_dropped_with_count">Брошено (%s)</string>
     <string name="rate_remove">Удалить из списка</string>
     <string name="rate_comment">Комментарий</string>
+    <string name="rate_status">Статус просмотра</string>
 
     <string name="rating_empty">Нет оценки</string>
     <string name="rating_bad_ass">Хуже некуда</string>
@@ -141,6 +145,9 @@
     <string name="type_movie_translatable">Фильм</string>
     <string name="type_special_translatable">Спешл</string>
     <string name="type_music_translatable">Музыка</string>
+    <string name="type_tv_13" translatable="false">TV 13</string>
+    <string name="type_tv_24" translatable="false">TV 24</string>
+    <string name="type_tv_48" translatable="false">TV 48</string>
     <string name="type_ova" translatable="false">OVA</string>
     <string name="type_ona" translatable="false">ONA</string>
 
@@ -153,17 +160,24 @@
 
     <string name="sort_id">По порядку</string>
     <string name="sort_type">По типу</string>
-    <string name="sort_date_aired">По дате выхода</string>
+    <string name="sort_date">По дате</string>
     <string name="sort_status">По статусу</string>
     <string name="sort_episodes">По кол-ву эпизодов</string>
     <string name="sort_chapters">По кол-ву глав</string>
+    <string name="sort_volumes">По кол-ву томов</string>
     <string name="sort_episodes_watched">По эпизодам</string>
     <string name="sort_chapters_readed">По главам</string>
     <string name="sort_score">По оценке</string>
     <string name="sort_random">Рандом</string>
+    <string name="sort_popularity">По популярности</string>
+    <string name="sort_name">По имени</string>
+    <string name="sort_rating">По рейтингу</string>
     <string name="rate_drawer_open">rate_drawer_open</string>
     <string name="rate_drawer_close">rate_drawer_close</string>
     <string name="search_need_query">Введите имя для поиска</string>
+
+    <string name="filter_not_selected">Не выбрано</string>
+    <string name="filter_select">Выбрать</string>
 
     <string-array name="rate_types">
         <item>@string/common_anime</item>
@@ -239,7 +253,7 @@
     <string-array name="anime_rate_sorts">
         <item>@string/sort_id</item>
         <item>@string/sort_type</item>
-        <item>@string/sort_date_aired</item>
+        <item>@string/sort_date</item>
         <item>@string/sort_status</item>
         <item>@string/sort_episodes</item>
         <item>@string/sort_episodes_watched</item>
@@ -253,6 +267,98 @@
         <item>@string/common_ranobe</item>
         <item>@string/common_character</item>
         <item>@string/common_person</item>
+    </string-array>
+
+    <string-array name="anime_search_sort">
+        <item>@string/sort_name</item>
+        <item>@string/sort_date</item>
+        <item>@string/sort_type</item>
+        <item>@string/sort_id</item>
+        <item>@string/sort_status</item>
+        <item>@string/sort_random</item>
+        <item>@string/sort_episodes</item>
+        <item>@string/sort_score</item>
+        <item>@string/sort_popularity</item>
+    </string-array>
+
+    <string-array name="manga_search_sort">
+        <item>@string/sort_name</item>
+        <item>@string/sort_date</item>
+        <item>@string/sort_id</item>
+        <item>@string/sort_status</item>
+        <item>@string/sort_random</item>
+        <item>@string/sort_volumes</item>
+        <item>@string/sort_chapters</item>
+        <item>@string/sort_score</item>
+        <item>@string/sort_popularity</item>
+    </string-array>
+
+    <string-array name="statuses">
+        <item>@string/status_anons</item>
+        <item>@string/status_ongoing</item>
+        <item>@string/status_released</item>
+    </string-array>
+
+    <string-array name="statuses_names">
+        <item>anons</item>
+        <item>ongoing</item>
+        <item>released</item>
+    </string-array>
+
+    <string-array name="anime_types">
+        <item>@string/type_tv_translatable</item>
+        <item>@string/type_ova</item>
+        <item>@string/type_ona</item>
+        <item>@string/type_special_translatable</item>
+        <item>@string/type_movie_translatable</item>
+        <item>@string/type_music_translatable</item>
+        <item>@string/type_tv_13</item>
+        <item>@string/type_tv_24</item>
+        <item>@string/type_tv_48</item>
+    </string-array>
+
+    <string-array name="anime_types_name">
+        <item>tv</item>
+        <item>ova</item>
+        <item>ona</item>
+        <item>special</item>
+        <item>movie</item>
+        <item>music</item>
+        <item>tv_13</item>
+        <item>tv_24</item>
+        <item>tv_48</item>
+    </string-array>
+
+    <string name="duration_small">&lt; 10 мин.</string>
+    <string name="duration_medium">&lt; 30 мин.</string>
+    <string name="duration_long">&gt; 30 мин.</string>
+
+    <string-array name="duration">
+        <item>@string/duration_small</item>
+        <item>@string/duration_medium</item>
+        <item>@string/duration_long</item>
+    </string-array>
+
+    <string-array name="duration_names">
+        <item>S</item>
+        <item>D</item>
+        <item>F</item>
+    </string-array>
+
+    <string-array name="manga_types">
+        <item>@string/type_manga_translatable</item>
+        <item>@string/type_manhwa_translatable</item>
+        <item>@string/type_manhua_translatable</item>
+        <item>@string/type_one_shot_translatable</item>
+        <item>@string/type_doujin_translatable</item>
+    </string-array>
+
+    <string-array name="manga_types_name">
+        <item>manga</item>
+        <item>manhwa</item>
+        <item>manhua</item>
+        <item>one_shot</item>
+        <item>doujin</item>
     </string-array>
 
 

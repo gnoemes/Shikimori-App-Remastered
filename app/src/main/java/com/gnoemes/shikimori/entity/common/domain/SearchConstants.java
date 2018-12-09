@@ -17,11 +17,11 @@ public class SearchConstants {
     public static final String PAGE = "page";
     public static final String LIMIT = "limit";
     public static final String DURATION = "duration";
+    public static final String RATE = "mylist";
     public static final String SCORE = "score";
     public static final String SEASON = "season";
     public static final String ORDER = "order";
     public static final String IDS = "ids";
-    public static final String MY_LIST = "mylist";
     public static final String CENSORED = "censored";
 
     ////////////////////////////////////////////////////////////////////

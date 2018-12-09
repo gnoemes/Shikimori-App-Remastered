@@ -32,6 +32,7 @@ class SearchPresenter @Inject constructor(
 
     override fun initData() {
         loadData()
+        viewState.setDefaultEmptyText()
     }
 
     private fun loadData() {
@@ -51,10 +52,15 @@ class SearchPresenter @Inject constructor(
     }
 
     private fun loadWithPaginator() {
-        destroyPaginator()
+        if (paginator == null) {
+            paginator = PageOffsetPaginator(getPaginatorRequestFactory(), viewController)
+        }
 
-        paginator = PageOffsetPaginator(getPaginatorRequestFactory(), viewController)
         paginator?.refresh()
+    }
+
+    fun onFilterClicked() {
+        viewState.showFilter(type, filters)
     }
 
     fun loadNextPage() {
@@ -78,12 +84,6 @@ class SearchPresenter @Inject constructor(
             Type.CHARACTER -> interactor.loadCharacterListWithFilters(filters).map(converter)
             else -> interactor.loadPersonListWithFilters(filters).map(converter)
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        destroyPaginator()
     }
 
     private val viewController = object : ViewController<SearchItem> {
@@ -134,11 +134,15 @@ class SearchPresenter @Inject constructor(
     fun onTypeChanged(newTypePos: Int) {
         this.type = getType(newTypePos)
 
+        destroyPaginator()
+
         viewState.apply {
             selectType(newTypePos)
             showData(emptyList())
             hideEmptyView()
             setDefaultEmptyText()
+            if(supportsPagination.contains(type)) showFilterButton()
+            else hideFilterButton()
         }
 
         filters.clear()
@@ -154,6 +158,17 @@ class SearchPresenter @Inject constructor(
             4 -> Type.PERSON
             else -> Type.ANIME
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        destroyPaginator()
+    }
+
+    fun onFilterSelected(appliedFilters: HashMap<String, MutableList<FilterItem>>) {
+        filters = appliedFilters
+        onRefresh()
     }
 
 }

@@ -10,23 +10,28 @@ import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.app.domain.AppExtras
 import com.gnoemes.shikimori.entity.app.domain.Constants
+import com.gnoemes.shikimori.entity.common.domain.FilterItem
+import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.search.presentation.SearchItem
 import com.gnoemes.shikimori.entity.search.presentation.SearchNavigationData
 import com.gnoemes.shikimori.presentation.presenter.search.SearchPresenter
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragment
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
 import com.gnoemes.shikimori.presentation.view.search.adapter.SearchAdapter
+import com.gnoemes.shikimori.presentation.view.search.filter.FilterCallback
+import com.gnoemes.shikimori.presentation.view.search.filter.FilterDialogFragment
 import com.gnoemes.shikimori.utils.*
 import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.gnoemes.shikimori.utils.widgets.GridItemDecorator
 import com.santalu.widget.ReSpinner
+import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.layout_default_list.*
 import kotlinx.android.synthetic.main.layout_default_placeholders.*
 import kotlinx.android.synthetic.main.layout_progress.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import javax.inject.Inject
 
-class SearchFragment : BaseFragment<SearchPresenter, SearchView>(), SearchView {
+class SearchFragment : BaseFragment<SearchPresenter, SearchView>(), SearchView, FilterCallback {
 
     @Inject
     lateinit var imageLoader: ImageLoader
@@ -87,6 +92,8 @@ class SearchFragment : BaseFragment<SearchPresenter, SearchView>(), SearchView {
             addOnScrollListener(nextPageListener)
         }
 
+        fab.setOnClickListener { getPresenter().onFilterClicked() }
+
         refreshLayout.setOnRefreshListener { getPresenter().onRefresh() }
     }
 
@@ -120,6 +127,9 @@ class SearchFragment : BaseFragment<SearchPresenter, SearchView>(), SearchView {
     ///////////////////////////////////////////////////////////////////////////
     // CALLBACKS
     ///////////////////////////////////////////////////////////////////////////
+    override fun onFiltersSelected(appliedFilters: HashMap<String, MutableList<FilterItem>>) {
+        getPresenter().onFilterSelected(appliedFilters)
+    }
 
     ///////////////////////////////////////////////////////////////////////////
     // MVP
@@ -132,6 +142,24 @@ class SearchFragment : BaseFragment<SearchPresenter, SearchView>(), SearchView {
 
     override fun hideData() {
         recyclerView.gone()
+    }
+
+    override fun showFilter(type: Type, filters: HashMap<String, MutableList<FilterItem>>) {
+        val tag = "filterDialog"
+        val fragment = fragmentManager?.findFragmentByTag(tag)
+        if (fragment == null) {
+            val filter = FilterDialogFragment.newInstance(type, filters)
+            filter.setTargetFragment(this, 42)
+            postViewAction { filter.show(fragmentManager, tag) }
+        }
+    }
+
+    override fun showFilterButton() {
+        fab.show()
+    }
+
+    override fun hideFilterButton() {
+        fab.hide()
     }
 
     override fun onShowLoading() {

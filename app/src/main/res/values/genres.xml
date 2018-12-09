@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="drama">Драма</string>
+    <string name="game">Игры</string>
+    <string name="psychological">Психологическое</string>
+    <string name="adventure">Приключения</string>
+    <string name="music">Музыка</string>
+    <string name="action">Экшен</string>
+    <string name="comedy">Комедия</string>
+    <string name="demons">Демоны</string>
+    <string name="police">Полиция</string>
+    <string name="space">Космос</string>
+    <string name="ecchi">Этти</string>
+    <string name="fantasy">Фэнтези</string>
+    <string name="historical">Исторический</string>
+    <string name="horror">Ужасы</string>
+    <string name="magic">Магия</string>
+    <string name="mecha">Меха</string>
+    <string name="parody">Пародия</string>
+    <string name="samurai">Самураи</string>
+    <string name="romance">Романтика</string>
+    <string name="school">Школа</string>
+    <string name="shoujo">Сёдзе</string>
+    <string name="shounen">Сёнен</string>
+    <string name="shounen_ai">Сёнен Ай</string>
+    <string name="sports">Спорт</string>
+    <string name="vampire">Вампиры</string>
+    <string name="harem">Гарем</string>
+    <string name="slice_of_life">Повседневность</string>
+    <string name="seinen">Сейнен</string>
+    <string name="supernatural">Сверхъестественное</string>
+    <string name="thriller">Триллер</string>
+    <string name="shoujo_ai">Сёдзе Ай</string>
+    <string name="sci_fi">Фантастика</string>
+    <string name="super_power">Супер сила</string>
+    <string name="military">Военное</string>
+    <string name="kids">Детское</string>
+    <string name="cars">Машины</string>
+    <string name="martial_arts">Боевые искусства</string>
+    <string name="dementia">Безумие</string>
+
+    <!--   NONONONONO 18+ :)  -->
+    <string name="hentai">Хентай</string>
+    <string name="yaoi">Яой</string>
+    <string name="yuri">Юри</string>
+
+
+    <string-array name="genres">
+        <item>@string/action</item>
+        <item>@string/adventure</item>
+        <item>@string/comedy</item>
+        <item>@string/parody</item>
+        <item>@string/drama</item>
+        <item>@string/romance</item>
+        <item>@string/game</item>
+        <item>@string/fantasy</item>
+        <item>@string/magic</item>
+        <item>@string/ecchi</item>
+        <item>@string/demons</item>
+        <item>@string/super_power</item>
+        <item>@string/school</item>
+        <item>@string/harem</item>
+        <item>@string/mecha</item>
+        <item>@string/sports</item>
+        <item>@string/space</item>
+        <item>@string/sci_fi</item>
+        <item>@string/martial_arts</item>
+        <item>@string/dementia</item>
+        <item>@string/historical</item>
+        <item>@string/horror</item>
+        <item>@string/military</item>
+        <item>@string/police</item>
+        <item>@string/music</item>
+        <item>@string/samurai</item>
+        <item>@string/shoujo</item>
+        <item>@string/shounen</item>
+        <item>@string/shounen_ai</item>
+        <item>@string/vampire</item>
+        <item>@string/slice_of_life</item>
+        <item>@string/psychological</item>
+        <item>@string/seinen</item>
+        <item>@string/supernatural</item>
+        <item>@string/thriller</item>
+        <item>@string/shoujo_ai</item>
+        <item>@string/kids</item>
+        <item>@string/cars</item>
+    </string-array>
+
+    <string-array name="genres_names">
+        <item>action</item>
+        <item>adventure</item>
+        <item>comedy</item>
+        <item>parody</item>
+        <item>drama</item>
+        <item>romance</item>
+        <item>game</item>
+        <item>fantasy</item>
+        <item>magic</item>
+        <item>ecchi</item>
+        <item>demons</item>
+        <item>super_power</item>
+        <item>school</item>
+        <item>harem</item>
+        <item>mecha</item>
+        <item>sports</item>
+        <item>space</item>
+        <item>sci_fi</item>
+        <item>martial_arts</item>
+        <item>dementia</item>
+        <item>historical</item>
+        <item>horror</item>
+        <item>military</item>
+        <item>police</item>
+        <item>music</item>
+        <item>samurai</item>
+        <item>shoujo</item>
+        <item>shounen</item>
+        <item>shounen_ai</item>
+        <item>vampire</item>
+        <item>slice_of_life</item>
+        <item>psychological</item>
+        <item>seinen</item>
+        <item>supernatural</item>
+        <item>thriller</item>
+        <item>shoujo_ai</item>
+        <item>kids</item>
+        <item>cars</item>
+    </string-array>
+
+</resources>
