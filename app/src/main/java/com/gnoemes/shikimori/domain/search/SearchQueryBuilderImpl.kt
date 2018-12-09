@@ -24,6 +24,7 @@ class SearchQueryBuilderImpl @Inject constructor() : SearchQueryBuilder {
 
         queryMap[SearchConstants.PAGE] = page.toString()
         queryMap[SearchConstants.LIMIT] = limit.toString()
+        queryMap[SearchConstants.CENSORED] = true.toString()
 
         return Single.just(queryMap)
     }
@@ -36,16 +37,12 @@ class SearchQueryBuilderImpl @Inject constructor() : SearchQueryBuilder {
         }
 
         if (ids.isNotEmpty()) {
-            //TODO wtf? check and refactor when is time for use
-            val builder = StringBuilder()
-            ids.forEach { builder.append(it).append(DIVIDER) }
-            builder.deleteCharAt(builder.length - 1)
+            val query = convertQuery(ids.map { it.toString() })
 
-            queryMap[SearchConstants.IDS] = ids.toString()
+            queryMap[SearchConstants.IDS] = query
             queryMap[SearchConstants.PAGE] = page.toString()
             queryMap[SearchConstants.LIMIT] = limit.toString()
 
-//            queryMap[SearchConstants.CENSORED] = true.toString()
         }
         return Single.just(queryMap)
     }
@@ -58,12 +55,9 @@ class SearchQueryBuilderImpl @Inject constructor() : SearchQueryBuilder {
         }
 
         if (ids.isNotEmpty()) {
-            //TODO wtf? check and refactor when is time for use
-            val builder = StringBuilder()
-            ids.forEach { builder.append(it).append(DIVIDER) }
-            builder.deleteCharAt(builder.length - 1)
+            val query = convertQuery(ids.map { it.toString() })
 
-            queryMap[SearchConstants.IDS] = ids.toString()
+            queryMap[SearchConstants.IDS] = query
             queryMap[SearchConstants.PAGE] = page.toString()
             queryMap[SearchConstants.LIMIT] = limit.toString()
 
@@ -77,6 +71,7 @@ class SearchQueryBuilderImpl @Inject constructor() : SearchQueryBuilder {
         queryMap[SearchConstants.PAGE] = page.toString()
         queryMap[SearchConstants.LIMIT] = limit.toString()
         queryMap[SearchConstants.ORDER] = SearchConstants.ORDER_BY.POPULARITY.toString()
+        queryMap[SearchConstants.CENSORED] = true.toString()
         return queryMap
     }
 

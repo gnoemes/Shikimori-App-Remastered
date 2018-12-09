@@ -21,7 +21,7 @@ class FilterResourceProviderImpl(
         filters[SearchConstants.TYPE] = Pair(getTypeString(), converter.convertAnimeFilters(getList(R.array.anime_types), getList(R.array.anime_types_name), AnimeType.values()))
         filters[SearchConstants.DURATION] = Pair(getDurationString(), converter.convertAnimeFilters(getList(R.array.duration), getList(R.array.duration_names), SearchConstants.DURATIONS.values()))
         filters[SearchConstants.RATE] = Pair(getRateStatusString(), converter.convertAnimeFilters(getList(R.array.anime_rate_stasuses), getList(RateStatus.values()), RateStatus.values()))
-        filters[SearchConstants.AGE_RATING] = Pair(getAgeRatingString(), converter.convertAnimeFilters(getList(R.array.age_ratings), getList(AgeRating.values()), AgeRating.values()))
+        filters[SearchConstants.AGE_RATING] = Pair(getAgeRatingString(), converter.convertAnimeFilters(getList(R.array.age_ratings).apply { removeAt(lastIndex) }, getList(AgeRating.values()), AgeRating.values()))
 
         return filters
     }
@@ -67,7 +67,7 @@ class FilterResourceProviderImpl(
     }
 
     private fun getList(values: Array<AgeRating>): MutableList<String> {
-        return values.asSequence().filter { it.rating != AgeRating.NONE.rating }.map { it.rating.toLowerCase() }.toMutableList()
+        return values.asSequence().filter { it.rating != AgeRating.NONE.rating || it.rating != AgeRating.RX.rating }.map { it.rating.toLowerCase() }.toMutableList()
     }
 
 }
