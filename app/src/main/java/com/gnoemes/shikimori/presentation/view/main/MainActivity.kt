@@ -52,16 +52,14 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView, RouterPr
     }
 
     private fun initBottomNav() {
-//        var prevItem = 0
         bottomNav.setOnNavigationItemSelectedListener { item ->
             val tab = tabs.find { it.id == item.itemId }!!
-//            when (prevItem) {
-//                tab.id -> presenter.onTabItemReselected(tab.screenKey)
-//                else ->
             presenter.onTabItemSelected(tab.screenKey)
-//            }
-//            prevItem = bottomNav.selectedItemId
             true
+        }
+        bottomNav.setOnNavigationItemReselectedListener { item ->
+            val tab = tabs.find { it.id == item.itemId }!!
+            presenter.onTabItemReselected(tab.screenKey)
         }
     }
 
