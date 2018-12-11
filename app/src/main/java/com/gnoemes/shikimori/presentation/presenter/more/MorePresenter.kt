@@ -60,7 +60,7 @@ class MorePresenter @Inject constructor(
     }
 
     private fun onSettingsClicked() {
-
+        router.navigateTo(Screens.SETTINGS)
     }
 
     //TODO navigation to user details

@@ -16,6 +16,7 @@ import com.gnoemes.shikimori.presentation.view.more.MoreFragment
 import com.gnoemes.shikimori.presentation.view.person.PersonFragment
 import com.gnoemes.shikimori.presentation.view.rates.RatesContainerFragment
 import com.gnoemes.shikimori.presentation.view.search.SearchFragment
+import com.gnoemes.shikimori.presentation.view.settings.SettingsActivity
 
 object RouteHolder {
 
@@ -38,6 +39,7 @@ object RouteHolder {
             Screens.AUTHORIZATION -> AuthActivity.newIntent(context, data as AuthType)
             //TODO check settings to open in internal on external browser
             Screens.WEB -> Intent(Intent.ACTION_VIEW, Uri.parse(data as String))
+            Screens.SETTINGS -> Intent(context, SettingsActivity::class.java)
             else -> null
         }
     }

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Preference
+        android:key="general_fragment"
+        android:title="@string/settings_general"
+        app:iconSpaceReserved="false" />
+
+    <Preference
+        android:key="theme_fragment"
+        android:title="@string/settings_theme"
+        app:iconSpaceReserved="false" />
+
+    <Preference
+        android:key="about_fragment"
+        android:title="@string/settings_about"
+        app:iconSpaceReserved="false" />
+
+
+    <Preference
+        android:key="video_fragment"
+        android:title="@string/settings_video"
+        app:iconSpaceReserved="false" />
+
+    <Preference
+        android:key="manga_fragment"
+        android:title="@string/settings_manga"
+        app:iconSpaceReserved="false" />
+
+
+</PreferenceScreen>

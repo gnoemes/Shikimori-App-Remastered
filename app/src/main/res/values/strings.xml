@@ -191,6 +191,13 @@
 
     <string name="dialog_auth_message">Войдите или зарегистрируйтесь для доступа ко всем возможностям приложения</string>
 
+    <string name="settings_general">Общие</string>
+    <string name="settings_video">Видео</string>
+    <string name="settings_theme">Тема</string>
+    <string name="settings_manga">Манга</string>
+    <string name="settings_about">О программе</string>
+    <string name="settings_app">Приложение</string>
+    <string name="settings_content">Контент</string>
 
 
     <string-array name="rate_types">
