@@ -4,31 +4,18 @@ import com.gnoemes.shikimori.entity.series.domain.PlayerType
 import com.gnoemes.shikimori.entity.series.domain.TranslationType
 
 interface SettingsSource {
-    fun getAutoStatus(): Boolean
 
-    fun setAutoStatus(status: Boolean)
+    var isAutoStatus : Boolean
 
-    val isRomadziNaming: Boolean
+    var isRomadziNaming: Boolean
 
-    fun setRomadziNaming(value: Boolean)
+    var isRememberTranslationType : Boolean
 
-    fun setRememberType(value: Boolean)
+    var isRememberPlayer : Boolean
 
-    fun isRememberType(): Boolean
+    var isNotificationsEnabled : Boolean
 
-    fun setRememberPlayer(value: Boolean)
+    var translationType : TranslationType
 
-    fun IsRememberPlayer(): Boolean
-
-    fun setType(value: TranslationType)
-
-    fun getType(): TranslationType
-
-    fun setPlayer(value: PlayerType)
-
-    fun getPlayer(): PlayerType
-
-    fun getDownloadLocation(): Int
-
-    fun getNotificationsEnabled(): Boolean
+    var playerType : PlayerType
 }
