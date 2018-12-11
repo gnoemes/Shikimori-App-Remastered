@@ -34,5 +34,6 @@ ext.versions = [
     drawerBehavior    : '0.0.5',
     shimmer           : '0.3.0',
     searchView        : '4.0',
+    circleImageView   : '2.2.0',
 
 ]

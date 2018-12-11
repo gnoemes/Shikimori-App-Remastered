@@ -52,6 +52,7 @@
     <string name="common_reset">Сброс</string>
     <string name="common_accept">Принять</string>
     <string name="common_age_rating">Возрастной рейтинг</string>
+    <string name="common_guest">Гость</string>
 
     <string name="season_autumn">Осень</string>
     <string name="season_winter">Зима</string>
@@ -177,8 +178,18 @@
     <string name="rate_drawer_close">rate_drawer_close</string>
     <string name="search_need_query">Введите имя для поиска</string>
 
+    <string name="duration_small">&lt; 10 мин.</string>
+    <string name="duration_medium">&lt; 30 мин.</string>
+    <string name="duration_long">&gt; 30 мин.</string>
+
     <string name="filter_not_selected">Не выбрано</string>
     <string name="filter_select">Выбрать</string>
+
+    <string name="more_authorized_hint">Перейти в профиль</string>
+    <string name="more_guest_hint">Авторизоваться</string>
+    <string name="more_settings">Настройки</string>
+
+
 
     <string-array name="rate_types">
         <item>@string/common_anime</item>
@@ -329,10 +340,6 @@
         <item>tv_24</item>
         <item>tv_48</item>
     </string-array>
-
-    <string name="duration_small">&lt; 10 мин.</string>
-    <string name="duration_medium">&lt; 30 мин.</string>
-    <string name="duration_long">&gt; 30 мин.</string>
 
     <string-array name="duration">
         <item>@string/duration_small</item>

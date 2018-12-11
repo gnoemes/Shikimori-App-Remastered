@@ -12,6 +12,7 @@ import com.gnoemes.shikimori.presentation.view.anime.AnimeFragment
 import com.gnoemes.shikimori.presentation.view.auth.AuthActivity
 import com.gnoemes.shikimori.presentation.view.calendar.CalendarFragment
 import com.gnoemes.shikimori.presentation.view.character.CharacterFragment
+import com.gnoemes.shikimori.presentation.view.more.MoreFragment
 import com.gnoemes.shikimori.presentation.view.person.PersonFragment
 import com.gnoemes.shikimori.presentation.view.rates.RatesContainerFragment
 import com.gnoemes.shikimori.presentation.view.search.SearchFragment
@@ -24,7 +25,7 @@ object RouteHolder {
             BottomScreens.CALENDAR -> CalendarFragment.newInstance()
             BottomScreens.SEARCH -> SearchFragment.newInstance(data as? SearchNavigationData)
 //                    BottomScreens.MAIN ->
-//                    BottomScreens.MORE ->
+            BottomScreens.MORE -> MoreFragment.newInstance()
             Screens.ANIME_DETAILS -> AnimeFragment.newInstance(data as Long)
             Screens.CHARACTER_DETAILS -> CharacterFragment.newInstance(data as Long)
             Screens.PERSON_DETAILS -> PersonFragment.newInstance(data as Long)

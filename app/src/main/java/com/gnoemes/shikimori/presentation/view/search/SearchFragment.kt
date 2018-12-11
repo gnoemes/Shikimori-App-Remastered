@@ -5,8 +5,6 @@ import android.view.View
 import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.transition.Fade
-import androidx.transition.TransitionManager
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
@@ -138,14 +136,12 @@ class SearchFragment : BaseFragment<SearchPresenter, SearchView>(), SearchView, 
 
     private val searchViewOpenListener = object : com.lapism.searchview.SearchView.OnOpenCloseListener {
         override fun onOpen(): Boolean {
-            TransitionManager.beginDelayedTransition(toolbar, Fade())
             spinner?.gone()
             toolbar?.menu?.getItem(0)?.isVisible = false
             return false
         }
 
         override fun onClose(): Boolean {
-            TransitionManager.beginDelayedTransition(toolbar, Fade())
             spinner?.visible()
             toolbar?.menu?.getItem(0)?.isVisible = true
             return false
