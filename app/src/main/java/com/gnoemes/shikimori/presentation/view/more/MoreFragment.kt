@@ -9,6 +9,7 @@ import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.presentation.presenter.more.MorePresenter
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragment
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
+import com.gnoemes.shikimori.presentation.view.common.fragment.AuthDialog
 import com.gnoemes.shikimori.presentation.view.more.adapter.MoreAdapter
 import com.gnoemes.shikimori.utils.gone
 import com.gnoemes.shikimori.utils.ifNotNull
@@ -17,7 +18,7 @@ import kotlinx.android.synthetic.main.layout_default_placeholders.*
 import kotlinx.android.synthetic.main.layout_progress.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 
-class MoreFragment : BaseFragment<MorePresenter, MoreView>(), MoreView {
+class MoreFragment : BaseFragment<MorePresenter, MoreView>(), MoreView, AuthDialog.AuthCallback {
 
     @InjectPresenter
     lateinit var morePresenter: MorePresenter
@@ -61,10 +62,31 @@ class MoreFragment : BaseFragment<MorePresenter, MoreView>(), MoreView {
     override fun getFragmentLayout(): Int = R.layout.fragment_more
 
     ///////////////////////////////////////////////////////////////////////////
+    // Callbacks
+    ///////////////////////////////////////////////////////////////////////////
+    override fun onSignIn() {
+        getPresenter().onSignIn()
+    }
+
+    override fun onSignUp() {
+        getPresenter().onSignUp()
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
     // MVP
     ///////////////////////////////////////////////////////////////////////////
 
     override fun showData(items: List<Any>) {
         moreAdapter.bindItems(items)
+    }
+
+    override fun showAuthDialog() {
+        val tag = "AuthDialog"
+        val dialog = fragmentManager?.findFragmentByTag(tag)
+        if (dialog == null) {
+            AuthDialog().apply {
+                setTargetFragment(this@MoreFragment, 42)
+            }.show(fragmentManager, tag)
+        }
     }
 }

@@ -189,6 +189,8 @@
     <string name="more_guest_hint">Авторизоваться</string>
     <string name="more_settings">Настройки</string>
 
+    <string name="dialog_auth_message">Войдите или зарегистрируйтесь для доступа ко всем возможностям приложения</string>
+
 
 
     <string-array name="rate_types">

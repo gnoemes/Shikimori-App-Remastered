@@ -2,6 +2,8 @@ package com.gnoemes.shikimori.presentation.presenter.more
 
 import com.arellomobile.mvp.InjectViewState
 import com.gnoemes.shikimori.domain.user.UserInteractor
+import com.gnoemes.shikimori.entity.auth.AuthType
+import com.gnoemes.shikimori.entity.common.domain.Screens
 import com.gnoemes.shikimori.entity.more.MoreCategory
 import com.gnoemes.shikimori.entity.more.MoreProfileItem
 import com.gnoemes.shikimori.entity.user.domain.UserBrief
@@ -22,7 +24,12 @@ class MorePresenter @Inject constructor(
 
     override fun initData() {
         loadList()
-        loadUser()
+    }
+
+    override fun attachView(view: MoreView) {
+        super.attachView(view)
+
+        if (user == null) loadUser()
     }
 
     private fun loadList() {
@@ -45,5 +52,27 @@ class MorePresenter @Inject constructor(
     }
 
     fun onCategoryClicked(category: MoreCategory) {
+        when (category) {
+            MoreCategory.PROFILE -> onProfileClicked()
+            MoreCategory.SETTINGS -> onSettingsClicked()
+            else -> Unit
+        }
+    }
+
+    private fun onSettingsClicked() {
+
+    }
+
+    //TODO navigation to user details
+    private fun onProfileClicked() {
+        if (user == null) viewState.showAuthDialog()
+        else Unit
+    }
+
+    fun onSignIn() = openAuth(AuthType.SIGN_IN)
+    fun onSignUp() = openAuth(AuthType.SIGN_UP)
+
+    private fun openAuth(type: AuthType) {
+        router.navigateTo(Screens.AUTHORIZATION, type)
     }
 }
