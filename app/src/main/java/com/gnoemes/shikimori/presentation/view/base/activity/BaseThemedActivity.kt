@@ -41,9 +41,7 @@ abstract class BaseThemedActivity  : MvpActivity() {
                 toolbarTitleColor(res = R.color.default_colorOnPrimary)
                 toolbarIconColor(R.color.default_colorOnPrimary)
                 textColorPrimary(res = R.color.default_colorOnSurface)
-                textColorSecondary(res = R.color.default_colorOnSurface)
-                textColorPrimaryInverse(res = R.color.default_colorOnAccent)
-                textColorSecondaryInverse(res = R.color.default_colorOnAccent)
+                textColorSecondary(res = R.color.default_colorOnPrimarySecondary)
                 colorCardViewBackground(res = R.color.default_colorSurface)
             }
         }

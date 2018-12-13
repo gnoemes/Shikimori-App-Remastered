@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="48dp"
     android:layout_gravity="bottom"
-    android:background="?colorPrimary"
     android:fitsSystemWindows="true"
     app:menu="@menu/menu_bottom"
-    app:itemBackground="?colorSecondary"
+    app:itemBackground="?attr/colorPrimary"
+    app:itemIconTint="?attr/colorPrimaryDark"
     app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
