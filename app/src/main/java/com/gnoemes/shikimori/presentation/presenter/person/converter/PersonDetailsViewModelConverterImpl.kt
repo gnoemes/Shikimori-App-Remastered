@@ -1,9 +1,12 @@
 package com.gnoemes.shikimori.presentation.presenter.person.converter
 
+import android.content.Context
+import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.common.presentation.DetailsContentType
+import com.gnoemes.shikimori.entity.common.presentation.DetailsDescriptionItem
+import com.gnoemes.shikimori.entity.common.presentation.DetailsHeadSimpleItem
 import com.gnoemes.shikimori.entity.roles.domain.PersonDetails
-import com.gnoemes.shikimori.entity.roles.presentation.PersonDescriptionItem
-import com.gnoemes.shikimori.entity.roles.presentation.PersonHeadItem
 import com.gnoemes.shikimori.presentation.presenter.common.converter.DetailsContentViewModelConverter
 import com.gnoemes.shikimori.utils.date.DateTimeConverter
 import org.joda.time.DateTime
@@ -11,8 +14,9 @@ import org.joda.time.Years
 import javax.inject.Inject
 
 class PersonDetailsViewModelConverterImpl @Inject constructor(
+        private val context: Context,
         private val dateTimeConverter: DateTimeConverter,
-        private val contentConverter : DetailsContentViewModelConverter
+        private val contentConverter: DetailsContentViewModelConverter
 ) : PersonDetailsViewModelConverter {
 
     override fun apply(t: PersonDetails): List<Any> {
@@ -21,47 +25,46 @@ class PersonDetailsViewModelConverterImpl @Inject constructor(
         val head = convertHeadItem(t)
         items.add(head)
 
-        if (t.roles.isNotEmpty()) {
-            val roles = convertRoles(t.roles)
-            items.add(roles)
-        }
+        val roles = convertRoles(t.roles)
+        items.add(DetailsDescriptionItem(roles))
 
-        if (t.characters != null && t.characters.isNotEmpty()) {
-            val item = contentConverter.apply(t.characters)
-            items.add(Pair(DetailsContentType.CHARACTERS, item))
-        }
-
-        if (t.works != null && t.works.isNotEmpty()) {
-            val item = contentConverter.apply(t.works)
-            items.add(Pair(DetailsContentType.WORKS, item))
-        }
+        items.add(Pair(DetailsContentType.CHARACTERS, contentConverter.apply(t.characters)))
+        items.add(Pair(DetailsContentType.WORKS, contentConverter.apply(t.works)))
 
         return items
     }
 
-    private fun convertRoles(roles: List<List<String?>?>): PersonDescriptionItem {
-        val builder = StringBuilder()
+    private fun convertRoles(roles: List<List<String?>?>): String? {
+        if (roles.isEmpty()) {
+            return null
+        }
 
+        val builder = StringBuilder()
         roles.forEach { role ->
             var first = true
             role?.forEach {
-                builder.append(it)
-                if (first) builder.append(": ")
-                else builder.append("\n")
-                first = false
+                if (!it.isNullOrBlank()) {
+                    builder.append(it)
+                    if (first) builder.append(": ")
+                    else builder.append("\n")
+                    first = false
+                }
             }
         }
 
-        return PersonDescriptionItem(builder.toString())
+        return builder.toString()
     }
 
-    private fun convertHeadItem(t: PersonDetails): PersonHeadItem = PersonHeadItem(
-            t.name,
-            t.nameRu,
-            t.nameJp,
+    private fun convertHeadItem(t: PersonDetails): DetailsHeadSimpleItem = DetailsHeadSimpleItem(
+            Type.PERSON,
             t.image,
-            t.jobTitle,
-            convertBirthDay(t.birthDay)
+            context.getString(R.string.on_eng),
+            t.name,
+            context.getString(R.string.on_jp),
+            t.nameJp,
+            context.getString(R.string.person_birthday),
+            convertBirthDay(t.birthDay),
+            t.jobTitle
     )
 
     private fun convertBirthDay(birthDay: DateTime?): String? {

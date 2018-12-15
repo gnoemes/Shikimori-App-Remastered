@@ -57,15 +57,15 @@ class PersonDetailsResponseConverterImpl @Inject constructor(
         }
     }
 
-    private fun convertCharacters(roles: List<SeyuRoleResponse>?): List<Character>? =
-            roles?.map { it.characters }?.flatMap { characterConverter.apply(it) }
+    private fun convertCharacters(roles: List<SeyuRoleResponse>?): List<Character> =
+            roles?.map { it.characters }?.flatMap { characterConverter.apply(it) } ?: emptyList()
 
-    private fun convertWorks(works: List<WorkResponse>?): List<Work>? =
+    private fun convertWorks(works: List<WorkResponse>?): List<Work> =
             works?.map {
                 Work(
                         animeConverter.convertResponse(it.anime),
                         mangaConverter.convertResponse(it.manga),
                         it.role
                 )
-            }
+            } ?: emptyList()
 }

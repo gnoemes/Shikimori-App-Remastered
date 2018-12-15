@@ -36,12 +36,13 @@ class DetailsDescriptionViewHolder(
         with(view) {
             descriptionTextView.text = item.description
 
-            if (descriptionTextView.lineCount > COLLAPSED_MAX_LINES) {
-                descriptionTextView.post { expandView.visible() }
+            descriptionTextView.post {
+                if (descriptionTextView.lineCount > COLLAPSED_MAX_LINES) {
+                    expandView.visible()
+                    descriptionTextView.onClick { expandOrCollapse() }
+                    expandView.onClick { expandOrCollapse() }
+                } else expandView.gone()
             }
-
-            descriptionTextView.onClick { expandOrCollapse() }
-            expandView.onClick { expandOrCollapse() }
         }
     }
 

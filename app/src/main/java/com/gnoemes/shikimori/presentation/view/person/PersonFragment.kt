@@ -2,16 +2,22 @@ package com.gnoemes.shikimori.presentation.view.person
 
 import android.os.Bundle
 import android.view.View
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.entity.app.domain.AppExtras
+import com.gnoemes.shikimori.entity.common.presentation.DetailsContentItem
+import com.gnoemes.shikimori.entity.common.presentation.DetailsContentType
+import com.gnoemes.shikimori.entity.common.presentation.DetailsDescriptionItem
+import com.gnoemes.shikimori.entity.common.presentation.DetailsHeadSimpleItem
 import com.gnoemes.shikimori.presentation.presenter.person.PersonPresenter
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragment
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
-import com.gnoemes.shikimori.presentation.view.person.adapter.PersonAdapter
+import com.gnoemes.shikimori.presentation.view.common.adapter.content.ContentAdapter
+import com.gnoemes.shikimori.presentation.view.common.holders.DetailsContentViewHolder
+import com.gnoemes.shikimori.presentation.view.common.holders.DetailsDescriptionViewHolder
+import com.gnoemes.shikimori.presentation.view.common.holders.DetailsHeadSimpleViewHolder
 import com.gnoemes.shikimori.utils.addBackButton
 import com.gnoemes.shikimori.utils.ifNotNull
 import com.gnoemes.shikimori.utils.images.ImageLoader
@@ -46,7 +52,13 @@ class PersonFragment : BaseFragment<PersonPresenter, PersonView>(), PersonView {
         return personPresenter
     }
 
-    private val adapter by lazy { PersonAdapter(imageLoader, getPresenter()::onContentClicked) }
+    private lateinit var headHolder: DetailsHeadSimpleViewHolder
+    private lateinit var descriptionHolder: DetailsDescriptionViewHolder
+    private val contentHolders = HashMap<DetailsContentType, DetailsContentViewHolder>()
+
+    private val charactersAdapter by lazy { ContentAdapter(imageLoader, getPresenter()::onContentClicked) }
+    private val worksAdapter by lazy { ContentAdapter(imageLoader, getPresenter()::onContentClicked) }
+
 
     companion object {
         fun newInstance(id: Long) = PersonFragment().withArgs { putLong(AppExtras.ARGUMENT_PERSON_ID, id) }
@@ -67,11 +79,14 @@ class PersonFragment : BaseFragment<PersonPresenter, PersonView>(), PersonView {
             }
         }
 
-        with(recyclerView) {
-            adapter = this@PersonFragment.adapter
-            layoutManager = LinearLayoutManager(context).apply { initialPrefetchItemCount = 5 }
-            setHasFixedSize(true)
+        headHolder = DetailsHeadSimpleViewHolder(headLayout, imageLoader)
+        descriptionHolder = DetailsDescriptionViewHolder(descriptionLayout)
+
+        contentHolders.apply {
+            put(DetailsContentType.CHARACTERS, DetailsContentViewHolder(charactersLayout, charactersAdapter))
+            put(DetailsContentType.WORKS, DetailsContentViewHolder(worksLayout, worksAdapter))
         }
+
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -86,7 +101,18 @@ class PersonFragment : BaseFragment<PersonPresenter, PersonView>(), PersonView {
     // MVP
     ///////////////////////////////////////////////////////////////////////////
 
-    override fun setData(it: List<Any>) {
-        adapter.bindItems(it)
+    override fun setHead(item: DetailsHeadSimpleItem) {
+        headHolder.bind(item)
     }
+
+    override fun setDescription(item: DetailsDescriptionItem) {
+        descriptionHolder.bind(item)
+    }
+
+    override fun setContent(type: DetailsContentType, item: DetailsContentItem) {
+        contentHolders[type]?.bind(type, item)
+    }
+
+    override fun onShowLoading()  = Unit
+    override fun onHideLoading()  = Unit
 }

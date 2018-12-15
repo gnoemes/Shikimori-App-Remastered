@@ -40,7 +40,7 @@
         android:layout_gravity="center"
         android:background="@android:color/transparent"
         android:foreground="?selectableItemBackgroundBorderless"
-        android:tint="?colorOnSurface"
+        android:tint="?attr/colorOnSurface"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
