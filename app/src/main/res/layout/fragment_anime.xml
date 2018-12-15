@@ -56,6 +56,12 @@
                 android:id="@+id/relatedLayout"
                 layout="@layout/layout_details_content" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:background="?attr/colorSurface"
+                />
+
         </LinearLayout>
 
 

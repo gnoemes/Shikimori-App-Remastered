@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.facebook.shimmer.ShimmerFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/headShimmerContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:shimmer_auto_start="true"
+    tools:ignore="HardcodedText">
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:id="@+id/imageContainerView"
+            android:layout_width="@dimen/image_calendar_width"
+            android:layout_height="@dimen/image_calendar_height"
+            android:background="@color/colorShimmer"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/onRuLabelView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:background="@color/colorShimmer"
+            android:fontFamily="@font/open_sans_semibold"
+            android:text="@string/on_ru"
+            android:textColor="@android:color/transparent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageContainerView"
+            app:layout_constraintTop_toTopOf="@+id/imageContainerView" />
+
+        <TextView
+            android:id="@+id/onRuView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:background="@color/colorShimmer"
+            android:fontFamily="@font/open_sans"
+            android:textColor="@android:color/transparent"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="@+id/onRuLabelView"
+            app:layout_constraintStart_toStartOf="@+id/onRuLabelView"
+            app:layout_constraintTop_toBottomOf="@+id/onRuLabelView"
+            tools:text="Эчпочмак" />
+
+        <TextView
+            android:id="@+id/onJpLabelView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/colorShimmer"
+            android:fontFamily="@font/open_sans_semibold"
+            android:text="@string/on_jp"
+            android:textColor="@android:color/transparent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageContainerView"
+            app:layout_constraintTop_toBottomOf="@+id/onRuView" />
+
+        <TextView
+            android:id="@+id/onJpView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:background="@color/colorShimmer"
+            android:fontFamily="@font/open_sans"
+            android:textColor="@android:color/transparent"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="@+id/onJpLabelView"
+            app:layout_constraintStart_toStartOf="@+id/onJpLabelView"
+            app:layout_constraintTop_toBottomOf="@+id/onJpLabelView"
+            tools:text="Ecpochmak" />
+
+        <TextView
+            android:id="@+id/otherLabelView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/colorShimmer"
+            android:fontFamily="@font/open_sans_semibold"
+            android:text="@string/others"
+            android:textColor="@android:color/transparent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageContainerView"
+            app:layout_constraintTop_toBottomOf="@+id/onJpView" />
+
+        <TextView
+            android:id="@+id/otherView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:background="@color/colorShimmer"
+            android:fontFamily="@font/open_sans"
+            android:textColor="@android:color/transparent"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="@+id/otherLabelView"
+            app:layout_constraintStart_toStartOf="@+id/otherLabelView"
+            app:layout_constraintTop_toBottomOf="@+id/otherLabelView"
+            tools:text="Ecpochmak Big, " />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.facebook.shimmer.ShimmerFrameLayout>

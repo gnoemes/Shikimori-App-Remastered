@@ -14,7 +14,7 @@ data class CharacterDetails(
         val nameJp: String?,
         val description: String?,
         val descriptionSource: String?,
-        val seyu: List<Person>?,
+        val seyu: List<Person>,
         val animes: List<Anime>,
         val mangas: List<Manga>
 )

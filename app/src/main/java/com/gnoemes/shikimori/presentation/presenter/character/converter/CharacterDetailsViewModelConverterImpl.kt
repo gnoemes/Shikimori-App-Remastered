@@ -1,14 +1,20 @@
 package com.gnoemes.shikimori.presentation.presenter.character.converter
 
+import android.content.Context
+import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.common.presentation.DetailsContentType
 import com.gnoemes.shikimori.entity.common.presentation.DetailsDescriptionItem
+import com.gnoemes.shikimori.entity.common.presentation.DetailsHeadSimpleItem
 import com.gnoemes.shikimori.entity.roles.domain.CharacterDetails
-import com.gnoemes.shikimori.entity.roles.presentation.CharacterHeadItem
+import com.gnoemes.shikimori.presentation.presenter.common.converter.BBCodesTextProcessor
 import com.gnoemes.shikimori.presentation.presenter.common.converter.DetailsContentViewModelConverter
 import javax.inject.Inject
 
 class CharacterDetailsViewModelConverterImpl @Inject constructor(
-        private val contentConverter : DetailsContentViewModelConverter
+        private val context: Context,
+        private val contentConverter: DetailsContentViewModelConverter,
+        private val textProcessor: BBCodesTextProcessor
 ) : CharacterDetailsViewModelConverter {
 
     override fun apply(t: CharacterDetails): List<Any> {
@@ -17,37 +23,25 @@ class CharacterDetailsViewModelConverterImpl @Inject constructor(
         val head = convertHeadItem(t)
         items.add(head)
 
-        if (!t.description.isNullOrBlank()) {
-            items.add(DetailsDescriptionItem(t.description))
-        }
+        val processedText = t.description?.let { textProcessor.process(it) }
+        items.add(DetailsDescriptionItem(processedText))
 
-        if (t.seyu != null && t.seyu.isNotEmpty()) {
-            val item = contentConverter.apply(t.seyu)
-            items.add(Pair(DetailsContentType.SEYUS, item))
-        }
-
-        if (t.animes.isNotEmpty()) {
-            val item = contentConverter.apply(t.animes)
-            items.add(Pair(DetailsContentType.ANIMES, item))
-        }
-
-        if (t.mangas.isNotEmpty()) {
-            val item = contentConverter.apply(t.mangas)
-            items.add(Pair(DetailsContentType.MANGAS, item))
-        }
+        items.add(Pair(DetailsContentType.SEYUS, contentConverter.apply(t.seyu)))
+        items.add(Pair(DetailsContentType.ANIMES, contentConverter.apply(t.animes)))
+        items.add(Pair(DetailsContentType.MANGAS, contentConverter.apply(t.mangas)))
 
         return items
     }
 
-    private fun convertHeadItem(t: CharacterDetails): CharacterHeadItem = CharacterHeadItem(
-            t.id,
-            t.name,
-            t.nameRu,
-            t.nameAlt,
+    private fun convertHeadItem(t: CharacterDetails): DetailsHeadSimpleItem = DetailsHeadSimpleItem(
+            Type.CHARACTER,
             t.image,
-            t.url,
+            context.getString(R.string.on_ru),
+            t.nameRu,
+            context.getString(R.string.on_jp),
             t.nameJp,
-            t.description,
-            t.descriptionSource
+            context.getString(R.string.others),
+            t.nameAlt,
+            null
     )
 }

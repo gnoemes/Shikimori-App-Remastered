@@ -17,7 +17,7 @@ import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 class ContentAdapter(
         private val imageLoader: ImageLoader,
         private val navigationCallback: (Type, Long) -> Unit,
-        private val detailsCallback: ((DetailsAction) -> Unit)?
+        private val detailsCallback: ((DetailsAction) -> Unit)? = null
 ) : ListDelegationAdapter<MutableList<ContentItem>>() {
 
     init {
