@@ -18,6 +18,7 @@ import com.gnoemes.shikimori.entity.app.domain.AppExtras
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
+import com.gnoemes.shikimori.entity.rates.presentation.RateCategory
 import com.gnoemes.shikimori.presentation.presenter.rates.RatesContainerPresenter
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragment
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
@@ -122,7 +123,7 @@ class RatesContainerFragment : BaseFragment<RatesContainerPresenter, RatesContai
         emptyContentView?.setText(R.string.rate_empty)
         networkErrorView.apply {
             setText(R.string.common_error_message_without_pull)
-            callback = {getPresenter().initData()}
+            callback = { getPresenter().initData() }
             showButton()
         }
         progressBar?.gone()
@@ -191,10 +192,10 @@ class RatesContainerFragment : BaseFragment<RatesContainerPresenter, RatesContai
         }
     }
 
-    override fun setNavigationItems(items: List<Pair<RateStatus, String>>) {
+    override fun setNavigationItems(items: List<RateCategory>) {
         navView.menu.apply {
             clear()
-            items.forEach { add(0, it.first.ordinal, it.first.ordinal, it.second) }
+            items.forEach { add(0, it.status.ordinal, it.status.ordinal, it.localizedCategory) }
             if (items.isEmpty()) {
                 add(R.string.rate_empty)
             }

@@ -8,6 +8,7 @@ import com.gnoemes.shikimori.entity.app.domain.exceptions.ContentException
 import com.gnoemes.shikimori.entity.app.domain.exceptions.NetworkException
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
+import com.gnoemes.shikimori.entity.rates.presentation.RateCategory
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
 import com.gnoemes.shikimori.presentation.presenter.rates.converter.RateCountConverter
 import com.gnoemes.shikimori.presentation.view.rates.RatesContainerView
@@ -22,10 +23,22 @@ class RatesContainerPresenter @Inject constructor(
 
     var type: Type = Type.ANIME
     var userId: Long = Constants.NO_ID
+
     private val isAnime: Boolean
         get() = type == Type.ANIME
 
     override fun initData() {
+        viewState.setNavigationItems(emptyList())
+        loadData()
+    }
+
+    override fun attachView(view: RatesContainerView) {
+        super.attachView(view)
+
+        if (userId == Constants.NO_ID) loadMyUser()
+    }
+
+    private fun loadData() {
         if (userId != Constants.NO_ID) loadRateCategories()
         else loadMyUser()
     }
@@ -46,10 +59,10 @@ class RatesContainerPresenter @Inject constructor(
                     .subscribe(this::setData, this::processErrors)
                     .addToDisposables()
 
-    private fun setData(items: List<Pair<RateStatus, String>>) {
+    private fun setData(items: List<RateCategory>) {
         viewState.setNavigationItems(items)
         if (items.isNotEmpty()) {
-            onChangeStatus(items.first().first)
+            onChangeStatus(items.first().status)
             viewState.hideEmptyView()
             viewState.hideNetworkView()
             viewState.showContainer()
