@@ -5,6 +5,7 @@ import android.view.View
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.common.domain.FilterItem
 import com.gnoemes.shikimori.entity.common.domain.Type
+import com.gnoemes.shikimori.entity.search.presentation.FilterCategory
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseBottomSheetDialogFragment
 import com.gnoemes.shikimori.presentation.view.common.fragment.MultiCheckDialogFragment
 import com.gnoemes.shikimori.presentation.view.search.filter.provider.FilterResourceConverterImpl
@@ -89,16 +90,16 @@ class FilterDialogFragment : BaseBottomSheetDialogFragment(), MultiCheckDialogFr
 
     override fun dialogItemCallback(tag: String?, items: List<String>) {
         val newAppliedFilters = convertFilters(items, tag!!)
-        appliedFilters[newAppliedFilters.first] = newAppliedFilters.second
+        appliedFilters[newAppliedFilters.category] = newAppliedFilters.filters
         strategy.init(appliedFilters)
     }
 
-    private fun showSelectDialog(category: Pair<String, MutableList<FilterItem>>) {
+    private fun showSelectDialog(category: FilterCategory) {
         val dialog = MultiCheckDialogFragment.newInstance()
         dialog.apply {
-            setTitle(category.first)
+            setTitle(category.category)
             setItems(convertFilters(category, appliedFilters))
-        }.show(childFragmentManager, category.second.firstOrNull()?.action)
+        }.show(childFragmentManager, category.filters.firstOrNull()?.action)
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -114,16 +115,16 @@ class FilterDialogFragment : BaseBottomSheetDialogFragment(), MultiCheckDialogFr
         return serializable as? HashMap<String, MutableList<FilterItem>> ?: HashMap()
     }
 
-    private fun convertFilters(category: Pair<String, MutableList<FilterItem>>, applied: HashMap<String, MutableList<FilterItem>>): List<Pair<Boolean, Pair<String, String>>> {
-        return category.second.map { filter ->
+    private fun convertFilters(category: FilterCategory, applied: HashMap<String, MutableList<FilterItem>>): List<Pair<Boolean, Pair<String, String>>> {
+        return category.filters.map { filter ->
             val isApplied = applied.containsKey(filter.action) && applied[filter.action]?.find { it.value == filter.value } != null
             val action = Gson().toJson(filter)
             return@map Pair(isApplied, Pair(filter.localizedText!!, action))
         }
     }
 
-    private fun convertFilters(applied: List<String>, tag: String): Pair<String, MutableList<FilterItem>> {
+    private fun convertFilters(applied: List<String>, tag: String): FilterCategory {
         val items = applied.map { Gson().fromJson(it, FilterItem::class.java) }.toMutableList()
-        return Pair(tag, items)
+        return FilterCategory(tag, items)
     }
 }

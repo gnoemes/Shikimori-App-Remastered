@@ -1,14 +1,14 @@
 package com.gnoemes.shikimori.presentation.view.search.filter.provider
 
-import com.gnoemes.shikimori.entity.common.domain.FilterItem
+import com.gnoemes.shikimori.entity.search.presentation.FilterCategory
 import java.util.*
 
 interface FilterResourceProvider {
 
-    fun getAnimeFilters(): HashMap<String, Pair<String, MutableList<FilterItem>>>
+    fun getAnimeFilters(): HashMap<String, FilterCategory>
 
-    fun getMangaFilters(): HashMap<String, Pair<String, MutableList<FilterItem>>>
+    fun getMangaFilters(): HashMap<String, FilterCategory>
 
-    fun getRanobeFilters(): HashMap<String, Pair<String, MutableList<FilterItem>>>
+    fun getRanobeFilters(): HashMap<String, FilterCategory>
 
 }

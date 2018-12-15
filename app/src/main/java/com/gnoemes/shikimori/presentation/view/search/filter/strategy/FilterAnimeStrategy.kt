@@ -6,13 +6,14 @@ import android.widget.AdapterView
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.common.domain.FilterItem
 import com.gnoemes.shikimori.entity.common.domain.SearchConstants
+import com.gnoemes.shikimori.entity.search.presentation.FilterCategory
 import com.gnoemes.shikimori.presentation.view.search.filter.provider.FilterResourceProvider
 import kotlinx.android.synthetic.main.fragment_filter.view.*
 
 class FilterAnimeStrategy(
         private val view: View,
         private val resourceProvider: FilterResourceProvider,
-        clickListener: (Pair<String, MutableList<FilterItem>>) -> Unit,
+        clickListener: (FilterCategory) -> Unit,
         context: Context = view.context
 ) : BaseFilterStrategy(view, context, clickListener) {
 
@@ -20,27 +21,27 @@ class FilterAnimeStrategy(
 
     private val animeChipContainers by lazy {
         listOf(
-                Pair(SearchConstants.STATUS, view.statusGroup),
-                Pair(SearchConstants.DURATION, view.durationGroup),
-                Pair(SearchConstants.RATE, view.rateGroup),
-                Pair(SearchConstants.AGE_RATING, view.ageGroup)
+                Container(SearchConstants.STATUS, view.statusGroup),
+                Container(SearchConstants.DURATION, view.durationGroup),
+                Container(SearchConstants.RATE, view.rateGroup),
+                Container(SearchConstants.AGE_RATING, view.ageGroup)
         )
     }
 
     private val animeListContainers by lazy {
         listOf(
-                Pair(SearchConstants.GENRE, view.genresGroup),
-                Pair(SearchConstants.TYPE, view.typeGroup)
+                Container(SearchConstants.GENRE, view.genresGroup),
+                Container(SearchConstants.TYPE, view.typeGroup)
         )
     }
 
-    override val filters: HashMap<String, Pair<String, MutableList<FilterItem>>>
+    override val filters: HashMap<String, FilterCategory>
         get() = animeFilters
 
-    override val chipContainers: List<Pair<String, View>>
+    override val chipContainers: List<Container>
         get() = animeChipContainers
 
-    override val listContainers: List<Pair<String, View>>
+    override val listContainers: List<Container>
         get() = animeListContainers
 
     override val spinnerItemClickListener: AdapterView.OnItemClickListener

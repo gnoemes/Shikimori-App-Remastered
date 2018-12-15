@@ -9,6 +9,7 @@ import androidx.appcompat.widget.Toolbar
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.common.domain.FilterItem
 import com.gnoemes.shikimori.entity.common.domain.SearchConstants
+import com.gnoemes.shikimori.entity.search.presentation.FilterCategory
 import com.gnoemes.shikimori.utils.*
 import com.google.android.material.chip.Chip
 import com.santalu.widget.ReSpinner
@@ -19,7 +20,7 @@ import kotlinx.android.synthetic.main.layout_category_with_chip_group.view.*
 abstract class BaseFilterStrategy(
         private val view: View,
         private val context: Context,
-        private val clickListener: (Pair<String, MutableList<FilterItem>>) -> Unit
+        private val clickListener: (FilterCategory) -> Unit
 ) : FilterStrategy {
 
     private var appliedFilters: HashMap<String, MutableList<FilterItem>> = HashMap()
@@ -62,20 +63,20 @@ abstract class BaseFilterStrategy(
     }
 
     private fun initChipContainers() {
-        chipContainers.forEach { initChipContainer(it.second, it.first) }
+        chipContainers.forEach { initChipContainer(it.view, it.category) }
     }
 
     private fun initListContainers() {
-        listContainers.forEach { initListContainer(it.second, it.first) }
+        listContainers.forEach { initListContainer(it.view, it.category) }
     }
 
     private fun initChipContainer(container: View, key: String) {
         initContainer(container, key) { category ->
             with(container) {
                 visible()
-                categoryNameView.text = category.first
+                categoryNameView.text = category.category
                 chipGroup.removeAllViews()
-                category.second.forEach { chipGroup.addView(convertChip(it)) }
+                category.filters.forEach { chipGroup.addView(convertChip(it)) }
             }
         }
     }
@@ -84,16 +85,16 @@ abstract class BaseFilterStrategy(
         initContainer(container, key) { category ->
             with(container) {
                 visible()
-                val names = convertSelected(getAppliedFilter(category.second.firstOrNull()?.action))
+                val names = convertSelected(getAppliedFilter(category.filters.firstOrNull()?.action))
 
-                categoryName.text = category.first
+                categoryName.text = category.category
                 selectedValuesView.text = names
                 container.setOnClickListener { clickListener.invoke(category) }
             }
         }
     }
 
-    private fun initContainer(container: View, key: String, init: (Pair<String, MutableList<FilterItem>>) -> Unit) {
+    private fun initContainer(container: View, key: String, init: (FilterCategory) -> Unit) {
         val category = getFilter(key)
 
         if (category != null) {
@@ -107,9 +108,9 @@ abstract class BaseFilterStrategy(
     // STRATEGY METHODS
     ///////////////////////////////////////////////////////////////////////////
 
-    abstract val filters: HashMap<String, Pair<String, MutableList<FilterItem>>>
-    abstract val chipContainers: List<Pair<String, View>>
-    abstract val listContainers: List<Pair<String, View>>
+    abstract val filters: HashMap<String, FilterCategory>
+    abstract val chipContainers: List<Container>
+    abstract val listContainers: List<Container>
     abstract val spinnerItemClickListener: AdapterView.OnItemClickListener
     abstract fun getSpinnerArray(): Int
     abstract fun getSortPosition(selection: SearchConstants.ORDER_BY?): Int
@@ -147,7 +148,7 @@ abstract class BaseFilterStrategy(
         return appliedFilters[key]?.find { it.value == value }
     }
 
-    protected open fun getFilter(key: String): Pair<String, MutableList<FilterItem>>? {
+    protected open fun getFilter(key: String): FilterCategory? {
         return filters[key]
     }
 
@@ -202,4 +203,9 @@ abstract class BaseFilterStrategy(
             }
         }
     }
+
+    data class Container(
+            val category: String,
+            val view: View
+    )
 }
