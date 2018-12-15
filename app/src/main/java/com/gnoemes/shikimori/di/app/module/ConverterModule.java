@@ -20,6 +20,8 @@ import com.gnoemes.shikimori.data.repository.common.impl.MangaResponseConverterI
 import com.gnoemes.shikimori.data.repository.common.impl.PersonResponseConverterImpl;
 import com.gnoemes.shikimori.data.repository.user.converter.UserBriefResponseConverter;
 import com.gnoemes.shikimori.data.repository.user.converter.UserBriefResponseConverterImpl;
+import com.gnoemes.shikimori.presentation.presenter.common.converter.BBCodesTextProcessor;
+import com.gnoemes.shikimori.presentation.presenter.common.converter.KefirBBCodesTextProcessorImpl;
 
 import dagger.Binds;
 import dagger.Module;
@@ -67,5 +69,9 @@ public interface ConverterModule {
     @Binds
     @Reusable
     PersonResponseConverter bindPersonResponseConverter(PersonResponseConverterImpl converter);
+
+    @Binds
+    @Reusable
+    BBCodesTextProcessor bindBbCodesTextProcessor(KefirBBCodesTextProcessorImpl processor);
 
 }

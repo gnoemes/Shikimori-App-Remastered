@@ -14,7 +14,6 @@ import com.gnoemes.shikimori.entity.common.domain.Genre
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.common.presentation.DetailsAction
 import com.gnoemes.shikimori.entity.common.presentation.DetailsContentType
-import com.gnoemes.shikimori.entity.common.presentation.DetailsDescriptionItem
 import com.gnoemes.shikimori.entity.common.presentation.PlaceholderItem
 import com.gnoemes.shikimori.entity.main.BottomScreens
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
@@ -133,7 +132,8 @@ class AnimePresenter @Inject constructor(
     }
 
     private fun loadDescription() {
-        viewState.setDescriptionItem(DetailsDescriptionItem(currentAnime.description))
+        val descriptionItem = viewModelConverter.convertDescriptionItem(currentAnime.description)
+        viewState.setDescriptionItem(descriptionItem)
     }
 
     private fun loadOptions() {

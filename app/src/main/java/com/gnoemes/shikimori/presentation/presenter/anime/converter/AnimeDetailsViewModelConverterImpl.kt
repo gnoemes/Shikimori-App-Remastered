@@ -8,8 +8,10 @@ import com.gnoemes.shikimori.entity.anime.domain.AnimeType
 import com.gnoemes.shikimori.entity.common.domain.AgeRating
 import com.gnoemes.shikimori.entity.common.domain.Status
 import com.gnoemes.shikimori.entity.common.domain.Type
+import com.gnoemes.shikimori.entity.common.presentation.DetailsDescriptionItem
 import com.gnoemes.shikimori.entity.common.presentation.DetailsHeadItem
 import com.gnoemes.shikimori.entity.common.presentation.DetailsOptionsItem
+import com.gnoemes.shikimori.presentation.presenter.common.converter.BBCodesTextProcessor
 import com.gnoemes.shikimori.utils.date.DateTimeConverter
 import com.gnoemes.shikimori.utils.nullIfEmpty
 import com.gnoemes.shikimori.utils.unknownIfZero
@@ -18,7 +20,8 @@ import javax.inject.Inject
 class AnimeDetailsViewModelConverterImpl @Inject constructor(
         private val context: Context,
         private val settings: SettingsSource,
-        private val converter: DateTimeConverter
+        private val converter: DateTimeConverter,
+        private val textProcessor: BBCodesTextProcessor
 ) : AnimeDetailsViewModelConverter {
 
     override fun convertHead(it: AnimeDetails): DetailsHeadItem {
@@ -45,6 +48,11 @@ class AnimeDetailsViewModelConverterImpl @Inject constructor(
                 it.genres,
                 it.studios.firstOrNull()
         )
+    }
+
+    override fun convertDescriptionItem(description: String?): DetailsDescriptionItem {
+        val processedText = description?.let { textProcessor.process(it) }
+        return DetailsDescriptionItem(processedText)
     }
 
     override fun convertOptions(it: AnimeDetails, isGuest: Boolean): DetailsOptionsItem {

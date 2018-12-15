@@ -97,4 +97,6 @@ dependencies {
     implementation 'com.facebook.shimmer:shimmer:' + versions.shimmer
     implementation 'com.lapism:searchview:' + versions.searchView
     implementation 'de.hdodenhof:circleimageview:'+ versions.circleImageView
+
+    implementation 'org.kefirsf:kefirbb:' + versions.kefirBB
 }

@@ -36,4 +36,6 @@ ext.versions = [
     searchView        : '4.0',
     circleImageView   : '2.2.0',
 
+    kefirBB           : '1.5',
+
 ]
