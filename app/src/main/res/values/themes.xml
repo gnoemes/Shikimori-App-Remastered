@@ -8,6 +8,10 @@
         <item name="md_font_title">@font/open_sans_semibold</item>
     </style>
 
+    <style name="ShikimoriAppTheme.Launch" parent="ShikimoriAppTheme.Default">
+        <item name="android:windowBackground">@drawable/launch_screen</item>
+    </style>
+
     <style name="ShikimoriAppTheme.Default" parent="ShikimoriAppTheme.Base">
         <item name="colorPrimary">@color/default_colorPrimary</item>
         <item name="colorPrimaryDark">@color/default_colorPrimaryDark</item>
