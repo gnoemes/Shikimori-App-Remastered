@@ -19,12 +19,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.gnoemes.shikimori.presentation.view.common.widget.shikimori.ShikimoriTextView
+    <com.gnoemes.shikimori.presentation.view.common.widget.shikimori.ShikimoriContentView
         android:id="@+id/descriptionTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:maxLines="4"
         android:paddingStart="24dp"
         android:paddingEnd="24dp"
         android:paddingBottom="8dp"

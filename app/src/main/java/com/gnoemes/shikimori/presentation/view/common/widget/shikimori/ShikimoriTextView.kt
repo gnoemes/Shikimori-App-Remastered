@@ -27,34 +27,30 @@ class ShikimoriTextView @JvmOverloads constructor(
         })
     }
 
-
     var linkCallback: ((Type, Long) -> Unit)? = null
 
-    fun setText(text: String?) {
-        if (text.isNullOrBlank()) return
-
-        val items = text
-                .split(ShikimoriViews.DELIMITER)
-                .map { ShikimoriViews.deserializeContent(it) }
-
-        processTextContent(items)
-    }
-
-    private fun processTextContent(group: List<Content>) {
+    fun processTextContent(group: List<Content>) {
         val builder = SpannableStringBuilder()
 
         group.forEach {
-            if (it is Text) {
-                // html trims first whitespace
-                if (it.text.startsWith(" ")) builder.append(" ")
-                builder.append(Html.fromHtml(it.text))
-            } else if (it is Link) {
-                val action = it.type.name.plus(ShikimoriViews.ACTION_DIVIDER).plus(it.id)
-                builder.append(it.text.toLink(action))
+            when (it) {
+                is Text -> appendText(builder, it)
+                is Link -> appendLink(builder, it)
             }
         }
 
         text = builder
+    }
+
+    private fun appendText(builder: SpannableStringBuilder, it: Text) {
+        // html trims first whitespace
+        if (it.text.startsWith(" ")) builder.append(" ")
+        builder.append(Html.fromHtml(it.text))
+    }
+
+    private fun appendLink(builder: SpannableStringBuilder, it: Link) {
+        val action = it.type.name.plus(ShikimoriViews.ACTION_DIVIDER).plus(it.id)
+        builder.append(it.text.toLink(action))
     }
 
     interface LinkClickListener {

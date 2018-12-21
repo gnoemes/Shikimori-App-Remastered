@@ -42,12 +42,54 @@ fun String.toBold(): SpannableStringBuilder {
     return builder
 }
 
-
 fun String.toLink(action: String? = ""): SpannableStringBuilder {
     val builder = SpannableStringBuilder()
             .append(this)
     builder.setSpan(URLSpan(action), 0, length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
     return builder
+}
+
+fun String.splitWithSavedNested(startSymbol: Char, endSymbol: Char): Array<String> {
+    var depth = 0
+    val splitGroups = mutableListOf<String>()
+
+    val part = mutableListOf<Char>()
+    var charIndex = 0
+
+    fun addToSplit() {
+        splitGroups.add(String(part.toCharArray()))
+        part.clear()
+    }
+
+    fun append(char: Char) {
+        part.add(char)
+    }
+
+    this.forEach { char ->
+
+        if (char == startSymbol) {
+            depth += 1
+
+            if (depth == 1) addToSplit()
+
+            append(char)
+        } else if (char == endSymbol) {
+            depth -= 1
+
+            append(char)
+
+            if (depth == 0) addToSplit()
+
+        } else if (charIndex == lastIndex){
+            append(char)
+            addToSplit()
+        }
+        else append(char)
+
+        charIndex++
+    }
+
+    return splitGroups.toTypedArray()
 }
 
 fun String.toUri() = Uri.parse(this)

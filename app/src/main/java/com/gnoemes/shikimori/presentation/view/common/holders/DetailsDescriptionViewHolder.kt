@@ -1,8 +1,8 @@
 package com.gnoemes.shikimori.presentation.view.common.holders
 
-import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.view.View
-import android.widget.TextView
+import android.widget.LinearLayout
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.common.domain.Type
@@ -15,14 +15,13 @@ import kotlinx.android.synthetic.main.layout_details_description_content.view.*
 
 class DetailsDescriptionViewHolder(
         private val view: View,
-        private val navigationCallback : (Type, Long) -> Unit
+        private val navigationCallback: (Type, Long) -> Unit
 ) {
 
     private val placeholder by lazy { DetailsPlaceholderViewHolder(view.descriptionContent, view.descriptionPlaceholder as ShimmerFrameLayout) }
 
-    private companion object {
-        private const val COLLAPSED_MAX_LINES = 4
-    }
+    private val COLLAPSED_MAX_HEIGHT = (view.resources.displayMetrics.density * 80).toInt()
+    private var contentHeight: Int = COLLAPSED_MAX_HEIGHT
 
     var isExpanded: Boolean = false
 
@@ -36,14 +35,15 @@ class DetailsDescriptionViewHolder(
         placeholder.showContent()
 
         with(view) {
-            descriptionTextView.setText(item.description)
-            descriptionTextView.linkCallback  = navigationCallback
-
+            descriptionTextView.linkCallback = navigationCallback
+            descriptionTextView.setContent(item.description)
 
             descriptionTextView.post {
-                if (descriptionTextView.lineCount > COLLAPSED_MAX_LINES) {
+                contentHeight = descriptionTextView.height
+                if (descriptionTextView.height >= COLLAPSED_MAX_HEIGHT) {
+                    descriptionTextView.layoutParams.height = COLLAPSED_MAX_HEIGHT
+                    descriptionTextView.requestLayout()
                     expandView.visible()
-                    descriptionTextView.onClick { expandOrCollapse() }
                     expandView.onClick { expandOrCollapse() }
                 } else expandView.gone()
             }
@@ -51,19 +51,22 @@ class DetailsDescriptionViewHolder(
     }
 
     private fun expandOrCollapse() {
-        if (view.descriptionTextView.lineCount > COLLAPSED_MAX_LINES) {
+        if (view.descriptionTextView.height >= COLLAPSED_MAX_HEIGHT) {
             isExpanded = !isExpanded
             if (isExpanded) view.expandView.setImageResource(R.drawable.ic_chevron_up)
             else view.expandView.setImageResource(R.drawable.ic_chevron_down)
 
-            cycleTextViewExpansion(view.descriptionTextView)
+            cycleHeightExpansion(view.descriptionTextView)
         }
     }
 
-    private fun cycleTextViewExpansion(tv: TextView) {
-        val duration = (tv.lineCount - COLLAPSED_MAX_LINES) * 10L
-        val animation = ObjectAnimator.ofInt(tv, "maxLines",
-                if (tv.maxLines == COLLAPSED_MAX_LINES) tv.lineCount else COLLAPSED_MAX_LINES)
-        animation.setDuration(duration).start()
+    private fun cycleHeightExpansion(layout: LinearLayout) {
+        val end = if (layout.height == COLLAPSED_MAX_HEIGHT) contentHeight else COLLAPSED_MAX_HEIGHT
+
+        ValueAnimator.ofInt(layout.height, end)
+                .apply { addUpdateListener { layout.layoutParams.apply { height = it.animatedValue as Int; layout.requestLayout() } } }
+                .setDuration(500)
+                .start()
     }
+
 }

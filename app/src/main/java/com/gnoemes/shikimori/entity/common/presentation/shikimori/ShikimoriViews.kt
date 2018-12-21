@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder
 object ShikimoriViews {
     const val DELIMITER = "$"
     const val START_SYMBOL = "{"
+    const val END_SYMBOL = "}"
     const val ACTION_DIVIDER = "_"
 
     private val adapterFactory = RuntimeTypeAdapterFactory.of(Content::class.java, "contentType", true)
