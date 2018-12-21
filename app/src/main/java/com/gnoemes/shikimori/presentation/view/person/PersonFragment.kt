@@ -80,7 +80,7 @@ class PersonFragment : BaseFragment<PersonPresenter, PersonView>(), PersonView {
         }
 
         headHolder = DetailsHeadSimpleViewHolder(headLayout, imageLoader)
-        descriptionHolder = DetailsDescriptionViewHolder(descriptionLayout)
+        descriptionHolder = DetailsDescriptionViewHolder(descriptionLayout, getPresenter()::onContentClicked)
 
         contentHolders.apply {
             put(DetailsContentType.CHARACTERS, DetailsContentViewHolder(charactersLayout, charactersAdapter))

@@ -101,22 +101,22 @@
 
     <code name="anime">
         <pattern ignoreCase="true">[anime=<var inherit="true" name="id"/>]<var inherit="true" name="text"/>[/anime]</pattern>
-        <template>${"type": "anime", "id":<var name="id"/>, "text":"<var name="text"/>"}$</template>
+        <template>${"contentType": "link", "type": "Anime", "id":<var name="id"/>, "text":"<var name="text"/>"}$</template>
     </code>
 
     <code name="manga">
         <pattern ignoreCase="true">[manga=<var inherit="true" name="id"/>]<var inherit="true" name="text"/>[/manga]</pattern>
-        <template>${"type": "manga", "id":<var name="id"/>, "text":"<var name="text"/>"}$</template>
+        <template>${"contentType": "link", "type": "Manga", "id":<var name="id"/>, "text":"<var name="text"/>"}$</template>
     </code>
 
     <code name="character">
         <pattern ignoreCase="true">[character=<var inherit="true" name="id"/>]<var inherit="true" name="text"/>[/character]</pattern>
-        <template>${"type": "character", "id":<var name="id"/>, "text":"<var name="text"/>"}$</template>
+        <template>${"contentType": "link", "type": "Character", "id":<var name="id"/>, "text":"<var name="text"/>"}$</template>
     </code>
 
     <code name="person">
         <pattern ignoreCase="true">[person=<var inherit="true" name="id"/>]<var inherit="true" name="text"/>[/person]</pattern>
-        <template>${"type": "person", "id":<var name="id"/>, "text":"<var name="text"/>"}$</template>
+        <template>${"contentType": "link", "type": "Person", "id":<var name="id"/>, "text":"<var name="text"/>"}$</template>
     </code>
 
     <!--<code name="spoiler">-->

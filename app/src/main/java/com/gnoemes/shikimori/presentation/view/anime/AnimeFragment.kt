@@ -115,7 +115,7 @@ class AnimeFragment : BaseFragment<AnimePresenter, AnimeView>(), AnimeView,
         appBarLayout.addOnOffsetChangedListener(onOffsetChangedListener)
 
         headHolder = DetailsHeadViewHolder(headLayout, imageLoader, resourceProvider, genreAdapter, getPresenter()::onAction)
-        descriptionHolder = DetailsDescriptionViewHolder(descriptionLayout)
+        descriptionHolder = DetailsDescriptionViewHolder(descriptionLayout, getPresenter()::onContentClicked)
         optionsHolder = DetailsOptionsViewHolder(optionsLayout, getPresenter()::onAction)
 
         contentHolders.apply {

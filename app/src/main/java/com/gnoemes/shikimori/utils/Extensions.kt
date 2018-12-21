@@ -43,10 +43,10 @@ fun String.toBold(): SpannableStringBuilder {
 }
 
 
-fun String.toLink(): SpannableStringBuilder {
+fun String.toLink(action: String? = ""): SpannableStringBuilder {
     val builder = SpannableStringBuilder()
             .append(this)
-    builder.setSpan(URLSpan(""), 0, length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+    builder.setSpan(URLSpan(action), 0, length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
     return builder
 }
 

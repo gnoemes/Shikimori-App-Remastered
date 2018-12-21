@@ -46,7 +46,7 @@ class PersonDetailsViewModelConverterImpl @Inject constructor(
                 if (!it.isNullOrBlank()) {
                     builder.append(it)
                     if (first) builder.append(": ")
-                    else builder.append("\n")
+                    else builder.append("<br>")
                     first = false
                 }
             }

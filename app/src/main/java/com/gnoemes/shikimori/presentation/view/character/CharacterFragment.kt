@@ -82,7 +82,7 @@ class CharacterFragment : BaseFragment<CharacterPresenter, CharacterView>(), Cha
         }
 
         headHolder = DetailsHeadSimpleViewHolder(headLayout, imageLoader)
-        descriptionHolder = DetailsDescriptionViewHolder(descriptionLayout)
+        descriptionHolder = DetailsDescriptionViewHolder(descriptionLayout, getPresenter()::onContentClicked)
 
         contentHolders.apply {
             put(DetailsContentType.SEYUS, DetailsContentViewHolder(seyuLayout, seyuAdapter))
