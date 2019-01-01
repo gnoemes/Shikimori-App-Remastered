@@ -66,6 +66,7 @@
         <coderef name="br2"/>
         <coderef name="color"/>
         <coderef name="size"/>
+        <coderef name="h"/>
 
         <!-- Quotes -->
         <coderef name="code"/>
@@ -148,6 +149,11 @@
     <code name="br2">
         <pattern><eol/></pattern>
         <template>&lt;br/&gt;</template>
+    </code>
+
+    <code name="h">
+        <pattern ignoreCase="true">[h<var inherit="true" name ="size"/>]<var inherit="true" name="text"/>[/h<var name="size"/>]</pattern>
+        <template>&lt;h<var name="size"/>&gt;<var name="text"/>&lt;/h<var name="size"/>&gt;</template>
     </code>
 
     <!-- Font color -->
