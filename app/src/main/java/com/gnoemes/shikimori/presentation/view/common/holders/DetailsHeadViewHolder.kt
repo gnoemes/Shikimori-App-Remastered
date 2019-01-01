@@ -1,7 +1,6 @@
 package com.gnoemes.shikimori.presentation.view.common.holders
 
 import android.view.View
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.app.domain.Constants
@@ -11,6 +10,9 @@ import com.gnoemes.shikimori.presentation.presenter.common.provider.RatingResour
 import com.gnoemes.shikimori.presentation.view.common.adapter.GenreAdapter
 import com.gnoemes.shikimori.utils.*
 import com.gnoemes.shikimori.utils.images.ImageLoader
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
 import kotlinx.android.synthetic.main.layout_details_head.view.*
 import kotlinx.android.synthetic.main.layout_details_head_content.view.*
 import kotlin.math.roundToInt
@@ -28,7 +30,8 @@ class DetailsHeadViewHolder(
     init {
         view.headContent.genresList.apply {
             adapter = genreAdapter
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = FlexboxLayoutManager(context, FlexDirection.ROW, FlexWrap.WRAP)
+            setHasFixedSize(true)
         }
     }
 
