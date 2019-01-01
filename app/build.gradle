@@ -99,4 +99,8 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:'+ versions.circleImageView
 
     implementation 'org.kefirsf:kefirbb:' + versions.kefirBB
+
+    implementation 'com.google.firebase:firebase-core:' + versions.firebase
 }
+
+apply plugin: 'com.google.gms.google-services'
