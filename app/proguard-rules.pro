@@ -51,3 +51,9 @@
   **[] $VALUES;
   public *;
 }
+
+-keep class com.google.protobuf.**
+-keep class com.google.android.gms.**
+-keep class com.google.firebase.**
+-dontnote com.google.android.gms.**
+-dontwarn org.slf4j.**
