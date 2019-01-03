@@ -27,7 +27,8 @@ class FilterRanobeStrategy(
 
     private val mangaListContainers by lazy {
         listOf(
-                Container(SearchConstants.GENRE, view.genresGroup)
+                Container(SearchConstants.GENRE, view.genresGroup),
+                Container(SearchConstants.SEASON, view.seasonGroup)
         )
     }
 

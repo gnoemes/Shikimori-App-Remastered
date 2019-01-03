@@ -198,6 +198,7 @@
     <string name="settings_about">О программе</string>
     <string name="settings_app">Приложение</string>
     <string name="settings_content">Контент</string>
+    <string name="older">Более старые</string>
 
 
     <string-array name="rate_types">
@@ -396,5 +397,11 @@
         <item>18+</item>
     </string-array>
 
+    <string-array name="seasons">
+        <item>@string/season_autumn</item>
+        <item>@string/season_winter</item>
+        <item>@string/season_spring</item>
+        <item>@string/season_summer</item>
+    </string-array>
 
 </resources>

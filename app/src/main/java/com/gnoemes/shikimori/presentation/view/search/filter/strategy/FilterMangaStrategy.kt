@@ -28,7 +28,8 @@ class FilterMangaStrategy(
     private val mangaListContainers by lazy {
         listOf(
                 Container(SearchConstants.GENRE, view.genresGroup),
-                Container(SearchConstants.TYPE, view.typeGroup)
+                Container(SearchConstants.TYPE, view.typeGroup),
+                Container(SearchConstants.SEASON, view.seasonGroup)
         )
     }
 
