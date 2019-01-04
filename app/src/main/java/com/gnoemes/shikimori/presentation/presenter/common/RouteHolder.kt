@@ -17,6 +17,7 @@ import com.gnoemes.shikimori.presentation.view.person.PersonFragment
 import com.gnoemes.shikimori.presentation.view.rates.RatesContainerFragment
 import com.gnoemes.shikimori.presentation.view.search.SearchFragment
 import com.gnoemes.shikimori.presentation.view.settings.SettingsActivity
+import com.gnoemes.shikimori.presentation.view.shikimorimain.ShikimoriMainFragment
 
 object RouteHolder {
 
@@ -25,7 +26,7 @@ object RouteHolder {
             BottomScreens.RATES -> RatesContainerFragment.newInstance(data as? Long)
             BottomScreens.CALENDAR -> CalendarFragment.newInstance()
             BottomScreens.SEARCH -> SearchFragment.newInstance(data as? SearchNavigationData)
-//                    BottomScreens.MAIN ->
+            BottomScreens.MAIN -> ShikimoriMainFragment.newInstance()
             BottomScreens.MORE -> MoreFragment.newInstance()
             Screens.ANIME_DETAILS -> AnimeFragment.newInstance(data as Long)
             Screens.CHARACTER_DETAILS -> CharacterFragment.newInstance(data as Long)

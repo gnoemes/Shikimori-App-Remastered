@@ -200,6 +200,10 @@
     <string name="settings_content">Контент</string>
     <string name="older">Более старые</string>
 
+    <string name="topic_news">Новости</string>
+    <string name="topic_my_feed">Моя лента</string>
+    <string name="topic_forum">Форум</string>
+
 
     <string-array name="rate_types">
         <item>@string/common_anime</item>
