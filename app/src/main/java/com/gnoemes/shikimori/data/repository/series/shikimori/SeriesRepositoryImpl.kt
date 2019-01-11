@@ -3,10 +3,9 @@ package com.gnoemes.shikimori.data.repository.series.shikimori
 import com.gnoemes.shikimori.data.local.db.AnimeRateSyncDbSource
 import com.gnoemes.shikimori.data.local.db.EpisodeDbSource
 import com.gnoemes.shikimori.data.network.VideoApi
-import com.gnoemes.shikimori.data.repository.series.shikimori.converter.SeriesResponseConverter
+import com.gnoemes.shikimori.data.repository.series.shikimori.converter.EpisodeResponseConverter
 import com.gnoemes.shikimori.data.repository.series.shikimori.converter.TranslationResponseConverter
 import com.gnoemes.shikimori.entity.series.domain.Episode
-import com.gnoemes.shikimori.entity.series.domain.Series
 import com.gnoemes.shikimori.entity.series.domain.Translation
 import com.gnoemes.shikimori.entity.series.domain.TranslationType
 import io.reactivex.Completable
@@ -17,25 +16,23 @@ import javax.inject.Inject
 
 class SeriesRepositoryImpl @Inject constructor(
         private val api: VideoApi,
-        private val converter: SeriesResponseConverter,
+        private val converter: EpisodeResponseConverter,
         private val translationConverter: TranslationResponseConverter,
         private val episodeSource: EpisodeDbSource,
         private val syncSource: AnimeRateSyncDbSource
 ) : SeriesRepository {
 
-    override fun getSeries(id: Long): Single<Series> =
-            api.getAnimeVideoInfo(id)
-                    .map { converter.convertResponse(id, it) }
-                    .flatMap { series ->
-                        episodeSource.saveEpisodes(series.episodes).toSingleDefault(series.episodes)
+    override fun getEpisodes(id: Long): Single<List<Episode>> =
+            api.getEpisodes(id)
+                    .map(converter)
+                    .flatMap { episodes ->
+                        episodeSource.saveEpisodes(episodes).toSingleDefault(episodes)
                                 .flatMap { syncEpisodes(id, it) }
-                                .map { Series(it, errorMessage = series.errorMessage) }
                     }
 
     override fun getTranslations(type: TranslationType, animeId: Long, episodeId: Int): Single<List<Translation>> =
-            api.getAnimeVideoInfo(animeId, episodeId)
-                    .map { translationConverter.convertResponse(animeId, episodeId, it) }
-                    .map { list -> list.filter { it.type == type || type == TranslationType.ALL } }
+            api.getTranslations(animeId, episodeId, type)
+                    .map(translationConverter)
 
     override fun setEpisodeWatched(animeId: Long, episodeId: Int): Completable = episodeSource.episodeWatched(animeId, episodeId)
 

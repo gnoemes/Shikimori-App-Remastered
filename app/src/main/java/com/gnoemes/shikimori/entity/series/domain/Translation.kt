@@ -8,6 +8,5 @@ data class Translation(
         val quality: TranslationQuality,
         val hosting: VideoHosting,
         val author: String,
-        val isValid: Boolean,
         val episodesSize: Int
 )

@@ -37,8 +37,7 @@ android {
         it.buildConfigField 'String', 'ShikimoriClientId', ShikimoriClientId
         it.buildConfigField 'String', 'ShikimoriClientSecret', ShikimoriClientSecret
         it.buildConfigField 'String', 'ShikimoriBaseUrl', ShikimoriBaseUrl
-        it.buildConfigField 'String', 'PlaySkihimoriBaseUrl', PlaySkihimoriBaseUrl
-        it.buildConfigField 'String', 'AlternativeBaseUrl', AlternativeBaseUrl
+        it.buildConfigField 'String', 'VideoBaseUrl', VideoBaseUrl
     }
 
     compileOptions {
@@ -70,7 +69,6 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:" + versions.okHttp
     implementation "com.squareup.okhttp3:logging-interceptor:" + versions.okHttp
     implementation 'com.squareup.okhttp3:okhttp-urlconnection:' + versions.urlConnection
-    implementation 'com.github.franmontiel:PersistentCookieJar:' + versions.cookieJar
 
     implementation "com.pushtorefresh.storio3:sqlite:" + versions.storIO
     implementation "com.pushtorefresh.storio3:sqlite-annotations:" + versions.storIO
@@ -84,7 +82,6 @@ dependencies {
     kapt "com.github.bumptech.glide:compiler:" + versions.glide
 
     implementation "com.google.code.gson:gson:" + versions.gson
-    implementation 'org.jsoup:jsoup:' + versions.jsoup
     implementation 'net.danlew:android.joda:' + versions.jodaDateTime
     implementation 'ru.terrakok.cicerone:cicerone:' + versions.cicerone
     implementation 'com.afollestad:aesthetic:' + versions.aestheric

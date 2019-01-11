@@ -1,18 +1,26 @@
 package com.gnoemes.shikimori.entity.series.domain;
 
+import com.google.gson.annotations.SerializedName;
+
 import androidx.annotation.Nullable;
 
 public enum TranslationType {
-    VOICE_RU("озвучка"),
-    SUB_RU("субтитры"),
-    RAW("оригинал"),
-    ALL("не выбрано");
+    @SerializedName("fandub")
+    VOICE_RU("fandub", "озвучка"),
+    @SerializedName("subtitles")
+    SUB_RU("subtitles", "субтитры"),
+    @SerializedName("raw")
+    RAW("raw", "оригинал"),
+    @SerializedName("all")
+    ALL("all", "не выбрано");
 
     @Nullable
     private final String type;
+    private final String localizedType;
 
-    TranslationType(@Nullable String type) {
+    TranslationType(@Nullable String type, String localizedType) {
         this.type = type;
+        this.localizedType = localizedType;
     }
 
     public boolean isEqualType(@Nullable String otherType) {
@@ -23,5 +31,9 @@ public enum TranslationType {
     @Nullable
     public String getType() {
         return type;
+    }
+
+    public String getLocalizedType() {
+        return localizedType;
     }
 }

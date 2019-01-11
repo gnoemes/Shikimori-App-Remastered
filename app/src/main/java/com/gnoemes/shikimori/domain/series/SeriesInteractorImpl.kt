@@ -7,7 +7,7 @@ import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.rates.domain.UserRate
-import com.gnoemes.shikimori.entity.series.domain.Series
+import com.gnoemes.shikimori.entity.series.domain.Episode
 import com.gnoemes.shikimori.entity.series.domain.Translation
 import com.gnoemes.shikimori.entity.series.domain.TranslationType
 import com.gnoemes.shikimori.utils.applyErrorHandlerAndSchedulers
@@ -21,7 +21,7 @@ class SeriesInteractorImpl @Inject constructor(
         private val userRepository: UserRepository
 ) : SeriesInteractor {
 
-    override fun getSeries(id: Long): Single<Series> = repository.getSeries(id).applyErrorHandlerAndSchedulers()
+    override fun getEpisodes(id: Long): Single<List<Episode>> = repository.getEpisodes(id).applyErrorHandlerAndSchedulers()
 
     override fun getTranslations(type: TranslationType, animeId: Long, episodeId: Int): Single<List<Translation>> =
             repository.getTranslations(type, animeId, episodeId)

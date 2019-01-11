@@ -1,36 +1,33 @@
 package com.gnoemes.shikimori.data.network
 
+import com.gnoemes.shikimori.entity.series.data.EpisodeResponse
+import com.gnoemes.shikimori.entity.series.data.TranslationResponse
+import com.gnoemes.shikimori.entity.series.data.VideoResponse
+import com.gnoemes.shikimori.entity.series.domain.TranslationType
+import com.gnoemes.shikimori.entity.series.domain.VideoHosting
 import io.reactivex.Single
-import okhttp3.ResponseBody
-import org.jsoup.nodes.Document
-import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
-import retrofit2.http.Url
+import retrofit2.http.Query
 
 interface VideoApi {
 
-    /**
-     * Get html page of specific video
-     */
-    @GET("/animes/a{animeId}/video_online/{episode}/{videoId}")
-    fun getAnimeVideoInfo(@Path("animeId") animeId: Long, @Path("episode") episode: Int, @Path("videoId") videoId: Long? = null): Single<Document>
+    @GET("/api/anime/:id/series")
+    fun getEpisodes(@Path("id") id: Long): Single<List<EpisodeResponse>>
 
-    /**
-     * Get html page of anime (information about episodes hostings etc)
-     */
-    @GET("/animes/a{animeId}/video_online/")
-    fun getAnimeVideoInfo(@Path("animeId") animeId: Long): Single<Document>
+    @GET("/api/anime/:animeId/:episodeId/translations")
+    fun getTranslations(@Path("animeId") animeId: Long,
+                        @Path("episodeId") episodeId: Int,
+                        @Query("type") type: TranslationType
+    ): Single<List<TranslationResponse>>
 
-    /**
-     * Get html source from hosting
-     */
-    @GET
-    fun getVideoSource(@Url url: String): Single<Document>
-
-    /**
-     * Handle raw response with headers and redirect urls
-     */
-    @GET
-    fun getRawVideoResponse(@Url url: String): Single<Response<ResponseBody>>
+    @GET("/api/anime/:animeId/:episodeId/video/:videoId")
+    fun getVideo(@Path("animeId") animeId: Long,
+                 @Path("episodeId") episodeId: Int,
+                 @Path("videoId") videoId : String,
+                 @Query("language") language: String,
+                 @Query("kind") type : TranslationType,
+                 @Query("author") author : String,
+                 @Query("hosting") hosting : VideoHosting
+    ): Single<List<VideoResponse>>
 }

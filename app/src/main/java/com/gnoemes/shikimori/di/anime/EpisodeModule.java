@@ -4,8 +4,8 @@ import com.gnoemes.shikimori.data.local.db.EpisodeDbSource;
 import com.gnoemes.shikimori.data.local.db.impl.EpisodeDbSourceImpl;
 import com.gnoemes.shikimori.data.repository.series.shikimori.SeriesRepository;
 import com.gnoemes.shikimori.data.repository.series.shikimori.SeriesRepositoryImpl;
-import com.gnoemes.shikimori.data.repository.series.shikimori.converter.SeriesResponseConverter;
-import com.gnoemes.shikimori.data.repository.series.shikimori.converter.SeriesResponseConverterImpl;
+import com.gnoemes.shikimori.data.repository.series.shikimori.converter.EpisodeResponseConverter;
+import com.gnoemes.shikimori.data.repository.series.shikimori.converter.EpisodeResponseConverterImpl;
 import com.gnoemes.shikimori.data.repository.series.shikimori.converter.TranslationResponseConverter;
 import com.gnoemes.shikimori.data.repository.series.shikimori.converter.TranslationResponseConverterImpl;
 import com.gnoemes.shikimori.domain.series.SeriesInteractor;
@@ -34,7 +34,7 @@ public interface EpisodeModule {
 
     @Binds
     @Reusable
-    SeriesResponseConverter bindSeriesResponseConverter(SeriesResponseConverterImpl converter);
+    EpisodeResponseConverter bindSeriesResponseConverter(EpisodeResponseConverterImpl converter);
 
     @Binds
     @Reusable

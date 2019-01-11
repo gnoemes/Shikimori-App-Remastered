@@ -7,12 +7,6 @@ import com.gnoemes.shikimori.presentation.view.common.fragment.BaseDetailsView
 
 interface AnimeView : BaseDetailsView {
 
-    fun setEpisodes(items: List<Any>)
-
-    fun showEpisodeLoading()
-
-    fun hideEpisodeLoading()
-
     @StateStrategyType(SkipStrategy::class)
     fun showRateDialog(userRate: UserRate?)
 

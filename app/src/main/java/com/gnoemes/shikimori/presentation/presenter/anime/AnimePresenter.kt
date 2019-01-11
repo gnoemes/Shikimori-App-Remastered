@@ -4,24 +4,19 @@ import com.arellomobile.mvp.InjectViewState
 import com.gnoemes.shikimori.domain.anime.AnimeInteractor
 import com.gnoemes.shikimori.domain.rates.RatesInteractor
 import com.gnoemes.shikimori.domain.related.RelatedInteractor
-import com.gnoemes.shikimori.domain.series.SeriesInteractor
 import com.gnoemes.shikimori.domain.user.UserInteractor
 import com.gnoemes.shikimori.entity.anime.domain.AnimeDetails
 import com.gnoemes.shikimori.entity.app.domain.Constants
-import com.gnoemes.shikimori.entity.app.domain.exceptions.BaseException
-import com.gnoemes.shikimori.entity.app.domain.exceptions.ServiceCodeException
 import com.gnoemes.shikimori.entity.common.domain.Genre
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.common.presentation.DetailsAction
 import com.gnoemes.shikimori.entity.common.presentation.DetailsContentType
-import com.gnoemes.shikimori.entity.common.presentation.PlaceholderItem
 import com.gnoemes.shikimori.entity.main.BottomScreens
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.rates.domain.UserRate
 import com.gnoemes.shikimori.entity.search.presentation.SearchNavigationData
 import com.gnoemes.shikimori.entity.search.presentation.SearchPayload
 import com.gnoemes.shikimori.presentation.presenter.anime.converter.AnimeDetailsViewModelConverter
-import com.gnoemes.shikimori.presentation.presenter.anime.converter.EpisodeViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
 import com.gnoemes.shikimori.presentation.presenter.common.converter.DetailsContentViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.common.converter.FranchiseNodeViewModelConverter
@@ -37,13 +32,11 @@ import javax.inject.Inject
 @InjectViewState
 class AnimePresenter @Inject constructor(
         private val animeInteractor: AnimeInteractor,
-        private val seriesInteractor: SeriesInteractor,
         private val ratesInteractor: RatesInteractor,
         private val userInteractor: UserInteractor,
         private val relatedInteractor: RelatedInteractor,
         private val resourceProvider: CommonResourceProvider,
         private val viewModelConverter: AnimeDetailsViewModelConverter,
-        private val episodeConverter: EpisodeViewModelConverter,
         private val linkConverter: LinkViewModelConverter,
         private val nodeConverter: FranchiseNodeViewModelConverter,
         private val contentConverter: DetailsContentViewModelConverter
@@ -62,19 +55,10 @@ class AnimePresenter @Inject constructor(
 
     private fun loadData() =
             loadAnime()
-                    .doOnSuccess { loadEpisodes() }
                     .doOnSuccess { loadCharacters() }
                     .doOnSuccess { loadSimilar() }
                     .doOnSuccess { loadRelated() }
                     .subscribe({ viewState.setHeadItem(it) }, this::processErrors)
-
-    private fun loadEpisodes() =
-            seriesInteractor.getSeries(id)
-                    .doOnSubscribe { viewState.showEpisodeLoading() }
-                    .doAfterTerminate { viewState.hideEpisodeLoading() }
-                    .doOnEvent { _, _ -> viewState.hideEpisodeLoading() }
-                    .map(episodeConverter)
-                    .subscribe({ viewState.setEpisodes(it) }, this::processEpisodeErrors)
 
     private fun loadUser() =
             userInteractor.getMyUserBrief()
@@ -228,13 +212,6 @@ class AnimePresenter @Inject constructor(
 
     private fun processUserErrors(throwable: Throwable) {
         throwable.printStackTrace()
-    }
-
-    private fun processEpisodeErrors(throwable: Throwable) {
-        when ((throwable as? BaseException)?.tag) {
-            ServiceCodeException.TAG -> viewState.setEpisodes(listOf(PlaceholderItem()))
-            else -> super.processErrors(throwable)
-        }
     }
 
     private fun Completable.updateAnimeData() {

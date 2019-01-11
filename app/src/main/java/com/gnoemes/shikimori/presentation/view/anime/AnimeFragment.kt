@@ -193,9 +193,6 @@ class AnimeFragment : BaseFragment<AnimePresenter, AnimeView>(), AnimeView,
         contentHolders[type]?.bind(type, item)
     }
 
-    override fun setEpisodes(items: List<Any>) {
-    }
-
     override fun showRateDialog(userRate: UserRate?) {
         val dialog = RateDialogFragment.newInstance(rate = userRate)
         dialog.show(childFragmentManager, "RateTag")
@@ -216,11 +213,4 @@ class AnimeFragment : BaseFragment<AnimePresenter, AnimeView>(), AnimeView,
             setItems(it)
         }.show(childFragmentManager, "ChronologyTag")
     }
-
-    override fun showEpisodeLoading() {
-    }
-
-    override fun hideEpisodeLoading() {
-    }
-
 }

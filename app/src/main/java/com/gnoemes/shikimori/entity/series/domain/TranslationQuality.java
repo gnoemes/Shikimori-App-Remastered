@@ -1,8 +1,13 @@
 package com.gnoemes.shikimori.entity.series.domain;
 
+import com.google.gson.annotations.SerializedName;
+
 public enum TranslationQuality {
+    @SerializedName("bd")
     BD("bd"),
+    @SerializedName("tv")
     TV("tv"),
+    @SerializedName("dvd")
     DVD("dvd"),;
 
 
