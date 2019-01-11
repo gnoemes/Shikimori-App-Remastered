@@ -10,6 +10,7 @@ import com.gnoemes.shikimori.entity.rates.domain.UserRate
 import com.gnoemes.shikimori.entity.series.domain.Episode
 import com.gnoemes.shikimori.entity.series.domain.Translation
 import com.gnoemes.shikimori.entity.series.domain.TranslationType
+import com.gnoemes.shikimori.utils.applyCompleteSchedulers
 import com.gnoemes.shikimori.utils.applyErrorHandlerAndSchedulers
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -35,6 +36,7 @@ class SeriesInteractorImpl @Inject constructor(
                             else -> Completable.complete()
                         }
                     }
+                    .applyCompleteSchedulers()
 
     private fun updateRate(animeId: Long, episodeId: Int, rateId: Long): Completable =
             repository.setEpisodeWatched(animeId, episodeId)
