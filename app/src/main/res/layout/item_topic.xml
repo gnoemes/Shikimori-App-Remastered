@@ -100,8 +100,9 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
+        android:fontFamily="sans-serif-medium"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/linkedImageView"
+        app:layout_constraintStart_toEndOf="@+id/imageContainerView"
         app:layout_constraintTop_toBottomOf="@+id/avatarView"
         app:layout_goneMarginStart="16dp"
         tools:text="Анонсирована аниме-адаптация манги «Mahou Shoujo Tokushuusen Asuka»." />
@@ -116,24 +117,35 @@
         app:layout_constraintTop_toBottomOf="@+id/titleView"
         tools:shikimori_content="Анонсирована аниме-адаптация манги «Mahou Shoujo Tokushuusen Asuka»." />
 
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/imageContainerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        app:cardCornerRadius="4dp"
+        app:cardPreventCornerOverlap="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/avatarView">
+
     <ImageView
         android:id="@+id/linkedImageView"
         android:layout_width="70dp"
         android:layout_height="100dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/avatarView"
         tools:srcCompat="@drawable/test_preview2" />
+
+    </com.google.android.material.card.MaterialCardView>
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="linkedImageView, expandView, contentView" />
-
+        app:constraint_referenced_ids="imageContainerView, expandView, contentView" />
 
     <ImageView
         android:id="@+id/commentImageView"
@@ -161,6 +173,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/commentImageView"
         tools:text="42" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

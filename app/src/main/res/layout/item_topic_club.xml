@@ -81,6 +81,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
+        android:fontFamily="sans-serif-medium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/linkedImageView"
         app:layout_constraintTop_toTopOf="@+id/linkedImageView"
