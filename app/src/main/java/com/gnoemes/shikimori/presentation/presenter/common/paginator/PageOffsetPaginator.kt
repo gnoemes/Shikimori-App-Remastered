@@ -207,7 +207,6 @@ class PageOffsetPaginator<T>(
             if (data.isNotEmpty()) {
                 currentState = DATA()
                 currentData.addAll(data)
-                increasePage()
                 viewController.showPageProgress(false)
                 viewController.showData(true, currentData)
             } else {
