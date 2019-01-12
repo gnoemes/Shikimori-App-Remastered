@@ -108,14 +108,16 @@ abstract class BaseFragment<Presenter : BasePresenter<View>, View : BaseNetworkV
         toolbar?.setTitle(stringRes)
     }
 
+    override fun showContent(show: Boolean) {
+        fragment_content?.visibleIf { show }
+    }
+
     override fun onShowLoading() {
         progressBar?.visible()
-        fragment_content?.gone()
     }
 
     override fun onHideLoading() {
         progressBar?.gone()
-        fragment_content?.visible()
     }
 
     override fun onShowLightLoading() {
@@ -126,14 +128,12 @@ abstract class BaseFragment<Presenter : BasePresenter<View>, View : BaseNetworkV
         progressBar?.gone()
     }
 
-    override fun showNetworkView(block: Boolean) {
+    override fun showNetworkView() {
         networkErrorView?.visible()
-        fragment_content?.visibleIf { !block }
     }
 
     override fun hideNetworkView() {
         networkErrorView?.gone()
-        fragment_content?.visible()
     }
 
     override fun showEmptyView() {

@@ -9,8 +9,6 @@ interface BasePaginationView : BaseFragmentView {
     @StateStrategyType(AddToEndSingleStrategy::class)
     fun showData(data: List<Any>)
 
-    fun hideData()
-
     fun showPageLoading()
 
     fun hidePageLoading()

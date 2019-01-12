@@ -50,10 +50,11 @@ abstract class BasePaginationPresenter<Items : Any, View : BasePaginationView> :
     protected open val viewController = object : ViewController<Items> {
         override fun showData(show: Boolean, data: List<Items>) {
             if (show) viewState.showData(data)
-            else viewState.hideData()
+            viewState.showContent(show)
         }
 
         override fun showEmptyView(show: Boolean) {
+            viewState.showContent(!show)
             if (show) viewState.showEmptyView()
             else viewState.hideEmptyView()
         }
@@ -78,9 +79,7 @@ abstract class BasePaginationPresenter<Items : Any, View : BasePaginationView> :
         }
 
         override fun showEmptyError(show: Boolean, throwable: Throwable?) {
-            if ((throwable as? BaseException)?.tag == NetworkException.TAG) {
-                if (show) viewState.showNetworkView(false)
-            } else {
+            if ((throwable as? BaseException)?.tag != NetworkException.TAG) {
                 if (show) viewState.showEmptyView()
             }
 

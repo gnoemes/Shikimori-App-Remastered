@@ -6,10 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.presentation.presenter.base.BasePaginationPresenter
 import com.gnoemes.shikimori.presentation.view.base.adapter.BasePaginationAdapter
-import com.gnoemes.shikimori.utils.gone
 import com.gnoemes.shikimori.utils.hideRefresh
 import com.gnoemes.shikimori.utils.showRefresh
-import com.gnoemes.shikimori.utils.visible
+import com.gnoemes.shikimori.utils.visibleIf
 import kotlinx.android.synthetic.main.layout_default_list.*
 
 abstract class BasePaginationFragment<Items : Any, Presenter : BasePaginationPresenter<Items, View>, View : BasePaginationView> : BaseFragment<Presenter, View>(), BasePaginationView {
@@ -43,13 +42,9 @@ abstract class BasePaginationFragment<Items : Any, Presenter : BasePaginationPre
 
     override fun showData(data: List<Any>) {
         adapter.bindItems(data)
-        recyclerView?.visible()
     }
 
-    override fun hideData() {
-        recyclerView?.gone()
-    }
-
+    override fun showContent(show: Boolean) = recyclerView.visibleIf { show }
     override fun onShowLoading() = refreshLayout.showRefresh()
     override fun onHideLoading() = refreshLayout.hideRefresh()
     override fun showPageLoading() = postViewAction { adapter.showProgress(true) }

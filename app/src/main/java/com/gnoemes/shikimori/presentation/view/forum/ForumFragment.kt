@@ -15,6 +15,7 @@ import com.gnoemes.shikimori.presentation.view.forum.adapter.ForumAdapter
 import com.gnoemes.shikimori.utils.gone
 import com.gnoemes.shikimori.utils.hideRefresh
 import com.gnoemes.shikimori.utils.showRefresh
+import com.gnoemes.shikimori.utils.visibleIf
 import kotlinx.android.synthetic.main.layout_default_list.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 
@@ -47,6 +48,7 @@ class ForumFragment : BaseFragment<ForumPresenter, ForumView>(), ForumView {
             setHasFixedSize(true)
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
+        refreshLayout.setOnRefreshListener { getPresenter().onRefresh() }
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -63,6 +65,10 @@ class ForumFragment : BaseFragment<ForumPresenter, ForumView>(), ForumView {
 
     override fun showData(items: List<Forum>) {
         adapter.bindItems(items)
+    }
+
+    override fun showContent(show: Boolean) {
+        recyclerView.visibleIf { show }
     }
 
     override fun onShowLoading() = refreshLayout.showRefresh()

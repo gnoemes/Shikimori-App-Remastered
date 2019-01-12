@@ -117,6 +117,5 @@ class CharacterFragment : BaseFragment<CharacterPresenter, CharacterView>(), Cha
         contentHolders[type]?.bind(type, item)
     }
 
-    override fun onShowLoading()  = Unit
-    override fun onHideLoading()  = Unit
+    override fun showContent(show: Boolean) = Unit
 }

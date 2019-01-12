@@ -46,7 +46,7 @@ class SearchPresenter @Inject constructor(
 
     private fun loadSimple() {
         if (filters.isEmpty()) {
-            viewState.apply { hideData(); setSimpleEmptyText(); showEmptyView(); onHideLoading() }
+            viewState.apply { showContent(false); setSimpleEmptyText(); showEmptyView(); onHideLoading() }
         } else {
             getSimpleRequestFactory()
                     .appendLoadingLogic(viewState)
@@ -92,6 +92,7 @@ class SearchPresenter @Inject constructor(
         viewState.apply {
             selectType(newTypePos)
             showData(emptyList())
+            showContent(true)
             hideEmptyView()
             setDefaultEmptyText()
             if (supportsPagination.contains(type)) showFilterButton()

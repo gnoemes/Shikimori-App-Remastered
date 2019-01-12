@@ -113,6 +113,5 @@ class PersonFragment : BaseFragment<PersonPresenter, PersonView>(), PersonView {
         contentHolders[type]?.bind(type, item)
     }
 
-    override fun onShowLoading()  = Unit
-    override fun onHideLoading()  = Unit
+    override fun showContent(show: Boolean) = Unit
 }

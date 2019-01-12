@@ -148,8 +148,11 @@ fun <T> Single<T>.appendLoadingLogic(viewState: BaseView): Single<T> =
         this.doOnSubscribe { viewState.onShowLoading() }
                 .doOnSubscribe { viewState.hideEmptyView() }
                 .doOnSubscribe { viewState.hideNetworkView() }
+                .doOnSubscribe { viewState.showContent(false) }
                 .doAfterTerminate { viewState.onHideLoading() }
+                .doAfterTerminate { viewState.showContent(true)  }
                 .doOnEvent { _, _ -> viewState.onHideLoading() }
+                .doOnEvent { _, _ -> viewState.showContent(true) }
 
 fun <T> Single<T>.appendLightLoadingLogic(viewState: BaseView): Single<T> =
         this.doOnSubscribe { viewState.onShowLightLoading() }

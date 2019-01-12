@@ -27,11 +27,15 @@ class ForumPresenter @Inject constructor(
                     .map(converter)
                     .subscribe(this::showData, this::processErrors)
 
-    private fun showData(items : List<Forum>) {
+    private fun showData(items: List<Forum>) {
         viewState.showData(items)
     }
 
     fun onForumClicked(type: ForumType) {
         router.navigateTo(Screens.TOPICS, type)
+    }
+
+    fun onRefresh() {
+        loadData()
     }
 }
