@@ -18,7 +18,8 @@ class TopicRepositoryImpl @Inject constructor(
     override fun getList(page: Int, limit: Int, type: ForumType): Single<List<Topic>> =
             api.getList(page, limit, type.type)
                     .map(converter)
-                    .doOnSuccess { if (it.isNotEmpty() && page > 1) it.toMutableList().removeAt(0) }
+                    //server returns 13 elements, if next page exists
+                    .map { if (it.isNotEmpty()) it.take(limit) else it }
 
     override fun getDetails(id: Long): Single<Topic> = api.getDetails(id).map { converter.convertResponse(it) }
 
