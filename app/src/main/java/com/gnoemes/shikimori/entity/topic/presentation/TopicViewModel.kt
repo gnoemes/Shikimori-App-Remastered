@@ -1,6 +1,7 @@
 package com.gnoemes.shikimori.entity.topic.presentation
 
 import com.gnoemes.shikimori.entity.common.domain.LinkedContent
+import com.gnoemes.shikimori.entity.topic.domain.TopicEvent
 import com.gnoemes.shikimori.entity.topic.domain.TopicType
 import com.gnoemes.shikimori.entity.user.domain.UserBrief
 
@@ -17,6 +18,7 @@ data class TopicViewModel(
         val type: TopicType,
         val linked: LinkedContent?,
         val isViewed: Boolean,
+        val event : TopicEvent,
         val episode: String?,
         val hasTag: Boolean = tag != null
 )

@@ -9,6 +9,7 @@ import com.gnoemes.shikimori.entity.manga.data.MangaResponse
 import com.gnoemes.shikimori.entity.roles.data.CharacterResponse
 import com.gnoemes.shikimori.entity.roles.data.PersonResponse
 import com.gnoemes.shikimori.entity.topic.data.TopicResponse
+import com.gnoemes.shikimori.entity.topic.domain.TopicEvent
 import com.gnoemes.shikimori.entity.user.data.UserBriefResponse
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
@@ -94,6 +95,12 @@ class TopicResponseSerializator : JsonDeserializer<TopicResponse> {
             else null
         }
 
+        fun getEventValue(key : String) : TopicEvent? {
+            val jsonObj = json?.asJsonObject?.get(key) ?: return null
+            return if (!jsonObj.isJsonNull) context.deserialize(jsonObj, object : TypeToken<TopicEvent>() {}.rawType)
+            else null
+        }
+
 
         fun  getLinkedValue(type : Type) : LinkedContentResponse? {
             val key= "linked"
@@ -120,6 +127,7 @@ class TopicResponseSerializator : JsonDeserializer<TopicResponse> {
         val linkedType = getTypeValue("linked_type") ?: Type.UNKNOWN
         val linked = getLinkedValue(linkedType)
         val viewed = getBooleanValue("viewed") ?: false
+        val event = getEventValue("event") ?: TopicEvent.NONE
         val episode = getValue("episode")
 
         return TopicResponse(
@@ -136,6 +144,7 @@ class TopicResponseSerializator : JsonDeserializer<TopicResponse> {
                 linkedType,
                 linked,
                 viewed,
+                event,
                 episode
 
         )

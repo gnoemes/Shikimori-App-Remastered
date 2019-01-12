@@ -211,6 +211,7 @@
     <string name="topic_tag_review">рецензия</string>
     <string name="topic_tag_cosplay">косплей</string>
     <string name="topic_tag_episode">эпизод</string>
+    <string name="topic_tag_release">релиз</string>
 
     <string name="forum_site">Сайт</string>
     <string name="forum_clubs">Клубы</string>

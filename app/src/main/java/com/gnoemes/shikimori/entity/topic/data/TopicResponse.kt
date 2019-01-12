@@ -3,6 +3,7 @@ package com.gnoemes.shikimori.entity.topic.data
 import com.gnoemes.shikimori.entity.common.data.LinkedContentResponse
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.forum.data.ForumResponse
+import com.gnoemes.shikimori.entity.topic.domain.TopicEvent
 import com.gnoemes.shikimori.entity.user.data.UserBriefResponse
 import com.google.gson.annotations.SerializedName
 import org.joda.time.DateTime
@@ -21,6 +22,7 @@ data class TopicResponse(
         @field:SerializedName("linked_type") private val _linkedType: Type?,
         @field:SerializedName("linked") val linked: LinkedContentResponse?,
         @field:SerializedName("viewed") val isViewed: Boolean,
+        @field:SerializedName("event") val event : TopicEvent,
         @field:SerializedName("episode") val episode: String?
 ) {
     val linkedType: Type

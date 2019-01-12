@@ -10,6 +10,7 @@ import com.gnoemes.shikimori.entity.anime.domain.AnimeType
 import com.gnoemes.shikimori.entity.common.domain.LinkedContent
 import com.gnoemes.shikimori.entity.common.domain.Status
 import com.gnoemes.shikimori.entity.common.domain.Type
+import com.gnoemes.shikimori.entity.topic.domain.TopicEvent
 import com.gnoemes.shikimori.entity.topic.domain.TopicType
 import com.gnoemes.shikimori.entity.topic.presentation.TopicViewModel
 import com.gnoemes.shikimori.entity.user.domain.UserBrief
@@ -58,10 +59,21 @@ class TopicLinkedAdapterDelegate(
             with(itemView) {
                 commentView.text = item.commentsCount.toString()
 
-                val tag = "${item.episode} ${context.getString(R.string.topic_tag_episode)}"
-                tagView.text = tag
-                tagView.background = ColorDrawable(context.color(R.color.topic_new_episode))
-                tagView.visibleIf { !item.episode.isNullOrBlank() }
+                if (item.event == TopicEvent.EPISODE || !item.episode.isNullOrBlank()) {
+                    val tag = "${item.episode} ${context.getString(R.string.topic_tag_episode)}"
+                    tagView.text = tag
+                    tagView.background = ColorDrawable(context.color(R.color.topic_new_episode))
+                    tagView.visible()
+                } else if (item.event == TopicEvent.RELEASED) {
+                    tagView.setText(R.string.topic_tag_release)
+                    tagView.background = ColorDrawable(context.color(R.color.topic_release))
+                    tagView.visible()
+                } else {
+                    tagView.text = null
+                    tagView.gone()
+                }
+
+
             }
         }
 

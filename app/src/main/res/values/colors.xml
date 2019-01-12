@@ -34,6 +34,7 @@
     <color name="topic_review">#f477ad</color>
     <color name="topic_collection">#1fd52f</color>
     <color name="topic_new_episode">#428686</color>
+    <color name="topic_release">#42865e</color>
 
     <color name="comment_review">#1fd52f</color>
 

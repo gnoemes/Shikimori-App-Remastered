@@ -34,6 +34,7 @@ class TopicViewModelConverterImpl @Inject constructor(
                 it.type,
                 it.linked,
                 it.isViewed,
+                it.event,
                 it.episode
         )
     }

@@ -34,6 +34,7 @@ class TopicResponseConverterImpl @Inject constructor(
                 it.linkedType,
                 linkedConverter.convertResponse(it.linked),
                 it.isViewed,
+                it.event,
                 it.episode
         )
     }

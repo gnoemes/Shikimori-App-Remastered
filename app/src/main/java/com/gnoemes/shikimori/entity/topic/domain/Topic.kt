@@ -20,5 +20,6 @@ data class Topic(
         val linkedType: Type,
         val linked: LinkedContent?,
         val isViewed: Boolean,
+        val event : TopicEvent,
         val episode : String?
 )
