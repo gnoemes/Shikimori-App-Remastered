@@ -1,10 +1,8 @@
 package com.gnoemes.shikimori.presentation.view.topic.list.adapter
 
-import android.animation.ValueAnimator
 import android.graphics.drawable.ColorDrawable
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.common.domain.LinkedContent
@@ -12,8 +10,10 @@ import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.topic.presentation.TopicViewModel
 import com.gnoemes.shikimori.entity.user.domain.UserBrief
 import com.gnoemes.shikimori.presentation.presenter.topic.provider.TopicResourceProvider
-import com.gnoemes.shikimori.utils.*
+import com.gnoemes.shikimori.utils.color
 import com.gnoemes.shikimori.utils.images.ImageLoader
+import com.gnoemes.shikimori.utils.inflate
+import com.gnoemes.shikimori.utils.visibleIf
 import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
 import kotlinx.android.synthetic.main.item_topic.view.*
 
@@ -33,7 +33,6 @@ class TopicAdapterDelegate(
         holder.bind(item)
     }
 
-    //TODO make holder or something for toggling content view
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         private lateinit var item: TopicViewModel
@@ -46,7 +45,6 @@ class TopicAdapterDelegate(
                     navigationCallback.invoke(content.linkedType, content.linkedId)
                 }
             }
-            initToggle()
         }
 
         fun bind(item: TopicViewModel) {
@@ -58,7 +56,6 @@ class TopicAdapterDelegate(
                 titleView.text = item.title
                 contentView.linkCallback = navigationCallback
                 contentView.visibleIf { !item.body.isNullOrBlank() }
-                expandView.visibleIf { contentView.isVisible() }
                 contentView.setContent(item.body)
 
                 commentView.text = item.commentsCount.toString()
@@ -89,46 +86,5 @@ class TopicAdapterDelegate(
                 }
             }
         }
-
-
-        //TODO replace these
-        private val COLLAPSED_MAX_HEIGHT = (view.resources.displayMetrics.density * 80).toInt()
-        private var contentHeight: Int = COLLAPSED_MAX_HEIGHT
-
-        private var isExpanded = false
-
-        private fun initToggle() {
-            with(itemView) {
-                contentView.post {
-                    contentHeight = contentView.height
-                    if (contentView.height >= COLLAPSED_MAX_HEIGHT) {
-                        contentView.layoutParams.height = COLLAPSED_MAX_HEIGHT
-                        contentView.requestLayout()
-                        expandView.visible()
-                        expandView.onClick { expandOrCollapse() }
-                    } else expandView.gone()
-                }
-            }
-        }
-
-        private fun expandOrCollapse() {
-            if (itemView.contentView.height >= COLLAPSED_MAX_HEIGHT) {
-                isExpanded = !isExpanded
-                if (isExpanded) itemView.expandView.setImageResource(R.drawable.ic_chevron_up)
-                else itemView.expandView.setImageResource(R.drawable.ic_chevron_down)
-
-                cycleHeightExpansion(itemView.contentView)
-            }
-        }
-
-        private fun cycleHeightExpansion(layout: LinearLayout) {
-            val end = if (layout.height == COLLAPSED_MAX_HEIGHT) contentHeight else COLLAPSED_MAX_HEIGHT
-
-            ValueAnimator.ofInt(layout.height, end)
-                    .apply { addUpdateListener { layout.layoutParams.apply { height = it.animatedValue as Int; layout.requestLayout() } } }
-                    .setDuration(500)
-                    .start()
-        }
-
     }
 }

@@ -22,4 +22,13 @@
     <declare-styleable name="NetworkErrorView">
         <attr name="text" format="string" />
     </declare-styleable>
+
+    <declare-styleable name="ShikimoriContentView">
+        <attr name="shikimori_content" format="string" />
+        <attr name="content_margin" format="dimension"/>
+        <attr name="content_margin_top" format="dimension"/>
+        <attr name="content_margin_left" format="dimension"/>
+        <attr name="content_margin_right" format="dimension"/>
+        <attr name="content_margin_bottom" format="dimension"/>
+    </declare-styleable>
 </resources>
