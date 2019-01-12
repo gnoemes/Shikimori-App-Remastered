@@ -22,9 +22,9 @@ class TopicResponseSerializator : JsonDeserializer<TopicResponse> {
 
         //generic method don't work for any class besides string.
         //https://stackoverflow.com/questions/40850733/json-deserialization-java-lang-double-cannot-be-cast-to-java-lang-long
-        fun <T> getValue(key : String) : T? {
+        fun getValue(key : String) : String? {
             val jsonObj = json?.asJsonObject?.get(key) ?: return null
-            return if (!jsonObj.isJsonNull) context.deserialize(jsonObj, object : TypeToken<T>(){}.rawType)
+            return if (!jsonObj.isJsonNull) context.deserialize(jsonObj, object : TypeToken<String>(){}.rawType)
             else null
         }
 
@@ -108,19 +108,19 @@ class TopicResponseSerializator : JsonDeserializer<TopicResponse> {
         }
 
         val id = getLongValue("id")
-        val title = getValue<String>("topic_title")
-        val body = getValue<String?>("body")
-        val htmlBody = getValue<String?>("html_body")
-        val htmlFooter = getValue<String?>("html_footer")
+        val title = getValue("topic_title")
+        val body = getValue("body")
+        val htmlBody = getValue("html_body")
+        val htmlFooter = getValue("html_footer")
         val dateCreated = getDateTimeValue("created_at")
         val commentCount = getLongValue("comments_count")
         val forum = getForumValue("forum")
         val user = getUserValue("user")
-        val type = getValue<String?>("type")
+        val type = getValue("type")
         val linkedType = getTypeValue("linked_type") ?: Type.UNKNOWN
         val linked = getLinkedValue(linkedType)
         val viewed = getBooleanValue("viewed") ?: false
-        val episode = getValue<String?>("episode")
+        val episode = getValue("episode")
 
         return TopicResponse(
                 id!!,

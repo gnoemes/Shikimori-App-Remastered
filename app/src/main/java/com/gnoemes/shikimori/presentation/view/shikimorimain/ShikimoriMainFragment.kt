@@ -1,8 +1,6 @@
 package com.gnoemes.shikimori.presentation.view.shikimorimain
 
 import android.os.Bundle
-import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragment
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,17 +12,28 @@ import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.forum.domain.ForumType
 import com.gnoemes.shikimori.presentation.presenter.shikimorimain.ShikimoriMainPresenter
+import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragment
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
+import com.gnoemes.shikimori.presentation.view.forum.ForumFragment
 import com.gnoemes.shikimori.presentation.view.topic.list.TopicListFragment
 import com.gnoemes.shikimori.utils.gone
 import com.gnoemes.shikimori.utils.ifNotNull
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.fragment_shikimori_main.*
 import kotlinx.android.synthetic.main.layout_appbar_tabs.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.Router
+import javax.inject.Inject
 
-class ShikimoriMainFragment : BaseFragment<ShikimoriMainPresenter, ShikimoriMainView>(), ShikimoriMainView, RouterProvider {
+class ShikimoriMainFragment : BaseFragment<ShikimoriMainPresenter, ShikimoriMainView>(), ShikimoriMainView, RouterProvider, HasSupportFragmentInjector {
+
+    @Inject
+    lateinit var childFragmentInjector: DispatchingAndroidInjector<Fragment>
+
+    override fun supportFragmentInjector(): AndroidInjector<Fragment> = childFragmentInjector
 
     @InjectPresenter
     lateinit var mainPresenter: ShikimoriMainPresenter
@@ -86,8 +95,7 @@ class ShikimoriMainFragment : BaseFragment<ShikimoriMainPresenter, ShikimoriMain
             return when (position) {
                 0 -> TopicListFragment.newInstance(ForumType.NEWS)
                 1 -> TopicListFragment.newInstance(ForumType.MY_CLUBS)
-                //TODO forum fragment
-                else -> TopicListFragment.newInstance(ForumType.ALL)
+                else -> ForumFragment.newInstance()
             }
         }
 
