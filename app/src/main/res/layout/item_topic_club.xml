@@ -79,13 +79,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        app:layout_goneMarginStart="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/linkedImageView"
-        app:layout_constraintTop_toBottomOf="@+id/avatarView"
+        app:layout_constraintTop_toTopOf="@+id/linkedImageView"
+        app:layout_goneMarginStart="16dp"
         tools:text="Анонсирована аниме-адаптация манги «Mahou Shoujo Tokushuusen Asuka»." />
 
     <com.gnoemes.shikimori.presentation.view.common.widget.shikimori.ShikimoriContentView
@@ -116,7 +115,7 @@
         android:layout_height="100dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/avatarView"
         tools:src="@drawable/test_preview2" />

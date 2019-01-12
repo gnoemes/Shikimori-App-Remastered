@@ -19,7 +19,12 @@ object ShikimoriViews {
             .create()
 
     fun deserializeContent(content: String): Content {
-        return if (content.startsWith(ShikimoriViews.START_SYMBOL)) gson.fromJson<Content>(content, Content::class.java)
+        return if (content.startsWith(ShikimoriViews.START_SYMBOL)) try {
+            gson.fromJson<Content>(content, Content::class.java)
+        } catch (err: Exception) {
+            err.printStackTrace()
+            return Text(content)
+        }
         else Text(content)
     }
 }

@@ -3,10 +3,10 @@ package com.gnoemes.shikimori.utils.images
 import android.content.Context
 import android.graphics.Bitmap
 import android.widget.ImageView
-import com.gnoemes.shikimori.R
 import com.bumptech.glide.Priority
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.BitmapImageViewTarget
+import com.gnoemes.shikimori.R
 import javax.inject.Inject
 
 class GlideImageLoader @Inject constructor(
@@ -14,6 +14,14 @@ class GlideImageLoader @Inject constructor(
 ) : ImageLoader {
 
     val glide = GlideApp.with(context)
+
+    override fun setCircleImage(image: ImageView, url: String?) {
+        GlideApp.with(image)
+                .asDrawable()
+                .load(url)
+                .dontAnimate()
+                .into(image)
+    }
 
     override fun setImageWithPlaceHolder(image: ImageView, url: String?) {
         GlideApp.with(image)

@@ -7,13 +7,14 @@ import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.more.MoreCategory
 import com.gnoemes.shikimori.entity.more.MoreProfileItem
 import com.gnoemes.shikimori.entity.user.domain.UserStatus
-import com.gnoemes.shikimori.utils.images.GlideApp
+import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.gnoemes.shikimori.utils.inflate
 import com.gnoemes.shikimori.utils.onClick
 import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
 import kotlinx.android.synthetic.main.item_more_profile.view.*
 
 class MoreProfileAdapterDelegate(
+        private val imageLoader: ImageLoader,
         private val callback: (MoreCategory) -> Unit
 ) : AbsListItemAdapterDelegate<MoreProfileItem, Any, MoreProfileAdapterDelegate.ViewHolder>() {
 
@@ -42,11 +43,7 @@ class MoreProfileAdapterDelegate(
                 fun onAuthorized() {
                     nameView.text = item.name
                     hintView.text = context.getString(R.string.more_authorized_hint)
-                    GlideApp.with(this)
-                            .asDrawable()
-                            .load(item.avatar)
-                            .dontAnimate()
-                            .into(imageView)
+                    imageLoader.setCircleImage(imageView, item.avatar)
                 }
 
                 fun onGuest() {

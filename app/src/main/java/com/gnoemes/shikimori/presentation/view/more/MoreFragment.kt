@@ -13,12 +13,17 @@ import com.gnoemes.shikimori.presentation.view.common.fragment.AuthDialog
 import com.gnoemes.shikimori.presentation.view.more.adapter.MoreAdapter
 import com.gnoemes.shikimori.utils.gone
 import com.gnoemes.shikimori.utils.ifNotNull
+import com.gnoemes.shikimori.utils.images.ImageLoader
 import kotlinx.android.synthetic.main.layout_default_list.*
 import kotlinx.android.synthetic.main.layout_default_placeholders.*
 import kotlinx.android.synthetic.main.layout_progress.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
+import javax.inject.Inject
 
 class MoreFragment : BaseFragment<MorePresenter, MoreView>(), MoreView, AuthDialog.AuthCallback {
+
+    @Inject
+    lateinit var imageLoader: ImageLoader
 
     @InjectPresenter
     lateinit var morePresenter: MorePresenter
@@ -38,7 +43,7 @@ class MoreFragment : BaseFragment<MorePresenter, MoreView>(), MoreView, AuthDial
         fun newInstance() = MoreFragment()
     }
 
-    private val moreAdapter by lazy { MoreAdapter { getPresenter().onCategoryClicked(it) } }
+    private val moreAdapter by lazy { MoreAdapter(imageLoader) { getPresenter().onCategoryClicked(it) } }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

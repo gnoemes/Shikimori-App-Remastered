@@ -67,7 +67,7 @@ class TopicLinkedAdapterDelegate(
 
         private fun setUser(user: UserBrief, createdDate: String) {
             with(itemView) {
-                imageLoader.setImageWithPlaceHolder(avatarView, user.avatar)
+                imageLoader.setCircleImage(avatarView, user.avatar)
                 nameView.text = user.nickname
                 dateView.text = createdDate
             }
@@ -92,7 +92,7 @@ class TopicLinkedAdapterDelegate(
                     typeView.text = typeText
                     seasonView.text = seasonText
                     statusView.text = statusText
-
+                    titleView.text = linked.nameRu
                 }
             }
         }

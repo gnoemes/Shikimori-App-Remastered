@@ -65,7 +65,7 @@ class TopicClubAdapterDelegate(
 
         private fun setUser(user: UserBrief, createdDate: String) {
             with(itemView) {
-                imageLoader.setImageWithPlaceHolder(avatarView, user.avatar)
+                imageLoader.setCircleImage(avatarView, user.avatar)
                 nameView.text = user.nickname
                 dateView.text = createdDate
             }
@@ -76,7 +76,7 @@ class TopicClubAdapterDelegate(
                 linkedImageView.visibleIf { linked != null }
 
                 if (linked !== null) {
-                    imageLoader.setImageWithPlaceHolder(linkedImageView, linked.imageUrl)
+                    imageLoader.setCircleImage(linkedImageView, linked.imageUrl)
                 }
             }
         }

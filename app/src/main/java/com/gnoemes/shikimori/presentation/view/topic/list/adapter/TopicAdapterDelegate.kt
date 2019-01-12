@@ -13,7 +13,6 @@ import com.gnoemes.shikimori.entity.topic.presentation.TopicViewModel
 import com.gnoemes.shikimori.entity.user.domain.UserBrief
 import com.gnoemes.shikimori.presentation.presenter.topic.provider.TopicResourceProvider
 import com.gnoemes.shikimori.utils.*
-import com.gnoemes.shikimori.utils.images.GlideApp
 import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
 import kotlinx.android.synthetic.main.item_topic.view.*
@@ -74,13 +73,8 @@ class TopicAdapterDelegate(
 
         private fun setUser(user: UserBrief, createdDate: String) {
             with(itemView) {
-                //TODO remove
-                GlideApp.with(this)
-                        .asDrawable()
-                        .load(user.avatar)
-                        .dontAnimate()
-                        .into(avatarView)
-//                imageLoader.setImageWithPlaceHolder(avatarView, user.avatar)
+
+                imageLoader.setCircleImage(avatarView, user.avatar)
                 nameView.text = user.nickname
                 dateView.text = createdDate
             }
