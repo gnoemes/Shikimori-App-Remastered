@@ -26,7 +26,7 @@ abstract class BaseNetworkPresenter<View : BaseNetworkView> : BaseNavigationPres
 //        val errorUtils = ErrorUtils()
 //        errorUtils.processErrors(throwable, router, viewState)
         when ((throwable as? BaseException)?.tag) {
-            NetworkException.TAG -> viewState.showNetworkView()
+            NetworkException.TAG -> viewState.showNetworkView(false)
             else -> Log.e("Error", throwable.toString())
         }
     }

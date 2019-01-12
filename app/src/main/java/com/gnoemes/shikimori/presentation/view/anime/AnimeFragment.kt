@@ -33,7 +33,7 @@ import kotlinx.android.synthetic.main.fragment_anime.*
 import kotlinx.android.synthetic.main.layout_collapsing_toolbar.*
 import javax.inject.Inject
 
-
+//TODO BaseDetailsFragment?
 class AnimeFragment : BaseFragment<AnimePresenter, AnimeView>(), AnimeView,
         ListDialogFragment.DialogCallback, ListDialogFragment.DialogIdCallback, RateDialogFragment.RateDialogCallback {
 

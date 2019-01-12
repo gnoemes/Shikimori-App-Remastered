@@ -24,6 +24,7 @@ import com.gnoemes.shikimori.utils.ifNotNull
 import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.gnoemes.shikimori.utils.withArgs
 import kotlinx.android.synthetic.main.layout_default_list.*
+import kotlinx.android.synthetic.main.layout_default_placeholders.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import javax.inject.Inject
 
@@ -77,6 +78,8 @@ class TopicListFragment : BasePaginationFragment<TopicViewModel, TopicListPresen
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
             addOnScrollListener(nextPageListener)
         }
+
+        emptyContentView.setText(R.string.search_nothing)
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -91,4 +94,7 @@ class TopicListFragment : BasePaginationFragment<TopicViewModel, TopicListPresen
     // MVP
     ///////////////////////////////////////////////////////////////////////////
 
+    override fun setMyClubsEmptyText() {
+        emptyContentView.setText(R.string.forum_my_clubs_empty)
+    }
 }

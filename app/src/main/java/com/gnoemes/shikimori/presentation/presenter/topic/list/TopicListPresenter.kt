@@ -24,6 +24,8 @@ class TopicListPresenter @Inject constructor(
         super.initData()
 
         viewState.setTitle(topicResourceProvider.getTopicName(type))
+
+        if (type == ForumType.MY_CLUBS) viewState.setMyClubsEmptyText()
     }
 
     override fun getPaginatorRequestFactory(): (Int) -> Single<List<TopicViewModel>> {

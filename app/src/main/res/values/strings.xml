@@ -226,6 +226,7 @@
     <string name="forum_animanga">Аниме и манга</string>
     <string name="forum_vn">Визуальные новеллы</string>
     <string name="forum_off_topic">Оффтопик</string>
+    <string name="forum_my_clubs_empty">Подходящих тем не найдено.\nВступайте в клубы, чтобы получать рассылку.</string>
 
 
     <string-array name="rate_types">
