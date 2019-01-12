@@ -1,6 +1,5 @@
 package com.gnoemes.shikimori.presentation.view.topic.list.adapter
 
-import android.graphics.drawable.ColorDrawable
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -10,13 +9,15 @@ import com.gnoemes.shikimori.entity.anime.domain.AnimeType
 import com.gnoemes.shikimori.entity.common.domain.LinkedContent
 import com.gnoemes.shikimori.entity.common.domain.Status
 import com.gnoemes.shikimori.entity.common.domain.Type
-import com.gnoemes.shikimori.entity.topic.domain.TopicEvent
 import com.gnoemes.shikimori.entity.topic.domain.TopicType
 import com.gnoemes.shikimori.entity.topic.presentation.TopicViewModel
-import com.gnoemes.shikimori.entity.user.domain.UserBrief
-import com.gnoemes.shikimori.utils.*
+import com.gnoemes.shikimori.presentation.view.topic.holders.TopicUserViewHolder
 import com.gnoemes.shikimori.utils.date.DateTimeConverter
 import com.gnoemes.shikimori.utils.images.ImageLoader
+import com.gnoemes.shikimori.utils.inflate
+import com.gnoemes.shikimori.utils.toBold
+import com.gnoemes.shikimori.utils.unknownIfZero
+import com.gnoemes.shikimori.utils.visibleIf
 import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
 import kotlinx.android.synthetic.main.item_topic_linked.view.*
 
@@ -40,9 +41,10 @@ class TopicLinkedAdapterDelegate(
 
         private lateinit var item: TopicViewModel
 
+        private val userHolder by lazy { TopicUserViewHolder(itemView.userLayout, imageLoader, navigationCallback) }
+
         init {
             itemView.container.setOnClickListener { navigationCallback.invoke(Type.TOPIC, item.id) }
-            itemView.userInfoGroup.setOnClickListener { navigationCallback.invoke(Type.USER, item.user.id) }
             itemView.imageView.setOnClickListener {
                 item.linked?.let { content ->
                     navigationCallback.invoke(content.linkedType, content.linkedId)
@@ -54,35 +56,8 @@ class TopicLinkedAdapterDelegate(
         fun bind(item: TopicViewModel) {
             this.item = item
             setLinkedContent(item.linked)
-            setUser(item.user, item.createdDate)
-
-            with(itemView) {
-                commentView.text = item.commentsCount.toString()
-
-                if (item.event == TopicEvent.EPISODE || !item.episode.isNullOrBlank()) {
-                    val tag = "${item.episode} ${context.getString(R.string.topic_tag_episode)}"
-                    tagView.text = tag
-                    tagView.background = ColorDrawable(context.color(R.color.topic_new_episode))
-                    tagView.visible()
-                } else if (item.event == TopicEvent.RELEASED) {
-                    tagView.setText(R.string.topic_tag_release)
-                    tagView.background = ColorDrawable(context.color(R.color.topic_release))
-                    tagView.visible()
-                } else {
-                    tagView.text = null
-                    tagView.gone()
-                }
-
-
-            }
-        }
-
-        private fun setUser(user: UserBrief, createdDate: String) {
-            with(itemView) {
-                imageLoader.setCircleImage(avatarView, user.avatar)
-                nameView.text = user.nickname
-                dateView.text = createdDate
-            }
+            userHolder.bind(item.userData)
+            itemView.commentView.text = item.commentsCount.toString()
         }
 
         private fun setLinkedContent(linked: LinkedContent?) {

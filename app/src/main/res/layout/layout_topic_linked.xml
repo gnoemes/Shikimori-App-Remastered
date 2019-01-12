@@ -8,9 +8,12 @@
     android:background="?attr/colorSurface"
     android:foreground="?selectableItemBackgroundBorderless">
 
-    <include
-        android:id="@+id/userLayout"
-        layout="@layout/layout_topic_user" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/linkedContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="typeView, seasonView, statusView, titleView" />
 
     <TextView
         android:id="@+id/titleView"
@@ -18,16 +21,14 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:fontFamily="sans-serif-medium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageContainerView"
-        app:layout_constraintTop_toBottomOf="@+id/userLayout"
+        app:layout_constraintTop_toTopOf="@+id/imageContainerView"
         app:layout_goneMarginStart="16dp"
         tools:text="Mahou Shoujo Tokushuusen Asuka" />
-
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/imageContainerView"
@@ -35,13 +36,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         app:cardCornerRadius="4dp"
         app:cardPreventCornerOverlap="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userLayout">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/imageView"
@@ -74,34 +75,6 @@
         app:layout_constraintStart_toStartOf="@+id/seasonView"
         app:layout_constraintTop_toBottomOf="@+id/seasonView"
         tools:text="Статус: Онгоинг" />
-
-
-    <ImageView
-        android:id="@+id/commentImageView"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginBottom="8dp"
-        android:tint="?attr/colorPrimaryDark"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/commentView"
-        app:layout_constraintTop_toBottomOf="@+id/statusView"
-        app:layout_constraintVertical_bias="1"
-        app:srcCompat="@drawable/ic_message" />
-
-    <TextView
-        android:id="@+id/commentView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:textColor="?attr/colorPrimaryDark"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/commentImageView"
-        tools:text="42" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

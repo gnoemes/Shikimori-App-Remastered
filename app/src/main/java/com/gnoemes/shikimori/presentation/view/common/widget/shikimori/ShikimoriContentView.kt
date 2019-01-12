@@ -66,6 +66,8 @@ class ShikimoriContentView @JvmOverloads constructor(
             else setMargins(contentMarginLeft, contentMarginTop, contentMarginRight, contentMarginBottom)
         }
 
+        if (!expandable) expandView.gone()
+
         ta.recycle()
     }
 

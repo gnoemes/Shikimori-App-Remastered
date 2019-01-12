@@ -11,7 +11,6 @@ import com.gnoemes.shikimori.entity.app.domain.AppExtras
 import com.gnoemes.shikimori.entity.forum.domain.ForumType
 import com.gnoemes.shikimori.entity.topic.presentation.TopicViewModel
 import com.gnoemes.shikimori.presentation.presenter.topic.list.TopicListPresenter
-import com.gnoemes.shikimori.presentation.presenter.topic.provider.TopicResourceProvider
 import com.gnoemes.shikimori.presentation.view.base.adapter.BasePaginationAdapter
 import com.gnoemes.shikimori.presentation.view.base.fragment.BasePaginationFragment
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
@@ -32,9 +31,6 @@ class TopicListFragment : BasePaginationFragment<TopicViewModel, TopicListPresen
 
     @Inject
     lateinit var imageLoader: ImageLoader
-
-    @Inject
-    lateinit var resourceProvider: TopicResourceProvider
 
     @Inject
     lateinit var converter: DateTimeConverter
@@ -61,7 +57,7 @@ class TopicListFragment : BasePaginationFragment<TopicViewModel, TopicListPresen
         fun newInstance(type: ForumType) = TopicListFragment().withArgs { putSerializable(AppExtras.ARGUMENT_FORUM_TYPE, type) }
     }
 
-    private val topicAdapter by lazy { TopicListAdapter(imageLoader, resourceProvider, converter, getPresenter()::onContentClicked) }
+    private val topicAdapter by lazy { TopicListAdapter(imageLoader, converter, getPresenter()::onContentClicked) }
 
     override val adapter: BasePaginationAdapter
         get() = topicAdapter

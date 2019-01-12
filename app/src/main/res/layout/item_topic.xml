@@ -8,114 +8,19 @@
     android:background="?attr/colorSurface"
     android:foreground="?selectableItemBackgroundBorderless">
 
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/userInfoGroup"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="?attr/selectableItemBackground"
-        app:constraint_referenced_ids="avatarView, nameView, dateView"
-        app:layout_constraintBottom_toBottomOf="@+id/avatarView"
-        app:layout_constraintEnd_toEndOf="@+id/barrier3"
-        app:layout_constraintStart_toStartOf="@+id/avatarView"
-        app:layout_constraintTop_toTopOf="@+id/avatarView" />
+    <include
+        android:id="@+id/userLayout"
+        layout="@layout/layout_topic_user" />
 
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/barrier3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="end"
-        app:constraint_referenced_ids="nameView, dateView" />
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/avatarView"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/avatar_test" />
-
-    <TextView
-        android:id="@+id/nameView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:ellipsize="end"
-        android:fontFamily="@font/open_sans_semibold"
-        android:includeFontPadding="false"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/dateView"
-        app:layout_constraintEnd_toStartOf="@+id/tagView"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toEndOf="@+id/avatarView"
-        app:layout_constraintTop_toTopOf="@+id/avatarView"
-        app:layout_constraintVertical_chainStyle="packed"
-        tools:text="gnoemes" />
-
-    <TextView
-        android:id="@+id/dateView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:includeFontPadding="false"
-        android:textColor="@color/default_colorOnPrimarySecondary"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/avatarView"
-        app:layout_constraintEnd_toStartOf="@+id/tagView"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toStartOf="@+id/nameView"
-        app:layout_constraintTop_toBottomOf="@+id/nameView"
-        tools:text="2 дня назад" />
-
-    <TextView
-        android:id="@+id/tagView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:fontFamily="@font/open_sans_semibold"
-        android:includeFontPadding="false"
-        android:padding="4dp"
-        android:textColor="@color/white"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/avatarView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/avatarView"
-        tools:background="@color/topic_news"
-        tools:text="новость"
-        tools:visibility="visible" />
-
-    <TextView
-        android:id="@+id/titleView"
+    <include
+        android:id="@+id/topicLayout"
+        layout="@layout/layout_topic"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:fontFamily="sans-serif-medium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageContainerView"
-        app:layout_constraintTop_toBottomOf="@+id/avatarView"
-        app:layout_goneMarginStart="16dp"
-        tools:text="Анонсирована аниме-адаптация манги «Mahou Shoujo Tokushuusen Asuka»." />
-
-    <com.gnoemes.shikimori.presentation.view.common.widget.shikimori.ShikimoriContentView
-        android:id="@+id/contentView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="@+id/titleView"
-        app:layout_constraintStart_toStartOf="@+id/titleView"
-        app:layout_constraintTop_toBottomOf="@+id/titleView"
-        tools:shikimori_content="Анонсирована аниме-адаптация манги «Mahou Shoujo Tokushuusen Asuka»." />
+        app:layout_constraintTop_toBottomOf="@+id/userLayout" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/imageContainerView"
@@ -128,15 +33,15 @@
         app:cardCornerRadius="4dp"
         app:cardPreventCornerOverlap="false"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/avatarView">
+        app:layout_constraintTop_toBottomOf="@+id/userLayout">
 
-    <ImageView
-        android:id="@+id/linkedImageView"
-        android:layout_width="70dp"
-        android:layout_height="100dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/avatarView"
-        tools:srcCompat="@drawable/test_preview2" />
+        <ImageView
+            android:id="@+id/linkedImageView"
+            android:layout_width="70dp"
+            android:layout_height="100dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/avatarView"
+            tools:srcCompat="@drawable/test_preview2" />
 
     </com.google.android.material.card.MaterialCardView>
 
@@ -145,7 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="imageContainerView, expandView, contentView" />
+        app:constraint_referenced_ids="imageContainerView, topicLayout" />
 
     <ImageView
         android:id="@+id/commentImageView"
