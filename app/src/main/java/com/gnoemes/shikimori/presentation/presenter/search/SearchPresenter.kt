@@ -8,9 +8,7 @@ import com.gnoemes.shikimori.entity.common.domain.SearchConstants
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.search.presentation.SearchItem
 import com.gnoemes.shikimori.entity.search.presentation.SearchPayload
-import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
-import com.gnoemes.shikimori.presentation.presenter.common.paginator.PageOffsetPaginator
-import com.gnoemes.shikimori.presentation.presenter.common.paginator.ViewController
+import com.gnoemes.shikimori.presentation.presenter.base.BasePaginationPresenter
 import com.gnoemes.shikimori.presentation.presenter.search.converter.SearchViewModelConverter
 import com.gnoemes.shikimori.presentation.view.search.SearchView
 import com.gnoemes.shikimori.utils.appendLoadingLogic
@@ -22,9 +20,7 @@ import javax.inject.Inject
 class SearchPresenter @Inject constructor(
         private val interactor: SearchInteractor,
         private val converter: SearchViewModelConverter
-) : BaseNetworkPresenter<SearchView>() {
-
-    private var paginator: PageOffsetPaginator<SearchItem>? = null
+) : BasePaginationPresenter<SearchItem, SearchView>() {
 
     var searchPayload: SearchPayload? = null
 
@@ -43,15 +39,14 @@ class SearchPresenter @Inject constructor(
         viewState.setDefaultEmptyText()
     }
 
-
-    private fun loadData() {
+    override fun loadData() {
         if (isPagination()) loadWithPaginator()
         else loadSimple()
     }
 
     private fun loadSimple() {
         if (filters.isEmpty()) {
-            viewState.apply { hideData(); setSimpleEmptyText(); showEmptyView() }
+            viewState.apply { hideData(); setSimpleEmptyText(); showEmptyView(); onHideLoading() }
         } else {
             getSimpleRequestFactory()
                     .appendLoadingLogic(viewState)
@@ -61,26 +56,18 @@ class SearchPresenter @Inject constructor(
     }
 
     private fun loadWithPaginator() {
-        if (paginator == null) {
-            paginator = PageOffsetPaginator(getPaginatorRequestFactory(), viewController)
-        }
-
-        paginator?.refresh()
+        super.loadData()
     }
 
     fun onFilterClicked() {
         viewState.showFilter(type, filters)
     }
 
-    fun loadNextPage() {
-        if (isPagination()) paginator?.loadNewPage()
+    override fun loadNextPage() {
+        if (isPagination()) super.loadNextPage()
     }
 
-    fun onRefresh() {
-        loadData()
-    }
-
-    private fun getPaginatorRequestFactory(): (Int) -> Single<List<SearchItem>> {
+    override fun getPaginatorRequestFactory(): (Int) -> Single<List<SearchItem>> {
         return when (type) {
             Type.ANIME -> { page: Int -> interactor.loadAnimeListWithFilters(filters, page).map(converter) }
             Type.MANGA -> { page: Int -> interactor.loadMangaListWithFilters(filters, page).map(converter) }
@@ -95,50 +82,7 @@ class SearchPresenter @Inject constructor(
         }
     }
 
-    private val viewController = object : ViewController<SearchItem> {
-        override fun showData(show: Boolean, data: List<SearchItem>) {
-            if (show) viewState.showData(data)
-            else viewState.hideData()
-        }
-
-        override fun showEmptyView(show: Boolean) {
-            if (show) viewState.showEmptyView()
-            else viewState.hideEmptyView()
-        }
-
-        override fun showRefreshProgress(show: Boolean) {
-            if (show) viewState.onShowLoading()
-            else viewState.onHideLoading()
-        }
-
-        override fun showEmptyProgress(show: Boolean) {
-            if (show) viewState.onShowLoading()
-            else viewState.onHideLoading()
-        }
-
-        override fun showPageProgress(show: Boolean) {
-            if (show) viewState.showPageLoading()
-            else viewState.hidePageLoading()
-        }
-
-        override fun showError(throwable: Throwable) {
-            processErrors(throwable)
-        }
-
-        override fun showEmptyError(show: Boolean, throwable: Throwable?) {
-            if (show) viewState.showEmptyView()
-            else viewState.hideEmptyView()
-
-            throwable?.let { processErrors(it) }
-        }
-    }
-
     private fun isPagination(): Boolean = supportsPagination.contains(type)
-
-    private fun destroyPaginator() {
-        paginator?.release()
-        paginator = null
-    }
 
     fun onTypeChanged(newTypePos: Int) {
         this.type = getType(newTypePos)
@@ -167,12 +111,6 @@ class SearchPresenter @Inject constructor(
             4 -> Type.PERSON
             else -> Type.ANIME
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        destroyPaginator()
     }
 
     fun onFilterSelected(appliedFilters: HashMap<String, MutableList<FilterItem>>) {

@@ -1,23 +1,12 @@
 package com.gnoemes.shikimori.presentation.view.search
 
-import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy
 import com.arellomobile.mvp.viewstate.strategy.SkipStrategy
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
 import com.gnoemes.shikimori.entity.common.domain.FilterItem
 import com.gnoemes.shikimori.entity.common.domain.Type
-import com.gnoemes.shikimori.entity.search.presentation.SearchItem
-import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragmentView
+import com.gnoemes.shikimori.presentation.view.base.fragment.BasePaginationView
 
-interface SearchView : BaseFragmentView {
-
-    @StateStrategyType(AddToEndSingleStrategy::class)
-    fun showData(data: List<SearchItem>)
-
-    fun hideData()
-
-    fun showPageLoading()
-
-    fun hidePageLoading()
+interface SearchView : BasePaginationView {
 
     fun selectType(newTypePos: Int)
 
