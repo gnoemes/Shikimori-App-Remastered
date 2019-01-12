@@ -25,6 +25,7 @@
 
     <declare-styleable name="ShikimoriContentView">
         <attr name="shikimori_content" format="string" />
+        <attr name="expandable" format="boolean"/>
         <attr name="content_margin" format="dimension"/>
         <attr name="content_margin_top" format="dimension"/>
         <attr name="content_margin_left" format="dimension"/>

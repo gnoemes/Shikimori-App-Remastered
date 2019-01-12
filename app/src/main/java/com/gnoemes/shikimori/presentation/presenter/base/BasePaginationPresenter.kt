@@ -1,5 +1,7 @@
 package com.gnoemes.shikimori.presentation.presenter.base
 
+import com.gnoemes.shikimori.entity.app.domain.exceptions.BaseException
+import com.gnoemes.shikimori.entity.app.domain.exceptions.NetworkException
 import com.gnoemes.shikimori.presentation.presenter.common.paginator.PageOffsetPaginator
 import com.gnoemes.shikimori.presentation.presenter.common.paginator.ViewController
 import com.gnoemes.shikimori.presentation.view.base.fragment.BasePaginationView
@@ -76,8 +78,16 @@ abstract class BasePaginationPresenter<Items : Any, View : BasePaginationView> :
         }
 
         override fun showEmptyError(show: Boolean, throwable: Throwable?) {
-            if (show) viewState.showEmptyView()
-            else viewState.hideEmptyView()
+            if ((throwable as? BaseException)?.tag == NetworkException.TAG) {
+                if (show) viewState.showNetworkView(false)
+            } else {
+                if (show) viewState.showEmptyView()
+            }
+
+            if (!show) {
+                viewState.hideNetworkView()
+                viewState.hideEmptyView()
+            }
 
             throwable?.let { processErrors(it) }
         }

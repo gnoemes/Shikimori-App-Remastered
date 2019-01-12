@@ -32,13 +32,14 @@ class ShikimoriContentView @JvmOverloads constructor(
     private var isExpanded = false
     private var contentView: LinearLayout
 
-    private var contentMargin : Int = 0
-    private var contentMarginTop : Int = 0
-    private var contentMarginBottom : Int = 0
-    private var contentMarginLeft : Int = 0
-    private var contentMarginRight : Int = 0
+    private var contentMargin: Int = 0
+    private var contentMarginTop: Int = 0
+    private var contentMarginBottom: Int = 0
+    private var contentMarginLeft: Int = 0
+    private var contentMarginRight: Int = 0
 
     var linkCallback: ((Type, Long) -> Unit)? = null
+    var expandable: Boolean = true
 
     init {
         View.inflate(context, R.layout.view_shikimori_collapsed, this)
@@ -53,6 +54,7 @@ class ShikimoriContentView @JvmOverloads constructor(
 
         contentView.addView(TextView(context).apply { text = toolsText })
 
+        expandable = ta.getBoolean(R.styleable.ShikimoriContentView_expandable, true)
         contentMargin = ta.getDimension(R.styleable.ShikimoriContentView_content_margin, 0f).toInt()
         contentMarginTop = ta.getDimension(R.styleable.ShikimoriContentView_content_margin_top, 0f).toInt()
         contentMarginLeft = ta.getDimension(R.styleable.ShikimoriContentView_content_margin_left, 0f).toInt()
@@ -105,14 +107,9 @@ class ShikimoriContentView @JvmOverloads constructor(
 
         setContentItems(items)
 
-        contentView.post {
-            contentHeight = contentView.height
-            if (contentView.height >= COLLAPSED_MAX_HEIGHT) {
-                contentView.layoutParams.height = COLLAPSED_MAX_HEIGHT
-                contentView.requestLayout()
-                expandView.visible()
-                expandView.onClick { expandOrCollapse() }
-            } else expandView.gone()
+        when {
+            expandable -> initToggle()
+            else -> expandView.gone()
         }
     }
 
@@ -143,6 +140,18 @@ class ShikimoriContentView @JvmOverloads constructor(
         contentView.addView(view, LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT))
         view.processTextContent(group)
         view.linkCallback = linkCallback
+    }
+
+    private fun initToggle() {
+        contentView.post {
+            contentHeight = contentView.height
+            if (contentView.height >= COLLAPSED_MAX_HEIGHT) {
+                contentView.layoutParams.height = COLLAPSED_MAX_HEIGHT
+                contentView.requestLayout()
+                expandView.visible()
+                expandView.onClick { expandOrCollapse() }
+            } else expandView.gone()
+        }
     }
 
     private fun expandOrCollapse() {
