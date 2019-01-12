@@ -1,24 +1,30 @@
 package com.gnoemes.shikimori.presentation.view.shikimorimain
 
 import android.os.Bundle
+import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragment
+
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.entity.forum.domain.ForumType
 import com.gnoemes.shikimori.presentation.presenter.shikimorimain.ShikimoriMainPresenter
-import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragment
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
-import com.gnoemes.shikimori.presentation.view.topic.TopicListFragment
+import com.gnoemes.shikimori.presentation.view.topic.list.TopicListFragment
 import com.gnoemes.shikimori.utils.gone
 import com.gnoemes.shikimori.utils.ifNotNull
 import kotlinx.android.synthetic.main.fragment_shikimori_main.*
 import kotlinx.android.synthetic.main.layout_appbar_tabs.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
+import ru.terrakok.cicerone.Navigator
+import ru.terrakok.cicerone.Router
 
-class ShikimoriMainFragment : BaseFragment<ShikimoriMainPresenter, ShikimoriMainView>(), ShikimoriMainView {
+class ShikimoriMainFragment : BaseFragment<ShikimoriMainPresenter, ShikimoriMainView>(), ShikimoriMainView, RouterProvider {
 
     @InjectPresenter
     lateinit var mainPresenter: ShikimoriMainPresenter
@@ -40,6 +46,10 @@ class ShikimoriMainFragment : BaseFragment<ShikimoriMainPresenter, ShikimoriMain
 
     private val adapter by lazy { PagerAdapter(childFragmentManager) }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(getFragmentLayout(), container, false)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -58,20 +68,26 @@ class ShikimoriMainFragment : BaseFragment<ShikimoriMainPresenter, ShikimoriMain
 
     override fun getFragmentLayout(): Int = R.layout.fragment_shikimori_main
 
+    override val localRouter: Router
+        get() = (parentFragment as RouterProvider).localRouter
+
+    override val localNavigator: Navigator
+        get() = (parentFragment as RouterProvider).localNavigator
+
     ///////////////////////////////////////////////////////////////////////////
     // MVP
     ///////////////////////////////////////////////////////////////////////////
 
-    //Todo change mocks
     inner class PagerAdapter(
             fm: FragmentManager
     ) : FragmentStatePagerAdapter(fm) {
 
         override fun getItem(position: Int): Fragment {
             return when (position) {
-                0 -> TopicListFragment()
-                1 -> TopicListFragment()
-                else -> TopicListFragment()
+                0 -> TopicListFragment.newInstance(ForumType.NEWS)
+                1 -> TopicListFragment.newInstance(ForumType.MY_CLUBS)
+                //TODO forum fragment
+                else -> TopicListFragment.newInstance(ForumType.ALL)
             }
         }
 

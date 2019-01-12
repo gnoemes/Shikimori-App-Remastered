@@ -13,13 +13,12 @@ class TopicResponseConverterImpl @Inject constructor(
         private val linkedConverter: LinkedContentResponseConverter
 ) : TopicResponseConverter {
 
-    override fun apply(t: List<TopicResponse>): List<Topic> = t.map { convertResponse(it)!! }
+    override fun apply(t: List<TopicResponse>): List<Topic> = t.mapNotNull { convertResponse(it) }
 
     override fun convertResponse(it: TopicResponse?): Topic? {
         if (it == null) {
             return null
         }
-
 
         return Topic(
                 it.id,
@@ -34,7 +33,8 @@ class TopicResponseConverterImpl @Inject constructor(
                 convertType(it.type, it.description, it.descriptionHtml),
                 it.linkedType,
                 linkedConverter.convertResponse(it.linked),
-                it.isViewed
+                it.isViewed,
+                it.episode
         )
     }
 

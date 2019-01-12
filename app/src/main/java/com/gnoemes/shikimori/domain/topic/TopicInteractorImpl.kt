@@ -12,7 +12,7 @@ class TopicInteractorImpl @Inject constructor(
         private val repository: TopicRepository
 ) : TopicInteractor {
 
-    override fun getList(page: Int, limit: Int, type: ForumType): Single<List<Topic>> =
+    override fun getList(type: ForumType, page: Int, limit: Int): Single<List<Topic>> =
             repository.getList(page, limit, type)
                     .applyErrorHandlerAndSchedulers()
 

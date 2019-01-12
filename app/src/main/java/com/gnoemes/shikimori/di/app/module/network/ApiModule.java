@@ -70,12 +70,6 @@ public interface ApiModule {
         return retrofit.create(TopicApi.class);
     }
 
-//    @Singleton
-//    @Provides
-//    static AlternativeApi bindAlternativeApi(@com.gnoemes.shikimori.di.app.annotations.AlternativeApi Retrofit retrofit) {
-//        return retrofit.create(AlternativeApi.class);
-//    }
-
     @Singleton
     @Provides
     static MangaApi bindMangaApi(@AuthCommonApi Retrofit retrofit) {

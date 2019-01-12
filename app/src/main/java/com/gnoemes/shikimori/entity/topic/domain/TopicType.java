@@ -5,6 +5,7 @@ public enum TopicType {
     NEWS_LINK_ONLY("Topics::NewsTopic"),
     ANIME("Topics::EntryTopics::AnimeTopic"),
     MANGA("Topics::EntryTopics::MangaTopic"),
+    RANOBE("Topics::EntryTopics::RanobeTopic"),
     PERSON("Topics::EntryTopics::PersonTopic"),
     CHARACTER("Topics::EntryTopics::CharacterTopic"),
     REVIEW("Topics::EntryTopics::ReviewTopic"),
@@ -12,6 +13,7 @@ public enum TopicType {
     CONTEST("Topics::EntryTopics::ContestTopic"),
     COLLECTION("Topics::EntryTopics::CollectionTopic"),
     CLUB("Topics::EntryTopics::ClubTopic"),
+    CLUB_PAGE("Topics::EntryTopics::ClubPageTopic"),
     CLUB_USER("Topics::ClubUserTopic"),
     DEFAULT("Topic");
 

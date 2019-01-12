@@ -18,7 +18,9 @@ class ShikimoriContentView @JvmOverloads constructor(
         orientation = HORIZONTAL
     }
 
-    fun setContent(content: String) {
+    fun setContent(content: String?) {
+
+        if (content.isNullOrBlank()) return
 
         val items = content
                 .replace(ShikimoriViews.DELIMITER, "")

@@ -17,6 +17,8 @@ enum class Type {
     USER,
     @SerializedName("Club")
     CLUB,
+    @SerializedName("ClubPage")
+    CLUB_PAGE,
     @SerializedName("Collection")
     COLLECTION,
     @SerializedName("Review")
@@ -25,6 +27,9 @@ enum class Type {
     COSPLAY,
     @SerializedName("Contest")
     CONTEST,
+    @SerializedName("Topic")
+    TOPIC,
     @SerializedName("")
-    UNKNOWN
+    UNKNOWN,
+
 }

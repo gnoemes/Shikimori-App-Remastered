@@ -20,7 +20,8 @@ data class TopicResponse(
         @field:SerializedName("type") val type: String?,
         @field:SerializedName("linked_type") private val _linkedType: Type?,
         @field:SerializedName("linked") val linked: LinkedContentResponse?,
-        @field:SerializedName("viewed") val isViewed: Boolean
+        @field:SerializedName("viewed") val isViewed: Boolean,
+        @field:SerializedName("episode") val episode: String?
 ) {
     val linkedType: Type
         get() = _linkedType ?: Type.UNKNOWN

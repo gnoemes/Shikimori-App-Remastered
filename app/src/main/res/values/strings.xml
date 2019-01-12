@@ -53,6 +53,7 @@
     <string name="common_accept">Принять</string>
     <string name="common_age_rating">Возрастной рейтинг</string>
     <string name="common_guest">Гость</string>
+    <string name="common_clubs">Клубы</string>
 
     <string name="season_autumn">Осень</string>
     <string name="season_winter">Зима</string>
@@ -122,6 +123,7 @@
     <string name="episode_number">%d эпизод</string>
     <string name="episode_in">через %s</string>
     <string name="type_pattern">%s (%s эп.), %d мин.</string>
+    <string name="type_pattern_without_duration">%s (%s эп.)</string>
     <string name="error_no_data">Нет данных</string>
     <string name="details_type">Тип:</string>
     <string name="details_season">Сезон:</string>
@@ -203,6 +205,27 @@
     <string name="topic_news">Новости</string>
     <string name="topic_my_feed">Моя лента</string>
     <string name="topic_forum">Форум</string>
+
+    <string name="topic_tag_news">новость</string>
+    <string name="topic_tag_collection">коллекция</string>
+    <string name="topic_tag_review">рецензия</string>
+    <string name="topic_tag_cosplay">косплей</string>
+    <string name="topic_tag_episode">эпизод</string>
+
+    <string name="forum_site">Сайт</string>
+    <string name="forum_club">Клуб</string>
+    <string name="forum_games">Игры</string>
+    <string name="forum_cosplay">Косплей</string>
+    <string name="forum_review">Рецензии</string>
+    <string name="forum_news">Новости</string>
+    <string name="forum_collection">Коллекции</string>
+    <string name="forum_all">Все в подряд</string>
+    <string name="forum_my_clubs">Мои клубы</string>
+    <string name="forum_contests">Турниры</string>
+    <string name="forum_reviews">Обзоры</string>
+    <string name="forum_animanga">Аниме и манга</string>
+    <string name="forum_vn">Визуальные новеллы</string>
+    <string name="forum_off_topic">Оффтопик</string>
 
 
     <string-array name="rate_types">

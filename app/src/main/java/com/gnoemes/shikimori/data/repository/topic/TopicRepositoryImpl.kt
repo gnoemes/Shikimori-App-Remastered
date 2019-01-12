@@ -16,7 +16,7 @@ class TopicRepositoryImpl @Inject constructor(
 ) : TopicRepository {
 
     override fun getList(page: Int, limit: Int, type: ForumType): Single<List<Topic>> =
-            api.getList(page, limit, type)
+            api.getList(page, limit, type.type)
                     .map(converter)
                     .doOnSuccess { if (it.isNotEmpty() && page > 1) it.toMutableList().removeAt(0) }
 

@@ -1,7 +1,9 @@
 package com.gnoemes.shikimori.di.app.module.network;
 
+import com.gnoemes.shikimori.entity.topic.data.TopicResponse;
 import com.gnoemes.shikimori.utils.network.DateTimeResponseConverter;
 import com.gnoemes.shikimori.utils.network.DateTimeResponseConverterImpl;
+import com.gnoemes.shikimori.utils.network.TopicResponseSerializator;
 import com.gnoemes.shikimori.utils.network.UserAgentInterceptor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -41,12 +43,18 @@ public interface RetrofitModule {
 
     @Provides
     @Singleton
-    static Gson provdeGson(DateTimeResponseConverter dateTimeResponseConverter) {
+    static Gson provideGson(DateTimeResponseConverter dateTimeResponseConverter, TopicResponseSerializator topicResponseSerializator) {
         return new GsonBuilder()
                 .registerTypeAdapter(DateTime.class, dateTimeResponseConverter)
+                .registerTypeAdapter(TopicResponse.class, topicResponseSerializator)
                 .create();
     }
 
     @Binds
     DateTimeResponseConverter bindDateTimeConverter(DateTimeResponseConverterImpl converter);
+
+    @Provides
+    static TopicResponseSerializator bindTopicResponseSerializator() {
+        return new TopicResponseSerializator();
+    }
 }

@@ -37,6 +37,9 @@ abstract class BaseNavigationPresenter<View : BaseView> : BasePresenter<View>() 
 
     open fun onOpenWeb(url: String?) = router.navigateTo(Screens.WEB, url)
 
+    private fun onTopicClicked(id: Long) {
+    }
+
 
     fun onContentClicked(type: Type, id: Long) {
         when (type) {
@@ -46,17 +49,8 @@ abstract class BaseNavigationPresenter<View : BaseView> : BasePresenter<View>() 
             Type.CHARACTER -> onCharacterClicked(id)
             Type.USER -> onUserClicked(id)
             Type.PERSON -> onPersonClicked(id)
+            Type.TOPIC -> onTopicClicked(id)
         }
     }
-//
-//    fun onLinkedContentClicked(id: Long, type: LinkedType) {
-//        when (type) {
-//            LinkedType.ANIME -> onAnimeClicked(id)
-//            LinkedType.MANGA -> onMangaClicked(id)
-//            LinkedType.RANOBE -> onRanobeClicked(id)
-//            LinkedType.CHARACTER -> onCharacterClicked(id)
-//            LinkedType.PERSON -> onPersonClicked(id)
-//            else -> router.showSystemMessage("В разработке")
-//        }
-//    }
+
 }
