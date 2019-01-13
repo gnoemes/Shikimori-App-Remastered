@@ -16,7 +16,7 @@ abstract class BasePaginationAdapter : ListDelegationAdapter<MutableList<Any>>()
         return items[position].hashCode().toLong()
     }
 
-    fun bindItems(newItems: List<Any>) {
+    open fun bindItems(newItems: List<Any>) {
         val oldData = items.toList()
         val progress = isProgress()
 
@@ -29,7 +29,7 @@ abstract class BasePaginationAdapter : ListDelegationAdapter<MutableList<Any>>()
                 .dispatchUpdatesTo(this)
     }
 
-    fun showProgress(isVisible: Boolean) {
+    open fun showProgress(isVisible: Boolean) {
         val oldData = items.toList()
         val currentProgress = isProgress()
 
@@ -42,7 +42,7 @@ abstract class BasePaginationAdapter : ListDelegationAdapter<MutableList<Any>>()
         }
     }
 
-    fun isProgress() = items.isNotEmpty() && items.last() is ProgressItem
+    open fun isProgress() = items.isNotEmpty() && items.last() is ProgressItem
 
     abstract fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean
 

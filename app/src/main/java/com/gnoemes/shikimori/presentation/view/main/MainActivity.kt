@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -23,6 +24,7 @@ import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.Router
 import ru.terrakok.cicerone.commands.Command
+import ru.terrakok.cicerone.commands.Forward
 import ru.terrakok.cicerone.commands.Replace
 import javax.inject.Inject
 
@@ -101,10 +103,10 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView, RouterPr
         override fun createActivityIntent(context: Context?, screenKey: String?, data: Any?): Intent? = null
 
         override fun unknownScreen(command: Command?) {
-            val fragment = fragmentManager.findFragmentById(R.id.activity_container)
-            fragment.ifNotNull {
-                (it as RouterProvider).localNavigator.applyCommands(arrayOf(command))
-            }
+            val message = "SCREEN ${(command as? Forward)?.screenKey} NOT FOUND"
+            Log.e("ERR", message)
+            //TODO remove
+            showSystemMessage(message)
         }
 
         override fun createFragment(screenKey: String?, data: Any?): Fragment? = null

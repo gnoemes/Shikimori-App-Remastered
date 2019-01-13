@@ -212,6 +212,7 @@ class PageOffsetPaginator<T>(
             } else {
                 currentState = ALL_DATA()
                 viewController.showPageProgress(false)
+                viewController.onAllData()
             }
         }
 

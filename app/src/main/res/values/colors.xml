@@ -37,6 +37,7 @@
     <color name="topic_release">#42865e</color>
 
     <color name="comment_review">#1fd52f</color>
+    <color name="comment_offtopic">#f477ad</color>
 
     <color name="ic_launcher_background">#FFFFFF</color>
 

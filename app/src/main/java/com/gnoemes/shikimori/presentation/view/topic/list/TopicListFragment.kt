@@ -2,6 +2,7 @@ package com.gnoemes.shikimori.presentation.view.topic.list
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.arellomobile.mvp.presenter.InjectPresenter
@@ -74,6 +75,7 @@ class TopicListFragment : BasePaginationFragment<TopicViewModel, TopicListPresen
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
             addOnScrollListener(nextPageListener)
         }
+        ViewCompat.setNestedScrollingEnabled(recyclerView, false)
 
         emptyContentView.setText(R.string.search_nothing)
     }

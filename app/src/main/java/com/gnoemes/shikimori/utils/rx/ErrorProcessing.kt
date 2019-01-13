@@ -40,7 +40,7 @@ class ErrorProcessing<T> {
         }
 
         if (throwable is SSLHandshakeException) {
-            throw NetworkException("Internet error")
+            throw NetworkException("SSLHandshake error")
         }
 
         if (throwable is SocketTimeoutException) {

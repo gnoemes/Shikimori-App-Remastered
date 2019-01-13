@@ -44,9 +44,10 @@ abstract class BasePaginationFragment<Items : Any, Presenter : BasePaginationPre
         adapter.bindItems(data)
     }
 
-    override fun showContent(show: Boolean) = recyclerView.visibleIf { show }
-    override fun onShowLoading() = refreshLayout.showRefresh()
-    override fun onHideLoading() = refreshLayout.hideRefresh()
+    override fun showContent(show: Boolean) = recyclerView?.visibleIf { show } ?: Unit
+    override fun onShowLoading() = refreshLayout?.showRefresh() ?: Unit
+    override fun onHideLoading() = refreshLayout?.hideRefresh() ?: Unit
     override fun showPageLoading() = postViewAction { adapter.showProgress(true) }
     override fun hidePageLoading() = postViewAction { adapter.showProgress(false) }
+    override fun onAllData() = Unit
 }

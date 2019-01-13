@@ -178,7 +178,9 @@ class AnimePresenter @Inject constructor(
     }
 
     private fun onOpenDiscussion() {
-
+        currentAnime.topicId?.let { onTopicClicked(it) } ?:
+        //TODO localization
+        router.showSystemMessage("Не удалось найти тему")
     }
 
     private fun onScreenshotsClicked() {

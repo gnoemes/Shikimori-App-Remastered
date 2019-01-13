@@ -50,7 +50,7 @@ class SearchPresenter @Inject constructor(
         } else {
             getSimpleRequestFactory()
                     .appendLoadingLogic(viewState)
-                    .subscribe({ viewController.showData(true, it) }, this::processErrors)
+                    .subscribe({ showData(true, it) }, this::processErrors)
                     .addToDisposables()
         }
     }

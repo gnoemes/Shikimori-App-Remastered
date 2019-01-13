@@ -10,4 +10,6 @@ interface TopicResourceProvider {
 
     @ColorRes
     fun getTagColor(type: TopicType) : Int
+
+    fun getCommentsMoreText(limit: Int, diff: Int?): String
 }

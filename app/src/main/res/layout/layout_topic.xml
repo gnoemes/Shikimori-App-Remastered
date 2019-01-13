@@ -9,6 +9,7 @@
 
     <TextView
         android:id="@+id/titleView"
+        style="@style/TextHeadlineStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -22,17 +23,24 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Анонсирована аниме-адаптация манги «Mahou Shoujo Tokushuusen Asuka»." />
 
+    <Space
+        android:id="@+id/space2"
+        android:layout_width="0dp"
+        android:layout_height="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleView" />
+
     <com.gnoemes.shikimori.presentation.view.common.widget.shikimori.ShikimoriContentView
         android:id="@+id/contentView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp"
         app:expandable="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/titleView"
         app:layout_constraintStart_toStartOf="@+id/titleView"
-        app:layout_constraintTop_toBottomOf="@+id/titleView"
+        app:layout_constraintTop_toBottomOf="@+id/space2"
         tools:shikimori_content="Анонсирована аниме-адаптация манги «Mahou Shoujo Tokushuusen Asuka»." />
 
     <View

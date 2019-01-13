@@ -19,6 +19,7 @@ import com.gnoemes.shikimori.presentation.view.rates.RatesContainerFragment
 import com.gnoemes.shikimori.presentation.view.search.SearchFragment
 import com.gnoemes.shikimori.presentation.view.settings.SettingsActivity
 import com.gnoemes.shikimori.presentation.view.shikimorimain.ShikimoriMainFragment
+import com.gnoemes.shikimori.presentation.view.topic.details.TopicFragment
 import com.gnoemes.shikimori.presentation.view.topic.list.TopicListFragment
 
 object RouteHolder {
@@ -33,6 +34,7 @@ object RouteHolder {
             Screens.ANIME_DETAILS -> AnimeFragment.newInstance(data as Long)
             Screens.CHARACTER_DETAILS -> CharacterFragment.newInstance(data as Long)
             Screens.PERSON_DETAILS -> PersonFragment.newInstance(data as Long)
+            Screens.TOPIC_DETAILS -> TopicFragment.newInstance(data as Long)
             Screens.TOPICS -> TopicListFragment.newInstance(data as ForumType)
             else -> null
         }

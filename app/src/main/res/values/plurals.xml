@@ -41,4 +41,12 @@
         <item quantity="many">%1$d минут назад</item>
         <item quantity="other">%1$d минут назад</item>
     </plurals>
+
+    <plurals name="commentaries">
+        <item quantity="one">%1$d комментарий</item>
+        <item quantity="few">%1$d комментария</item>
+        <item quantity="many">%1$d комментариев</item>
+        <item quantity="other">%1$d комментариев</item>
+    </plurals>
+
 </resources>

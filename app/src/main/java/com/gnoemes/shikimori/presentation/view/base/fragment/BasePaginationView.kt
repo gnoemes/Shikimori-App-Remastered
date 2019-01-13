@@ -13,4 +13,6 @@ interface BasePaginationView : BaseFragmentView {
 
     fun hidePageLoading()
 
+    fun onAllData()
+
 }

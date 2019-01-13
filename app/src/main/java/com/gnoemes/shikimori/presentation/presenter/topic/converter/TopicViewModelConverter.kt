@@ -4,4 +4,7 @@ import com.gnoemes.shikimori.entity.topic.domain.Topic
 import com.gnoemes.shikimori.entity.topic.presentation.TopicViewModel
 import io.reactivex.functions.Function
 
-interface TopicViewModelConverter : Function<List<Topic>, List<TopicViewModel>>
+interface TopicViewModelConverter : Function<List<Topic>, List<TopicViewModel>> {
+
+    fun convertTopic(it: Topic): TopicViewModel
+}

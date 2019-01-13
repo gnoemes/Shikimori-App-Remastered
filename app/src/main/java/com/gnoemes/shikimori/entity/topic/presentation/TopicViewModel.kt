@@ -8,7 +8,7 @@ data class TopicViewModel(
         val id: Long,
         val userData: TopicUserViewModel,
         val contentData: TopicContentViewModel,
-        val commentsCount : Int,
+        val commentsCount : Long,
         val type: TopicType,
         val linked: LinkedContent?,
         val isViewed: Boolean,

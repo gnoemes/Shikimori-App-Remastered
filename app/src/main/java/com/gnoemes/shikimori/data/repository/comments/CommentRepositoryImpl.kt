@@ -13,7 +13,7 @@ class CommentRepositoryImpl @Inject constructor(
 ) : CommentRepository {
 
     override fun getList(id: Long, type: CommentableType, page: Int, limit: Int, desc: Int): Single<List<Comment>> =
-            api.getComments(id, type, page, limit, desc)
+            api.getComments(id, type.type, page, limit, desc)
                     .map(converter)
                     //server returns N+1 elements, if next page exists
                     .map { if (it.isNotEmpty()) it.take(limit) else it }

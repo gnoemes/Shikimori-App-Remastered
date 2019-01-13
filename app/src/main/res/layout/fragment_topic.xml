@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge>
+
+    <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/userLayout"
+                layout="@layout/layout_topic_user" />
+
+            <include
+                android:id="@+id/topicLayout"
+                layout="@layout/layout_topic" />
+
+            <include
+                android:id="@+id/linkedLayout"
+                layout="@layout/layout_topic_linked" />
+
+            <include
+                android:id="@+id/commentsLayout"
+                layout="@layout/layout_topic_comments" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</merge>

@@ -8,7 +8,7 @@ import com.gnoemes.shikimori.presentation.view.base.fragment.BasePaginationView
 import io.reactivex.Single
 
 //TODO rename presenter or add more abstractions to paginator based on type (pageOffset, dateOffset etc.)
-abstract class BasePaginationPresenter<Items : Any, View : BasePaginationView> : BaseNetworkPresenter<View>() {
+abstract class BasePaginationPresenter<Items : Any, View : BasePaginationView> : BaseNetworkPresenter<View>(), ViewController<Items> {
 
     private var paginator: PageOffsetPaginator<Items>? = null
 
@@ -22,7 +22,7 @@ abstract class BasePaginationPresenter<Items : Any, View : BasePaginationView> :
 
     protected open fun loadData() {
         if (paginator == null) {
-            paginator = PageOffsetPaginator(getPaginatorRequestFactory(), viewController)
+            paginator = PageOffsetPaginator(getPaginatorRequestFactory(), this)
         }
 
         paginator?.refresh()
@@ -47,48 +47,51 @@ abstract class BasePaginationPresenter<Items : Any, View : BasePaginationView> :
         loadData()
     }
 
-    protected open val viewController = object : ViewController<Items> {
-        override fun showData(show: Boolean, data: List<Items>) {
-            if (show) viewState.showData(data)
-            viewState.showContent(show)
-        }
-
-        override fun showEmptyView(show: Boolean) {
-            viewState.showContent(!show)
-            if (show) viewState.showEmptyView()
-            else viewState.hideEmptyView()
-        }
-
-        override fun showRefreshProgress(show: Boolean) {
-            if (show) viewState.onShowLoading()
-            else viewState.onHideLoading()
-        }
-
-        override fun showEmptyProgress(show: Boolean) {
-            if (show) viewState.onShowLoading()
-            else viewState.onHideLoading()
-        }
-
-        override fun showPageProgress(show: Boolean) {
-            if (show) viewState.showPageLoading()
-            else viewState.hidePageLoading()
-        }
-
-        override fun showError(throwable: Throwable) {
-            processErrors(throwable)
-        }
-
-        override fun showEmptyError(show: Boolean, throwable: Throwable?) {
-            if ((throwable as? BaseException)?.tag != NetworkException.TAG) {
-                if (show) viewState.showEmptyView()
-            }
-
-            if (!show) {
-                viewState.hideNetworkView()
-                viewState.hideEmptyView()
-            }
-
-            throwable?.let { processErrors(it) }
-        }
+    override fun showData(show: Boolean, data: List<Items>) {
+        if (show) viewState.showData(data)
+        viewState.showContent(show)
     }
+
+   override fun showEmptyView(show: Boolean) {
+        viewState.showContent(!show)
+        if (show) viewState.showEmptyView()
+        else viewState.hideEmptyView()
+    }
+
+    override fun showRefreshProgress(show: Boolean) {
+        if (show) viewState.onShowLoading()
+        else viewState.onHideLoading()
+    }
+
+    override fun showEmptyProgress(show: Boolean) {
+        if (show) viewState.onShowLoading()
+        else viewState.onHideLoading()
+    }
+
+    override fun showPageProgress(show: Boolean) {
+        if (show) viewState.showPageLoading()
+        else viewState.hidePageLoading()
+    }
+
+    override fun showError(throwable: Throwable) {
+        processErrors(throwable)
+    }
+
+    override fun showEmptyError(show: Boolean, throwable: Throwable?) {
+        if ((throwable as? BaseException)?.tag != NetworkException.TAG) {
+            if (show) viewState.showEmptyView()
+        }
+
+        if (!show) {
+            viewState.hideNetworkView()
+            viewState.hideEmptyView()
+        }
+
+        throwable?.let { processErrors(it) }
+    }
+
+    override fun onAllData() {
+        viewState.onAllData()
+    }
+
 }

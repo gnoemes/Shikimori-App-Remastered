@@ -8,7 +8,7 @@ import kotlinx.android.synthetic.main.layout_topic.view.*
 
 class TopicContentViewHolder(
         private val view: View,
-        private val navigationCallback: (Type, Long) -> Unit,
+        navigationCallback: (Type, Long) -> Unit,
         private val expandable: Boolean = false
 ) {
 
@@ -24,7 +24,6 @@ class TopicContentViewHolder(
         this.item = item
         with(view) {
             titleView.text = item.title
-            contentView.linkCallback = navigationCallback
             contentView.visibleIf { !item.content.isNullOrBlank() }
             contentView.setContent(item.content)
         }

@@ -16,7 +16,7 @@
         app:constraint_referenced_ids="typeView, seasonView, statusView, titleView" />
 
     <TextView
-        android:id="@+id/titleView"
+        android:id="@+id/linkedTitleView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -56,8 +56,8 @@
         android:id="@+id/typeView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@+id/titleView"
-        app:layout_constraintTop_toBottomOf="@+id/titleView"
+        app:layout_constraintStart_toStartOf="@+id/linkedTitleView"
+        app:layout_constraintTop_toBottomOf="@+id/linkedTitleView"
         tools:text="Тип: TV (24 эп.), 26 мин." />
 
     <TextView
@@ -75,6 +75,13 @@
         app:layout_constraintStart_toStartOf="@+id/seasonView"
         app:layout_constraintTop_toBottomOf="@+id/seasonView"
         tools:text="Статус: Онгоинг" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="@color/colorDivider"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

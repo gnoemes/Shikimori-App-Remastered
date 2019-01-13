@@ -11,7 +11,7 @@ class PersonResponseConverterImpl @Inject constructor(
         private val imageConverter: ImageResponseConverter
 ) : PersonResponseConverter {
 
-    override fun apply(t: List<PersonResponse>): List<Person> = t.map { convertResponse(it)!! }
+    override fun apply(t: List<PersonResponse>): List<Person> = t.mapNotNull { convertResponse(it) }
 
     override fun convertResponse(it: PersonResponse?): Person? {
         if (it == null) {

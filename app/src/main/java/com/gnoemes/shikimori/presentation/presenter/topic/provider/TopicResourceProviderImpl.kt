@@ -40,4 +40,12 @@ class TopicResourceProviderImpl @Inject constructor(
         }
     }
 
+    override fun getCommentsMoreText(limit: Int, diff: Int?): String {
+        return if (diff == null) {
+            context.getString(R.string.comment_more_format_message_last) + " " + context.resources.getQuantityString(R.plurals.commentaries, limit, limit)
+        } else {
+            val firstPart = String.format(context.getString(R.string.comment_more_format_message), limit)
+            firstPart + " " + context.resources.getQuantityString(R.plurals.commentaries, diff, diff)
+        }
+    }
 }

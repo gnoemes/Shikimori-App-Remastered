@@ -3,6 +3,7 @@ package com.gnoemes.shikimori.presentation.presenter.base
 import android.util.Log
 import com.gnoemes.shikimori.entity.app.domain.exceptions.BaseException
 import com.gnoemes.shikimori.entity.app.domain.exceptions.NetworkException
+import com.gnoemes.shikimori.entity.app.domain.exceptions.ServiceCodeException
 import com.gnoemes.shikimori.presentation.view.base.activity.BaseNetworkView
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -26,7 +27,8 @@ abstract class BaseNetworkPresenter<View : BaseNetworkView> : BaseNavigationPres
 //        val errorUtils = ErrorUtils()
 //        errorUtils.processErrors(throwable, router, viewState)
         when ((throwable as? BaseException)?.tag) {
-            NetworkException.TAG -> viewState.apply { showNetworkView(); showContent(false) }
+            NetworkException.TAG -> viewState.apply { showNetworkView(); showContent(false); router.showSystemMessage(throwable.localizedMessage) }
+            ServiceCodeException.TAG -> router.showSystemMessage("HTTP error ${(throwable as ServiceCodeException).serviceCode}")
             else -> Log.e("Error", throwable.toString())
         }
     }

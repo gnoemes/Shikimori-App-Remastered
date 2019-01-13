@@ -54,6 +54,7 @@
     <string name="common_age_rating">Возрастной рейтинг</string>
     <string name="common_guest">Гость</string>
     <string name="common_clubs">Клубы</string>
+    <string name="common_comments">Комментарии</string>
 
     <string name="season_autumn">Осень</string>
     <string name="season_winter">Зима</string>
@@ -212,6 +213,8 @@
     <string name="topic_tag_cosplay">косплей</string>
     <string name="topic_tag_episode">эпизод</string>
     <string name="topic_tag_release">релиз</string>
+    <string name="topic_tag_offtopic">оффтопик</string>
+    <string name="topic_tag_summary">отзыв</string>
 
     <string name="forum_site">Сайт</string>
     <string name="forum_clubs">Клубы</string>
@@ -229,6 +232,10 @@
     <string name="forum_off_topic">Оффтопик</string>
     <string name="forum_my_clubs_empty">Подходящих тем не найдено.\nВступайте в клубы, чтобы получать рассылку.</string>
 
+    <string name="comment_more_format_message">Загрузить еще %d из</string>
+    <string name="comment_more_format_message_last">Загрузить еще</string>
+    <string name="comment_previous">Показать предыдущие</string>
+    <string name="comment_empty">Комментарии не найдены.</string>
 
     <string-array name="rate_types">
         <item>@string/common_anime</item>

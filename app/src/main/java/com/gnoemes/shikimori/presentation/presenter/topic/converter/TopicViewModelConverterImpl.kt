@@ -10,6 +10,7 @@ import com.gnoemes.shikimori.entity.topic.presentation.TopicUserViewModel
 import com.gnoemes.shikimori.entity.topic.presentation.TopicViewModel
 import com.gnoemes.shikimori.presentation.presenter.common.converter.BBCodesTextProcessor
 import com.gnoemes.shikimori.presentation.presenter.topic.provider.TopicResourceProvider
+import com.gnoemes.shikimori.utils.color
 import com.gnoemes.shikimori.utils.date.DateTimeConverter
 import javax.inject.Inject
 
@@ -23,21 +24,21 @@ class TopicViewModelConverterImpl @Inject constructor(
     override fun apply(t: List<Topic>): List<TopicViewModel> =
             t.map { convertTopic(it) }
 
-    private fun convertTopic(it: Topic): TopicViewModel {
+    override fun convertTopic(it: Topic): TopicViewModel {
         val createdDate = dateTimeConverter.convertDateAgoToString(it.dateCreated)
 
-        val tag = getTag(it.type) ?: getTag(it.event, it.episode)
-        val color = resourceProvider.getTagColor(it.type)
-        val tagColor = if (color == 0) getTagColor(it.event) else color
+        val tag = getTag(it.event, it.episode) ?: getTag(it.type)
+        val colorRes = getTagColor(it.event)?: resourceProvider.getTagColor(it.type)
+        val tagColor = if ( colorRes != 0) context.color(colorRes) else null
 
         val userViewModel = TopicUserViewModel(it.user, createdDate, tag, tagColor)
         val contentViewModel = TopicContentViewModel(it.title, it.description?.let { textProcessor.process(it) })
-        R.color.topic_new_episode
+
         return TopicViewModel(
                 it.id,
                 userViewModel,
                 contentViewModel,
-                it.commentsCount.toInt(),
+                it.commentsCount,
                 it.type,
                 it.linked,
                 it.isViewed,
@@ -46,11 +47,11 @@ class TopicViewModelConverterImpl @Inject constructor(
         )
     }
 
-    private fun getTagColor(event: TopicEvent): Int {
+    private fun getTagColor(event: TopicEvent): Int? {
         return when (event) {
             TopicEvent.RELEASED -> R.color.topic_release
             TopicEvent.EPISODE -> R.color.topic_new_episode
-            else -> 0
+            else -> null
         }
     }
 

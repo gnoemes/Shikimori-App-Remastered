@@ -10,10 +10,14 @@ import kotlinx.android.synthetic.main.layout_details_description_content.view.*
 
 class DetailsDescriptionViewHolder(
         private val view: View,
-        private val navigationCallback: (Type, Long) -> Unit
+        navigationCallback: (Type, Long) -> Unit
 ) {
 
     private val placeholder by lazy { DetailsPlaceholderViewHolder(view.descriptionContent, view.descriptionPlaceholder as ShimmerFrameLayout) }
+
+    init {
+        view.descriptionTextView.linkCallback = navigationCallback
+    }
 
     fun bind(item: DetailsDescriptionItem) {
 
@@ -25,7 +29,6 @@ class DetailsDescriptionViewHolder(
         placeholder.showContent()
 
         with(view) {
-            descriptionTextView.linkCallback = navigationCallback
             descriptionTextView.setContent(item.description)
         }
     }

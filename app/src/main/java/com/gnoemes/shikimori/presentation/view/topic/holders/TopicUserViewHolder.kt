@@ -4,7 +4,6 @@ import android.graphics.drawable.ColorDrawable
 import android.view.View
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.topic.presentation.TopicUserViewModel
-import com.gnoemes.shikimori.utils.color
 import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.gnoemes.shikimori.utils.visibleIf
 import kotlinx.android.synthetic.main.layout_topic_user.view.*
@@ -28,7 +27,7 @@ class TopicUserViewHolder(
             dateView.text = item.createdDate
 
             tagView.text = item.tag
-            if (item.tagColor != 0) tagView.background = ColorDrawable(context.color(item.tagColor))
+            item.tagColor?.let { tagView.background = ColorDrawable(item.tagColor) }
             tagView.visibleIf { !item.tag.isNullOrBlank() }
         }
     }

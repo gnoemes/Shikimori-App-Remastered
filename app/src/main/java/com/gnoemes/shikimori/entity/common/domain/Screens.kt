@@ -9,6 +9,7 @@ object Screens {
     const val CHARACTER_DETAILS = "CHARACTER_DETAILS"
     const val PERSON_DETAILS = "PERSON_DETAILS"
     const val USER_DETAILS = "USER_DETAILS"
+    const val TOPIC_DETAILS = "TOPIC_DETAILS"
 
     ////////////////////////////////////////////////////////////////////////
     // Activities

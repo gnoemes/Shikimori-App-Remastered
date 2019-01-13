@@ -15,4 +15,6 @@ interface ViewController<T> {
     fun showEmptyProgress(show: Boolean) = Unit
 
     fun showError(throwable: Throwable)
+
+    fun onAllData() = Unit
 }
