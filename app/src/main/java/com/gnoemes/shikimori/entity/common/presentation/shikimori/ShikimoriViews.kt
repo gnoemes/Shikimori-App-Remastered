@@ -12,6 +12,7 @@ object ShikimoriViews {
     private val adapterFactory = RuntimeTypeAdapterFactory.of(Content::class.java, "contentType", true)
             .apply {
                 registerSubtype(Link::class.java, "link")
+                registerSubtype(Reply::class.java, "reply")
             }
 
     private val gson = GsonBuilder()

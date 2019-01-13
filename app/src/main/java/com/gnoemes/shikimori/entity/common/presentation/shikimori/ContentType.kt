@@ -6,5 +6,7 @@ enum class ContentType {
     TEXT,
     @SerializedName("link")
     LINK,
+    @SerializedName("reply")
+    REPLY,
 
 }

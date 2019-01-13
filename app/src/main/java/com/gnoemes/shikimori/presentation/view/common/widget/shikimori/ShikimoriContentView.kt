@@ -9,6 +9,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.common.domain.Type
@@ -119,11 +120,14 @@ class ShikimoriContentView @JvmOverloads constructor(
         val group = mutableListOf<Content>()
         items.forEach {
             val lastItem = group.lastOrNull()
-            if (lastItem == null || lastItem.contentType == it.contentType || (lastItem.contentType == ContentType.LINK || lastItem.contentType == ContentType.TEXT)) group.add(it)
-            else {
-                processGroup(group)
-                group.clear()
+            if (lastItem != null && lastItem.contentType != it.contentType) {
+                if (!isLinkOrText(it, lastItem)) {
+                    processGroup(group)
+                    group.clear()
+                }
             }
+
+            group.add(it)
         }
 
         if (group.isNotEmpty()) processGroup(group)
@@ -134,7 +138,22 @@ class ShikimoriContentView @JvmOverloads constructor(
 
         when {
             firstItem is Text || firstItem is Link -> addTextGroup(group)
+            firstItem is Reply -> addReplyTextGroup(group)
         }
+    }
+
+    private fun isLinkOrText(it: Content, lastItem: Content): Boolean {
+        return ((lastItem.contentType == ContentType.LINK || lastItem.contentType == ContentType.TEXT) && (it.contentType == ContentType.LINK || it.contentType == ContentType.TEXT))
+    }
+
+    private fun addReplyTextGroup(group: List<Content>) {
+        val view = ShikimoriTextView(context)
+        view.textSize = 12f
+        val params = LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+        params.gravity = GravityCompat.END
+        contentView.addView(view, params)
+        view.processTextContent(group)
+        view.linkCallback = linkCallback
     }
 
     private fun addTextGroup(group: List<Content>) {

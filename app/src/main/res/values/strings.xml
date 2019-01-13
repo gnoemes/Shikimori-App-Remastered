@@ -236,6 +236,7 @@
     <string name="comment_more_format_message_last">Загрузить еще</string>
     <string name="comment_previous">Показать предыдущие</string>
     <string name="comment_empty">Комментарии не найдены.</string>
+    <string name="comment_reply">Ответ:</string>
 
     <string-array name="rate_types">
         <item>@string/common_anime</item>

@@ -5,11 +5,9 @@ import android.text.Html
 import android.text.SpannableStringBuilder
 import android.util.AttributeSet
 import android.widget.TextView
+import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.common.domain.Type
-import com.gnoemes.shikimori.entity.common.presentation.shikimori.Content
-import com.gnoemes.shikimori.entity.common.presentation.shikimori.Link
-import com.gnoemes.shikimori.entity.common.presentation.shikimori.ShikimoriViews
-import com.gnoemes.shikimori.entity.common.presentation.shikimori.Text
+import com.gnoemes.shikimori.entity.common.presentation.shikimori.*
 import com.gnoemes.shikimori.utils.toLink
 import com.gnoemes.shikimori.utils.widgets.ShikimoriLinkMovementMethod
 
@@ -38,10 +36,29 @@ class ShikimoriTextView @JvmOverloads constructor(
             when (it) {
                 is Text -> appendText(builder, it)
                 is Link -> appendLink(builder, it)
+                is Reply -> appendReply(builder, it)
             }
         }
 
         text = builder
+    }
+
+    private fun appendReply(builder: SpannableStringBuilder, it: Reply) {
+        val stringBuilder = SpannableStringBuilder()
+        val delimiter = ", "
+
+        it.ids.split(",")
+                .forEach { id ->
+                    val action = it.type.name.plus(ShikimoriViews.ACTION_DIVIDER).plus(id)
+                    stringBuilder.append(id.toLink(action)).append(delimiter)
+                }
+
+        stringBuilder.replace(stringBuilder.lastIndexOf(delimiter), stringBuilder.length, "")
+
+        val reply = context.getString(R.string.comment_reply)
+        builder.append(reply)
+                .append(" ")
+                .append(stringBuilder)
     }
 
     private fun appendText(builder: SpannableStringBuilder, it: Text) {
