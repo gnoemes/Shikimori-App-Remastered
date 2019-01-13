@@ -2,6 +2,7 @@ package com.gnoemes.shikimori.presentation.presenter.base
 
 import com.gnoemes.shikimori.entity.common.domain.Screens
 import com.gnoemes.shikimori.entity.common.domain.Type
+import com.gnoemes.shikimori.entity.manga.presentation.MangaNavigationData
 import com.gnoemes.shikimori.presentation.view.base.activity.BaseView
 import ru.terrakok.cicerone.Router
 
@@ -17,28 +18,19 @@ abstract class BaseNavigationPresenter<View : BaseView> : BasePresenter<View>() 
 
     open fun onAnimeClicked(id: Long) = router.navigateTo(Screens.ANIME_DETAILS, id)
 
+    open fun onMangaClicked(id: Long) = router.navigateTo(Screens.MANGA_DETAILS, MangaNavigationData(id, Type.MANGA))
 
-    open fun onMangaClicked(id: Long) {
-//        router.navigateTo(Screens.MANGA_DETAILS, MangaNavigationData(id, Type.MANGA))
-    }
-
-    open fun onRanobeClicked(id: Long) {
-//        router.navigateTo(Screens.MANGA_DETAILS, MangaNavigationData(id, Type.RANOBE))
-    }
+    open fun onRanobeClicked(id: Long) = router.navigateTo(Screens.MANGA_DETAILS, MangaNavigationData(id, Type.RANOBE))
 
     open fun onCharacterClicked(id: Long) = router.navigateTo(Screens.CHARACTER_DETAILS, id)
 
-
     open fun onUserClicked(id: Long) = router.navigateTo(Screens.USER_DETAILS, id)
 
-
     open fun onPersonClicked(id: Long) = router.navigateTo(Screens.PERSON_DETAILS, id)
-
 
     open fun onOpenWeb(url: String?) = router.navigateTo(Screens.WEB, url)
 
     open fun onTopicClicked(id: Long) = router.navigateTo(Screens.TOPIC_DETAILS, id)
-
 
     fun onContentClicked(type: Type, id: Long) {
         when (type) {

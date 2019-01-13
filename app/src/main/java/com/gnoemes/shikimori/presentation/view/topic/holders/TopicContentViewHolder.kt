@@ -16,7 +16,6 @@ class TopicContentViewHolder(
 
     init {
         view.contentView.expandable = expandable
-        view.divider.visibleIf { !expandable }
         view.contentView.linkCallback = navigationCallback
     }
 

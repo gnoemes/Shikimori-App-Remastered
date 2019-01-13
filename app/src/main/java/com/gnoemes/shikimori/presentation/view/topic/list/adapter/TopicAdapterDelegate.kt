@@ -11,6 +11,7 @@ import com.gnoemes.shikimori.entity.topic.presentation.TopicViewModel
 import com.gnoemes.shikimori.presentation.view.topic.holders.TopicContentViewHolder
 import com.gnoemes.shikimori.presentation.view.topic.holders.TopicUserViewHolder
 import com.gnoemes.shikimori.utils.dimen
+import com.gnoemes.shikimori.utils.gone
 import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.gnoemes.shikimori.utils.inflate
 import com.gnoemes.shikimori.utils.visibleIf
@@ -38,12 +39,13 @@ class TopicAdapterDelegate(
         private lateinit var item: TopicViewModel
 
         private val userHolder by lazy { TopicUserViewHolder(itemView.userLayout, imageLoader, navigationCallback) }
-        private val topicHolder by lazy { TopicContentViewHolder(view.topicLayout, navigationCallback, true) }
+        private val topicHolder by lazy { TopicContentViewHolder(view.topicLayout, navigationCallback) }
 
         private val margin = itemView.context.dimen(R.dimen.margin_normal).toInt()
 
         init {
             itemView.container.setOnClickListener { navigationCallback.invoke(Type.TOPIC, item.id) }
+            itemView.divider.gone()
             itemView.linkedImageView.setOnClickListener {
                 item.linked?.let { content ->
                     navigationCallback.invoke(content.linkedType, content.linkedId)

@@ -19,12 +19,12 @@ class ShikimoriTextView @JvmOverloads constructor(
 ) : TextView(context, attrs, defStyleAttr) {
 
     init {
+        setTextIsSelectable(true)
         movementMethod = ShikimoriLinkMovementMethod.getInstance(object : LinkClickListener {
             override fun onLinkClicked(type: Type, id: Long) {
                 linkCallback?.invoke(type, id)
             }
         })
-        setTextIsSelectable(true)
     }
 
     var linkCallback: ((Type, Long) -> Unit)? = null

@@ -1,6 +1,5 @@
 package com.gnoemes.shikimori.presentation.view.common.widget.shikimori
 
-import android.animation.ValueAnimator
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
@@ -170,7 +169,7 @@ class ShikimoriContentView @JvmOverloads constructor(
                 contentView.layoutParams.height = COLLAPSED_MAX_HEIGHT
                 contentView.requestLayout()
                 expandView.visible()
-                expandView.onClick { expandOrCollapse() }
+                expandView.onClick { contentView.post { expandOrCollapse() } }
             } else expandView.gone()
         }
     }
@@ -188,10 +187,12 @@ class ShikimoriContentView @JvmOverloads constructor(
     private fun cycleHeightExpansion(layout: LinearLayout) {
         val end = if (layout.height == COLLAPSED_MAX_HEIGHT) contentHeight + EXPAND_BUTTON_HEIGHT else COLLAPSED_MAX_HEIGHT
 
-        ValueAnimator.ofInt(layout.height, end)
-                .apply { addUpdateListener { layout.layoutParams.apply { height = it.animatedValue as Int; layout.requestLayout() } } }
-                .setDuration(500)
-                .start()
+//        ValueAnimator.ofInt(layout.height, end)
+//                .apply { addUpdateListener { layout.layoutParams.apply { height = it.animatedValue as Int; layout.requestLayout() } } }
+//                .setDuration(500)
+//                .start()
+        layout.layoutParams.height = end
+        layout.requestLayout()
     }
 
 }
