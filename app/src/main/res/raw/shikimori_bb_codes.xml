@@ -97,6 +97,7 @@
         <coderef name="character"/>
         <coderef name="person"/>
         <!--<coderef name="spoiler"/>-->
+        <coderef name="comment"/>
 
     </scope>
 
@@ -124,6 +125,11 @@
         <!--<pattern ignoreCase="true">[spoiler=<var inherit="true" name="name"/>]<var inherit="true" name="text"/>[/spoiler]</pattern>-->
         <!--<template>${"type": "spoiler", "payload":"<var name="text"/>", "text":"<var name="name"/>"}$</template>-->
     <!--</code>-->
+
+    <code name="comment">
+        <pattern ignoreCase="true">[comment=<var inherit="true" name="id"/>]<var inherit="true" name="name"/>[/comment]</pattern>
+        <template>${"contentType": "link", "type": "Comment", "id":<var name="id"/>, "text":"@<var name="name"/>"}$</template>
+    </code>
 
     <!-- Simple formatting -->
     <code name="bold">

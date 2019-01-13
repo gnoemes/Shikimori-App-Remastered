@@ -13,6 +13,7 @@ import com.gnoemes.shikimori.entity.common.presentation.shikimori.Text
 import com.gnoemes.shikimori.utils.toLink
 import com.gnoemes.shikimori.utils.widgets.ShikimoriLinkMovementMethod
 
+//TODO handle url links
 class ShikimoriTextView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,

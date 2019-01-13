@@ -27,8 +27,15 @@ enum class Type {
     COSPLAY,
     @SerializedName("Contest")
     CONTEST,
+
+    ////////////////////////////////////////////////////////////////////////
+    // Only in App
+    ////////////////////////////////////////////////////////////////////////
+
     @SerializedName("Topic")
     TOPIC,
+    @SerializedName("Comment")
+    COMMENT,
     @SerializedName("")
     UNKNOWN,
 
