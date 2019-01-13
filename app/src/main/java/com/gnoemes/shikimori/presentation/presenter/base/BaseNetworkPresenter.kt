@@ -28,7 +28,7 @@ abstract class BaseNetworkPresenter<View : BaseNetworkView> : BaseNavigationPres
 //        errorUtils.processErrors(throwable, router, viewState)
         when ((throwable as? BaseException)?.tag) {
             NetworkException.TAG -> viewState.apply { showNetworkView(); showContent(false); router.showSystemMessage(throwable.localizedMessage) }
-            ServiceCodeException.TAG -> router.showSystemMessage("HTTP error ${(throwable as ServiceCodeException).serviceCode}")
+            ServiceCodeException.TAG -> viewState.apply { showNetworkView(); showContent(false); router.showSystemMessage("HTTP error ${(throwable as ServiceCodeException).serviceCode}") }
             else -> Log.e("Error", throwable.toString())
         }
     }

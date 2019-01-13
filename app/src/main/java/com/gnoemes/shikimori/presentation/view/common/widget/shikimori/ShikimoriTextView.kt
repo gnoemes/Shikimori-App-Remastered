@@ -25,6 +25,7 @@ class ShikimoriTextView @JvmOverloads constructor(
                 linkCallback?.invoke(type, id)
             }
         })
+        setTextIsSelectable(true)
     }
 
     var linkCallback: ((Type, Long) -> Unit)? = null

@@ -17,6 +17,7 @@ import com.gnoemes.shikimori.utils.hideRefresh
 import com.gnoemes.shikimori.utils.showRefresh
 import com.gnoemes.shikimori.utils.visibleIf
 import kotlinx.android.synthetic.main.layout_default_list.*
+import kotlinx.android.synthetic.main.layout_default_placeholders.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 
 class ForumFragment : BaseFragment<ForumPresenter, ForumView>(), ForumView {
@@ -49,6 +50,7 @@ class ForumFragment : BaseFragment<ForumPresenter, ForumView>(), ForumView {
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
         refreshLayout.setOnRefreshListener { getPresenter().onRefresh() }
+        networkErrorView.setText(R.string.common_error_message)
     }
 
     ///////////////////////////////////////////////////////////////////////////

@@ -77,6 +77,7 @@ class TopicListFragment : BasePaginationFragment<TopicViewModel, TopicListPresen
         }
         ViewCompat.setNestedScrollingEnabled(recyclerView, false)
 
+        networkErrorView.setText(R.string.common_error_message)
         emptyContentView.setText(R.string.search_nothing)
     }
 

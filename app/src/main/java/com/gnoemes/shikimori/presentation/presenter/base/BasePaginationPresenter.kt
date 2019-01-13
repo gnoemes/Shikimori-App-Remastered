@@ -2,6 +2,7 @@ package com.gnoemes.shikimori.presentation.presenter.base
 
 import com.gnoemes.shikimori.entity.app.domain.exceptions.BaseException
 import com.gnoemes.shikimori.entity.app.domain.exceptions.NetworkException
+import com.gnoemes.shikimori.entity.app.domain.exceptions.ServiceCodeException
 import com.gnoemes.shikimori.presentation.presenter.common.paginator.PageOffsetPaginator
 import com.gnoemes.shikimori.presentation.presenter.common.paginator.ViewController
 import com.gnoemes.shikimori.presentation.view.base.fragment.BasePaginationView
@@ -52,7 +53,7 @@ abstract class BasePaginationPresenter<Items : Any, View : BasePaginationView> :
         viewState.showContent(show)
     }
 
-   override fun showEmptyView(show: Boolean) {
+    override fun showEmptyView(show: Boolean) {
         viewState.showContent(!show)
         if (show) viewState.showEmptyView()
         else viewState.hideEmptyView()
@@ -78,7 +79,8 @@ abstract class BasePaginationPresenter<Items : Any, View : BasePaginationView> :
     }
 
     override fun showEmptyError(show: Boolean, throwable: Throwable?) {
-        if ((throwable as? BaseException)?.tag != NetworkException.TAG) {
+        if ((throwable as? BaseException)?.tag != NetworkException.TAG
+                && (throwable as? BaseException)?.tag != ServiceCodeException.TAG) {
             if (show) viewState.showEmptyView()
         }
 
