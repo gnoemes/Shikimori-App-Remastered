@@ -35,6 +35,6 @@ class MangaDetailsResponseConverterImpl @Inject constructor(
                     manga.topicId,
                     genreConverter.apply(manga.genres),
                     charactersConverter.convertRoles(characters),
-                    rateConverter.convertUserRateResponse(manga.userRate)
+                    rateConverter.convertUserRateResponse(manga.id, manga.userRate)
             )
 }

@@ -64,5 +64,5 @@ class RatesRepositoryImpl @Inject constructor(
 
     override fun getRate(id: Long): Single<UserRate> =
             api.getRate(id)
-                    .map { converter.convertUserRateResponse(it) }
+                    .map { converter.convertUserRateResponse(null, it) }
 }

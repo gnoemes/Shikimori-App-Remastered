@@ -12,7 +12,7 @@ interface RateResponseConverter : Function<List<RateResponse?>?, List<Rate>> {
 
     fun convertResponse(it: RateResponse?): Rate?
 
-    fun convertUserRateResponse(it: UserRateResponse?): UserRate?
+    fun convertUserRateResponse(targetId: Long?, it: UserRateResponse?): UserRate?
 
     fun convertCreateOrUpdateRequest(targetId: Long, type: Type, rate: UserRate, userId: Long): UserRateCreateOrUpdateRequest
 

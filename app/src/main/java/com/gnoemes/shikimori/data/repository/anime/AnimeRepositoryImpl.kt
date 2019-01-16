@@ -62,7 +62,7 @@ class AnimeRepositoryImpl @Inject constructor(
 
     private fun syncRate(details: AnimeDetails): Completable =
             Single.fromCallable { details }
-                    .filter { details.userRate != null }
+                    .filter { details.userRate?.targetId != null && details.userRate.episodes != null }
                     .flatMapCompletable { syncDbSource.saveRate(it.userRate!!) }
 
 }

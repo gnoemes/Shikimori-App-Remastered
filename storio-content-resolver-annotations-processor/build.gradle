@@ -1,0 +1,10 @@
+apply plugin: 'kotlin'
+
+dependencies {
+    compile project(':storio-content-resolver-annotations')
+    compile project(':storio-common-annotations-processor')
+}
+
+sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
+}

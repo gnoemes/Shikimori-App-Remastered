@@ -16,7 +16,8 @@ class RateResponseConverterImpl @Inject constructor(
         private val mangaConverter: MangaResponseConverter
 ) : RateResponseConverter {
 
-    override fun apply(t: List<RateResponse?>): List<Rate> = t.asSequence().filter { it != null }.map { convertResponse(it)!! }.toList()
+    override fun apply(t: List<RateResponse?>): List<Rate> =
+            t.mapNotNull { convertResponse(it) }.toList()
 
     override fun convertResponse(it: RateResponse?): Rate? {
         if (it == null) {
@@ -38,7 +39,7 @@ class RateResponseConverterImpl @Inject constructor(
         )
     }
 
-    override fun convertUserRateResponse(it: UserRateResponse?): UserRate? {
+    override fun convertUserRateResponse(targetId: Long?, it: UserRateResponse?): UserRate? {
         if (it == null) {
             return null
         }
@@ -46,7 +47,7 @@ class RateResponseConverterImpl @Inject constructor(
         return UserRate(
                 it.id,
                 it.userId,
-                it.targetId,
+                it.targetId ?: targetId,
                 it.targetType,
                 it.score,
                 it.status,

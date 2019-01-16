@@ -1,0 +1,11 @@
+apply plugin: 'kotlin'
+
+dependencies {
+    compile project(':storio-sqlite-annotations')
+    compile project(':storio-common-annotations-processor')
+}
+
+sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
+}
+

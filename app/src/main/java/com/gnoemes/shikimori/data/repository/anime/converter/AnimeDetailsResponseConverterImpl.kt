@@ -40,7 +40,7 @@ class AnimeDetailsResponseConverterImpl @Inject constructor(
             t.favoured,
             t.topicId,
             genreConverter.apply(t.genres),
-            rateResponseConverter.convertUserRateResponse(t.userRate),
+            rateResponseConverter.convertUserRateResponse(t.id, t.userRate),
             convertVideos(t.videoResponses),
             studioConverter.apply(t.studioResponses ?: emptyList())
     )

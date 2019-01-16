@@ -1,0 +1,28 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion versions.compileSdk
+
+    defaultConfig {
+        versionName "v3.0.1"
+        versionCode 3010000
+        minSdkVersion versions.minSdk
+
+        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
+    }
+
+    packagingOptions {
+        exclude 'LICENSE.txt' // multiple libs have this file -> cause build error
+    }
+
+    lintOptions {
+        disable 'InvalidPackage' // AssertJ references java.nio package, which is not available on Android
+    }
+}
+
+dependencies {
+    api 'androidx.annotation:annotation:' + versions.androidx
+
+    compileOnly "io.reactivex.rxjava2:rxjava:" + versions.rxJava
+    testImplementation "io.reactivex.rxjava2:rxjava:" + versions.rxJava
+}
