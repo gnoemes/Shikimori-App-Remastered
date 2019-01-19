@@ -18,6 +18,7 @@
         <item name="colorAccent">@color/default_colorAccent</item>
         <item name="colorSurface">@color/default_colorSurface</item>
         <item name="colorBackground">@color/default_colorBackground</item>
+        <item name="colorAccentTransparent">@color/default_colorAccentTransparent</item>
 
         <item name="colorOnPrimary">@color/default_colorOnPrimary</item>
         <item name="colorOnPrimarySecondary">@color/default_colorOnPrimarySecondary</item>

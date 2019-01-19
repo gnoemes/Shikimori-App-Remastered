@@ -12,7 +12,7 @@ interface SeriesRepository {
 
     fun getTranslations(type: TranslationType, animeId: Long, episodeId: Int): Single<List<Translation>>
 
-    fun setEpisodeWatched(animeId: Long, episodeId: Int): Completable
+    fun setEpisodeStatus(animeId: Long, episodeId: Int, isWatched : Boolean): Completable
 
     fun isEpisodeWatched(animeId: Long, episodeId: Int): Single<Boolean>
 

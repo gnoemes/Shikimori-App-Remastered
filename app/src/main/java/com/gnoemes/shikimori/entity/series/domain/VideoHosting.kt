@@ -6,25 +6,25 @@ enum class VideoHosting(
         val type: String,
         val synonymType: String
 ) {
-    @SerializedName("sibnet.ru")
+    @SerializedName("sibnet.ru", alternate = ["sibnet"])
     SIBNET("sibnet", "sibnet.ru"),
-    @SerializedName("smotretanime.ru")
+    @SerializedName("smotretanime.ru", alternate = ["smotretanime"])
     SMOTRET_ANIME("smotretanime", "smotretanime.ru"),
-    @SerializedName("vk.com")
+    @SerializedName("vk.com", alternate = ["vk"])
     VK("vk", "vk.com"),
-    @SerializedName("ok.ru")
+    @SerializedName("ok.ru", alternate = ["ok"])
     OK("ok", "ok.ru"),
-    @SerializedName("mail.ru")
+    @SerializedName("mail.ru", alternate = ["mail"])
     MAIL_RU("mailru", "mail.ru"),
-    @SerializedName("sovetromantica.com")
+    @SerializedName("sovetromantica.com", alternate = ["sovetromantica"])
     SOVET_ROMANTICA("sovetromantica", "sovetromantica.com"),
-    @SerializedName("myvi.ru")
+    @SerializedName("myvi.ru", alternate = ["myvi"])
     MY_VI("myvi", "myvi.ru"),
-    @SerializedName("animedia.tv")
+    @SerializedName("animedia.tv", alternate = ["animedia"])
     ANIMEDIA("animedia", "animedia.tv"),
-    @SerializedName("rutube.ru")
+    @SerializedName("rutube.ru", alternate = ["rutube"])
     RUTUBE("rutube", "rutube.ru"),
-    @SerializedName("youtube.com")
+    @SerializedName("youtube.com", alternate = ["youtube"])
     YOUTUBE("youtube", "youtube.com"),
     @SerializedName("")
     UNKNOWN("", "");

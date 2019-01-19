@@ -15,4 +15,7 @@ interface SeriesInteractor {
 
     fun setEpisodeWatched(animeId: Long, episodeId: Int, rateId: Long = Constants.NO_ID): Completable
 
+    fun setEpisodeUnwatched(animeId: Long, episodeId: Int, rateId: Long) : Completable
+
+    fun setEpisodeStatus(animeId: Long, episodeId: Int, rateId: Long, isWatching : Boolean) : Completable
 }

@@ -1,7 +1,7 @@
 package com.gnoemes.shikimori.data.local.db.table
 
 object MangaRateSyncTable {
-    const val TABLE = "rate_sync"
+    const val TABLE = "manga_rate_sync"
 
     const val COLUMN_RATE_ID = "_rate_id"
 

@@ -12,16 +12,16 @@ import retrofit2.http.Query
 
 interface VideoApi {
 
-    @GET("/api/anime/:id/series")
+    @GET("/api/anime/{id}/series")
     fun getEpisodes(@Path("id") id: Long): Single<List<EpisodeResponse>>
 
-    @GET("/api/anime/:animeId/:episodeId/translations")
+    @GET("/api/anime/{animeId}/{episodeId}/translations")
     fun getTranslations(@Path("animeId") animeId: Long,
                         @Path("episodeId") episodeId: Int,
                         @Query("type") type: TranslationType
     ): Single<List<TranslationResponse>>
 
-    @GET("/api/anime/:animeId/:episodeId/video/:videoId")
+    @GET("/api/anime/{animeId}/{episodeId}/video/{videoId}")
     fun getVideo(@Path("animeId") animeId: Long,
                  @Path("episodeId") episodeId: Int,
                  @Path("videoId") videoId : String,

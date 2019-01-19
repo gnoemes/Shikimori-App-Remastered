@@ -21,6 +21,6 @@ dependencies {
 
     compileOnly "io.reactivex.rxjava2:rxjava:" + versions.rxJava
     testImplementation "io.reactivex.rxjava2:rxjava:" + versions.rxJava
-    compile project(path: ':storio-common')
+    implementation project(path: ':storio-common')
 }
 

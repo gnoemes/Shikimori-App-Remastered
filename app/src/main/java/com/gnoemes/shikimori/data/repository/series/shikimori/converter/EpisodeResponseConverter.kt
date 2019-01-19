@@ -4,4 +4,7 @@ import com.gnoemes.shikimori.entity.series.data.EpisodeResponse
 import com.gnoemes.shikimori.entity.series.domain.Episode
 import io.reactivex.functions.Function
 
-interface  EpisodeResponseConverter : Function<List<EpisodeResponse>, List<Episode>>
+interface  EpisodeResponseConverter : Function<List<EpisodeResponse>, List<Episode>> {
+
+    fun convertResponse(it : EpisodeResponse, isWatched : Boolean) : Episode
+}

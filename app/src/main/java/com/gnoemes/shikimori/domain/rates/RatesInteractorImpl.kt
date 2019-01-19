@@ -1,6 +1,7 @@
 package com.gnoemes.shikimori.domain.rates
 
 import com.gnoemes.shikimori.data.repository.rates.RatesRepository
+import com.gnoemes.shikimori.data.repository.user.UserRepository
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.rates.domain.Rate
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
@@ -11,7 +12,8 @@ import io.reactivex.Single
 import javax.inject.Inject
 
 class RatesInteractorImpl @Inject constructor(
-        private val repository: RatesRepository
+        private val repository: RatesRepository,
+        private val userRepository: UserRepository
 ) : RatesInteractor {
 
     override fun getAnimeRates(id: Long, page: Int, limit: Int, rateStatus: RateStatus): Single<List<Rate>> =
@@ -21,6 +23,16 @@ class RatesInteractorImpl @Inject constructor(
     override fun getMangaRates(id: Long, page: Int, limit: Int, rateStatus: RateStatus): Single<List<Rate>> =
             repository.getMangaRates(id, page, limit, rateStatus)
                     .applyErrorHandlerAndSchedulers()
+
+    override fun getRate(id: Long): Single<UserRate> = repository.getRate(id).applyErrorHandlerAndSchedulers()
+
+    override fun syncRate(id: Long): Completable =
+            userRepository.getMyUserBrief()
+                    .flatMapCompletable { user ->
+                        repository.getRate(id)
+                                .filter { user.id == it.userId }
+                                .flatMapCompletable { repository.syncRate(it) }
+                    }.applyErrorHandlerAndSchedulers()
 
     override fun deleteRate(id: Long): Completable = repository.deleteRate(id).applyErrorHandlerAndSchedulers()
 

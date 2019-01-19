@@ -10,6 +10,8 @@ interface EpisodeDbSource {
 
     fun episodeWatched(animeId: Long, episodeId: Int): Completable
 
+    fun episodeUnWatched(animeId: Long, episodeId: Int): Completable
+
     fun isEpisodeWatched(animeId: Long, episodeId: Int): Single<Boolean>
 
     fun getWatchedEpisodesCount(animeId: Long): Single<Int>

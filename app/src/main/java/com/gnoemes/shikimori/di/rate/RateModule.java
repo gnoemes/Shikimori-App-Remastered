@@ -12,11 +12,8 @@ import androidx.fragment.app.Fragment;
 import dagger.Binds;
 import dagger.Module;
 
-@Module(includes = {
-
-})
+@Module
 public interface RateModule {
-
 
     @Binds
     MvpPresenter bindMvpPresenter(RatePresenter presenter);

@@ -1,7 +1,9 @@
 package com.gnoemes.shikimori.data.repository.rates
 
+import com.gnoemes.shikimori.data.local.db.AnimeRateSyncDbSource
 import com.gnoemes.shikimori.data.local.db.ChapterDbSource
 import com.gnoemes.shikimori.data.local.db.EpisodeDbSource
+import com.gnoemes.shikimori.data.local.db.MangaRateSyncDbSource
 import com.gnoemes.shikimori.data.network.UserApi
 import com.gnoemes.shikimori.data.repository.common.RateResponseConverter
 import com.gnoemes.shikimori.entity.common.domain.Type
@@ -16,7 +18,9 @@ class RatesRepositoryImpl @Inject constructor(
         private val api: UserApi,
         private val converter: RateResponseConverter,
         private val episodeDbSource: EpisodeDbSource,
-        private val chapterDbSource: ChapterDbSource
+        private val chapterDbSource: ChapterDbSource,
+        private val animeSyncSource: AnimeRateSyncDbSource,
+        private val mangaSyncSource: MangaRateSyncDbSource
 ) : RatesRepository {
 
     override fun getAnimeRates(id: Long, page: Int, limit: Int, rateStatus: RateStatus): Single<List<Rate>> =
@@ -39,10 +43,25 @@ class RatesRepositoryImpl @Inject constructor(
                 else -> Completable.error(IllegalStateException())
             }
 
+    //Call only if my user
+    override fun syncRate(id: Long): Completable =
+            getRate(id)
+                    .flatMapCompletable { syncRate(it) }
+
+    override fun syncRate(rate: UserRate): Completable =
+            when (rate.targetType) {
+                Type.ANIME -> syncAnimeRate(rate)
+                Type.MANGA, Type.RANOBE -> syncMangaRate(rate)
+                else -> Completable.complete()
+            }
+
     override fun updateRate(rate: UserRate): Completable =
             api.updateRate(rate.id!!, converter.convertCreateOrUpdateRequest(rate))
 
-    override fun deleteRate(id: Long): Completable = api.deleteRate(id)
+    override fun deleteRate(id: Long): Completable =
+            getRate(id)
+                    .flatMapCompletable { deleteRate(it) }
+                    .andThen(api.deleteRate(id))
 
     override fun increment(rateId: Long): Completable = api.increment(rateId)
 
@@ -65,4 +84,40 @@ class RatesRepositoryImpl @Inject constructor(
     override fun getRate(id: Long): Single<UserRate> =
             api.getRate(id)
                     .map { converter.convertUserRateResponse(null, it) }
+
+    private fun syncAnimeRate(it: UserRate): Completable =
+            Single.just(it)
+                    .filter { it.targetId != null && it.episodes != null }
+                    .flatMapCompletable { animeSyncSource.saveRate(it) }
+
+    private fun syncMangaRate(it: UserRate): Completable =
+            Single.just(it)
+                    .filter { it.targetId != null && it.chapters != null }
+                    .flatMapCompletable { mangaSyncSource.saveRate(it) }
+
+    private fun deleteRate(rate: UserRate): Completable =
+            when (rate.targetType) {
+                Type.ANIME -> deleteAnimeRate(rate)
+                Type.MANGA, Type.RANOBE -> deleteMangaRate(rate)
+                else -> Completable.complete()
+            }
+
+    private fun deleteAnimeRate(rate: UserRate): Completable =
+            Single.just(rate)
+                    .filter { it.targetId != null }
+                    .flatMapCompletable {
+                        episodeDbSource.clearEpisodes(rate.targetId!!)
+                                .andThen(animeSyncSource.clearRate(rate.targetId))
+                    }
+
+    private fun deleteMangaRate(rate: UserRate): Completable =
+        Single.just(rate)
+                .filter { it.targetId != null }
+                .flatMapCompletable {
+                    chapterDbSource.clearChapters(rate.targetId!!)
+                            .andThen(mangaSyncSource.clearRate(rate.targetId))
+                }
+
+
+
 }

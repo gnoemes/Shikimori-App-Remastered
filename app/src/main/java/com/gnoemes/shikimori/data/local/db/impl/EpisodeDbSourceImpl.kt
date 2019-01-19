@@ -18,18 +18,28 @@ class EpisodeDbSourceImpl @Inject constructor(
 ) : EpisodeDbSource {
 
     override fun saveEpisodes(episodes: List<Episode>): Completable {
-        val items = episodes.map { EpisodeDao(it.animeId, it.id, null) }
-        return storIOSQLite
-                .put()
-                .objects(items)
-                .prepare()
-                .asRxCompletable()
+        val items = episodes.map { EpisodeDao(it.animeId, it.id, it.isWatched.toInt()) }
+
+        return Completable.fromAction {
+            val result = storIOSQLite
+                    .put()
+                    .objects(items)
+                    .prepare()
+                    .executeAsBlocking()
+        }
     }
 
     override fun episodeWatched(animeId: Long, episodeId: Int): Completable =
             storIOSQLite
                     .put()
                     .`object`(EpisodeDao(animeId, episodeId, true.toInt()))
+                    .prepare()
+                    .asRxCompletable()
+
+    override fun episodeUnWatched(animeId: Long, episodeId: Int): Completable =
+            storIOSQLite
+                    .put()
+                    .`object`(EpisodeDao(animeId, episodeId, false.toInt()))
                     .prepare()
                     .asRxCompletable()
 
@@ -54,8 +64,8 @@ class EpisodeDbSourceImpl @Inject constructor(
                     .numberOfResults()
                     .withQuery(Query.builder()
                             .table(EpisodeTable.TABLE)
-                            .where("${EpisodeTable.COLUMN_ANIME_ID} = ?")
-                            .whereArgs(animeId)
+                            .where("${EpisodeTable.COLUMN_ANIME_ID} = ? AND ${EpisodeTable.COLUMN_IS_WATCHED} = ?")
+                            .whereArgs(animeId, true.toInt())
                             .build())
                     .prepare()
                     .asRxSingle()

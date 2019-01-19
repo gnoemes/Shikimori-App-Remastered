@@ -8,6 +8,7 @@ import com.gnoemes.shikimori.domain.user.UserInteractor
 import com.gnoemes.shikimori.entity.anime.domain.AnimeDetails
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.common.domain.Genre
+import com.gnoemes.shikimori.entity.common.domain.Screens
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.common.presentation.DetailsAction
 import com.gnoemes.shikimori.entity.common.presentation.DetailsContentType
@@ -16,6 +17,7 @@ import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.rates.domain.UserRate
 import com.gnoemes.shikimori.entity.search.presentation.SearchNavigationData
 import com.gnoemes.shikimori.entity.search.presentation.SearchPayload
+import com.gnoemes.shikimori.entity.series.presentation.EpisodesNavigationData
 import com.gnoemes.shikimori.presentation.presenter.anime.converter.AnimeDetailsViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
 import com.gnoemes.shikimori.presentation.presenter.common.converter.DetailsContentViewModelConverter
@@ -205,7 +207,8 @@ class AnimePresenter @Inject constructor(
     private fun onOpenInBrowser() = onOpenWeb(currentAnime.url)
 
     private fun onWatchOnline() {
-
+        val data =  EpisodesNavigationData(id, currentAnime.image, currentAnime.nameRu ?: currentAnime.name, currentAnime.userRate?.id)
+        router.navigateTo(Screens.EPISODES, data)
     }
 
     private fun onEditRate() {

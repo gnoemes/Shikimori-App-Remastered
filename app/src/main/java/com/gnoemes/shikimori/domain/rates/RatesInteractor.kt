@@ -13,6 +13,10 @@ interface RatesInteractor {
 
     fun getMangaRates(id: Long, page: Int, limit: Int, rateStatus: RateStatus): Single<List<Rate>>
 
+    fun getRate(id : Long) : Single<UserRate>
+
+    fun syncRate(id : Long) : Completable
+
     fun deleteRate(id: Long): Completable
 
     fun createRate(id: Long, type: Type, rate: UserRate, userId: Long): Completable

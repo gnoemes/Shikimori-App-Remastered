@@ -238,6 +238,8 @@
     <string name="comment_empty">Комментарии не найдены.</string>
     <string name="comment_reply">Ответ:</string>
 
+    <string name="series_show">Просмотр аниме</string>
+
     <string-array name="rate_types">
         <item>@string/common_anime</item>
         <item>@string/common_manga</item>

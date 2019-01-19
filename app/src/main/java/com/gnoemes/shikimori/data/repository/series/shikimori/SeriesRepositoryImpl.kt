@@ -24,7 +24,14 @@ class SeriesRepositoryImpl @Inject constructor(
 
     override fun getEpisodes(id: Long): Single<List<Episode>> =
             api.getEpisodes(id)
-                    .map(converter)
+                    .flatMap {
+                        Observable.fromIterable(it)
+                                .flatMapSingle { episode ->
+                                    episodeSource.isEpisodeWatched(episode.animeId, episode.id)
+                                            .map { isWatched -> converter.convertResponse(episode, isWatched) }
+                                }
+                                .toList()
+                    }
                     .flatMap { episodes ->
                         episodeSource.saveEpisodes(episodes).toSingleDefault(episodes)
                                 .flatMap { syncEpisodes(id, it) }
@@ -34,7 +41,9 @@ class SeriesRepositoryImpl @Inject constructor(
             api.getTranslations(animeId, episodeId, type)
                     .map(translationConverter)
 
-    override fun setEpisodeWatched(animeId: Long, episodeId: Int): Completable = episodeSource.episodeWatched(animeId, episodeId)
+    override fun setEpisodeStatus(animeId: Long, episodeId: Int, isWatched: Boolean): Completable =
+            if (isWatched) episodeSource.episodeWatched(animeId, episodeId)
+            else episodeSource.episodeUnWatched(animeId, episodeId)
 
     override fun isEpisodeWatched(animeId: Long, episodeId: Int): Single<Boolean> = episodeSource.isEpisodeWatched(animeId, episodeId)
 
@@ -48,25 +57,44 @@ class SeriesRepositoryImpl @Inject constructor(
 
     private fun updateFromSync(id: Long, episodes: List<Episode>): Single<List<Episode>> {
         return Single.zip(episodeSource.getWatchedEpisodesCount(id), syncSource.getEpisodeCount(id), BiFunction<Int, Int, Int> { local, remote -> remote.minus(local) })
-                .filter { it > 0 }
-                .flatMapCompletable { count ->
-                    Observable.fromIterable(episodes)
-                            .flatMapSingle { updateIfWatched(it) }
-                            .filter { !it.isWatched }
-                            .take(count.toLong())
-                            .flatMapCompletable { episodeSource.episodeWatched(id, it.id) }
+                .flatMap {
+                    if (it > 0) increaseLocal(it, episodes)
+                    else decreaseLocal(Math.abs(it), episodes)
                 }
-                .toSingleDefault(episodes)
-                .flatMap { updateIfWatched(it) }
+                .map { newStatusEpisodes ->
+                    episodes.map { episode ->
+                        newStatusEpisodes
+                                .find { episode.id == it.id }
+                                ?.let { episode.copy(isWatched = it.isWatched) }
+                                ?: episode
+                    }
+                }
     }
 
-    private fun updateIfWatched(episodes: List<Episode>): Single<List<Episode>> {
-        return Observable.fromIterable(episodes)
-                .flatMapSingle { updateIfWatched(it) }
-                .toList()
-    }
+    private fun decreaseLocal(count: Int, episodes: List<Episode>): Single<List<Episode>> =
+            Observable.fromIterable(
+                    episodes.asSequence()
+                            .sortedByDescending { it.id }
+                            .filter { it.isWatched }
+                            .toMutableList()
+                            .take(count))
+                    .flatMapSingle { episodeSource.episodeUnWatched(it.animeId, it.id).toSingleDefault(it) }
+                    .flatMapSingle { updateEpisode(it) }
+                    .toList()
 
-    private fun updateIfWatched(episode: Episode): Single<Episode> {
+
+    private fun increaseLocal(count: Int, episodes: List<Episode>): Single<List<Episode>> =
+            Observable.fromIterable(
+                    episodes.asSequence()
+                            .sortedBy { it.id }
+                            .filter { !it.isWatched }
+                            .toMutableList()
+                            .take(count))
+                    .flatMapSingle { episodeSource.episodeWatched(it.animeId, it.id).toSingleDefault(it) }
+                    .flatMapSingle { updateEpisode(it) }
+                    .toList()
+
+    private fun updateEpisode(episode: Episode): Single<Episode> {
         return episodeSource.isEpisodeWatched(episode.animeId, episode.id)
                 .map { episode.copy(isWatched = it) }
     }

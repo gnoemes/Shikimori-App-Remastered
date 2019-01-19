@@ -4,6 +4,8 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.gnoemes.shikimori.data.local.db.table.AnimeRateSyncTable
+import com.gnoemes.shikimori.data.local.db.table.EpisodeTable
+import com.gnoemes.shikimori.data.local.db.table.MangaRateSyncTable
 import javax.inject.Inject
 
 class DbOpenHelper @Inject constructor(
@@ -18,6 +20,8 @@ class DbOpenHelper @Inject constructor(
     override fun onCreate(db: SQLiteDatabase) {
         db.apply {
             execSQL(AnimeRateSyncTable.CREATE_QUERY)
+            execSQL(EpisodeTable.CREATE_QUERY)
+            execSQL(MangaRateSyncTable.CREATE_QUERY)
         }
     }
 

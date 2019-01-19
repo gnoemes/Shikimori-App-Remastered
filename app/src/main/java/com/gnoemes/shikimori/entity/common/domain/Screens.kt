@@ -24,4 +24,6 @@ object Screens {
     // Other
     ////////////////////////////////////////////////////////////////////////
     const val TOPICS = "TOPICS"
+    const val EPISODES = "EPISODES"
+    const val TRANSLATIONS = "TRANSLATIONS"
 }

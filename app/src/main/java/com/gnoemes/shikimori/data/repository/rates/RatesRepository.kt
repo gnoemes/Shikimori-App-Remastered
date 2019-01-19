@@ -13,6 +13,10 @@ interface RatesRepository {
 
     fun getMangaRates(id: Long, page: Int, limit: Int, rateStatus: RateStatus): Single<List<Rate>>
 
+    fun syncRate(id : Long) : Completable
+
+    fun syncRate(rate : UserRate) : Completable
+
     fun deleteRate(id: Long): Completable
 
     fun createRate(id: Long, type: Type, rate: UserRate, userId: Long): Completable

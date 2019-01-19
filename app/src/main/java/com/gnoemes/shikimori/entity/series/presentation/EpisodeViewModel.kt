@@ -1,0 +1,10 @@
+package com.gnoemes.shikimori.entity.series.presentation
+
+import com.gnoemes.shikimori.entity.series.domain.TranslationType
+
+data class EpisodeViewModel(
+        val id: Int,
+        val animeId: Long,
+        val types: List<TranslationType>,
+        val isWatched: Boolean
+)

@@ -7,16 +7,16 @@ import javax.inject.Inject
 class EpisodeResponseConverterImpl @Inject constructor(): EpisodeResponseConverter {
 
     override fun apply(t: List<EpisodeResponse>): List<Episode> =
-            t.map { convertResponse(it) }
+            t.map { convertResponse(it, false) }
 
-    private fun convertResponse(it : EpisodeResponse) : Episode {
+    override fun convertResponse(it : EpisodeResponse, isWatched : Boolean) : Episode {
         return Episode(
                 it.id,
                 it.animeId,
                 it.translations,
                 it.hostings,
                 it.rawHosting,
-                false
+                isWatched
         )
     }
 }

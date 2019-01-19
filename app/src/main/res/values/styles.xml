@@ -7,7 +7,7 @@
     </style>
 
     <style name="ToolbarTextAppearance" parent="@style/Widget.MaterialComponents.Toolbar">
-        <item name="android:fontFamily">@font/open_sans_semibold</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
         <item name="titleTextColor">?attr/colorOnPrimary</item>
         <item name="android:textSize">20sp</item>
     </style>

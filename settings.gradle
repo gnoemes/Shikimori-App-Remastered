@@ -1,1 +1,1 @@
-include ':app', ':storio-sqlite', ':storio-sqlite-annotations', ':storio-common', ':storio-content-resolver-annotations', ':storio-content-resolver-annotations-processor', ':storio-sqlite-annotations-processor', ':storio-content-resolver', ':storio-common-annotations-processor', ':storio-sample-app'
+include ':app', ':storio-sqlite', ':storio-sqlite-annotations', ':storio-common', ':storio-content-resolver-annotations', ':storio-content-resolver-annotations-processor', ':storio-sqlite-annotations-processor', ':storio-content-resolver', ':storio-common-annotations-processor'

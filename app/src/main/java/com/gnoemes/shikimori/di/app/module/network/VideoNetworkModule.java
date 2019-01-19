@@ -15,6 +15,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 public interface VideoNetworkModule {
@@ -37,7 +38,8 @@ public interface VideoNetworkModule {
     static Retrofit.Builder provideRetrofitBuilder(@VideoApi OkHttpClient client) {
         return new Retrofit.Builder()
                 .client(client)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create());
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create());
     }
 
     @Provides
