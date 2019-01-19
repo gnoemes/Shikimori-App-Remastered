@@ -6,6 +6,8 @@ import ru.terrakok.cicerone.Router
 
 abstract class BasePresenter<View : BaseView> : MvpPresenter<View>() {
 
+    private var firstAttach: Boolean = true
+
     abstract val router: Router
 
     abstract fun onBackPressed()
@@ -21,6 +23,7 @@ abstract class BasePresenter<View : BaseView> : MvpPresenter<View>() {
 
     override fun attachView(view: View) {
         super.attachView(view)
-        onViewReattached()
+        if (!firstAttach) onViewReattached()
+        firstAttach = false
     }
 }

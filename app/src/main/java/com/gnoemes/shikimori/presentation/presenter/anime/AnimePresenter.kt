@@ -12,6 +12,7 @@ import com.gnoemes.shikimori.entity.common.domain.Screens
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.common.presentation.DetailsAction
 import com.gnoemes.shikimori.entity.common.presentation.DetailsContentType
+import com.gnoemes.shikimori.entity.common.presentation.DetailsHeadItem
 import com.gnoemes.shikimori.entity.main.BottomScreens
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.rates.domain.UserRate
@@ -55,29 +56,42 @@ class AnimePresenter @Inject constructor(
         loadData()
     }
 
+    override fun onViewReattached() {
+        loadDetails()
+                .subscribe({ viewState.setHeadItem(it) }, this::processErrors)
+                .addToDisposables()
+    }
+
     private fun loadData() =
             loadAnime()
                     .doOnSuccess { loadCharacters() }
                     .doOnSuccess { loadSimilar() }
                     .doOnSuccess { loadRelated() }
                     .subscribe({ viewState.setHeadItem(it) }, this::processErrors)
+                    .addToDisposables()
 
     private fun loadUser() =
             userInteractor.getMyUserBrief()
                     .doOnSuccess { userId = it.id }
                     .subscribe({}, this::processUserErrors)
+                    .addToDisposables()
+
+    private fun loadDetails(): Single<DetailsHeadItem> =
+            animeInteractor.getDetails(id)
+                    .doOnSuccess { currentAnime = it; rateId = it.userRate?.id ?: Constants.NO_ID }
+                    .map { viewModelConverter.convertHead(it) }
+
 
     private fun loadAnime(showLoading: Boolean = true) =
-            animeInteractor.getDetails(id)
+            loadDetails()
                     .flatMap {
                         if (showLoading) Single.just(it).appendLoadingLogic(viewState)
                         else Single.just(it)
                     }
-                    .doOnSuccess { currentAnime = it; rateId = it.userRate?.id ?: Constants.NO_ID }
                     .doOnSuccess { loadVideo() }
                     .doOnSuccess { loadDescription() }
                     .doOnSuccess { loadOptions() }
-                    .map { viewModelConverter.convertHead(it) }
+
 
     private fun loadCharacters() =
             animeInteractor.getRoles(id)
@@ -207,7 +221,8 @@ class AnimePresenter @Inject constructor(
     private fun onOpenInBrowser() = onOpenWeb(currentAnime.url)
 
     private fun onWatchOnline() {
-        val data =  EpisodesNavigationData(id, currentAnime.image, currentAnime.nameRu ?: currentAnime.name, currentAnime.userRate?.id)
+        val data = EpisodesNavigationData(id, currentAnime.image, currentAnime.nameRu
+                ?: currentAnime.name, currentAnime.userRate?.id)
         router.navigateTo(Screens.EPISODES, data)
     }
 
