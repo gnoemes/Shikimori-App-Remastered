@@ -15,7 +15,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:foreground="?selectableItemBackgroundBorderless"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
         android:orientation="horizontal"
         android:paddingStart="16dp"
         android:paddingEnd="16dp">
@@ -39,9 +39,26 @@
             android:layout_marginTop="12dp"
             android:layout_marginBottom="12dp"
             android:layout_weight="0"
+            android:visibility="visible"
             android:background="@drawable/background_checkbox_circle"
             android:button="@null"
             android:checked="false" />
+
+        <com.github.ybq.android.spinkit.SpinKitView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/progressBar"
+            style="@style/SpinKitView.ThreeBounce"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:layout_gravity="center_vertical"
+            android:visibility="gone"
+            android:layout_weight="0"
+            app:SpinKit_Color="?colorAccent"
+            app:layout_behavior="@string/appBarFixScrollingFooterBehavior" />
 
     </LinearLayout>
 

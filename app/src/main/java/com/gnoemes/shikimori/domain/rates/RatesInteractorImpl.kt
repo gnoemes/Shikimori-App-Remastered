@@ -40,6 +40,11 @@ class RatesInteractorImpl @Inject constructor(
             repository.createRate(id, type, rate, userId)
                     .applyErrorHandlerAndSchedulers()
 
+    override fun createRateWithResult(id: Long, type: Type, status: RateStatus): Single<UserRate> =
+            userRepository.getMyUserBrief()
+                    .flatMap { repository.createRateWithResult(id, type, UserRate(status = status), it.id) }
+                    .applyErrorHandlerAndSchedulers()
+
     override fun updateRate(rate: UserRate): Completable =
             repository.updateRate(rate)
                     .applyErrorHandlerAndSchedulers()

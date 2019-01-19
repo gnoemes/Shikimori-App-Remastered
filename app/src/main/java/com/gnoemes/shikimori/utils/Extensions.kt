@@ -35,6 +35,11 @@ fun String?.nullIfEmpty(): String? {
     return if (isNullOrEmpty()) null else this
 }
 
+fun <E> MutableList<E>.clearAndAddAll(items: Collection<E>) {
+    clear()
+    addAll(items)
+}
+
 fun String.toBold(): SpannableStringBuilder {
     val builder = SpannableStringBuilder()
             .append(this)
@@ -80,11 +85,10 @@ fun String.splitWithSavedNested(startSymbol: Char, endSymbol: Char): Array<Strin
 
             if (depth == 0) addToSplit()
 
-        } else if (charIndex == lastIndex){
+        } else if (charIndex == lastIndex) {
             append(char)
             addToSplit()
-        }
-        else append(char)
+        } else append(char)
 
         charIndex++
     }

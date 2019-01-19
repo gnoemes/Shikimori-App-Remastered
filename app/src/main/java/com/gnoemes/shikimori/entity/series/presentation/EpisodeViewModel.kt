@@ -6,5 +6,13 @@ data class EpisodeViewModel(
         val id: Int,
         val animeId: Long,
         val types: List<TranslationType>,
+        val state : State,
         val isWatched: Boolean
-)
+) {
+
+    sealed class State {
+        object NotChecked : State()
+        object Loading : State()
+        object Checked : State()
+    }
+}

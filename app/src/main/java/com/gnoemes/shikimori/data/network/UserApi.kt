@@ -5,6 +5,7 @@ import com.gnoemes.shikimori.entity.club.data.ClubResponse
 import com.gnoemes.shikimori.entity.rates.data.RateResponse
 import com.gnoemes.shikimori.entity.rates.data.UserRateCreateOrUpdateRequest
 import com.gnoemes.shikimori.entity.rates.data.UserRateResponse
+import com.gnoemes.shikimori.entity.rates.domain.UserRate
 import com.gnoemes.shikimori.entity.user.data.*
 import com.gnoemes.shikimori.entity.user.domain.MessageType
 import io.reactivex.Completable
@@ -44,7 +45,7 @@ interface UserApi {
     fun deleteRate(@Path("id") id: Long): Completable
 
     @POST("/api/v2/user_rates")
-    fun createRate(@Body request: UserRateCreateOrUpdateRequest): Completable
+    fun createRate(@Body request: UserRateCreateOrUpdateRequest): Single<UserRate>
 
     @PATCH("/api/v2/user_rates/{id}")
     fun updateRate(@Path("id") id: Long, @Body request: UserRateCreateOrUpdateRequest): Completable

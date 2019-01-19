@@ -1,25 +1,33 @@
 package com.gnoemes.shikimori.presentation.presenter.series.episodes
 
 import com.arellomobile.mvp.InjectViewState
+import com.gnoemes.shikimori.domain.rates.RatesInteractor
 import com.gnoemes.shikimori.domain.series.SeriesInteractor
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.common.domain.Screens
+import com.gnoemes.shikimori.entity.common.domain.Type
+import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.series.presentation.EpisodeViewModel
 import com.gnoemes.shikimori.entity.series.presentation.EpisodesNavigationData
 import com.gnoemes.shikimori.presentation.presenter.anime.converter.EpisodeViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
 import com.gnoemes.shikimori.presentation.view.series.episodes.EpisodesView
 import com.gnoemes.shikimori.utils.appendLoadingLogic
+import com.gnoemes.shikimori.utils.clearAndAddAll
+import io.reactivex.Single
 import javax.inject.Inject
 
 @InjectViewState
 class EpisodesPresenter @Inject constructor(
         private val interactor: SeriesInteractor,
+        private val ratesInteractor: RatesInteractor,
         private val converter: EpisodeViewModelConverter
 ) : BaseNetworkPresenter<EpisodesView>() {
 
     lateinit var navigationData: EpisodesNavigationData
     private var rateId = Constants.NO_ID
+
+    private val items = mutableListOf<EpisodeViewModel>()
 
     override fun initData() {
         super.initData()
@@ -31,16 +39,32 @@ class EpisodesPresenter @Inject constructor(
     }
 
     private fun loadData() =
-            interactor.getEpisodes(navigationData.animeId)
+            loadEpisodes()
                     .appendLoadingLogic(viewState)
-                    .map(converter)
                     .subscribe(this::setData, this::processErrors)
                     .addToDisposables()
 
+    private fun loadEpisodes(): Single<List<EpisodeViewModel>> =
+            interactor.getEpisodes(navigationData.animeId)
+                    .map(converter)
+
     private fun setData(items: List<EpisodeViewModel>) {
-        //TODO scroll to last - 1 watched episode. Ignore gaps.
-        //TODO states for episode items [unchecked, loading, checked]
+        val first = this.items.isEmpty()
+        this.items.clearAndAddAll(items)
         viewState.showData(items)
+
+        if (first) scrollToPenultimate()
+    }
+
+    private fun scrollToPenultimate() {
+        var lastWatchedWithIgnoredGaps = 0
+        kotlin.run loop@{
+            items.forEachIndexed { index, episodeViewModel ->
+                if (episodeViewModel.isWatched) lastWatchedWithIgnoredGaps = index
+                if (!episodeViewModel.isWatched && lastWatchedWithIgnoredGaps != 0) return@loop
+            }
+        }
+        viewState.scrollToPosition(lastWatchedWithIgnoredGaps - 1)
     }
 
     fun onEpisodeClicked(item: EpisodeViewModel) {
@@ -49,20 +73,26 @@ class EpisodesPresenter @Inject constructor(
     }
 
     fun onEpisodeStatusChanged(item: EpisodeViewModel, newStatus: Boolean) {
-        //TODO rewrite, add something like debouncer
-        //TODO rateId creation logic
-        if (newStatus) {
-            interactor.setEpisodeWatched(item.animeId, item.id, rateId)
-                    .subscribe(this::loadData, this::processErrors)
-                    .addToDisposables()
-        } else {
-            if (rateId == Constants.NO_ID) {
-                //TODO get rate id and decrement
-            }
-            interactor.setEpisodeUnwatched(item.animeId, item.id, rateId)
-                    .subscribe(this::loadData, this::processErrors)
-                    .addToDisposables()
+        //TODO buffer to prevent multi loadEpisodes() requests
+        Single.just(rateId)
+                .flatMap { createRateIfNotExist(it) }
+                .doOnSubscribe { showEpisodeLoading(item, newStatus) }
+                .flatMapCompletable { rateId -> interactor.setEpisodeStatus(navigationData.animeId, item.id, rateId, newStatus) }
+                .andThen(loadEpisodes())
+                .subscribe(this::setData, this::processErrors)
+                .addToDisposables()
+    }
 
+    private fun showEpisodeLoading(item: EpisodeViewModel, newStatus: Boolean) {
+        items[items.indexOf(item)] = item.copy(isWatched = newStatus, state = EpisodeViewModel.State.Loading)
+        viewState.showData(items)
+    }
+
+    private fun createRateIfNotExist(rateId: Long): Single<Long> {
+        return when (rateId) {
+            Constants.NO_ID -> ratesInteractor.createRateWithResult(navigationData.animeId, Type.ANIME, RateStatus.WATCHING).map { it.id }
+            else -> Single.just(rateId)
         }
     }
+
 }

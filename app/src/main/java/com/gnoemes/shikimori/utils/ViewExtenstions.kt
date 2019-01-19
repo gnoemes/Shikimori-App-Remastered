@@ -6,6 +6,8 @@ import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.gnoemes.shikimori.entity.app.domain.Constants
+import com.gnoemes.shikimori.utils.widgets.DebouncedOnClickListener
 
 fun View.visible() {
     visibility = View.VISIBLE
@@ -27,8 +29,12 @@ inline fun View.visibleIf(block: () -> Boolean) {
     if (block()) visible() else gone()
 }
 
-fun View.onClick(l: (v: android.view.View?) -> Unit) {
-    setOnClickListener(l)
+fun View.onClick(mills : Long = Constants.DEFAULT_DEBOUNCE_INTERVAL, l: (v: android.view.View?) -> Unit) {
+    setOnClickListener(object : DebouncedOnClickListener(mills) {
+        override fun onDebouncedClick(v: View?) {
+            l.invoke(v)
+        }
+    })
 }
 
 fun TextView.tintCompoundDrawables(color: Int, pos: Int = 4) {

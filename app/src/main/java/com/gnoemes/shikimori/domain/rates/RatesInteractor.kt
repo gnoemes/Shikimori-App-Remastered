@@ -21,6 +21,8 @@ interface RatesInteractor {
 
     fun createRate(id: Long, type: Type, rate: UserRate, userId: Long): Completable
 
+    fun createRateWithResult(id: Long, type: Type, status: RateStatus) : Single<UserRate>
+
     fun updateRate(rate: UserRate): Completable
 
     fun increment(rateId: Long): Completable

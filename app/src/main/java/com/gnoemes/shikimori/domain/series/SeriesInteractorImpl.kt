@@ -15,7 +15,6 @@ import io.reactivex.Completable
 import io.reactivex.Single
 import javax.inject.Inject
 
-//TODO check rate logic
 class SeriesInteractorImpl @Inject constructor(
         private val repository: SeriesRepository,
         private val ratesInteractor: RatesInteractor,
@@ -27,6 +26,11 @@ class SeriesInteractorImpl @Inject constructor(
     override fun getTranslations(type: TranslationType, animeId: Long, episodeId: Int): Single<List<Translation>> =
             repository.getTranslations(type, animeId, episodeId)
                     .applyErrorHandlerAndSchedulers()
+
+    override fun setEpisodeStatus(animeId: Long, episodeId: Int, rateId: Long, isWatching: Boolean): Completable {
+        return if (isWatching) setEpisodeWatched(animeId, episodeId, rateId)
+        else setEpisodeUnwatched(animeId, episodeId, rateId)
+    }
 
     override fun setEpisodeWatched(animeId: Long, episodeId: Int, rateId: Long): Completable =
             repository.isEpisodeWatched(animeId, episodeId)
@@ -43,11 +47,6 @@ class SeriesInteractorImpl @Inject constructor(
                         else Completable.complete()
                     }.applyErrorHandlerAndSchedulers()
 
-
-    override fun setEpisodeStatus(animeId: Long, episodeId: Int, rateId: Long, isWatching: Boolean): Completable {
-        return if (isWatching) setEpisodeWatched(animeId, episodeId, rateId)
-        else setEpisodeUnwatched(animeId, episodeId, rateId)
-    }
 
     private fun updateRate(animeId: Long, episodeId: Int, rateId: Long, isWatched: Boolean): Completable =
             repository.setEpisodeStatus(animeId, episodeId, isWatched)

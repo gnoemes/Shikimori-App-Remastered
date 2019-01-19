@@ -6,8 +6,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.series.presentation.EpisodeViewModel
 import com.gnoemes.shikimori.utils.inflate
+import com.gnoemes.shikimori.utils.onClick
+import com.gnoemes.shikimori.utils.visibleIf
 import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
 import kotlinx.android.synthetic.main.item_episode.view.*
+
 
 class EpisodeAdapterDelegate(
         private val callback: (EpisodeViewModel) -> Unit,
@@ -30,9 +33,9 @@ class EpisodeAdapterDelegate(
 
         init {
             itemView.episodeContainer.setOnClickListener { callback.invoke(item) }
-            itemView.watchedView.setOnCheckedChangeListener { _, isChecked ->
-                if (item.isWatched != isChecked) episodeChanged.invoke(item, isChecked)
-            }
+            itemView.watchedView.onClick { episodeChanged.invoke(item, !item.isWatched) }
+            //block checkbox state
+            itemView.watchedView.setOnCheckedChangeListener { buttonView, _ -> buttonView.isChecked = item.isWatched }
         }
 
         fun bind(item: EpisodeViewModel) {
@@ -41,6 +44,8 @@ class EpisodeAdapterDelegate(
                 val episodeName = String.format(context.getString(R.string.episode_number), item.id)
                 episodeNameView.text = episodeName
                 watchedView.isChecked = item.isWatched
+                progressBar.visibleIf { item.state == EpisodeViewModel.State.Loading }
+                watchedView.visibleIf { item.state != EpisodeViewModel.State.Loading }
             }
         }
 

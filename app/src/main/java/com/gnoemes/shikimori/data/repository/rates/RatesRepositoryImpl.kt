@@ -37,10 +37,16 @@ class RatesRepositoryImpl @Inject constructor(
 
     override fun createRate(id: Long, type: Type, rate: UserRate, userId: Long): Completable =
             when (type) {
-                Type.ANIME -> createAnimeRate(id, rate, userId)
-                Type.MANGA -> createMangaRate(id, rate, userId)
-                Type.RANOBE -> createMangaRate(id, rate, userId)
+                Type.ANIME -> Completable.fromSingle(createAnimeRate(id, rate, userId))
+                Type.MANGA, Type.RANOBE -> Completable.fromSingle(createMangaRate(id, rate, userId))
                 else -> Completable.error(IllegalStateException())
+            }
+
+    override fun createRateWithResult(id: Long, type: Type, rate: UserRate, userId: Long): Single<UserRate> =
+            when (type) {
+                Type.ANIME -> createAnimeRate(id, rate, userId)
+                Type.MANGA, Type.RANOBE -> createMangaRate(id, rate, userId)
+                else -> Single.error(IllegalStateException())
             }
 
     //Call only if my user
@@ -65,21 +71,15 @@ class RatesRepositoryImpl @Inject constructor(
 
     override fun increment(rateId: Long): Completable = api.increment(rateId)
 
-    private fun createAnimeRate(id: Long, rate: UserRate, userId: Long): Completable =
+    private fun createAnimeRate(id: Long, rate: UserRate, userId: Long): Single<UserRate> =
             episodeDbSource.getWatchedEpisodesCount(id)
-                    .map {
-                        rate.episodes = it
-                        return@map converter.convertCreateOrUpdateRequest(id, Type.ANIME, rate, userId)
-                    }
-                    .flatMapCompletable { api.createRate(it) }
+                    .map { converter.convertCreateOrUpdateRequest(id, Type.ANIME, rate.copy(episodes = it), userId) }
+                    .flatMap { api.createRate(it) }
 
-    private fun createMangaRate(id: Long, rate: UserRate, userId: Long): Completable =
+    private fun createMangaRate(id: Long, rate: UserRate, userId: Long): Single<UserRate> =
             chapterDbSource.getReadedChapterCount(id)
-                    .map {
-                        rate.episodes = it
-                        return@map converter.convertCreateOrUpdateRequest(id, Type.MANGA, rate, userId)
-                    }
-                    .flatMapCompletable { api.createRate(it) }
+                    .map { converter.convertCreateOrUpdateRequest(id, Type.MANGA, rate.copy(chapters = it), userId) }
+                    .flatMap { api.createRate(it) }
 
     override fun getRate(id: Long): Single<UserRate> =
             api.getRate(id)
@@ -111,13 +111,12 @@ class RatesRepositoryImpl @Inject constructor(
                     }
 
     private fun deleteMangaRate(rate: UserRate): Completable =
-        Single.just(rate)
-                .filter { it.targetId != null }
-                .flatMapCompletable {
-                    chapterDbSource.clearChapters(rate.targetId!!)
-                            .andThen(mangaSyncSource.clearRate(rate.targetId))
-                }
-
+            Single.just(rate)
+                    .filter { it.targetId != null }
+                    .flatMapCompletable {
+                        chapterDbSource.clearChapters(rate.targetId!!)
+                                .andThen(mangaSyncSource.clearRate(rate.targetId))
+                    }
 
 
 }

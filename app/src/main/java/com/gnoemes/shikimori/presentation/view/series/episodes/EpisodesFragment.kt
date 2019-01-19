@@ -65,6 +65,10 @@ class EpisodesFragment : BaseSeriesFragment<EpisodesPresenter, EpisodesView>(), 
         adapter.bindItems(newItems)
     }
 
+    override fun scrollToPosition(position: Int) {
+        (recyclerView?.layoutManager as? LinearLayoutManager)?.scrollToPositionWithOffset(position, 0)
+    }
+
     override fun onShowLoading() {
         val items = (1..12).map { EpisodePlaceholderItem(it) }
         adapter.bindItems(items)
