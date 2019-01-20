@@ -241,6 +241,7 @@
     <string name="series_show">Просмотр аниме</string>
     <string name="series_alternative_source">Альтернативный источник</string>
     <string name="episode_number_hint">Номер эпизода</string>
+    <string name="episodes_not_found">Эпизоды не найдены</string>
 
     <string-array name="rate_types">
         <item>@string/common_anime</item>

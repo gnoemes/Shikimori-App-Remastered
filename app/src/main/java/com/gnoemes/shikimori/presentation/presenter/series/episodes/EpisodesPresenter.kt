@@ -12,7 +12,6 @@ import com.gnoemes.shikimori.entity.series.presentation.EpisodesNavigationData
 import com.gnoemes.shikimori.presentation.presenter.anime.converter.EpisodeViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
 import com.gnoemes.shikimori.presentation.view.series.episodes.EpisodesView
-import com.gnoemes.shikimori.utils.appendLoadingLogic
 import com.gnoemes.shikimori.utils.clearAndAddAll
 import io.reactivex.Single
 import javax.inject.Inject
@@ -40,7 +39,11 @@ class EpisodesPresenter @Inject constructor(
 
     private fun loadData() =
             loadEpisodes()
-                    .appendLoadingLogic(viewState)
+                    .doOnSubscribe { viewState.onShowLoading() }
+                    .doOnSubscribe { viewState.hideEmptyView() }
+                    .doOnSubscribe { viewState.hideNetworkView() }
+                    .doAfterTerminate { viewState.onHideLoading() }
+                    .doOnEvent { _, _ -> viewState.onHideLoading() }
                     .subscribe(this::setData, this::processErrors)
                     .addToDisposables()
 
@@ -51,9 +54,20 @@ class EpisodesPresenter @Inject constructor(
     private fun setData(items: List<EpisodeViewModel>) {
         val first = this.items.isEmpty()
         this.items.clearAndAddAll(items)
-        viewState.showData(items)
+        showData(items)
 
         if (first) scrollToPenultimate()
+    }
+
+    private fun showData(items: List<EpisodeViewModel>) {
+        if (items.isNotEmpty()) {
+            viewState.showData(items)
+            viewState.hideEmptyView()
+            viewState.showContent(true)
+        } else {
+            viewState.showEmptyView()
+            viewState.showContent(false)
+        }
     }
 
     private fun scrollToPenultimate() {
@@ -99,8 +113,26 @@ class EpisodesPresenter @Inject constructor(
         viewState.showSearchView()
     }
 
+    fun onSearchClosed() {
+        //restoring first state
+        showData(items)
+        scrollToPenultimate()
+    }
+
     fun onAlternativeSourceClicked() {
 
     }
 
+    fun onQueryChanged(newText: String?) {
+        val text = newText ?: ""
+
+        if (text.isBlank()) {
+            showData(items)
+        } else {
+            val searchItems = items.filter { it.id.toString().contains(text) }
+            showData(searchItems)
+        }
+
+        viewState.scrollToPosition(0)
+    }
 }
