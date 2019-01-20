@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.entity.common.domain.SpinnerAction
+import com.gnoemes.shikimori.entity.common.domain.Status
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.common.presentation.DetailsAction
 import com.gnoemes.shikimori.entity.rates.domain.Rate
@@ -65,7 +66,9 @@ class AnimeRateAdapterDelegate(
 
                 typeView.text = item.anime?.type?.type
 
-                val episodesText = "${item.episodes} / ${item.anime?.episodesAired} (${item.anime?.episodes?.unknownIfZero()})"
+                val airedEpisodes = if(item.anime != null && item.anime.status == Status.RELEASED) item.anime.episodes else item.anime?.episodesAired
+
+                val episodesText = "${item.episodes} / $airedEpisodes (${item.anime?.episodes?.unknownIfZero()})"
                 episodesView.text = episodesText
 
                 commentView.text = item.text
