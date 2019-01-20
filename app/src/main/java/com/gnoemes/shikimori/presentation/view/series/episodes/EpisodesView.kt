@@ -14,4 +14,8 @@ interface EpisodesView : BaseSeriesView {
 
     @StateStrategyType(SkipStrategy::class)
     fun showSearchView()
+
+    fun showLicencedError(show : Boolean)
+
+    fun showBlockedError(show : Boolean)
 }

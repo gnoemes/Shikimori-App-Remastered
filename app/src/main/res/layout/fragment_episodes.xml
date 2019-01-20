@@ -27,6 +27,8 @@
 
         <include layout="@layout/layout_default_placeholders" />
 
+        <include layout="@layout/layout_episode_placeholder" />
+
         <include layout="@layout/layout_progress" />
 
     </FrameLayout>

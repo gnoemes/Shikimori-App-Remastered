@@ -27,6 +27,7 @@ import com.lapism.searchview.SearchView
 import kotlinx.android.synthetic.main.fragment_base_series.*
 import kotlinx.android.synthetic.main.fragment_episodes.*
 import kotlinx.android.synthetic.main.layout_default_placeholders.*
+import kotlinx.android.synthetic.main.layout_episode_placeholder.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 
 class EpisodesFragment : BaseSeriesFragment<EpisodesPresenter, EpisodesView>(), EpisodesView {
@@ -72,6 +73,9 @@ class EpisodesFragment : BaseSeriesFragment<EpisodesPresenter, EpisodesView>(), 
         }
 
         emptyContentView.setText(R.string.episodes_not_found)
+        networkErrorView.showButton()
+        networkErrorView.callback = { getPresenter().onRefresh() }
+        altBtnView.setOnClickListener { getPresenter().onAlternativeSourceClicked() }
     }
 
     private fun configureSearchView() {
@@ -138,6 +142,16 @@ class EpisodesFragment : BaseSeriesFragment<EpisodesPresenter, EpisodesView>(), 
     override fun onShowLoading() {
         val items = (1..12).map { EpisodePlaceholderItem(it) }
         adapter.bindItems(items)
+    }
+
+    override fun showLicencedError(show: Boolean) {
+        placeholderContainer.visibleIf { show }
+        errorTextView.setText(R.string.episodes_under_license)
+    }
+
+    override fun showBlockedError(show: Boolean) {
+        placeholderContainer.visibleIf { show }
+        errorTextView.setText(R.string.episodes_blocked)
     }
 
     override fun onHideLoading() {}

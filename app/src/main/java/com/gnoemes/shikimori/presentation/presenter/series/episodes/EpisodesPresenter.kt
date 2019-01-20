@@ -4,6 +4,9 @@ import com.arellomobile.mvp.InjectViewState
 import com.gnoemes.shikimori.domain.rates.RatesInteractor
 import com.gnoemes.shikimori.domain.series.SeriesInteractor
 import com.gnoemes.shikimori.entity.app.domain.Constants
+import com.gnoemes.shikimori.entity.app.domain.HttpStatusCode
+import com.gnoemes.shikimori.entity.app.domain.exceptions.BaseException
+import com.gnoemes.shikimori.entity.app.domain.exceptions.ServiceCodeException
 import com.gnoemes.shikimori.entity.common.domain.Screens
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
@@ -37,11 +40,17 @@ class EpisodesPresenter @Inject constructor(
         viewState.setName(navigationData.name)
     }
 
+    fun onRefresh() {
+        loadData()
+    }
+
     private fun loadData() =
             loadEpisodes()
                     .doOnSubscribe { viewState.onShowLoading() }
                     .doOnSubscribe { viewState.hideEmptyView() }
                     .doOnSubscribe { viewState.hideNetworkView() }
+                    .doOnSubscribe { viewState.showBlockedError(false) }
+                    .doOnSubscribe { viewState.showLicencedError(false) }
                     .doAfterTerminate { viewState.onHideLoading() }
                     .doOnEvent { _, _ -> viewState.onHideLoading() }
                     .subscribe(this::setData, this::processErrors)
@@ -134,5 +143,25 @@ class EpisodesPresenter @Inject constructor(
         }
 
         viewState.scrollToPosition(0)
+    }
+
+    override fun processErrors(throwable: Throwable) {
+        when ((throwable as? BaseException)?.tag) {
+            ServiceCodeException.TAG -> processServiceCodeException(throwable as ServiceCodeException)
+            else -> super.processErrors(throwable)
+        }
+    }
+
+    private fun processServiceCodeException(throwable: ServiceCodeException) {
+        viewState.apply {
+            when (throwable.serviceCode) {
+                HttpStatusCode.FORBIDDED -> showLicencedError(true)
+                HttpStatusCode.NOT_FOUND -> showBlockedError(true)
+                else -> super.processErrors(throwable)
+            }
+
+            showContent(false)
+            router.showSystemMessage("HTTP error ${throwable.serviceCode}")
+        }
     }
 }
