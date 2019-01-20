@@ -20,4 +20,7 @@ interface EpisodesView : BaseSeriesView {
     fun showBlockedError(show : Boolean)
 
     fun showAlternativeLabel(show: Boolean)
+
+    @StateStrategyType(SkipStrategy::class)
+    fun showEpisodeOptionsDialog(index: Int)
 }

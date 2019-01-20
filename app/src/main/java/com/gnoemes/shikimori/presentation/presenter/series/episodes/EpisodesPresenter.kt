@@ -3,6 +3,7 @@ package com.gnoemes.shikimori.presentation.presenter.series.episodes
 import com.arellomobile.mvp.InjectViewState
 import com.gnoemes.shikimori.domain.rates.RatesInteractor
 import com.gnoemes.shikimori.domain.series.SeriesInteractor
+import com.gnoemes.shikimori.domain.user.UserInteractor
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.app.domain.HttpStatusCode
 import com.gnoemes.shikimori.entity.app.domain.exceptions.BaseException
@@ -10,12 +11,14 @@ import com.gnoemes.shikimori.entity.app.domain.exceptions.ServiceCodeException
 import com.gnoemes.shikimori.entity.common.domain.Screens
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
+import com.gnoemes.shikimori.entity.rates.domain.UserRate
 import com.gnoemes.shikimori.entity.series.presentation.EpisodeViewModel
 import com.gnoemes.shikimori.entity.series.presentation.EpisodesNavigationData
 import com.gnoemes.shikimori.presentation.presenter.anime.converter.EpisodeViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
 import com.gnoemes.shikimori.presentation.view.series.episodes.EpisodesView
 import com.gnoemes.shikimori.utils.clearAndAddAll
+import io.reactivex.Observable
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -23,6 +26,7 @@ import javax.inject.Inject
 class EpisodesPresenter @Inject constructor(
         private val interactor: SeriesInteractor,
         private val ratesInteractor: RatesInteractor,
+        private val userInteractor: UserInteractor,
         private val converter: EpisodeViewModelConverter
 ) : BaseNetworkPresenter<EpisodesView>() {
 
@@ -97,6 +101,10 @@ class EpisodesPresenter @Inject constructor(
         router.navigateTo(Screens.TRANSLATIONS)
     }
 
+    fun onEpisodeLongClick(item: EpisodeViewModel) {
+        viewState.showEpisodeOptionsDialog(item.index)
+    }
+
     fun onEpisodeStatusChanged(item: EpisodeViewModel, newStatus: Boolean) {
         //TODO buffer to prevent multi loadEpisodes() requests
         Single.just(rateId)
@@ -115,7 +123,7 @@ class EpisodesPresenter @Inject constructor(
 
     private fun createRateIfNotExist(rateId: Long): Single<Long> {
         return when (rateId) {
-            Constants.NO_ID -> ratesInteractor.createRateWithResult(navigationData.animeId, Type.ANIME, RateStatus.WATCHING).map { it.id }
+            Constants.NO_ID -> ratesInteractor.createRateWithResult(navigationData.animeId, Type.ANIME, RateStatus.WATCHING).map { it.id!! }.doOnSuccess { this@EpisodesPresenter.rateId = it }
             else -> Single.just(rateId)
         }
     }
@@ -168,5 +176,23 @@ class EpisodesPresenter @Inject constructor(
             showContent(false)
             router.showSystemMessage("HTTP error ${throwable.serviceCode}")
         }
+    }
+
+    fun onCheckAllPrevious(index: Int) {
+        Single.just(rateId)
+                .flatMap { createRateIfNotExist(it) }
+                .flatMap { userInteractor.getMyUserBrief() }
+                .map { it.id }
+                .map { UserRate(rateId, it, navigationData.animeId, Type.ANIME, episodes = index) }
+                .flatMapCompletable { ratesInteractor.updateRate(it) }
+                .andThen(Observable
+                        .fromIterable(items.take(index))
+                        .doOnNext { showEpisodeLoading(it, true) }
+                        .toList()
+                )
+                .flatMap { loadEpisodes() }
+                .subscribe(this::setData, this::processErrors)
+                .addToDisposables()
+
     }
 }

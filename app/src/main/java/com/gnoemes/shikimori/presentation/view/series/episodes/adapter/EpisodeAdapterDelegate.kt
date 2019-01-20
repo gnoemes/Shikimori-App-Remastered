@@ -14,7 +14,8 @@ import kotlinx.android.synthetic.main.item_episode.view.*
 
 class EpisodeAdapterDelegate(
         private val callback: (EpisodeViewModel) -> Unit,
-        private val episodeChanged: (EpisodeViewModel, Boolean) -> Unit
+        private val episodeChanged: (EpisodeViewModel, Boolean) -> Unit,
+        private val longPressListener: (EpisodeViewModel) -> Unit
 ) : AbsListItemAdapterDelegate<EpisodeViewModel, Any, EpisodeAdapterDelegate.ViewHolder>() {
 
     override fun isForViewType(item: Any, items: MutableList<Any>, position: Int): Boolean =
@@ -32,7 +33,8 @@ class EpisodeAdapterDelegate(
         private lateinit var item: EpisodeViewModel
 
         init {
-            itemView.episodeContainer.setOnClickListener { callback.invoke(item) }
+            itemView.episodeContainer.onClick { callback.invoke(item) }
+            itemView.episodeContainer.setOnLongClickListener { longPressListener.invoke(item);false }
             itemView.watchedView.onClick { episodeChanged.invoke(item, !item.isWatched) }
             //block checkbox state
             itemView.watchedView.setOnCheckedChangeListener { buttonView, _ -> buttonView.isChecked = item.isWatched }

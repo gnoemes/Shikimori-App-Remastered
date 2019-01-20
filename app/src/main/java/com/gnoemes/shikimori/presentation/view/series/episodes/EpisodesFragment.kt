@@ -17,6 +17,7 @@ import com.gnoemes.shikimori.entity.series.presentation.EpisodeViewModel
 import com.gnoemes.shikimori.entity.series.presentation.EpisodesNavigationData
 import com.gnoemes.shikimori.presentation.presenter.series.episodes.EpisodesPresenter
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
+import com.gnoemes.shikimori.presentation.view.common.fragment.ListDialogFragment
 import com.gnoemes.shikimori.presentation.view.series.BaseSeriesFragment
 import com.gnoemes.shikimori.presentation.view.series.episodes.adapter.EpisodeAdapter
 import com.gnoemes.shikimori.utils.dimen
@@ -30,7 +31,7 @@ import kotlinx.android.synthetic.main.layout_default_placeholders.*
 import kotlinx.android.synthetic.main.layout_episode_placeholder.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 
-class EpisodesFragment : BaseSeriesFragment<EpisodesPresenter, EpisodesView>(), EpisodesView {
+class EpisodesFragment : BaseSeriesFragment<EpisodesPresenter, EpisodesView>(), EpisodesView, ListDialogFragment.DialogCallback {
 
     @InjectPresenter
     lateinit var episodesPresenter: EpisodesPresenter
@@ -45,9 +46,10 @@ class EpisodesFragment : BaseSeriesFragment<EpisodesPresenter, EpisodesView>(), 
 
     companion object {
         fun newInstance(data: EpisodesNavigationData) = EpisodesFragment().withArgs { putParcelable(AppExtras.ARGUMENT_EPISODES_DATA, data) }
+        private const val CHECK_ALL_PREVIOUS_ACTION = "check_all_previous_"
     }
 
-    private val adapter by lazy { EpisodeAdapter(getPresenter()::onEpisodeClicked, getPresenter()::onEpisodeStatusChanged) }
+    private val adapter by lazy { EpisodeAdapter(getPresenter()::onEpisodeClicked, getPresenter()::onEpisodeStatusChanged, getPresenter()::onEpisodeLongClick) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -115,6 +117,11 @@ class EpisodesFragment : BaseSeriesFragment<EpisodesPresenter, EpisodesView>(), 
         })
     }
 
+    override fun dialogItemCallback(tag: String?, action: String) {
+        if (!tag.isNullOrBlank() && tag == "OptionsTag") {
+            if (action.contains(CHECK_ALL_PREVIOUS_ACTION)) getPresenter().onCheckAllPrevious(action.replace(CHECK_ALL_PREVIOUS_ACTION, "").toInt())
+        }
+    }
     ///////////////////////////////////////////////////////////////////////////
     // GETTERS
     ///////////////////////////////////////////////////////////////////////////
@@ -156,6 +163,19 @@ class EpisodesFragment : BaseSeriesFragment<EpisodesPresenter, EpisodesView>(), 
 
     override fun showAlternativeLabel(show: Boolean) {
         alternativeLabel.visibleIf { show }
+    }
+
+    override fun showEpisodeOptionsDialog(index: Int) {
+        val dialog = ListDialogFragment.newInstance()
+        val items = mutableListOf<Pair<String, String>>()
+                .apply {
+                    add(Pair(context!!.getString(R.string.episode_check_all_previous), CHECK_ALL_PREVIOUS_ACTION + index))
+                }
+        val title = String.format(context!!.getString(R.string.episode_number), index)
+        dialog.apply {
+            setTitle(title)
+            setItems(items)
+        }.show(childFragmentManager, "OptionsTag")
     }
 
     override fun onHideLoading() {}

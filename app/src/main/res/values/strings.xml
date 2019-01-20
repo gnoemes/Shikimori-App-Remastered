@@ -244,6 +244,7 @@
     <string name="episodes_not_found">Эпизоды не найдены</string>
     <string name="episodes_under_license">Лицензировано в РФ</string>
     <string name="episodes_blocked">Заблокировано в РФ</string>
+    <string name="episode_check_all_previous">Отметить все до</string>
 
     <string-array name="rate_types">
         <item>@string/common_anime</item>

@@ -7,6 +7,7 @@ import com.gnoemes.shikimori.di.base.scopes.BottomScope
 import com.gnoemes.shikimori.di.rate.RateInteractorModule
 import com.gnoemes.shikimori.di.rate.RateUtilModule
 import com.gnoemes.shikimori.di.rate.SyncModule
+import com.gnoemes.shikimori.di.user.UserInteractorModule
 import com.gnoemes.shikimori.di.user.UserUtilModule
 import com.gnoemes.shikimori.presentation.presenter.series.episodes.EpisodesPresenter
 import com.gnoemes.shikimori.presentation.view.series.episodes.EpisodesFragment
@@ -21,7 +22,8 @@ import javax.inject.Named
     UserUtilModule::class,
     EpisodeRepositoryModule::class,
     EpisodeInteractorModule::class,
-    EpisodeUtilModule::class
+    EpisodeUtilModule::class,
+    UserInteractorModule::class
 ])
 interface EpisodeModule {
 

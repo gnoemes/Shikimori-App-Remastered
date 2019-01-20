@@ -47,6 +47,7 @@ class RatesInteractorImpl @Inject constructor(
 
     override fun updateRate(rate: UserRate): Completable =
             repository.updateRate(rate)
+                    .andThen(syncRate(rate.id!!))
                     .applyErrorHandlerAndSchedulers()
 
     override fun changeRateStatus(rateId: Long, newStatus: RateStatus): Completable =
