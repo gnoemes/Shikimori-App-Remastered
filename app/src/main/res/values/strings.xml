@@ -239,6 +239,8 @@
     <string name="comment_reply">Ответ:</string>
 
     <string name="series_show">Просмотр аниме</string>
+    <string name="series_alternative_source">Альтернативный источник</string>
+    <string name="episode_number_hint">Номер эпизода</string>
 
     <string-array name="rate_types">
         <item>@string/common_anime</item>

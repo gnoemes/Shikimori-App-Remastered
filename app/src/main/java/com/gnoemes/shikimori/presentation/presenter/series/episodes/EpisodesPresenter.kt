@@ -95,4 +95,12 @@ class EpisodesPresenter @Inject constructor(
         }
     }
 
+    fun onSearchClicked() {
+        viewState.showSearchView()
+    }
+
+    fun onAlternativeSourceClicked() {
+
+    }
+
 }

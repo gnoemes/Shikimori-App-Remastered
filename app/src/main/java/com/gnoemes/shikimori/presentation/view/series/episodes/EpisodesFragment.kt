@@ -17,7 +17,9 @@ import com.gnoemes.shikimori.presentation.view.series.episodes.adapter.EpisodeAd
 import com.gnoemes.shikimori.utils.dimen
 import com.gnoemes.shikimori.utils.widgets.VerticalSpaceItemDecorator
 import com.gnoemes.shikimori.utils.withArgs
+import kotlinx.android.synthetic.main.fragment_base_series.*
 import kotlinx.android.synthetic.main.fragment_episodes.*
+import kotlinx.android.synthetic.main.layout_toolbar.*
 
 class EpisodesFragment : BaseSeriesFragment<EpisodesPresenter, EpisodesView>(), EpisodesView {
 
@@ -40,6 +42,17 @@ class EpisodesFragment : BaseSeriesFragment<EpisodesPresenter, EpisodesView>(), 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        toolbar?.apply {
+            inflateMenu(R.menu.menu_episodes)
+            setOnMenuItemClickListener {
+                when(it.itemId) {
+                    R.id.item_alternative_source -> getPresenter().onAlternativeSourceClicked()
+                    R.id.item_search -> getPresenter().onSearchClicked()
+                }
+                true
+            }
+        }
 
         with(recyclerView) {
             adapter = this@EpisodesFragment.adapter
@@ -67,6 +80,9 @@ class EpisodesFragment : BaseSeriesFragment<EpisodesPresenter, EpisodesView>(), 
 
     override fun scrollToPosition(position: Int) {
         (recyclerView?.layoutManager as? LinearLayoutManager)?.scrollToPositionWithOffset(position, 0)
+    }
+
+    override fun showSearchView() {
     }
 
     override fun onShowLoading() {

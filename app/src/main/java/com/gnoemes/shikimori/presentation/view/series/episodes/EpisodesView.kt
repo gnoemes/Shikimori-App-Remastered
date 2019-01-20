@@ -11,4 +11,6 @@ interface EpisodesView : BaseSeriesView {
 
     @StateStrategyType(SkipStrategy::class)
     fun scrollToPosition(position: Int)
+
+    fun showSearchView()
 }
