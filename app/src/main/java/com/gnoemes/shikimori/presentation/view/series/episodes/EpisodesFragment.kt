@@ -154,6 +154,10 @@ class EpisodesFragment : BaseSeriesFragment<EpisodesPresenter, EpisodesView>(), 
         errorTextView.setText(R.string.episodes_blocked)
     }
 
+    override fun showAlternativeLabel(show: Boolean) {
+        alternativeLabel.visibleIf { show }
+    }
+
     override fun onHideLoading() {}
 
     override fun showContent(show: Boolean) = recyclerView.visibleIf { show }

@@ -18,7 +18,7 @@ class EpisodeDbSourceImpl @Inject constructor(
 ) : EpisodeDbSource {
 
     override fun saveEpisodes(episodes: List<Episode>): Completable {
-        val items = episodes.map { EpisodeDao(it.animeId, it.id, it.isWatched.toInt()) }
+        val items = episodes.map { EpisodeDao(it.animeId, it.index, it.isWatched.toInt()) }
 
         return Completable.fromAction {
             val result = storIOSQLite

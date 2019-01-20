@@ -10,27 +10,59 @@
     app:cardCornerRadius="16dp"
     app:cardPreventCornerOverlap="false">
 
-    <FrameLayout
-        android:id="@+id/contentContainer"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true">
+
+        <TextView
+            android:id="@+id/alternativeLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:paddingBottom="4dp"
+            android:text="@string/series_alternative_source"
+            android:textColor="?attr/colorOnPrimarySecondary"
+            android:textSize="12sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/alternativeLabel"
             tools:itemCount="5"
             tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_episode"
             tools:orientation="vertical" />
 
-        <include layout="@layout/layout_default_placeholders" />
+        <FrameLayout
+            android:id="@+id/holders"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/alternativeLabel">
 
-        <include layout="@layout/layout_episode_placeholder" />
 
-        <include layout="@layout/layout_progress" />
+            <include layout="@layout/layout_default_placeholders" />
 
-    </FrameLayout>
+            <include layout="@layout/layout_episode_placeholder" />
+
+            <include layout="@layout/layout_progress" />
+
+        </FrameLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

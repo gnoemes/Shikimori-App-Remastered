@@ -28,6 +28,7 @@ class EpisodesPresenter @Inject constructor(
 
     lateinit var navigationData: EpisodesNavigationData
     private var rateId = Constants.NO_ID
+    private var isAlternativeSource = false
 
     private val items = mutableListOf<EpisodeViewModel>()
 
@@ -51,13 +52,14 @@ class EpisodesPresenter @Inject constructor(
                     .doOnSubscribe { viewState.hideNetworkView() }
                     .doOnSubscribe { viewState.showBlockedError(false) }
                     .doOnSubscribe { viewState.showLicencedError(false) }
+                    .doOnSubscribe { viewState.showContent(true) }
                     .doAfterTerminate { viewState.onHideLoading() }
                     .doOnEvent { _, _ -> viewState.onHideLoading() }
                     .subscribe(this::setData, this::processErrors)
                     .addToDisposables()
 
     private fun loadEpisodes(): Single<List<EpisodeViewModel>> =
-            interactor.getEpisodes(navigationData.animeId)
+            interactor.getEpisodes(navigationData.animeId, isAlternativeSource)
                     .map(converter)
 
     private fun setData(items: List<EpisodeViewModel>) {
@@ -100,7 +102,7 @@ class EpisodesPresenter @Inject constructor(
         Single.just(rateId)
                 .flatMap { createRateIfNotExist(it) }
                 .doOnSubscribe { showEpisodeLoading(item, newStatus) }
-                .flatMapCompletable { rateId -> interactor.setEpisodeStatus(navigationData.animeId, item.id, rateId, newStatus) }
+                .flatMapCompletable { rateId -> interactor.setEpisodeStatus(navigationData.animeId, item.index, rateId, newStatus) }
                 .andThen(loadEpisodes())
                 .subscribe(this::setData, this::processErrors)
                 .addToDisposables()
@@ -129,7 +131,10 @@ class EpisodesPresenter @Inject constructor(
     }
 
     fun onAlternativeSourceClicked() {
-
+        isAlternativeSource = !isAlternativeSource
+        items.clear()
+        viewState.showAlternativeLabel(isAlternativeSource)
+        onRefresh()
     }
 
     fun onQueryChanged(newText: String?) {
@@ -138,7 +143,7 @@ class EpisodesPresenter @Inject constructor(
         if (text.isBlank()) {
             showData(items)
         } else {
-            val searchItems = items.filter { it.id.toString().contains(text) }
+            val searchItems = items.filter { it.index.toString().contains(text) }
             showData(searchItems)
         }
 

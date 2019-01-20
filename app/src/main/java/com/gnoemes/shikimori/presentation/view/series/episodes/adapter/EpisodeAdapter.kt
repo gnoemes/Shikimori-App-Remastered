@@ -45,7 +45,7 @@ class EpisodeAdapter(
             val newItem = newItems[newItemPosition]
 
             return when {
-                oldItem is EpisodeViewModel && newItem is EpisodeViewModel -> oldItem.id == newItem.id
+                oldItem is EpisodeViewModel && newItem is EpisodeViewModel -> oldItem.index == newItem.index
                 oldItem is EpisodePlaceholderItem && newItem is EpisodePlaceholderItem -> oldItem.index == newItem.index
                 else -> false
             }

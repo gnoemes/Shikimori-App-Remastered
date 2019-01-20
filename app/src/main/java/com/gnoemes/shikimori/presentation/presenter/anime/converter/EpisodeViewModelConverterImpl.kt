@@ -6,12 +6,16 @@ import javax.inject.Inject
 
 class EpisodeViewModelConverterImpl @Inject constructor() : EpisodeViewModelConverter {
     override fun apply(t: List<Episode>): List<EpisodeViewModel> {
-        return t.map { convertEpisode(it) }.sortedBy { it.id }
+        return t.asSequence()
+                .map { convertEpisode(it) }
+                .sortedBy { it.index }
+                .toMutableList()
     }
 
     private fun convertEpisode(it: Episode): EpisodeViewModel {
         return EpisodeViewModel(
                 it.id,
+                it.index,
                 it.animeId,
                 it.types,
                 convertState(it.isWatched),

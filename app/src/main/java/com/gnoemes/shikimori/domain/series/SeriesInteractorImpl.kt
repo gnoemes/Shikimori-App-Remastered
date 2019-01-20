@@ -21,7 +21,7 @@ class SeriesInteractorImpl @Inject constructor(
         private val userRepository: UserRepository
 ) : SeriesInteractor {
 
-    override fun getEpisodes(id: Long): Single<List<Episode>> = repository.getEpisodes(id).applyErrorHandlerAndSchedulers()
+    override fun getEpisodes(id: Long, alternative : Boolean): Single<List<Episode>> = repository.getEpisodes(id, alternative).applyErrorHandlerAndSchedulers()
 
     override fun getTranslations(type: TranslationType, animeId: Long, episodeId: Int): Single<List<Translation>> =
             repository.getTranslations(type, animeId, episodeId)

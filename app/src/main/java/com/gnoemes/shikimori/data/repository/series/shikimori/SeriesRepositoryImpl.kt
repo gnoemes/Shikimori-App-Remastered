@@ -22,12 +22,13 @@ class SeriesRepositoryImpl @Inject constructor(
         private val syncSource: AnimeRateSyncDbSource
 ) : SeriesRepository {
 
-    override fun getEpisodes(id: Long): Single<List<Episode>> =
-            api.getEpisodes(id)
+    override fun getEpisodes(id: Long, alternative: Boolean): Single<List<Episode>> =
+            (if (alternative) api.getEpisodesAlternative(id) else api.getEpisodes(id))
+                    .map { it.sortedBy { it.index } }
                     .flatMap {
                         Observable.fromIterable(it)
                                 .flatMapSingle { episode ->
-                                    episodeSource.isEpisodeWatched(episode.animeId, episode.id)
+                                    episodeSource.isEpisodeWatched(episode.animeId, episode.index)
                                             .map { isWatched -> converter.convertResponse(episode, isWatched) }
                                 }
                                 .toList()
@@ -64,7 +65,7 @@ class SeriesRepositoryImpl @Inject constructor(
                 .map { newStatusEpisodes ->
                     episodes.map { episode ->
                         newStatusEpisodes
-                                .find { episode.id == it.id }
+                                .find { episode.index == it.index }
                                 ?.let { episode.copy(isWatched = it.isWatched) }
                                 ?: episode
                     }
@@ -74,11 +75,11 @@ class SeriesRepositoryImpl @Inject constructor(
     private fun decreaseLocal(count: Int, episodes: List<Episode>): Single<List<Episode>> =
             Observable.fromIterable(
                     episodes.asSequence()
-                            .sortedByDescending { it.id }
+                            .sortedByDescending { it.index }
                             .filter { it.isWatched }
                             .toMutableList()
                             .take(count))
-                    .flatMapSingle { episodeSource.episodeUnWatched(it.animeId, it.id).toSingleDefault(it) }
+                    .flatMapSingle { episodeSource.episodeUnWatched(it.animeId, it.index).toSingleDefault(it) }
                     .flatMapSingle { updateEpisode(it) }
                     .toList()
 
@@ -86,16 +87,16 @@ class SeriesRepositoryImpl @Inject constructor(
     private fun increaseLocal(count: Int, episodes: List<Episode>): Single<List<Episode>> =
             Observable.fromIterable(
                     episodes.asSequence()
-                            .sortedBy { it.id }
+                            .sortedBy { it.index }
                             .filter { !it.isWatched }
                             .toMutableList()
                             .take(count))
-                    .flatMapSingle { episodeSource.episodeWatched(it.animeId, it.id).toSingleDefault(it) }
+                    .flatMapSingle { episodeSource.episodeWatched(it.animeId, it.index).toSingleDefault(it) }
                     .flatMapSingle { updateEpisode(it) }
                     .toList()
 
     private fun updateEpisode(episode: Episode): Single<Episode> {
-        return episodeSource.isEpisodeWatched(episode.animeId, episode.id)
+        return episodeSource.isEpisodeWatched(episode.animeId, episode.index)
                 .map { episode.copy(isWatched = it) }
     }
 }

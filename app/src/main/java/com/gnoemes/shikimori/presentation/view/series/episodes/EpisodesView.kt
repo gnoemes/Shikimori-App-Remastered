@@ -18,4 +18,6 @@ interface EpisodesView : BaseSeriesView {
     fun showLicencedError(show : Boolean)
 
     fun showBlockedError(show : Boolean)
+
+    fun showAlternativeLabel(show: Boolean)
 }

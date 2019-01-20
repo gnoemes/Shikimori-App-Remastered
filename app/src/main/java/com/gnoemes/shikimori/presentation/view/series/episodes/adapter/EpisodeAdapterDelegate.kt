@@ -41,7 +41,7 @@ class EpisodeAdapterDelegate(
         fun bind(item: EpisodeViewModel) {
             this.item = item
             with(itemView) {
-                val episodeName = String.format(context.getString(R.string.episode_number), item.id)
+                val episodeName = String.format(context.getString(R.string.episode_number), item.index)
                 episodeNameView.text = episodeName
                 watchedView.isChecked = item.isWatched
                 progressBar.visibleIf { item.state == EpisodeViewModel.State.Loading }

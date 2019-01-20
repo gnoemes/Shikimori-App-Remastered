@@ -9,7 +9,7 @@ import io.reactivex.Single
 
 interface SeriesInteractor {
 
-    fun getEpisodes(id : Long) : Single<List<Episode>>
+    fun getEpisodes(id : Long, alternative : Boolean) : Single<List<Episode>>
 
     fun getTranslations(type: TranslationType, animeId: Long, episodeId: Int): Single<List<Translation>>
 

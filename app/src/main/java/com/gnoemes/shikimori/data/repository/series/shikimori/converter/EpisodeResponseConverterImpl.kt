@@ -12,6 +12,7 @@ class EpisodeResponseConverterImpl @Inject constructor(): EpisodeResponseConvert
     override fun convertResponse(it : EpisodeResponse, isWatched : Boolean) : Episode {
         return Episode(
                 it.id,
+                it.index,
                 it.animeId,
                 it.translations,
                 it.hostings,

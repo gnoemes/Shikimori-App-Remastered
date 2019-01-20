@@ -15,6 +15,9 @@ interface VideoApi {
     @GET("/api/anime/{id}/series")
     fun getEpisodes(@Path("id") id: Long): Single<List<EpisodeResponse>>
 
+    @GET("/api/anime/{id}/series/alternative")
+    fun getEpisodesAlternative(@Path("id") id: Long): Single<List<EpisodeResponse>>
+
     @GET("/api/anime/{animeId}/{episodeId}/translations")
     fun getTranslations(@Path("animeId") animeId: Long,
                         @Path("episodeId") episodeId: Int,
