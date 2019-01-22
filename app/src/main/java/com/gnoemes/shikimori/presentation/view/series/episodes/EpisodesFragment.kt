@@ -21,6 +21,7 @@ import com.gnoemes.shikimori.presentation.view.common.fragment.ListDialogFragmen
 import com.gnoemes.shikimori.presentation.view.series.BaseSeriesFragment
 import com.gnoemes.shikimori.presentation.view.series.episodes.adapter.EpisodeAdapter
 import com.gnoemes.shikimori.utils.dimen
+import com.gnoemes.shikimori.utils.gone
 import com.gnoemes.shikimori.utils.visibleIf
 import com.gnoemes.shikimori.utils.widgets.VerticalSpaceItemDecorator
 import com.gnoemes.shikimori.utils.withArgs
@@ -28,7 +29,7 @@ import com.lapism.searchview.SearchView
 import kotlinx.android.synthetic.main.fragment_base_series.*
 import kotlinx.android.synthetic.main.fragment_episodes.*
 import kotlinx.android.synthetic.main.layout_default_placeholders.*
-import kotlinx.android.synthetic.main.layout_episode_placeholder.*
+import kotlinx.android.synthetic.main.layout_episode_error_placeholder.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 
 class EpisodesFragment : BaseSeriesFragment<EpisodesPresenter, EpisodesView>(), EpisodesView, ListDialogFragment.DialogCallback {
@@ -78,6 +79,7 @@ class EpisodesFragment : BaseSeriesFragment<EpisodesPresenter, EpisodesView>(), 
         networkErrorView.showButton()
         networkErrorView.callback = { getPresenter().onRefresh() }
         altBtnView.setOnClickListener { getPresenter().onAlternativeSourceClicked() }
+        fab.gone()
     }
 
     private fun configureSearchView() {

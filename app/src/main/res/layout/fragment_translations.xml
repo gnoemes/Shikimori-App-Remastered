@@ -16,44 +16,71 @@
         android:animateLayoutChanges="true">
 
         <TextView
-            android:id="@+id/alternativeLabel"
+            android:id="@+id/episodeLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="20dp"
             android:paddingBottom="4dp"
-            android:text="@string/series_alternative_source"
-            android:textColor="?attr/colorOnPrimarySecondary"
-            android:textSize="12sp"
+            android:textAppearance="@style/ToolbarTextAppearance"
+            android:textSize="24sp"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            tools:text="1 эпизод"
             tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/translationTypeLabel"
+            android:layout_width="55dp"
+            android:layout_height="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:textColor="?attr/colorOnPrimarySecondary"
+            app:layout_constraintBottom_toBottomOf="@+id/episodeLabel"
+            app:layout_constraintEnd_toStartOf="@+id/translationBtn"
+            app:layout_constraintTop_toTopOf="@+id/episodeLabel"
+            tools:text="Озвучка" />
+
+        <ImageView
+            android:id="@+id/translationBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/ic_circle_transparent"
+            android:padding="4dp"
+            android:tint="?attr/colorAccent"
+            app:layout_constraintBottom_toBottomOf="@+id/episodeLabel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/episodeLabel"
+            tools:src="@drawable/ic_voice" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/alternativeLabel"
+            app:layout_constraintTop_toBottomOf="@+id/episodeLabel"
             tools:itemCount="5"
             tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_episode"
+            tools:listitem="@layout/item_translation"
             tools:orientation="vertical" />
 
         <FrameLayout
             android:id="@+id/holders"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/alternativeLabel">
-
+            app:layout_constraintTop_toBottomOf="@+id/episodeLabel">
 
             <include layout="@layout/layout_default_placeholders" />
 
