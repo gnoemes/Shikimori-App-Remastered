@@ -14,6 +14,7 @@ import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.rates.domain.UserRate
 import com.gnoemes.shikimori.entity.series.presentation.EpisodeViewModel
 import com.gnoemes.shikimori.entity.series.presentation.EpisodesNavigationData
+import com.gnoemes.shikimori.entity.series.presentation.TranslationsNavigationData
 import com.gnoemes.shikimori.presentation.presenter.anime.converter.EpisodeViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
 import com.gnoemes.shikimori.presentation.view.series.episodes.EpisodesView
@@ -97,8 +98,8 @@ class EpisodesPresenter @Inject constructor(
     }
 
     fun onEpisodeClicked(item: EpisodeViewModel) {
-        //TODO
-        router.navigateTo(Screens.TRANSLATIONS)
+        val data = TranslationsNavigationData(navigationData.animeId, navigationData.image, navigationData.name, item.id, item.index, item.isFromAlternative)
+        router.navigateTo(Screens.TRANSLATIONS, data)
     }
 
     fun onEpisodeLongClick(item: EpisodeViewModel) {

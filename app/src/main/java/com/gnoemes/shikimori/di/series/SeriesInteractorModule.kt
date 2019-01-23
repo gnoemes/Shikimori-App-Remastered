@@ -7,7 +7,7 @@ import dagger.Module
 import dagger.Reusable
 
 @Module
-interface EpisodeInteractorModule {
+interface SeriesInteractorModule {
     @Binds
     @Reusable
     abstract fun bindSeriesInteractor(interactor: SeriesInteractorImpl): SeriesInteractor

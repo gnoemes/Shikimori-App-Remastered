@@ -59,8 +59,6 @@
 
             <include layout="@layout/layout_episode_error_placeholder" />
 
-            <include layout="@layout/layout_progress" />
-
         </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

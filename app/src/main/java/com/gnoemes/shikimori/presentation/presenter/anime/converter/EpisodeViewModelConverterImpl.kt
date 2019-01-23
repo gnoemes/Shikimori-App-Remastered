@@ -19,7 +19,8 @@ class EpisodeViewModelConverterImpl @Inject constructor() : EpisodeViewModelConv
                 it.animeId,
                 it.types,
                 convertState(it.isWatched),
-                it.isWatched
+                it.isWatched,
+                it.isFromAlternative
         )
     }
 

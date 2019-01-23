@@ -36,7 +36,7 @@ class SettingsSourceImpl @Inject constructor(
     override var translationType: TranslationType
         get() {
             val type = prefs.getString(SettingsExtras.TRANSLATION_TYPE, "")
-            return TranslationType.values().find { it.isEqualType(type) } ?: TranslationType.ALL
+            return TranslationType.values().find { it.isEqualType(type) } ?: TranslationType.VOICE_RU
         }
         set(value) = prefs.putString(SettingsExtras.TRANSLATION_TYPE, value.type)
 
@@ -47,7 +47,7 @@ class SettingsSourceImpl @Inject constructor(
         }
         set(value) = prefs.putString(SettingsExtras.PLAYER_TYPE, value.name)
 
-
-
-
+    override var useLocalTranslationSettings: Boolean
+        get() = prefs.getBoolean(SettingsExtras.IS_USE_LOCAL_TRANSLATION_SETTINGS, true)
+        set(value) = prefs.putBoolean(SettingsExtras.IS_USE_LOCAL_TRANSLATION_SETTINGS, value)
 }

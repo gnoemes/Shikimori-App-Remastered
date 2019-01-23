@@ -20,17 +20,23 @@ interface VideoApi {
 
     @GET("/api/anime/{animeId}/{episodeId}/translations")
     fun getTranslations(@Path("animeId") animeId: Long,
-                        @Path("episodeId") episodeId: Int,
-                        @Query("type") type: TranslationType
+                        @Path("episodeId") episodeId: Long,
+                        @Query("type") type: String
+    ): Single<List<TranslationResponse>>
+
+    @GET("/api/anime/{animeId}/{episodeId}/translations/alternative")
+    fun getTranslationsAlternative(@Path("animeId") animeId: Long,
+                                   @Path("episodeId") episodeId: Long,
+                                   @Query("type") type: String
     ): Single<List<TranslationResponse>>
 
     @GET("/api/anime/{animeId}/{episodeId}/video/{videoId}")
     fun getVideo(@Path("animeId") animeId: Long,
                  @Path("episodeId") episodeId: Int,
-                 @Path("videoId") videoId : String,
+                 @Path("videoId") videoId: String,
                  @Query("language") language: String,
-                 @Query("kind") type : TranslationType,
-                 @Query("author") author : String,
-                 @Query("hosting") hosting : VideoHosting
+                 @Query("kind") type: TranslationType,
+                 @Query("author") author: String,
+                 @Query("hosting") hosting: VideoHosting
     ): Single<List<VideoResponse>>
 }

@@ -18,4 +18,6 @@ interface SettingsSource {
     var translationType : TranslationType
 
     var playerType : PlayerType
+
+    var useLocalTranslationSettings : Boolean
 }

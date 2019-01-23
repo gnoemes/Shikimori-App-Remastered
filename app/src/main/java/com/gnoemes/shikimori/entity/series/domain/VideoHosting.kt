@@ -18,8 +18,8 @@ enum class VideoHosting(
     MAIL_RU("mailru", "mail.ru"),
     @SerializedName("sovetromantica.com", alternate = ["sovetromantica"])
     SOVET_ROMANTICA("sovetromantica", "sovetromantica.com"),
-    @SerializedName("myvi.ru", alternate = ["myvi"])
-    MY_VI("myvi", "myvi.ru"),
+    @SerializedName("myvi.top", alternate = ["myvi"])
+    MY_VI("myvi", "myvi.top"),
     @SerializedName("animedia.tv", alternate = ["animedia"])
     ANIMEDIA("animedia", "animedia.tv"),
     @SerializedName("rutube.ru", alternate = ["rutube"])
@@ -27,7 +27,7 @@ enum class VideoHosting(
     @SerializedName("youtube.com", alternate = ["youtube"])
     YOUTUBE("youtube", "youtube.com"),
     @SerializedName("")
-    UNKNOWN("", "");
+    UNKNOWN("unknown", "unknown");
 
     fun isEqualType(otherType: String): Boolean {
         return this.type == otherType || this.synonymType == otherType

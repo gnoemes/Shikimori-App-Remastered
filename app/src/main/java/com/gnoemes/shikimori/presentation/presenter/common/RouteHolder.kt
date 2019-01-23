@@ -10,6 +10,7 @@ import com.gnoemes.shikimori.entity.forum.domain.ForumType
 import com.gnoemes.shikimori.entity.main.BottomScreens
 import com.gnoemes.shikimori.entity.search.presentation.SearchNavigationData
 import com.gnoemes.shikimori.entity.series.presentation.EpisodesNavigationData
+import com.gnoemes.shikimori.entity.series.presentation.TranslationsNavigationData
 import com.gnoemes.shikimori.presentation.view.anime.AnimeFragment
 import com.gnoemes.shikimori.presentation.view.auth.AuthActivity
 import com.gnoemes.shikimori.presentation.view.calendar.CalendarFragment
@@ -19,6 +20,7 @@ import com.gnoemes.shikimori.presentation.view.person.PersonFragment
 import com.gnoemes.shikimori.presentation.view.rates.RatesContainerFragment
 import com.gnoemes.shikimori.presentation.view.search.SearchFragment
 import com.gnoemes.shikimori.presentation.view.series.episodes.EpisodesFragment
+import com.gnoemes.shikimori.presentation.view.series.translations.TranslationsFragment
 import com.gnoemes.shikimori.presentation.view.settings.SettingsActivity
 import com.gnoemes.shikimori.presentation.view.shikimorimain.ShikimoriMainFragment
 import com.gnoemes.shikimori.presentation.view.topic.details.TopicFragment
@@ -39,6 +41,7 @@ object RouteHolder {
             Screens.TOPIC_DETAILS -> TopicFragment.newInstance(data as Long)
             Screens.TOPICS -> TopicListFragment.newInstance(data as ForumType)
             Screens.EPISODES -> EpisodesFragment.newInstance(data as EpisodesNavigationData)
+            Screens.TRANSLATIONS -> TranslationsFragment.newInstance(data as TranslationsNavigationData)
             else -> null
         }
     }

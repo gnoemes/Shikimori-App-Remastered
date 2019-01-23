@@ -9,6 +9,8 @@ import com.gnoemes.shikimori.entity.rates.data.MangaRateSyncDao;
 import com.gnoemes.shikimori.entity.rates.data.MangaRateSyncDaoSQLiteTypeMapping;
 import com.gnoemes.shikimori.entity.series.data.EpisodeDao;
 import com.gnoemes.shikimori.entity.series.data.EpisodeDaoSQLiteTypeMapping;
+import com.gnoemes.shikimori.entity.series.data.TranslationSettingDao;
+import com.gnoemes.shikimori.entity.series.data.TranslationSettingDaoSQLiteTypeMapping;
 import com.gnoemes.shikimori.utils.db.DbOpenHelper;
 import com.pushtorefresh.storio3.sqlite.StorIOSQLite;
 import com.pushtorefresh.storio3.sqlite.impl.DefaultStorIOSQLite;
@@ -30,6 +32,7 @@ public interface DbModule {
                 .addTypeMapping(AnimeRateSyncDao.class, new AnimeRateSyncDaoSQLiteTypeMapping())
                 .addTypeMapping(EpisodeDao.class, new EpisodeDaoSQLiteTypeMapping())
                 .addTypeMapping(MangaRateSyncDao.class, new MangaRateSyncDaoSQLiteTypeMapping())
+                .addTypeMapping(TranslationSettingDao.class, new TranslationSettingDaoSQLiteTypeMapping())
                 .build();
     }
 

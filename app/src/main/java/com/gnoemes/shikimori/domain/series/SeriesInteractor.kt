@@ -3,6 +3,7 @@ package com.gnoemes.shikimori.domain.series
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.series.domain.Episode
 import com.gnoemes.shikimori.entity.series.domain.Translation
+import com.gnoemes.shikimori.entity.series.domain.TranslationSetting
 import com.gnoemes.shikimori.entity.series.domain.TranslationType
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -11,7 +12,9 @@ interface SeriesInteractor {
 
     fun getEpisodes(id : Long, alternative : Boolean) : Single<List<Episode>>
 
-    fun getTranslations(type: TranslationType, animeId: Long, episodeId: Int): Single<List<Translation>>
+    fun getTranslations(type: TranslationType, animeId: Long, episodeId: Long, alternative: Boolean): Single<List<Translation>>
+
+    fun getTranslationSettings(animeId: Long, episodeIndex: Int) : Single<TranslationSetting>
 
     fun setEpisodeWatched(animeId: Long, episodeId: Int, rateId: Long = Constants.NO_ID): Completable
 

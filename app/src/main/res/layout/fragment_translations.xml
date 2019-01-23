@@ -10,86 +10,80 @@
     app:cardCornerRadius="16dp"
     app:cardPreventCornerOverlap="false">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:animateLayoutChanges="true">
 
-        <TextView
-            android:id="@+id/episodeLabel"
-            android:layout_width="wrap_content"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="20dp"
-            android:paddingBottom="4dp"
-            android:textAppearance="@style/ToolbarTextAppearance"
-            android:textSize="24sp"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="1 эпизод"
-            tools:visibility="visible" />
+            app:liftOnScroll="true">
 
-        <TextView
-            android:id="@+id/translationTypeLabel"
-            android:layout_width="55dp"
-            android:layout_height="16dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:textColor="?attr/colorOnPrimarySecondary"
-            app:layout_constraintBottom_toBottomOf="@+id/episodeLabel"
-            app:layout_constraintEnd_toStartOf="@+id/translationBtn"
-            app:layout_constraintTop_toTopOf="@+id/episodeLabel"
-            tools:text="Озвучка" />
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/translationToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                tools:title="1 эпизод">
 
-        <ImageView
-            android:id="@+id/translationBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:background="@drawable/ic_circle_transparent"
-            android:padding="4dp"
-            android:tint="?attr/colorAccent"
-            app:layout_constraintBottom_toBottomOf="@+id/episodeLabel"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/episodeLabel"
-            tools:src="@drawable/ic_voice" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end">
+
+                    <TextView
+                        android:id="@+id/translationTypeLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginRight="8dp"
+                        android:textColor="?attr/colorOnPrimarySecondary"
+                        tools:text="Озвучка" />
+
+                    <ImageView
+                        android:id="@+id/translationBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginRight="16dp"
+                        android:background="@drawable/ic_circle_transparent"
+                        android:padding="4dp"
+                        android:tint="?attr/colorAccent"
+                        tools:src="@drawable/ic_voice" />
+
+                </LinearLayout>
+            </androidx.appcompat.widget.Toolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/episodeLabel"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:itemCount="5"
             tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_translation"
             tools:orientation="vertical" />
 
-        <FrameLayout
-            android:id="@+id/holders"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+
+        <include layout="@layout/layout_default_placeholders" />
+
+        <com.github.ybq.android.spinkit.SpinKitView
+            android:id="@+id/progress"
+            style="@style/SpinKitView.ThreeBounce"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/episodeLabel">
+            app:SpinKit_Color="?colorAccent"
+            app:layout_behavior="@string/appBarFixScrollingFooterBehavior" />
 
-            <include layout="@layout/layout_default_placeholders" />
-
-            <include layout="@layout/layout_episode_error_placeholder" />
-
-            <include layout="@layout/layout_progress" />
-
-        </FrameLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </com.google.android.material.card.MaterialCardView>

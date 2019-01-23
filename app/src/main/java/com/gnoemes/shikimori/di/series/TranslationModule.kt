@@ -9,8 +9,8 @@ import com.gnoemes.shikimori.di.rate.RateUtilModule
 import com.gnoemes.shikimori.di.rate.SyncModule
 import com.gnoemes.shikimori.di.user.UserInteractorModule
 import com.gnoemes.shikimori.di.user.UserUtilModule
-import com.gnoemes.shikimori.presentation.presenter.series.episodes.EpisodesPresenter
-import com.gnoemes.shikimori.presentation.view.series.episodes.EpisodesFragment
+import com.gnoemes.shikimori.presentation.presenter.series.translations.TranslationsPresenter
+import com.gnoemes.shikimori.presentation.view.series.translations.TranslationsFragment
 import dagger.Binds
 import dagger.Module
 import javax.inject.Named
@@ -18,20 +18,20 @@ import javax.inject.Named
 @Module(includes = [
     RateUtilModule::class,
     RateInteractorModule::class,
-    SyncModule::class,
     UserUtilModule::class,
+    SyncModule::class,
     SeriesRepositoryModule::class,
     SeriesInteractorModule::class,
     SeriesUtilModule::class,
     UserInteractorModule::class
 ])
-interface EpisodeModule {
+interface TranslationModule {
 
     @Binds
-    fun bindPresenter(presenter: EpisodesPresenter): MvpPresenter<*>
+    fun bindPresenter(presenter: TranslationsPresenter): MvpPresenter<*>
 
     @Binds
     @Named(BaseChildFragmentModule.CHILD_FRAGMENT)
     @BottomScope
-    fun bindFragment(fragment: EpisodesFragment): Fragment
+    fun bindFragment(fragment: TranslationsFragment): Fragment
 }

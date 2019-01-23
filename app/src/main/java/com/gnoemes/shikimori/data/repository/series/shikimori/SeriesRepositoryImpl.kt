@@ -2,11 +2,13 @@ package com.gnoemes.shikimori.data.repository.series.shikimori
 
 import com.gnoemes.shikimori.data.local.db.AnimeRateSyncDbSource
 import com.gnoemes.shikimori.data.local.db.EpisodeDbSource
+import com.gnoemes.shikimori.data.local.db.TranslationSettingDbSource
 import com.gnoemes.shikimori.data.network.VideoApi
 import com.gnoemes.shikimori.data.repository.series.shikimori.converter.EpisodeResponseConverter
 import com.gnoemes.shikimori.data.repository.series.shikimori.converter.TranslationResponseConverter
 import com.gnoemes.shikimori.entity.series.domain.Episode
 import com.gnoemes.shikimori.entity.series.domain.Translation
+import com.gnoemes.shikimori.entity.series.domain.TranslationSetting
 import com.gnoemes.shikimori.entity.series.domain.TranslationType
 import io.reactivex.Completable
 import io.reactivex.Observable
@@ -19,7 +21,8 @@ class SeriesRepositoryImpl @Inject constructor(
         private val converter: EpisodeResponseConverter,
         private val translationConverter: TranslationResponseConverter,
         private val episodeSource: EpisodeDbSource,
-        private val syncSource: AnimeRateSyncDbSource
+        private val syncSource: AnimeRateSyncDbSource,
+        private val translationSettingSource: TranslationSettingDbSource
 ) : SeriesRepository {
 
     override fun getEpisodes(id: Long, alternative: Boolean): Single<List<Episode>> =
@@ -38,9 +41,12 @@ class SeriesRepositoryImpl @Inject constructor(
                                 .flatMap { syncEpisodes(id, it) }
                     }
 
-    override fun getTranslations(type: TranslationType, animeId: Long, episodeId: Int): Single<List<Translation>> =
-            api.getTranslations(animeId, episodeId, type)
+    override fun getTranslations(type: TranslationType, animeId: Long, episodeId: Long, alternative: Boolean): Single<List<Translation>> =
+            (if (alternative) api.getTranslationsAlternative(animeId, episodeId, type.type!!) else api.getTranslations(animeId, episodeId, type.type!!))
                     .map(translationConverter)
+
+    override fun getTranslationSettings(animeId: Long, episodeIndex: Int): Single<TranslationSetting> =
+            translationSettingSource.getSetting(animeId, episodeIndex)
 
     override fun setEpisodeStatus(animeId: Long, episodeId: Int, isWatched: Boolean): Completable =
             if (isWatched) episodeSource.episodeWatched(animeId, episodeId)

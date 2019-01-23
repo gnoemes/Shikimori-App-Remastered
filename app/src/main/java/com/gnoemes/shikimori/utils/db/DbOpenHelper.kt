@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper
 import com.gnoemes.shikimori.data.local.db.table.AnimeRateSyncTable
 import com.gnoemes.shikimori.data.local.db.table.EpisodeTable
 import com.gnoemes.shikimori.data.local.db.table.MangaRateSyncTable
+import com.gnoemes.shikimori.data.local.db.table.TranslationSettingTable
 import javax.inject.Inject
 
 class DbOpenHelper @Inject constructor(
@@ -22,6 +23,7 @@ class DbOpenHelper @Inject constructor(
             execSQL(AnimeRateSyncTable.CREATE_QUERY)
             execSQL(EpisodeTable.CREATE_QUERY)
             execSQL(MangaRateSyncTable.CREATE_QUERY)
+            execSQL(TranslationSettingTable.CREATE_QUERY)
         }
     }
 

@@ -7,7 +7,7 @@ import dagger.Module
 import dagger.Reusable
 
 @Module
-interface EpisodeRepositoryModule {
+interface SeriesRepositoryModule {
 
     @Binds
     @Reusable

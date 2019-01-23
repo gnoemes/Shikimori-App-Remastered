@@ -2,13 +2,12 @@ package com.gnoemes.shikimori.presentation.view.base.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.gnoemes.shikimori.entity.common.presentation.ProgressItem
+import com.gnoemes.shikimori.presentation.view.common.adapter.BaseAdapter
 import com.gnoemes.shikimori.presentation.view.common.adapter.ProgressAdapterDelegate
-import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 
-abstract class BasePaginationAdapter : ListDelegationAdapter<MutableList<Any>>() {
+abstract class BasePaginationAdapter : BaseAdapter<Any>() {
 
     init {
-        items = mutableListOf()
         delegatesManager.addDelegate(ProgressAdapterDelegate())
     }
 
@@ -16,7 +15,7 @@ abstract class BasePaginationAdapter : ListDelegationAdapter<MutableList<Any>>()
         return items[position].hashCode().toLong()
     }
 
-    open fun bindItems(newItems: List<Any>) {
+    override fun bindItems(newItems: List<Any>) {
         val oldData = items.toList()
         val progress = isProgress()
 
@@ -44,30 +43,4 @@ abstract class BasePaginationAdapter : ListDelegationAdapter<MutableList<Any>>()
 
     open fun isProgress() = items.isNotEmpty() && items.last() is ProgressItem
 
-    abstract fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean
-
-    abstract fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean
-
-    private inner class DiffCallback(
-            private val newItems: List<Any>,
-            private val oldItems: List<Any>
-    ) : DiffUtil.Callback() {
-
-        override fun getOldListSize() = oldItems.size
-        override fun getNewListSize() = newItems.size
-
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            val oldItem = oldItems[oldItemPosition]
-            val newItem = newItems[newItemPosition]
-
-            return areItemsTheSame(oldItem, newItem)
-        }
-
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            val oldItem = oldItems[oldItemPosition]
-            val newItem = newItems[newItemPosition]
-
-            return areContentsTheSame(oldItem, newItem)
-        }
-    }
 }
