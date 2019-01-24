@@ -15,49 +15,7 @@
         android:layout_height="match_parent"
         android:animateLayoutChanges="true">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:liftOnScroll="true">
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/translationToolbar"
-                android:layout_width="match_parent"
-                android:layout_height="65dp"
-                tools:title="1 эпизод">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end">
-
-                    <TextView
-                        android:id="@+id/translationTypeLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginRight="8dp"
-                        android:textColor="?attr/colorOnPrimarySecondary"
-                        tools:text="Озвучка" />
-
-                    <ImageView
-                        android:id="@+id/translationBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginRight="16dp"
-                        android:background="@drawable/ic_circle_transparent"
-                        android:padding="4dp"
-                        android:tint="?attr/colorAccent"
-                        tools:src="@drawable/ic_voice" />
-
-                </LinearLayout>
-            </androidx.appcompat.widget.Toolbar>
-
-        </com.google.android.material.appbar.AppBarLayout>
+        <include layout="@layout/layout_translations_toolbar" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
@@ -70,8 +28,6 @@
             tools:listitem="@layout/item_translation"
             tools:orientation="vertical" />
 
-
-        <include layout="@layout/layout_default_placeholders" />
 
         <com.github.ybq.android.spinkit.SpinKitView
             android:id="@+id/progress"

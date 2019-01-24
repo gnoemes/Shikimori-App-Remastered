@@ -13,7 +13,7 @@ import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
 import com.gnoemes.shikimori.presentation.presenter.series.translations.converter.TranslationsViewModelConverter
 import com.gnoemes.shikimori.presentation.view.series.translations.TranslationsView
 import com.gnoemes.shikimori.utils.appendLoadingLogic
-import io.reactivex.Single
+import io.reactivex.Completable
 import javax.inject.Inject
 
 @InjectViewState
@@ -24,11 +24,13 @@ class TranslationsPresenter @Inject constructor(
 ) : BaseNetworkPresenter<TranslationsView>() {
 
     lateinit var navigationData: TranslationsNavigationData
+    lateinit var type: TranslationType
 
     private var setting: TranslationSetting? = null
 
     override fun initData() {
         super.initData()
+        type = settingsSource.translationType
         viewState.setEpisodeName(navigationData.episodeIndex)
         viewState.setBackground(navigationData.image)
 
@@ -36,15 +38,21 @@ class TranslationsPresenter @Inject constructor(
     }
 
     private fun loadData() {
-        if (setting == null && settingsSource.useLocalTranslationSettings) {
+        (if (setting == null && settingsSource.useLocalTranslationSettings) loadSettings()
+        else Completable.complete())
+                .andThen(loadTranslations(type))
+                .doOnSubscribe { viewState.setTranslationType(type) }
+                .appendLoadingLogic(viewState)
+                .subscribe(this::setData, this::processErrors)
+                .addToDisposables()
+    }
+
+    private fun loadSettings() =
             interactor.getTranslationSettings(navigationData.animeId, navigationData.episodeIndex)
                     .doOnSuccess { setting = it }
-                    .flatMap {loadTranslations(it.lastType ?: settingsSource.translationType)}
-                    .subscribeToTranslations()
+                    .doOnSuccess { type = it.lastType ?: settingsSource.translationType }
+                    .ignoreElement()
 
-        }
-        else loadTranslations(settingsSource.translationType).subscribeToTranslations()
-    }
 
     private fun loadTranslations(type: TranslationType) =
             interactor.getTranslations(type, navigationData.animeId, navigationData.episodeId, navigationData.isAlternative)
@@ -72,9 +80,8 @@ class TranslationsPresenter @Inject constructor(
         //TODO find related topic (can be parsed from episode link or topic api)
     }
 
-    private fun Single<List<TranslationViewModel>>.subscribeToTranslations() {
-        this.appendLoadingLogic(viewState)
-                .subscribe(this@TranslationsPresenter::setData, this@TranslationsPresenter::processErrors)
-                .addToDisposables()
+    fun onTypeChanged(newType: TranslationType) {
+        this.type = newType
+        loadData()
     }
 }

@@ -8,7 +8,7 @@ ext.versions = [
     gms               : '4.2.0',
 
     kotlin            : '1.3.11',
-    constraint        : '1.1.3',
+    constraint        : '2.0.0-alpha3',
     androidx          : '1.0.0',
 
     dagger            : '2.19',

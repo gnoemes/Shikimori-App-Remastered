@@ -10,6 +10,7 @@ import com.gnoemes.shikimori.entity.series.presentation.TranslationVideo
 import com.gnoemes.shikimori.entity.series.presentation.TranslationViewModel
 import com.gnoemes.shikimori.presentation.view.common.adapter.StartSnapHelper
 import com.gnoemes.shikimori.utils.inflate
+import com.gnoemes.shikimori.utils.visibleIf
 import com.gnoemes.shikimori.utils.widgets.HorizontalSpaceItemDecorator
 import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
 import kotlinx.android.synthetic.main.item_translation.view.*
@@ -54,6 +55,7 @@ class TranslationAdapterDelegate(
             with(itemView) {
                 authorView.text = item.authors
                 descriptionView.text = item.description
+                descriptionView.visibleIf { !item.description.isNullOrBlank() }
                 adapter.bindItems(item.videos)
             }
         }
