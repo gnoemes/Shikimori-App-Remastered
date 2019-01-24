@@ -17,7 +17,7 @@ class TranslationsViewModelConverterImpl @Inject constructor(
         private val context: Context
 ) : TranslationsViewModelConverter {
 
-    private val unknownAuthor by lazy { context.getString(R.string.translation_unknown_athor) }
+    private val unknownAuthor by lazy { context.getString(R.string.translation_unknown_author) }
 
     override fun convertTranslations(translations: List<Translation>, setting: TranslationSetting?): List<TranslationViewModel> {
 

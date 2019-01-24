@@ -245,13 +245,16 @@
     <string name="episodes_under_license">Лицензировано в РФ</string>
     <string name="episodes_blocked">Заблокировано в РФ</string>
     <string name="episode_check_all_previous">Отметить все до</string>
+    <string name="episode_search_empty_title">Эпизод не найден</string>
+    <string name="episode_search_empty_desc">Неверный запрос или его еще не выложили</string>
     <string name="translation_authors">Авторы</string>
     <string name="translation_downloadable">Можно скачать</string>
     <string name="translation_blue_ray">Blue-ray</string>
     <string name="translation_voice">Озвучка</string>
     <string name="translation_subtitles">Субтитры</string>
     <string name="translation_original">Оригинал</string>
-    <string name="translation_unknown_athor">Неизвестный автор</string>
+    <string name="translation_unknown_author">Неизвестный автор</string>
+
 
     <string-array name="rate_types">
         <item>@string/common_anime</item>

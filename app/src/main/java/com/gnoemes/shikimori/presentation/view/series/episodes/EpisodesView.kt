@@ -23,4 +23,6 @@ interface EpisodesView : BaseSeriesView {
 
     @StateStrategyType(SkipStrategy::class)
     fun showEpisodeOptionsDialog(index: Int)
+
+    fun showSearchEmpty()
 }

@@ -75,14 +75,16 @@ class EpisodesPresenter @Inject constructor(
         if (first) scrollToPenultimate()
     }
 
-    private fun showData(items: List<EpisodeViewModel>) {
+    private fun showData(items: List<EpisodeViewModel>, isSearch: Boolean = false) {
         if (items.isNotEmpty()) {
             viewState.showData(items)
             viewState.hideEmptyView()
             viewState.showContent(true)
         } else {
-            viewState.showEmptyView()
-            viewState.showContent(false)
+            if (!isSearch) {
+                viewState.showEmptyView()
+                viewState.showContent(false)
+            } else viewState.showSearchEmpty()
         }
     }
 
@@ -153,7 +155,7 @@ class EpisodesPresenter @Inject constructor(
             showData(items)
         } else {
             val searchItems = items.filter { it.index.toString().contains(text) }
-            showData(searchItems)
+            showData(searchItems, true)
         }
 
         viewState.scrollToPosition(0)
@@ -167,6 +169,11 @@ class EpisodesPresenter @Inject constructor(
     }
 
     private fun processServiceCodeException(throwable: ServiceCodeException) {
+        if (isAlternativeSource) {
+            super.processErrors(throwable)
+            return
+        }
+
         viewState.apply {
             when (throwable.serviceCode) {
                 HttpStatusCode.FORBIDDED -> showLicencedError(true)

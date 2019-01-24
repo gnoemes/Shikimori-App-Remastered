@@ -16,6 +16,7 @@ class EpisodeAdapter(
 
         delegatesManager.addDelegate(EpisodeAdapterDelegate(callback, episodeChanged, longPressListener))
         delegatesManager.addDelegate(EpisodePlaceholderAdapterDelegate())
+        delegatesManager.addDelegate(SeriesPlaceholderAdapterDelegate())
     }
 
     override fun getItemId(position: Int): Long {

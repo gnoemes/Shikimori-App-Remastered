@@ -15,6 +15,7 @@ import com.gnoemes.shikimori.entity.app.domain.AppExtras
 import com.gnoemes.shikimori.entity.series.presentation.EpisodePlaceholderItem
 import com.gnoemes.shikimori.entity.series.presentation.EpisodeViewModel
 import com.gnoemes.shikimori.entity.series.presentation.EpisodesNavigationData
+import com.gnoemes.shikimori.entity.series.presentation.SeriesPlaceholderItem
 import com.gnoemes.shikimori.presentation.presenter.series.episodes.EpisodesPresenter
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
 import com.gnoemes.shikimori.presentation.view.common.fragment.ListDialogFragment
@@ -183,4 +184,9 @@ class EpisodesFragment : BaseSeriesFragment<EpisodesPresenter, EpisodesView>(), 
     override fun onHideLoading() {}
 
     override fun showContent(show: Boolean) = recyclerView.visibleIf { show }
+
+    override fun showSearchEmpty() {
+        val item = SeriesPlaceholderItem(R.string.episode_search_empty_title, R.string.episode_search_empty_desc)
+        adapter.bindItems(mutableListOf(item))
+    }
 }
