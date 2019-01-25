@@ -6,6 +6,7 @@
 
         <item name="md_corner_radius">8dp</item>
         <item name="md_font_title">@font/open_sans_semibold</item>
+        <item name="android:popupMenuStyle">@style/PopupMenuTheme</item>
     </style>
 
     <style name="ShikimoriAppTheme.Launch" parent="ShikimoriAppTheme.Default">

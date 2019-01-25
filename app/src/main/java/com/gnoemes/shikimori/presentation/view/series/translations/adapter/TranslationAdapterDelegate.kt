@@ -2,6 +2,8 @@ package com.gnoemes.shikimori.presentation.view.series.translations.adapter
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.view.ContextThemeWrapper
+import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gnoemes.shikimori.R
@@ -10,6 +12,7 @@ import com.gnoemes.shikimori.entity.series.presentation.TranslationVideo
 import com.gnoemes.shikimori.entity.series.presentation.TranslationViewModel
 import com.gnoemes.shikimori.presentation.view.common.adapter.StartSnapHelper
 import com.gnoemes.shikimori.utils.inflate
+import com.gnoemes.shikimori.utils.onClick
 import com.gnoemes.shikimori.utils.visibleIf
 import com.gnoemes.shikimori.utils.widgets.HorizontalSpaceItemDecorator
 import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
@@ -38,6 +41,15 @@ class TranslationAdapterDelegate(
 
         private val videoHostingCallback = { videoData: TranslationVideo -> callback.invoke(videoData) }
         private val adapter by lazy { HostingAdapter(videoHostingCallback) }
+        private val menuItemClickListener = { item: TranslationViewModel ->
+            PopupMenu.OnMenuItemClickListener { menuItem ->
+                when (menuItem?.itemId) {
+                    R.id.item_download -> menuListener.invoke(TranslationMenu.Download(item.videos))
+                    R.id.item_authors -> menuListener.invoke(TranslationMenu.Author(item.authors))
+                }
+                true
+            }
+        }
 
         init {
             val snapHelper = StartSnapHelper(snapOffset)
@@ -47,9 +59,9 @@ class TranslationAdapterDelegate(
                 adapter = this@ViewHolder.adapter
                 addItemDecoration(HorizontalSpaceItemDecorator(resources.getDimension(R.dimen.margin_small).toInt(), snapOffset))
             }
+            itemView.menuView.onClick { showPopup(item) }
         }
 
-        //TODO menu
         fun bind(item: TranslationViewModel) {
             this.item = item
             with(itemView) {
@@ -60,5 +72,15 @@ class TranslationAdapterDelegate(
             }
         }
 
+        private fun showPopup(item: TranslationViewModel) {
+            val wrapper = ContextThemeWrapper(itemView.context, R.style.PopupMenuTheme)
+            val menu = PopupMenu(wrapper, itemView.menuView)
+                    .apply {
+                        inflate(R.menu.menu_translation)
+                        setOnMenuItemClickListener(menuItemClickListener.invoke(item))
+                    }
+            itemView.post(menu::show)
+        }
     }
+
 }

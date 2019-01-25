@@ -1,9 +1,9 @@
 <resources>
 
-    <style name="PopupMenuTheme" parent="Theme.MaterialComponents.Light">
+    <style name="PopupMenuTheme" parent="Widget.AppCompat.Light.PopupMenu">
         <item name="android:colorBackground">?colorSurface</item>
         <item name="android:textColor">?colorOnSurface</item>
-        <item name="android:background">@drawable/menu_rounded</item>
+        <item name="android:popupBackground">@drawable/menu_rounded</item>
     </style>
 
     <style name="ToolbarTextAppearance" parent="@style/Widget.MaterialComponents.Toolbar">

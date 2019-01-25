@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.TextUtils
+import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.text.style.URLSpan
 import android.view.LayoutInflater
@@ -51,6 +52,13 @@ fun String.toLink(action: String? = ""): SpannableStringBuilder {
     val builder = SpannableStringBuilder()
             .append(this)
     builder.setSpan(URLSpan(action), 0, length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+    return builder
+}
+
+fun String.colorSpan(@ColorInt color: Int): SpannableStringBuilder {
+    val builder = SpannableStringBuilder()
+            .append(this)
+    builder.setSpan(ForegroundColorSpan(color), 0, length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
     return builder
 }
 

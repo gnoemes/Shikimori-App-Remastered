@@ -1,5 +1,6 @@
 package com.gnoemes.shikimori.presentation.presenter.series.translations
 
+import android.util.Log
 import com.arellomobile.mvp.InjectViewState
 import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.domain.series.SeriesInteractor

@@ -16,6 +16,7 @@
         android:layout_marginRight="8dp"
         android:ellipsize="end"
         android:fontFamily="sans-serif-medium"
+        android:maxLines="1"
         android:textColor="?attr/colorOnPrimary"
         app:layout_constraintEnd_toStartOf="@+id/guideLine"
         app:layout_constraintStart_toStartOf="parent"

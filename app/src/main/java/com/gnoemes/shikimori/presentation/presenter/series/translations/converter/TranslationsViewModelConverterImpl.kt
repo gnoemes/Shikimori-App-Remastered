@@ -11,6 +11,8 @@ import com.gnoemes.shikimori.entity.series.domain.TranslationSetting
 import com.gnoemes.shikimori.entity.series.presentation.TranslationVideo
 import com.gnoemes.shikimori.entity.series.presentation.TranslationViewModel
 import com.gnoemes.shikimori.utils.Utils
+import com.gnoemes.shikimori.utils.color
+import com.gnoemes.shikimori.utils.colorSpan
 import javax.inject.Inject
 
 class TranslationsViewModelConverterImpl @Inject constructor(
@@ -18,6 +20,8 @@ class TranslationsViewModelConverterImpl @Inject constructor(
 ) : TranslationsViewModelConverter {
 
     private val unknownAuthor by lazy { context.getString(R.string.translation_unknown_author) }
+    //TODO fix attribute color (crashes)
+    private val descriptionColor by lazy { context.color(R.color.default_colorOnPrimarySecondary) }
 
     override fun convertTranslations(translations: List<Translation>, setting: TranslationSetting?): List<TranslationViewModel> {
 
@@ -36,8 +40,10 @@ class TranslationsViewModelConverterImpl @Inject constructor(
         val builder = SpannableStringBuilder()
 
         fun appendDot(withSpace: Boolean = false) {
-            builder.append("  \t•")
-            if (withSpace) builder.append("  ")
+            val space = "  "
+            val dot = "\t•"
+            builder.append(space.plus(dot).colorSpan(descriptionColor))
+            if (withSpace) builder.append(space)
         }
 
         val hasBd = it.value.find { it.quality == TranslationQuality.BD || it.quality == TranslationQuality.DVD } != null
@@ -48,12 +54,12 @@ class TranslationsViewModelConverterImpl @Inject constructor(
         if (isSameAuthor) builder.append("*").setSpan(ImageSpan(context, R.drawable.ic_translation_watched), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         if (hasBd) {
             if (builder.isNotEmpty()) appendDot(true)
-            val blueRay = context.getString(R.string.translation_blue_ray)
+            val blueRay = context.getString(R.string.translation_blue_ray).colorSpan(descriptionColor)
             builder.append(blueRay)
         }
         if (canBeDownloaded) {
             if (builder.isNotEmpty()) appendDot(true)
-            val text = context.getText(R.string.translation_downloadable)
+            val text = context.getString(R.string.translation_downloadable).colorSpan(descriptionColor)
             builder.append(text)
         }
 
