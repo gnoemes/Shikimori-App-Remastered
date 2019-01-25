@@ -6,7 +6,9 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.cardview.widget.CardView
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.AutoTransition
 import androidx.transition.Fade
 import androidx.transition.TransitionManager
@@ -64,7 +66,6 @@ class TranslationsFragment : BaseSeriesFragment<TranslationsPresenter, Translati
                     R.id.item_search -> getPresenter().onSearchClicked()
                 }; true
             }
-            requestFocus()
         }
 
         with(recyclerView) {
@@ -72,6 +73,7 @@ class TranslationsFragment : BaseSeriesFragment<TranslationsPresenter, Translati
             layoutManager = LinearLayoutManager(context)
             addItemDecoration(VerticalSpaceItemDecorator(context.dimen(R.dimen.margin_big).toInt()))
             setHasFixedSize(true)
+            addOnScrollListener(shadowScrollListener)
         }
 
         titleView.gone()
@@ -81,6 +83,20 @@ class TranslationsFragment : BaseSeriesFragment<TranslationsPresenter, Translati
         voiceBtn.onClick { onTypeSelected(TranslationType.VOICE_RU) }
         subtitlesBtn.onClick { onTypeSelected(TranslationType.SUB_RU) }
         originalBtn.onClick { onTypeSelected(TranslationType.RAW) }
+    }
+
+    private val shadowScrollListener = object : RecyclerView.OnScrollListener() {
+        private val shadowDefault by lazy { context!!.dimen(R.dimen.default_shadow) }
+
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+
+            if (recyclerView.layoutManager != null) {
+
+                if (recyclerView.canScrollVertically(-1)) ViewCompat.setElevation(appbar, shadowDefault)
+                else ViewCompat.setElevation(appbar, 0f)
+            }
+        }
     }
 
     private fun configureSearchView() {
@@ -137,6 +153,11 @@ class TranslationsFragment : BaseSeriesFragment<TranslationsPresenter, Translati
         voiceBtn.visibleIf { show }
         subtitlesBtn.visibleIf { show }
         originalBtn.visibleIf { show }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        recyclerView.removeOnScrollListener(shadowScrollListener)
     }
 
     ///////////////////////////////////////////////////////////////////////////
