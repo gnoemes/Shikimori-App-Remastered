@@ -26,8 +26,10 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         app:iconifiedByDefault="false"
+        app:search_background_color="?attr/colorPrimary"
+        app:queryBackground="?attr/colorPrimary"
         app:search_hint="@string/episode_number_hint"
-        app:search_shadow="false"
+        app:search_shadow="true"
         app:search_version="menu_item"
         app:search_version_margins="menu_item"
         app:search_voice="false" />

@@ -61,6 +61,7 @@ class TranslationsViewModelConverterImpl @Inject constructor(
         val videos = it.value.map { t -> TranslationVideo(t.videoId, t.hosting) }
 
         return TranslationViewModel(
+                it.value.first().videoId,
                 it.value.first().type,
                 author,
                 description,

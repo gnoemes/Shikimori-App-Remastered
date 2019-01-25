@@ -2,14 +2,20 @@ package com.gnoemes.shikimori.presentation.view.series.translations
 
 import android.os.Bundle
 import android.view.View
+import android.widget.FrameLayout
+import android.widget.ImageView
+import android.widget.LinearLayout
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.AutoTransition
+import androidx.transition.Fade
 import androidx.transition.TransitionManager
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.app.domain.AppExtras
 import com.gnoemes.shikimori.entity.series.domain.TranslationType
+import com.gnoemes.shikimori.entity.series.presentation.SeriesPlaceholderItem
 import com.gnoemes.shikimori.entity.series.presentation.TranslationViewModel
 import com.gnoemes.shikimori.entity.series.presentation.TranslationsNavigationData
 import com.gnoemes.shikimori.presentation.presenter.series.translations.TranslationsPresenter
@@ -17,6 +23,8 @@ import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
 import com.gnoemes.shikimori.presentation.view.series.BaseSeriesFragment
 import com.gnoemes.shikimori.presentation.view.series.translations.adapter.TranslationsAdapter
 import com.gnoemes.shikimori.utils.*
+import com.gnoemes.shikimori.utils.widgets.VerticalSpaceItemDecorator
+import com.lapism.searchview.SearchView
 import kotlinx.android.synthetic.main.fragment_base_series.*
 import kotlinx.android.synthetic.main.fragment_translations.*
 import kotlinx.android.synthetic.main.layout_toolbar_transparent.*
@@ -41,13 +49,28 @@ class TranslationsFragment : BaseSeriesFragment<TranslationsPresenter, Translati
 
     private val adapter by lazy { TranslationsAdapter(getPresenter()::onHostingClicked, getPresenter()::onMenuClicked) }
 
+    private val defaultCorners by lazy { context!!.dimen(R.dimen.margin_big) }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        toolbar.setTitle(R.string.translation_authors)
+        configureSearchView()
+
+        toolbar?.apply {
+            setTitle(R.string.translation_authors)
+            inflateMenu(R.menu.menu_translations)
+            setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.item_search -> getPresenter().onSearchClicked()
+                }; true
+            }
+            requestFocus()
+        }
+
         with(recyclerView) {
             adapter = this@TranslationsFragment.adapter
             layoutManager = LinearLayoutManager(context)
+            addItemDecoration(VerticalSpaceItemDecorator(context.dimen(R.dimen.margin_big).toInt()))
             setHasFixedSize(true)
         }
 
@@ -58,6 +81,48 @@ class TranslationsFragment : BaseSeriesFragment<TranslationsPresenter, Translati
         voiceBtn.onClick { onTypeSelected(TranslationType.VOICE_RU) }
         subtitlesBtn.onClick { onTypeSelected(TranslationType.SUB_RU) }
         originalBtn.onClick { onTypeSelected(TranslationType.RAW) }
+    }
+
+    private fun configureSearchView() {
+        searchView.findViewById<CardView>(R.id.cardView).apply {
+            (layoutParams as FrameLayout.LayoutParams).setMargins(0, 0, 0, 0)
+            radius = 0f
+        }
+        searchView.hint = context!!.getString(R.string.translation_author_hint)
+        searchView.setHeight(56f)
+        searchView.setShadow(true)
+        searchView.setArrowOnly(true)
+        searchView.shouldClearOnClose = true
+        val defaultPadding = context?.dimen(R.dimen.margin_big)?.toInt() ?: 0
+        searchView.findViewById<LinearLayout>(R.id.linearLayout).setPadding(0, 0, defaultPadding, 0)
+        searchView.findViewById<ImageView>(R.id.imageView_arrow_back).apply {
+            (layoutParams as LinearLayout.LayoutParams).apply { width = LinearLayout.LayoutParams.WRAP_CONTENT; height = LinearLayout.LayoutParams.WRAP_CONTENT }
+            setPadding(defaultPadding, defaultPadding, 0, defaultPadding)
+        }
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                searchView.close(true)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                getPresenter().onQueryChanged(newText)
+                return true
+            }
+        })
+
+        searchView.setOnOpenCloseListener(object : SearchView.OnOpenCloseListener {
+            var first = true
+            override fun onOpen(): Boolean = true
+
+            override fun onClose(): Boolean {
+
+                if (!first) getPresenter().onSearchClosed()
+                first = false
+                return true
+            }
+        })
     }
 
     private fun onTypeSelected(newType: TranslationType) {
@@ -111,7 +176,28 @@ class TranslationsFragment : BaseSeriesFragment<TranslationsPresenter, Translati
             translationTypeLabel.setText(it.first)
             translationBtn.setImageResource(it.second)
         }
+    }
 
+    override fun showSearchView() {
+        searchView.open(true)
+        TransitionManager.beginDelayedTransition(appbar, Fade())
+        translationToolbar.gone()
+        backdrop.radius = 0f
+    }
+
+    override fun onSearchClosed() {
+        TransitionManager.beginDelayedTransition(appbar, Fade())
+        translationToolbar.visible()
+        backdrop.radius = defaultCorners
+    }
+
+    override fun showSearchEmpty() {
+        val emptyItem = SeriesPlaceholderItem(R.string.translation_search_empty_title, R.string.translation_search_empty_desc)
+        adapter.bindItems(mutableListOf(emptyItem))
+    }
+
+    override fun scrollToPosition(position: Int) {
+        (recyclerView.layoutManager  as? LinearLayoutManager)?.scrollToPositionWithOffset(position, 0)
     }
 
     override fun onShowLoading() {

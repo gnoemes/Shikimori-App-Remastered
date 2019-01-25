@@ -13,9 +13,11 @@ import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
 import com.gnoemes.shikimori.presentation.presenter.series.translations.converter.TranslationsViewModelConverter
 import com.gnoemes.shikimori.presentation.view.series.translations.TranslationsView
 import com.gnoemes.shikimori.utils.appendLoadingLogic
+import com.gnoemes.shikimori.utils.clearAndAddAll
 import io.reactivex.Completable
 import javax.inject.Inject
 
+//TODO base series presenter with search logic?
 @InjectViewState
 class TranslationsPresenter @Inject constructor(
         private val interactor: SeriesInteractor,
@@ -27,6 +29,8 @@ class TranslationsPresenter @Inject constructor(
     lateinit var type: TranslationType
 
     private var setting: TranslationSetting? = null
+
+    private val items = mutableListOf<TranslationViewModel>()
 
     override fun initData() {
         super.initData()
@@ -65,7 +69,21 @@ class TranslationsPresenter @Inject constructor(
             items.remove(priorityItem)
             items.add(0, priorityItem)
         }
-        viewState.showData(items)
+        this@TranslationsPresenter.items.clearAndAddAll(items)
+        showData(items)
+    }
+
+    private fun showData(data : List<TranslationViewModel>, isSearch: Boolean = false) {
+        if (data.isNotEmpty()) {
+            viewState.showData(data)
+            viewState.hideEmptyView()
+            viewState.showContent(true)
+        } else {
+            if (!isSearch) {
+                viewState.showEmptyView()
+                viewState.showContent(false)
+            } else viewState.showSearchEmpty()
+        }
     }
 
     fun onHostingClicked(hosting: TranslationVideo) {
@@ -84,4 +102,28 @@ class TranslationsPresenter @Inject constructor(
         this.type = newType
         loadData()
     }
+
+    fun onSearchClicked() {
+        viewState.showSearchView()
+    }
+
+    fun onQueryChanged(newText: String?) {
+        val text = newText ?: ""
+
+        if (text.isBlank()) {
+            showData(items)
+        } else {
+            val searchItems = items.filter { it.authors.contains(text, true) }
+            showData(searchItems, true)
+        }
+
+        viewState.scrollToPosition(0)
+    }
+
+    fun onSearchClosed() {
+        viewState.onSearchClosed()
+        showData(items)
+    }
+
+
 }

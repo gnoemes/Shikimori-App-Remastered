@@ -254,6 +254,9 @@
     <string name="translation_subtitles">Субтитры</string>
     <string name="translation_original">Оригинал</string>
     <string name="translation_unknown_author">Неизвестный автор</string>
+    <string name="translation_author_hint">Команда или автор</string>
+    <string name="translation_search_empty_title">Ничего не найдено</string>
+    <string name="translation_search_empty_desc">Попробуйте поискать что-нибудь другое</string>
 
 
     <string-array name="rate_types">

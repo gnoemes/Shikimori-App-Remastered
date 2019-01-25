@@ -76,6 +76,9 @@ class EpisodesPresenter @Inject constructor(
     }
 
     private fun showData(items: List<EpisodeViewModel>, isSearch: Boolean = false) {
+        viewState.showLicencedError(false)
+        viewState.showBlockedError(false)
+
         if (items.isNotEmpty()) {
             viewState.showData(items)
             viewState.hideEmptyView()

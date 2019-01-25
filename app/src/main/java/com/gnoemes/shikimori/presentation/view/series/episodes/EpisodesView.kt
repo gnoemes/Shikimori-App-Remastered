@@ -10,9 +10,6 @@ interface EpisodesView : BaseSeriesView {
     fun showData(newItems: List<EpisodeViewModel>)
 
     @StateStrategyType(SkipStrategy::class)
-    fun scrollToPosition(position: Int)
-
-    @StateStrategyType(SkipStrategy::class)
     fun showSearchView()
 
     fun showLicencedError(show : Boolean)
@@ -24,5 +21,4 @@ interface EpisodesView : BaseSeriesView {
     @StateStrategyType(SkipStrategy::class)
     fun showEpisodeOptionsDialog(index: Int)
 
-    fun showSearchEmpty()
 }
