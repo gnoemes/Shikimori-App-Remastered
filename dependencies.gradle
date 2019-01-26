@@ -12,8 +12,8 @@ ext.versions = [
     androidx          : '1.0.0',
 
     dagger            : '2.19',
-    rxJava            : '2.1.6',
-    rxAndroid         : '2.0.2',
+    rxJava            : '2.2.6',
+    rxAndroid         : '2.1.0',
 
     retrofit          : '2.4.0',
     okHttp            : '3.10.0',
@@ -24,7 +24,6 @@ ext.versions = [
     storIO            : '3.0.0',
     jodaDateTime      : '2.9.9.3',
     moxy              : '1.5.5',
-    aestheric         : '1.0.0-beta05',
     materialDialogs   : '2.0.0-beta6',
     glide             : '4.8.0',
     spinKit           : '1.1.0',

@@ -84,7 +84,10 @@ class EpisodesFragment : BaseSeriesFragment<EpisodesPresenter, EpisodesView>(), 
     }
 
     private fun configureSearchView() {
-        (searchView.findViewById<CardView>(R.id.cardView).layoutParams as FrameLayout.LayoutParams).setMargins(0, 0, 0, 0)
+        searchView.findViewById<CardView>(R.id.cardView).apply {
+            (layoutParams as FrameLayout.LayoutParams).setMargins(0, 0, 0, 0)
+            radius = 0f
+        }
         searchView.setHeight(56f)
         searchView.setArrowOnly(true)
         searchView.shouldClearOnClose = true

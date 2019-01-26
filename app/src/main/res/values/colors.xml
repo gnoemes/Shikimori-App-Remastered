@@ -42,6 +42,6 @@
 
     <color name="ic_launcher_background">#FFFFFF</color>
     <color name="background_transparent">#80ffffff</color>
-    <color name="background_transparent_text">#cc000000</color>
+    <color name="background_transparent_text">#99000000</color>
 
 </resources>

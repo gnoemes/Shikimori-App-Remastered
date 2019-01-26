@@ -8,6 +8,7 @@
     android:fitsSystemWindows="true"
     app:menu="@menu/menu_bottom"
     app:itemBackground="?attr/colorPrimary"
-    app:itemIconTint="?attr/colorPrimaryDark"
+    app:itemIconTint="@drawable/bottom_nav_item_color"
+    app:itemTextColor="@drawable/bottom_nav_item_color"
     app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
