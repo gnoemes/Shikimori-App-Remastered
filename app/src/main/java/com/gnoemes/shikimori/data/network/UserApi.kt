@@ -45,10 +45,10 @@ interface UserApi {
     fun deleteRate(@Path("id") id: Long): Completable
 
     @POST("/api/v2/user_rates")
-    fun createRate(@Body request: UserRateCreateOrUpdateRequest): Single<UserRate>
+    fun createRate(@Body request: UserRateCreateOrUpdateRequest): Single<UserRateResponse>
 
     @PATCH("/api/v2/user_rates/{id}")
-    fun updateRate(@Path("id") id: Long, @Body request: UserRateCreateOrUpdateRequest): Completable
+    fun updateRate(@Path("id") id: Long, @Body request: UserRateCreateOrUpdateRequest): Single<UserRateResponse>
 
     @POST("/api/v2/user_rates/{id}/increment")
     fun increment(@Path("id") id: Long): Completable

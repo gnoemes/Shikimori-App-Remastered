@@ -15,8 +15,6 @@ interface RatesInteractor {
 
     fun getRate(id : Long) : Single<UserRate>
 
-    fun syncRate(id : Long) : Completable
-
     fun deleteRate(id: Long): Completable
 
     fun createRate(id: Long, type: Type, rate: UserRate, userId: Long): Completable
@@ -26,6 +24,8 @@ interface RatesInteractor {
     fun updateRate(rate: UserRate): Completable
 
     fun increment(rateId: Long): Completable
+
+    fun increment(rate: UserRate): Completable
 
     fun decrement(rate: UserRate): Completable
 

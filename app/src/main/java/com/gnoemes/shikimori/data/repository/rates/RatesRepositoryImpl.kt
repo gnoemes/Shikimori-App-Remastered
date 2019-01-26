@@ -58,11 +58,13 @@ class RatesRepositoryImpl @Inject constructor(
             when (rate.targetType) {
                 Type.ANIME -> syncAnimeRate(rate)
                 Type.MANGA, Type.RANOBE -> syncMangaRate(rate)
-                else -> Completable.complete()
+                else -> Completable.error(IllegalArgumentException())
             }
 
     override fun updateRate(rate: UserRate): Completable =
             api.updateRate(rate.id!!, converter.convertCreateOrUpdateRequest(rate))
+                    .map { converter.convertUserRateResponse(null, it) }
+                    .flatMapCompletable { syncRate(it) }
 
     override fun deleteRate(id: Long): Completable =
             getRate(id)
@@ -71,15 +73,24 @@ class RatesRepositoryImpl @Inject constructor(
 
     override fun increment(rateId: Long): Completable = api.increment(rateId)
 
+    override fun increment(rate: UserRate): Completable =
+            when (rate.targetType) {
+                Type.ANIME -> incrementAnimeRate(rate)
+                Type.MANGA, Type.RANOBE -> incrementMangaRate(rate)
+                else -> Completable.error(IllegalArgumentException())
+            }
+
     private fun createAnimeRate(id: Long, rate: UserRate, userId: Long): Single<UserRate> =
             episodeDbSource.getWatchedEpisodesCount(id)
                     .map { converter.convertCreateOrUpdateRequest(id, Type.ANIME, rate.copy(episodes = it), userId) }
                     .flatMap { api.createRate(it) }
+                    .map { converter.convertUserRateResponse(id, it) }
 
     private fun createMangaRate(id: Long, rate: UserRate, userId: Long): Single<UserRate> =
             chapterDbSource.getReadedChapterCount(id)
                     .map { converter.convertCreateOrUpdateRequest(id, Type.MANGA, rate.copy(chapters = it), userId) }
                     .flatMap { api.createRate(it) }
+                    .map { converter.convertUserRateResponse(id, it) }
 
     override fun getRate(id: Long): Single<UserRate> =
             api.getRate(id)
@@ -118,5 +129,26 @@ class RatesRepositoryImpl @Inject constructor(
                                 .andThen(mangaSyncSource.clearRate(rate.targetId))
                     }
 
+    private fun incrementMangaRate(rate: UserRate): Completable =
+            Single.just(rate)
+                    .filter { it.targetId != null }
+                    .flatMapSingle { chapterDbSource.getReadedChapterCount(it.targetId!!) }
+                    .flatMapCompletable { count ->
+                        mangaSyncSource.getRate(rate.id!!)
+                                .flatMapCompletable { mangaSyncSource.saveRate(it.copy(chapters = count + 1)) }
+                    }
+                    .andThen(increment(rate.id!!))
+
+
+    private fun incrementAnimeRate(rate: UserRate): Completable =
+            Single.just(rate)
+                    .filter { it.targetId != null }
+                    .flatMapSingle { episodeDbSource.getWatchedEpisodesCount(it.targetId!!) }
+                    .flatMapCompletable { count ->
+                        //count already increased by 1 in series interactor in updateRate() method so need sync only ANIME_RATE TABLE
+                        animeSyncSource.getRate(rate.id!!)
+                                .flatMapCompletable { animeSyncSource.saveRate(it.copy(episodes = count)) }
+                    }
+                    .andThen(increment(rate.id!!))
 
 }

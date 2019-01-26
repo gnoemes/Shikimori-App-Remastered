@@ -6,6 +6,8 @@ import io.reactivex.Single
 
 interface MangaRateSyncDbSource {
 
+    fun getRate(rateId : Long) : Single<UserRate>
+
     fun saveRate(userRate: UserRate): Completable
 
     fun getChaptersCount(mangaId: Long): Single<Int>

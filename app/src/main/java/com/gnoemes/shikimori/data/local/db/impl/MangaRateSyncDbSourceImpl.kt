@@ -15,6 +15,20 @@ class MangaRateSyncDbSourceImpl @Inject constructor(
         private val storIOSQLite: StorIOSQLite
 ) : MangaRateSyncDbSource {
 
+    override fun getRate(rateId: Long): Single<UserRate> =
+            storIOSQLite
+                    .get()
+                    .`object`(MangaRateSyncDao::class.java)
+                    .withQuery(Query.builder()
+                            .table(MangaRateSyncTable.TABLE)
+                            .where("${MangaRateSyncTable.COLUMN_RATE_ID} = ?")
+                            .whereArgs(rateId)
+                            .build())
+                    .prepare()
+                    .asRxSingle()
+                    .map { it.get() }
+                    .map { UserRate(it.rateId, targetId = it.mangaId, chapters = it.chapters) }
+
     override fun saveRate(userRate: UserRate): Completable =
             storIOSQLite
                     .put()

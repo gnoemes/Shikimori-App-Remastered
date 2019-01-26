@@ -66,7 +66,7 @@ class SeriesInteractorImpl @Inject constructor(
                     .andThen(
                             if (isWatched) incrementOrCreate(animeId, rateId)
                             else decrement(rateId)
-                    ).andThen(ratesInteractor.syncRate(rateId))
+                    )
 
     private fun decrement(rateId: Long): Completable {
         return ratesInteractor.getRate(rateId)
@@ -77,7 +77,7 @@ class SeriesInteractorImpl @Inject constructor(
         return when (rateId) {
             Constants.NO_ID -> userRepository.getMyUserBrief()
                     .flatMapCompletable { ratesInteractor.createRate(animeId, Type.ANIME, UserRate(id = rateId, status = RateStatus.WATCHING), it.id) }
-            else -> ratesInteractor.increment(rateId)
+            else -> ratesInteractor.increment(UserRate(rateId, targetType = Type.ANIME, targetId = animeId))
         }
     }
 

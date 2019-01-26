@@ -6,6 +6,8 @@ import io.reactivex.Single
 
 interface AnimeRateSyncDbSource {
 
+    fun getRate(rateId : Long) : Single<UserRate>
+
     fun saveRate(userRate: UserRate): Completable
 
     fun getEpisodeCount(animeId: Long): Single<Int>
