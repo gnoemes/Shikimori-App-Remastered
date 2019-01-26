@@ -49,6 +49,16 @@
             android:name=".presentation.view.settings.SettingsActivity"
             android:label="@string/more_settings" />
 
+        <activity
+            android:name=".presentation.view.player.WebPlayerActivity"
+            android:configChanges="orientation|keyboardHidden|screenLayout|smallestScreenSize|screenSize"
+            android:hardwareAccelerated="true"
+            android:launchMode="singleTask"
+            android:resizeableActivity="true"
+            android:supportsPictureInPicture="true"
+            />
+
+
     </application>
 
 </manifest>

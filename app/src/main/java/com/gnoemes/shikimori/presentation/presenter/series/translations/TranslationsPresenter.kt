@@ -115,7 +115,8 @@ class TranslationsPresenter @Inject constructor(
     private fun setEpisodeWatched(payload: TranslationVideo) {
         interactor.sendEpisodeChanges(EpisodeChanges(payload.animeId, payload.episodeIndex, true))
                 .andThen(interactor.saveTranslationSettings(TranslationSetting(payload.animeId, payload.author, payload.type)))
-                .subscribe({router.exit()}, this::processErrors)
+                .doOnSubscribe { onBackPressed() }
+                .subscribe({}, this::processErrors)
                 .addToDisposables()
     }
 

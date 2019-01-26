@@ -264,6 +264,8 @@
     <string name="player_web">Веб-плеер</string>
     <string name="player_embedded">Внутренний плеер (BETA)</string>
     <string name="player_external">Внешний плеер</string>
+    <string name="player_error">Произошла ошибка во время загрузки видео</string>
+    <string name="player_no_ads">Реклама во время просмотра не является частью приложения и отображается хостингом</string>
 
 
     <string-array name="rate_types">
