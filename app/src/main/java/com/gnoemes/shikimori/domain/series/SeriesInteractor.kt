@@ -4,6 +4,7 @@ import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.series.domain.*
 import com.gnoemes.shikimori.entity.series.presentation.TranslationVideo
 import io.reactivex.Completable
+import io.reactivex.Observable
 import io.reactivex.Single
 
 interface SeriesInteractor {
@@ -21,4 +22,8 @@ interface SeriesInteractor {
     fun setEpisodeUnwatched(animeId: Long, episodeId: Int, rateId: Long) : Completable
 
     fun setEpisodeStatus(animeId: Long, episodeId: Int, rateId: Long, isWatching : Boolean) : Completable
+
+    fun getEpisodeChanges() : Observable<EpisodeChanges>
+
+    fun sendEpisodeChanges(changes: EpisodeChanges) : Completable
 }

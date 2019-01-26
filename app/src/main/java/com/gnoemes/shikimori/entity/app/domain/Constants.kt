@@ -22,4 +22,6 @@ object Constants {
     const val EXIT_TIMEOUT = 3L * 1000
 
     const val DEFAULT_DEBOUNCE_INTERVAL = 300L
+
+    const val BIG_DEBOUNCE_INTERVAL = 750L
 }

@@ -109,6 +109,7 @@ class TranslationsPresenter @Inject constructor(
 
     private fun setEpisodeWatched(animeId: Long, episodeIndex: Int, rateId: Long) {
         interactor.setEpisodeWatched(animeId, episodeIndex, rateId)
+                .andThen(interactor.sendEpisodeChanges(EpisodeChanges(animeId, episodeIndex, true)))
                 .subscribe({router.exit()}, this::processErrors)
                 .addToDisposables()
     }

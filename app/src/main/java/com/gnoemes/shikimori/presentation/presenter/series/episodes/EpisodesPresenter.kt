@@ -12,6 +12,7 @@ import com.gnoemes.shikimori.entity.common.domain.Screens
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.rates.domain.UserRate
+import com.gnoemes.shikimori.entity.series.domain.EpisodeChanges
 import com.gnoemes.shikimori.entity.series.presentation.EpisodeViewModel
 import com.gnoemes.shikimori.entity.series.presentation.EpisodesNavigationData
 import com.gnoemes.shikimori.entity.series.presentation.TranslationsNavigationData
@@ -21,6 +22,7 @@ import com.gnoemes.shikimori.presentation.view.series.episodes.EpisodesView
 import com.gnoemes.shikimori.utils.clearAndAddAll
 import io.reactivex.Observable
 import io.reactivex.Single
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @InjectViewState
@@ -41,6 +43,7 @@ class EpisodesPresenter @Inject constructor(
         super.initData()
         loadData()
         rateId = navigationData.rateId ?: rateId
+        subscribeToChanges()
 
         viewState.setBackground(navigationData.image)
         viewState.setName(navigationData.name)
@@ -117,8 +120,8 @@ class EpisodesPresenter @Inject constructor(
                 .flatMap { createRateIfNotExist(it) }
                 .doOnSubscribe { showEpisodeLoading(item, newStatus) }
                 .flatMapCompletable { rateId -> interactor.setEpisodeStatus(navigationData.animeId, item.index, rateId, newStatus) }
-                .andThen(loadEpisodes())
-                .subscribe(this::setData, this::processErrors)
+                .andThen(interactor.sendEpisodeChanges(EpisodeChanges(navigationData.animeId, item.index, newStatus)))
+                .subscribe({}, this::processErrors)
                 .addToDisposables()
     }
 
@@ -204,6 +207,13 @@ class EpisodesPresenter @Inject constructor(
                 .flatMap { loadEpisodes() }
                 .subscribe(this::setData, this::processErrors)
                 .addToDisposables()
+    }
 
+    private fun subscribeToChanges() {
+        interactor.getEpisodeChanges()
+                .buffer(interactor.getEpisodeChanges().debounce(Constants.BIG_DEBOUNCE_INTERVAL, TimeUnit.MILLISECONDS))
+                .flatMapSingle { loadEpisodes() }
+                .subscribe(this::setData, this::processErrors)
+                .addToDisposables()
     }
 }

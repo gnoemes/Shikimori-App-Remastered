@@ -1,5 +1,6 @@
 package com.gnoemes.shikimori.domain.series
 
+import com.gnoemes.shikimori.data.repository.series.shikimori.EpisodeChangesRepository
 import com.gnoemes.shikimori.data.repository.series.shikimori.SeriesRepository
 import com.gnoemes.shikimori.data.repository.user.UserRepository
 import com.gnoemes.shikimori.domain.rates.RatesInteractor
@@ -11,28 +12,33 @@ import com.gnoemes.shikimori.entity.series.domain.*
 import com.gnoemes.shikimori.entity.series.presentation.TranslationVideo
 import com.gnoemes.shikimori.utils.applyErrorHandlerAndSchedulers
 import io.reactivex.Completable
+import io.reactivex.Observable
 import io.reactivex.Single
 import javax.inject.Inject
 
 class SeriesInteractorImpl @Inject constructor(
         private val repository: SeriesRepository,
         private val ratesInteractor: RatesInteractor,
-        private val userRepository: UserRepository
+        private val userRepository: UserRepository,
+        private val changesRepository: EpisodeChangesRepository
 ) : SeriesInteractor {
 
-    override fun getEpisodes(id: Long, alternative : Boolean): Single<List<Episode>> = repository.getEpisodes(id, alternative).applyErrorHandlerAndSchedulers()
+    override fun getEpisodes(id: Long, alternative: Boolean): Single<List<Episode>> = repository.getEpisodes(id, alternative).applyErrorHandlerAndSchedulers()
 
     override fun getTranslations(type: TranslationType, animeId: Long, episodeId: Long, alternative: Boolean): Single<List<Translation>> =
             repository.getTranslations(type, animeId, episodeId, alternative)
                     .applyErrorHandlerAndSchedulers()
 
     override fun getTranslationSettings(animeId: Long, episodeIndex: Int): Single<TranslationSetting> =
-        repository.getTranslationSettings(animeId, episodeIndex)
-                .applyErrorHandlerAndSchedulers()
+            repository.getTranslationSettings(animeId, episodeIndex)
+                    .applyErrorHandlerAndSchedulers()
 
     override fun getVideo(payload: TranslationVideo): Single<Video> =
             repository.getVideo(payload)
                     .applyErrorHandlerAndSchedulers()
+
+    override fun getEpisodeChanges(): Observable<EpisodeChanges> = changesRepository.getEpisodesChanges().applyErrorHandlerAndSchedulers()
+    override fun sendEpisodeChanges(changes: EpisodeChanges): Completable = changesRepository.sendEpisodeChanges(changes).applyErrorHandlerAndSchedulers()
 
     override fun setEpisodeStatus(animeId: Long, episodeId: Int, rateId: Long, isWatching: Boolean): Completable {
         return if (isWatching) setEpisodeWatched(animeId, episodeId, rateId)
