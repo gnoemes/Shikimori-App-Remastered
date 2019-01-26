@@ -4,5 +4,5 @@ import com.google.gson.annotations.SerializedName
 
 data class TrackResponse(
         @field:SerializedName("quality") val quality : String,
-        @field:SerializedName("ulr") val url : String
+        @field:SerializedName("url") val url : String
 )

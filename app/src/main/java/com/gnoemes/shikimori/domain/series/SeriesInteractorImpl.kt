@@ -7,10 +7,8 @@ import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.rates.domain.UserRate
-import com.gnoemes.shikimori.entity.series.domain.Episode
-import com.gnoemes.shikimori.entity.series.domain.Translation
-import com.gnoemes.shikimori.entity.series.domain.TranslationSetting
-import com.gnoemes.shikimori.entity.series.domain.TranslationType
+import com.gnoemes.shikimori.entity.series.domain.*
+import com.gnoemes.shikimori.entity.series.presentation.TranslationVideo
 import com.gnoemes.shikimori.utils.applyErrorHandlerAndSchedulers
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -31,6 +29,10 @@ class SeriesInteractorImpl @Inject constructor(
     override fun getTranslationSettings(animeId: Long, episodeIndex: Int): Single<TranslationSetting> =
         repository.getTranslationSettings(animeId, episodeIndex)
                 .applyErrorHandlerAndSchedulers()
+
+    override fun getVideo(payload: TranslationVideo): Single<Video> =
+            repository.getVideo(payload)
+                    .applyErrorHandlerAndSchedulers()
 
     override fun setEpisodeStatus(animeId: Long, episodeId: Int, rateId: Long, isWatching: Boolean): Completable {
         return if (isWatching) setEpisodeWatched(animeId, episodeId, rateId)

@@ -6,10 +6,9 @@ import com.gnoemes.shikimori.data.local.db.TranslationSettingDbSource
 import com.gnoemes.shikimori.data.network.VideoApi
 import com.gnoemes.shikimori.data.repository.series.shikimori.converter.EpisodeResponseConverter
 import com.gnoemes.shikimori.data.repository.series.shikimori.converter.TranslationResponseConverter
-import com.gnoemes.shikimori.entity.series.domain.Episode
-import com.gnoemes.shikimori.entity.series.domain.Translation
-import com.gnoemes.shikimori.entity.series.domain.TranslationSetting
-import com.gnoemes.shikimori.entity.series.domain.TranslationType
+import com.gnoemes.shikimori.data.repository.series.shikimori.converter.VideoResponseConverter
+import com.gnoemes.shikimori.entity.series.domain.*
+import com.gnoemes.shikimori.entity.series.presentation.TranslationVideo
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -20,6 +19,7 @@ class SeriesRepositoryImpl @Inject constructor(
         private val api: VideoApi,
         private val converter: EpisodeResponseConverter,
         private val translationConverter: TranslationResponseConverter,
+        private val videoConverter : VideoResponseConverter,
         private val episodeSource: EpisodeDbSource,
         private val syncSource: AnimeRateSyncDbSource,
         private val translationSettingSource: TranslationSettingDbSource
@@ -44,6 +44,10 @@ class SeriesRepositoryImpl @Inject constructor(
     override fun getTranslations(type: TranslationType, animeId: Long, episodeId: Long, alternative: Boolean): Single<List<Translation>> =
             (if (alternative) api.getTranslationsAlternative(animeId, episodeId, type.type!!) else api.getTranslations(animeId, episodeId, type.type!!))
                     .map(translationConverter)
+
+    override fun getVideo(payload: TranslationVideo): Single<Video> =
+            api.getVideo(payload.animeId, payload.episodeIndex, payload.videoId.toString(), payload.language, payload.type.type!!, payload.authorSimple, payload.videoHosting.synonymType)
+                    .map(videoConverter)
 
     override fun getTranslationSettings(animeId: Long, episodeIndex: Int): Single<TranslationSetting> =
             translationSettingSource.getSetting(animeId, episodeIndex)

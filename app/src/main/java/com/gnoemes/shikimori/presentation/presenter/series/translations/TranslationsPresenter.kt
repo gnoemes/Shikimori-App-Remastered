@@ -3,15 +3,14 @@ package com.gnoemes.shikimori.presentation.presenter.series.translations
 import com.arellomobile.mvp.InjectViewState
 import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.domain.series.SeriesInteractor
-import com.gnoemes.shikimori.entity.series.domain.TranslationMenu
-import com.gnoemes.shikimori.entity.series.domain.TranslationSetting
-import com.gnoemes.shikimori.entity.series.domain.TranslationType
+import com.gnoemes.shikimori.entity.series.domain.*
 import com.gnoemes.shikimori.entity.series.presentation.TranslationVideo
 import com.gnoemes.shikimori.entity.series.presentation.TranslationViewModel
 import com.gnoemes.shikimori.entity.series.presentation.TranslationsNavigationData
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
 import com.gnoemes.shikimori.presentation.presenter.series.translations.converter.TranslationsViewModelConverter
 import com.gnoemes.shikimori.presentation.view.series.translations.TranslationsView
+import com.gnoemes.shikimori.utils.Utils
 import com.gnoemes.shikimori.utils.appendLoadingLogic
 import com.gnoemes.shikimori.utils.clearAndAddAll
 import io.reactivex.Completable
@@ -31,6 +30,7 @@ class TranslationsPresenter @Inject constructor(
     private var setting: TranslationSetting? = null
 
     private val items = mutableListOf<TranslationViewModel>()
+    private lateinit var selectedHosting: TranslationVideo
 
     override fun initData() {
         super.initData()
@@ -73,7 +73,7 @@ class TranslationsPresenter @Inject constructor(
         showData(items)
     }
 
-    private fun showData(data : List<TranslationViewModel>, isSearch: Boolean = false) {
+    private fun showData(data: List<TranslationViewModel>, isSearch: Boolean = false) {
         if (data.isNotEmpty()) {
             viewState.showData(data)
             viewState.hideEmptyView()
@@ -87,7 +87,29 @@ class TranslationsPresenter @Inject constructor(
     }
 
     fun onHostingClicked(hosting: TranslationVideo) {
-        //TODO show choose player dialog or show video
+        this.selectedHosting = hosting
+        if (!Utils.isHostingSupports(hosting.videoHosting)) openVideo(hosting, PlayerType.WEB)
+        else if (settingsSource.isRememberPlayer) openVideo(hosting, settingsSource.playerType)
+        else viewState.showPlayerDialog()
+    }
+
+    fun onPlayerSelected(playerType: PlayerType) {
+        openVideo(selectedHosting, playerType)
+    }
+
+    //Only embedded player can process object payload
+    //Others players uses urls
+    private fun openVideo(payload: TranslationVideo, playerType: PlayerType) {
+        if (playerType == PlayerType.EMBEDDED) openPlayer(playerType, payload)
+        else getVideoAndExecute(payload) { openPlayer(playerType, it.tracks.first().url) }
+    }
+
+    //TODO quality chooser
+    private fun getVideoAndExecute(payload: TranslationVideo, onSubscribe: (Video) -> Unit) {
+        interactor.getVideo(payload)
+                .appendLoadingLogic(viewState)
+                .subscribe(onSubscribe::invoke, this::processErrors)
+                .addToDisposables()
     }
 
     fun onMenuClicked(category: TranslationMenu) {
@@ -124,6 +146,4 @@ class TranslationsPresenter @Inject constructor(
         viewState.onSearchClosed()
         showData(items)
     }
-
-
 }

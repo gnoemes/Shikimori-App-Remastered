@@ -56,6 +56,8 @@
     <string name="common_clubs">Клубы</string>
     <string name="common_comments">Комментарии</string>
     <string name="common_download">Скачать</string>
+    <string name="common_remember_choice">Запомнить выбор</string>
+    <string name="common_change_in_settings">Можно изменить в настройках</string>
 
     <string name="season_autumn">Осень</string>
     <string name="season_winter">Зима</string>
@@ -259,6 +261,10 @@
     <string name="translation_search_empty_title">Ничего не найдено</string>
     <string name="translation_search_empty_desc">Попробуйте поискать что-нибудь другое</string>
 
+    <string name="player_web">Веб-плеер</string>
+    <string name="player_embedded">Внутренний плеер (BETA)</string>
+    <string name="player_external">Внешний плеер</string>
+
 
     <string-array name="rate_types">
         <item>@string/common_anime</item>
@@ -461,6 +467,12 @@
         <item>@string/season_winter</item>
         <item>@string/season_spring</item>
         <item>@string/season_summer</item>
+    </string-array>
+
+    <string-array name="players">
+        <item>@string/player_web</item>
+        <item>@string/player_embedded</item>
+        <item>@string/player_external</item>
     </string-array>
 
 </resources>

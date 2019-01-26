@@ -3,8 +3,6 @@ package com.gnoemes.shikimori.data.network
 import com.gnoemes.shikimori.entity.series.data.EpisodeResponse
 import com.gnoemes.shikimori.entity.series.data.TranslationResponse
 import com.gnoemes.shikimori.entity.series.data.VideoResponse
-import com.gnoemes.shikimori.entity.series.domain.TranslationType
-import com.gnoemes.shikimori.entity.series.domain.VideoHosting
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -35,8 +33,8 @@ interface VideoApi {
                  @Path("episodeId") episodeId: Int,
                  @Path("videoId") videoId: String,
                  @Query("language") language: String,
-                 @Query("kind") type: TranslationType,
+                 @Query("kind") type: String,
                  @Query("author") author: String,
-                 @Query("hosting") hosting: VideoHosting
-    ): Single<List<VideoResponse>>
+                 @Query("hosting") hosting: String
+    ): Single<VideoResponse>
 }

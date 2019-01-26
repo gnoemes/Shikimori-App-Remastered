@@ -13,6 +13,7 @@ import com.gnoemes.shikimori.entity.series.presentation.TranslationViewModel
 import com.gnoemes.shikimori.utils.Utils
 import com.gnoemes.shikimori.utils.color
 import com.gnoemes.shikimori.utils.colorSpan
+import java.net.URLEncoder
 import javax.inject.Inject
 
 class TranslationsViewModelConverterImpl @Inject constructor(
@@ -64,7 +65,7 @@ class TranslationsViewModelConverterImpl @Inject constructor(
         }
 
         val description: CharSequence? = if (builder.isNotEmpty()) builder else null
-        val videos = it.value.map { t -> TranslationVideo(t.videoId, t.hosting) }
+        val videos = it.value.map { t -> convertVideo(t) }
 
         return TranslationViewModel(
                 it.value.first().videoId,
@@ -74,6 +75,23 @@ class TranslationsViewModelConverterImpl @Inject constructor(
                 videos,
                 isSameAuthor,
                 it.value.first().episodesSize
+        )
+    }
+
+    private fun convertVideo(t: Translation): TranslationVideo {
+
+        val simpleAuthor = URLEncoder.encode(t.author.replace(Regex("\\(.+\\)"), "").trim(), "utf-8")
+
+        return TranslationVideo(
+                t.videoId,
+                t.animeId,
+                t.episodeId,
+                //TODO multi language
+                "russian",
+                t.author,
+                simpleAuthor,
+                t.type,
+                t.hosting
         )
     }
 

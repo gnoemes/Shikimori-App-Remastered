@@ -16,6 +16,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.app.domain.AppExtras
+import com.gnoemes.shikimori.entity.series.domain.PlayerType
 import com.gnoemes.shikimori.entity.series.domain.TranslationType
 import com.gnoemes.shikimori.entity.series.presentation.SeriesPlaceholderItem
 import com.gnoemes.shikimori.entity.series.presentation.TranslationViewModel
@@ -23,6 +24,7 @@ import com.gnoemes.shikimori.entity.series.presentation.TranslationsNavigationDa
 import com.gnoemes.shikimori.presentation.presenter.series.translations.TranslationsPresenter
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
 import com.gnoemes.shikimori.presentation.view.series.BaseSeriesFragment
+import com.gnoemes.shikimori.presentation.view.series.PlayerSelectDialog
 import com.gnoemes.shikimori.presentation.view.series.translations.adapter.TranslationsAdapter
 import com.gnoemes.shikimori.utils.*
 import com.gnoemes.shikimori.utils.widgets.VerticalSpaceItemDecorator
@@ -32,7 +34,7 @@ import kotlinx.android.synthetic.main.fragment_translations.*
 import kotlinx.android.synthetic.main.layout_toolbar_transparent.*
 import kotlinx.android.synthetic.main.layout_translations_toolbar.*
 
-class TranslationsFragment : BaseSeriesFragment<TranslationsPresenter, TranslationsView>(), TranslationsView {
+class TranslationsFragment : BaseSeriesFragment<TranslationsPresenter, TranslationsView>(), TranslationsView, PlayerSelectDialog.Callback {
 
     @InjectPresenter
     lateinit var translationsPresenter: TranslationsPresenter
@@ -160,6 +162,10 @@ class TranslationsFragment : BaseSeriesFragment<TranslationsPresenter, Translati
         recyclerView.removeOnScrollListener(shadowScrollListener)
     }
 
+    override fun onPlayerSelected(playerType: PlayerType) {
+        getPresenter().onPlayerSelected(playerType)
+    }
+
     ///////////////////////////////////////////////////////////////////////////
     // GETTERS
     ///////////////////////////////////////////////////////////////////////////
@@ -221,11 +227,13 @@ class TranslationsFragment : BaseSeriesFragment<TranslationsPresenter, Translati
         (recyclerView.layoutManager  as? LinearLayoutManager)?.scrollToPositionWithOffset(position, 0)
     }
 
-    override fun onShowLoading() {
-        progress.visible()
+    override fun showPlayerDialog() {
+        val dialog = PlayerSelectDialog.newInstance()
+        dialog.show(childFragmentManager, "PlayerSelect")
     }
 
-    override fun onHideLoading() {
-        progress.gone()
-    }
+    override fun onShowLoading() = progress.visible()
+    override fun onHideLoading() = progress.gone()
+    override fun onShowLightLoading() = progress.visible()
+    override fun onHideLightLoading() = progress.gone()
 }

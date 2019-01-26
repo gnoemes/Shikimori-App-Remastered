@@ -1,5 +1,6 @@
 package com.gnoemes.shikimori.presentation.view.series.translations
 
+import com.arellomobile.mvp.viewstate.strategy.SkipStrategy
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
 import com.gnoemes.shikimori.entity.series.domain.TranslationType
 import com.gnoemes.shikimori.entity.series.presentation.TranslationViewModel
@@ -19,5 +20,8 @@ interface TranslationsView : BaseSeriesView {
 
     @StateStrategyType(AddToEndSingleTagStrategy::class, tag = "search")
     fun onSearchClosed()
+
+    @StateStrategyType(SkipStrategy::class)
+    fun showPlayerDialog()
 
 }

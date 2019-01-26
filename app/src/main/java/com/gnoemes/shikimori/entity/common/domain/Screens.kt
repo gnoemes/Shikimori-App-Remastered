@@ -26,4 +26,11 @@ object Screens {
     const val TOPICS = "TOPICS"
     const val EPISODES = "EPISODES"
     const val TRANSLATIONS = "TRANSLATIONS"
+
+    ////////////////////////////////////////////////////////////////////////
+    // Players
+    ////////////////////////////////////////////////////////////////////////
+    const val WEB_PLAYER = "WEB_PLAYER"
+    const val EMBEDDED_PLAYER = "EMBEDDED_PLAYER"
+    const val EXTERNAL_PLAYER = "EXTERNAL_PLAYER"
 }
