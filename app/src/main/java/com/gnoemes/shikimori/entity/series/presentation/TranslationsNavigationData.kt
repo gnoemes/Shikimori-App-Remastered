@@ -8,5 +8,6 @@ class TranslationsNavigationData(
         name: String,
         val episodeId: Long,
         val episodeIndex: Int,
+        val rateId : Long,
         val isAlternative : Boolean
 ) : BaseSeriesNavigationData(animeId, image, name)

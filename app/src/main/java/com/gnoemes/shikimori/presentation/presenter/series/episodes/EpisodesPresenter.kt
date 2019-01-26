@@ -103,7 +103,7 @@ class EpisodesPresenter @Inject constructor(
     }
 
     fun onEpisodeClicked(item: EpisodeViewModel) {
-        val data = TranslationsNavigationData(navigationData.animeId, navigationData.image, navigationData.name, item.id, item.index, item.isFromAlternative)
+        val data = TranslationsNavigationData(navigationData.animeId, navigationData.image, navigationData.name, item.id, item.index, rateId, item.isFromAlternative)
         router.navigateTo(Screens.TRANSLATIONS, data)
     }
 

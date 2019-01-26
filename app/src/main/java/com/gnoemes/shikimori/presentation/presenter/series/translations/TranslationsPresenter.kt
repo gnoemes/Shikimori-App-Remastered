@@ -101,7 +101,16 @@ class TranslationsPresenter @Inject constructor(
     //Others players uses urls
     private fun openVideo(payload: TranslationVideo, playerType: PlayerType) {
         if (playerType == PlayerType.EMBEDDED) openPlayer(playerType, payload)
-        else getVideoAndExecute(payload) { openPlayer(playerType, it.tracks.first().url) }
+        else getVideoAndExecute(payload) {
+            openPlayer(playerType, it.tracks.first().url)
+            setEpisodeWatched(navigationData.animeId, navigationData.episodeIndex, navigationData.rateId)
+        }
+    }
+
+    private fun setEpisodeWatched(animeId: Long, episodeIndex: Int, rateId: Long) {
+        interactor.setEpisodeWatched(animeId, episodeIndex, rateId)
+                .subscribe({router.exit()}, this::processErrors)
+                .addToDisposables()
     }
 
     //TODO quality chooser

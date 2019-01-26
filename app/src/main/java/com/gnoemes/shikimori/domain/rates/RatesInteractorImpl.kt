@@ -2,6 +2,7 @@ package com.gnoemes.shikimori.domain.rates
 
 import com.gnoemes.shikimori.data.repository.rates.RatesRepository
 import com.gnoemes.shikimori.data.repository.user.UserRepository
+import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.rates.domain.Rate
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
@@ -27,12 +28,14 @@ class RatesInteractorImpl @Inject constructor(
     override fun getRate(id: Long): Single<UserRate> = repository.getRate(id).applyErrorHandlerAndSchedulers()
 
     override fun syncRate(id: Long): Completable =
-            userRepository.getMyUserBrief()
-                    .flatMapCompletable { user ->
-                        repository.getRate(id)
-                                .filter { user.id == it.userId }
-                                .flatMapCompletable { repository.syncRate(it) }
-                    }.applyErrorHandlerAndSchedulers()
+            if (id == Constants.NO_ID) Completable.complete()
+            else
+                userRepository.getMyUserBrief()
+                        .flatMapCompletable { user ->
+                            repository.getRate(id)
+                                    .filter { user.id == it.userId }
+                                    .flatMapCompletable { repository.syncRate(it) }
+                        }.applyErrorHandlerAndSchedulers()
 
     override fun deleteRate(id: Long): Completable = repository.deleteRate(id).applyErrorHandlerAndSchedulers()
 
