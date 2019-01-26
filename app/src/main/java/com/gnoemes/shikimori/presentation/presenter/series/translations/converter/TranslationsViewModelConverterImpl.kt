@@ -5,9 +5,7 @@ import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.ImageSpan
 import com.gnoemes.shikimori.R
-import com.gnoemes.shikimori.entity.series.domain.Translation
-import com.gnoemes.shikimori.entity.series.domain.TranslationQuality
-import com.gnoemes.shikimori.entity.series.domain.TranslationSetting
+import com.gnoemes.shikimori.entity.series.domain.*
 import com.gnoemes.shikimori.entity.series.presentation.TranslationVideo
 import com.gnoemes.shikimori.entity.series.presentation.TranslationViewModel
 import com.gnoemes.shikimori.utils.Utils
@@ -76,6 +74,13 @@ class TranslationsViewModelConverterImpl @Inject constructor(
                 isSameAuthor,
                 it.value.first().episodesSize
         )
+    }
+
+    override fun convertTrack(hosting: VideoHosting, track: Track): Pair<String, String> {
+        var title = hosting.synonymType
+        //TODO colorspan for quality
+        if (track.quality != "unknown") title += "   ".plus("${track.quality}p")
+        return Pair(title, track.url)
     }
 
     private fun convertVideo(t: Translation): TranslationVideo {

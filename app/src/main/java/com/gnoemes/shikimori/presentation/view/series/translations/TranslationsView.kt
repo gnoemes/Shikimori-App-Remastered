@@ -24,4 +24,7 @@ interface TranslationsView : BaseSeriesView {
     @StateStrategyType(SkipStrategy::class)
     fun showPlayerDialog()
 
+    @StateStrategyType(SkipStrategy::class)
+    fun showDownloadDialog(items: List<Pair<String, String>>)
+
 }

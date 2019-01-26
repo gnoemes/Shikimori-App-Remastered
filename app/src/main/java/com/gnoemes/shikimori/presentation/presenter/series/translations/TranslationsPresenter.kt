@@ -1,5 +1,6 @@
 package com.gnoemes.shikimori.presentation.presenter.series.translations
 
+import android.util.Log
 import com.arellomobile.mvp.InjectViewState
 import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.domain.series.SeriesInteractor
@@ -14,6 +15,7 @@ import com.gnoemes.shikimori.utils.Utils
 import com.gnoemes.shikimori.utils.appendLoadingLogic
 import com.gnoemes.shikimori.utils.clearAndAddAll
 import io.reactivex.Completable
+import io.reactivex.Observable
 import javax.inject.Inject
 
 //TODO base series presenter with search logic?
@@ -100,7 +102,7 @@ class TranslationsPresenter @Inject constructor(
     }
 
     //Only embedded player can process object payload
-    //Others players uses urls
+    //Others o uses urls
     private fun openVideo(payload: TranslationVideo, playerType: PlayerType) {
         if (playerType == PlayerType.EMBEDDED) openPlayer(playerType, payload)
         else getVideoAndExecute(payload) { openPlayer(playerType, it.tracks.first().url) }
@@ -129,7 +131,30 @@ class TranslationsPresenter @Inject constructor(
     }
 
     fun onMenuClicked(category: TranslationMenu) {
-        //TODO handle item's menu clicks
+        when (category) {
+            is TranslationMenu.Download -> showDownloadDialog(category.videos)
+        }
+    }
+
+    private fun showDownloadDialog(videos: List<TranslationVideo>) {
+        val filteredItems = videos.filter { Utils.isHostingSupports(it.videoHosting, true) }
+
+        Observable.fromIterable(filteredItems)
+                .flatMapSingle { interactor.getVideo(it) }
+                .flatMap {video ->
+                    Observable.just(video)
+                            .flatMapIterable { it.tracks }
+                            .map { converter.convertTrack(video.hosting, it) }
+                }
+                .toList()
+                .appendLoadingLogic(viewState)
+                .subscribe(viewState::showDownloadDialog, this::processErrors)
+                .addToDisposables()
+    }
+
+    fun onTrackForDownloadSelected(url: String) {
+        //TODO download
+        Log.i("DEVE", url)
     }
 
     fun onDiscussionClicked() {

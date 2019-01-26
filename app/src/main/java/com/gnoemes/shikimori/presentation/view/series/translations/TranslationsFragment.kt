@@ -23,6 +23,7 @@ import com.gnoemes.shikimori.entity.series.presentation.TranslationViewModel
 import com.gnoemes.shikimori.entity.series.presentation.TranslationsNavigationData
 import com.gnoemes.shikimori.presentation.presenter.series.translations.TranslationsPresenter
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
+import com.gnoemes.shikimori.presentation.view.common.fragment.ListDialogFragment
 import com.gnoemes.shikimori.presentation.view.series.BaseSeriesFragment
 import com.gnoemes.shikimori.presentation.view.series.PlayerSelectDialog
 import com.gnoemes.shikimori.presentation.view.series.translations.adapter.TranslationsAdapter
@@ -34,7 +35,8 @@ import kotlinx.android.synthetic.main.fragment_translations.*
 import kotlinx.android.synthetic.main.layout_toolbar_transparent.*
 import kotlinx.android.synthetic.main.layout_translations_toolbar.*
 
-class TranslationsFragment : BaseSeriesFragment<TranslationsPresenter, TranslationsView>(), TranslationsView, PlayerSelectDialog.Callback {
+class TranslationsFragment : BaseSeriesFragment<TranslationsPresenter, TranslationsView>(),
+        TranslationsView, PlayerSelectDialog.Callback, ListDialogFragment.DialogCallback {
 
     @InjectPresenter
     lateinit var translationsPresenter: TranslationsPresenter
@@ -166,6 +168,10 @@ class TranslationsFragment : BaseSeriesFragment<TranslationsPresenter, Translati
         getPresenter().onPlayerSelected(playerType)
     }
 
+    override fun dialogItemCallback(tag: String?, url: String) {
+        getPresenter().onTrackForDownloadSelected(url)
+    }
+
     ///////////////////////////////////////////////////////////////////////////
     // GETTERS
     ///////////////////////////////////////////////////////////////////////////
@@ -230,6 +236,13 @@ class TranslationsFragment : BaseSeriesFragment<TranslationsPresenter, Translati
     override fun showPlayerDialog() {
         val dialog = PlayerSelectDialog.newInstance()
         dialog.show(childFragmentManager, "PlayerSelect")
+    }
+
+    override fun showDownloadDialog(items: List<Pair<String, String>>) {
+        val dialog = ListDialogFragment.newInstance()
+        dialog.apply {
+            setItems(items)
+        }.show(childFragmentManager, "DownloadDialog")
     }
 
     override fun onShowLoading() = progress.visible()
