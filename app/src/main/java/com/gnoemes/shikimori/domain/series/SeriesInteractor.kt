@@ -13,7 +13,9 @@ interface SeriesInteractor {
 
     fun getTranslations(type: TranslationType, animeId: Long, episodeId: Long, alternative: Boolean): Single<List<Translation>>
 
-    fun getTranslationSettings(animeId: Long, episodeIndex: Int) : Single<TranslationSetting>
+    fun getTranslationSettings(animeId: Long) : Single<TranslationSetting>
+
+    fun saveTranslationSettings(settings : TranslationSetting) : Completable
 
     fun getVideo(payload : TranslationVideo) : Single<Video>
 

@@ -29,8 +29,12 @@ class SeriesInteractorImpl @Inject constructor(
             repository.getTranslations(type, animeId, episodeId, alternative)
                     .applyErrorHandlerAndSchedulers()
 
-    override fun getTranslationSettings(animeId: Long, episodeIndex: Int): Single<TranslationSetting> =
-            repository.getTranslationSettings(animeId, episodeIndex)
+    override fun getTranslationSettings(animeId: Long): Single<TranslationSetting> =
+            repository.getTranslationSettings(animeId)
+                    .applyErrorHandlerAndSchedulers()
+
+    override fun saveTranslationSettings(settings: TranslationSetting): Completable =
+            repository.saveTranslationSettings(settings)
                     .applyErrorHandlerAndSchedulers()
 
     override fun getVideo(payload: TranslationVideo): Single<Video> =

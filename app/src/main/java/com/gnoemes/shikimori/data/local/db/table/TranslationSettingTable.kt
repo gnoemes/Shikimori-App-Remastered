@@ -8,18 +8,15 @@ object TranslationSettingTable {
 
     const val COLUMN_ANIME_ID = "_anime_id"
 
-    const val COLUMN_EPISODE_INDEX = "_episode_index"
-
     const val COLUMN_AUTHOR = "author"
 
     const val COLUMN_TYPE = "type"
 
     const val CREATE_QUERY = "CREATE TABLE $TABLE(" +
-            "$COLUMN_ANIME_ID INTEGER NOT NULL, " +
-            "$COLUMN_EPISODE_INDEX INTEGER NOT NULL, " +
+            "$COLUMN_ANIME_ID INTEGER NOT NULL PRIMARY KEY, " +
             "$COLUMN_AUTHOR TEXT, " +
-            "$COLUMN_TYPE TEXT, " +
-            "PRIMARY KEY ($COLUMN_ANIME_ID , $COLUMN_EPISODE_INDEX));"
+            "$COLUMN_TYPE TEXT" +
+            ");"
 
     const val DROP_QUERY = "DROP TABLE IF EXISTS $TABLE"
 

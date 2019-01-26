@@ -6,7 +6,7 @@ import io.reactivex.Single
 
 interface TranslationSettingDbSource {
 
-    fun saveSetting(setting : TranslationSetting) : Completable
+    fun saveSetting(setting: TranslationSetting): Completable
 
-    fun getSetting(animeId : Long, episodeIndex : Int) : Single<TranslationSetting>
+    fun getSetting(animeId: Long): Single<TranslationSetting>
 }

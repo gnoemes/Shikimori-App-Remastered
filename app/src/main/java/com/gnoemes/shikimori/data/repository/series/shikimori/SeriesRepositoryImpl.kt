@@ -49,8 +49,11 @@ class SeriesRepositoryImpl @Inject constructor(
             api.getVideo(payload.animeId, payload.episodeIndex, payload.videoId.toString(), payload.language, payload.type.type!!, payload.authorSimple, payload.videoHosting.synonymType)
                     .map(videoConverter)
 
-    override fun getTranslationSettings(animeId: Long, episodeIndex: Int): Single<TranslationSetting> =
-            translationSettingSource.getSetting(animeId, episodeIndex)
+    override fun getTranslationSettings(animeId: Long): Single<TranslationSetting> =
+            translationSettingSource.getSetting(animeId)
+
+    override fun saveTranslationSettings(settings: TranslationSetting): Completable =
+        translationSettingSource.saveSetting(settings)
 
     override fun setEpisodeStatus(animeId: Long, episodeId: Int, isWatched: Boolean): Completable =
             if (isWatched) episodeSource.episodeWatched(animeId, episodeId)

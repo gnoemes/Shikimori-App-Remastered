@@ -190,6 +190,7 @@ class EpisodesPresenter @Inject constructor(
     }
 
     fun onCheckAllPrevious(index: Int) {
+        //TODO refactor?
         Single.just(rateId)
                 .flatMap { createRateIfNotExist(it) }
                 .flatMap { userInteractor.getMyUserBrief() }

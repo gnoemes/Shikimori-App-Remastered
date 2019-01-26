@@ -16,7 +16,7 @@ class TranslationSettingDbSourceImpl @Inject constructor(
 ) : TranslationSettingDbSource {
 
     override fun saveSetting(setting: TranslationSetting): Completable {
-        val dao = TranslationSettingDao(setting.animeId, setting.episodeIndex, setting.lastAuthor, setting.lastType?.type)
+        val dao = TranslationSettingDao(setting.animeId, setting.lastAuthor, setting.lastType?.type)
         return storIOSQLite
                 .put()
                 .`object`(dao)
@@ -24,21 +24,21 @@ class TranslationSettingDbSourceImpl @Inject constructor(
                 .asRxCompletable()
     }
 
-    override fun getSetting(animeId: Long, episodeIndex: Int): Single<TranslationSetting> =
+    override fun getSetting(animeId: Long): Single<TranslationSetting> =
             storIOSQLite
                     .get()
                     .`object`(TranslationSettingDao::class.java)
                     .withQuery(Query.builder()
                             .table(TranslationSettingTable.TABLE)
-                            .where("${TranslationSettingTable.COLUMN_ANIME_ID} = ? AND ${TranslationSettingTable.COLUMN_EPISODE_INDEX} = ?")
-                            .whereArgs(animeId, episodeIndex)
+                            .where("${TranslationSettingTable.COLUMN_ANIME_ID} = ?")
+                            .whereArgs(animeId)
                             .build()
                     ).prepare()
                     .asRxSingle()
                     .map { optional ->
-                        if (optional.isPresent) optional.get().let { dao -> TranslationSetting(dao.animeId, dao.episodeIndex, dao.author, TranslationType.values().find { it.type == dao.type }) }
-                        else getDefaultItem(animeId, episodeIndex)
-                    }.onErrorReturnItem(getDefaultItem(animeId, episodeIndex))
+                        if (optional.isPresent) optional.get().let { dao -> TranslationSetting(dao.animeId, dao.author, TranslationType.values().find { it.type == dao.type }) }
+                        else getDefaultItem(animeId)
+                    }.onErrorReturnItem(getDefaultItem(animeId))
 
-    private fun getDefaultItem(animeId: Long, episodeIndex: Int): TranslationSetting = TranslationSetting(animeId, episodeIndex, null, null)
+    private fun getDefaultItem(animeId: Long): TranslationSetting = TranslationSetting(animeId,  null, null)
 }

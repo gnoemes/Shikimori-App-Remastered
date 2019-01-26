@@ -8,7 +8,6 @@ import com.pushtorefresh.storio3.sqlite.annotations.StorIOSQLiteType
 @StorIOSQLiteType(table = TranslationSettingTable.TABLE)
 data class TranslationSettingDao @StorIOSQLiteCreator constructor(
         @StorIOSQLiteColumn(name = TranslationSettingTable.COLUMN_ANIME_ID, key = true) val animeId: Long,
-        @StorIOSQLiteColumn(name = TranslationSettingTable.COLUMN_EPISODE_INDEX, key = true) val episodeIndex: Int,
         @StorIOSQLiteColumn(name = TranslationSettingTable.COLUMN_AUTHOR) val author: String?,
         @StorIOSQLiteColumn(name = TranslationSettingTable.COLUMN_TYPE) val type: String?
 )

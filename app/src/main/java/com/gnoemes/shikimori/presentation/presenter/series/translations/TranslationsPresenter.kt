@@ -17,6 +17,7 @@ import io.reactivex.Completable
 import javax.inject.Inject
 
 //TODO base series presenter with search logic?
+//TODO process 400, 404. add view to retry request
 @InjectViewState
 class TranslationsPresenter @Inject constructor(
         private val interactor: SeriesInteractor,
@@ -42,8 +43,7 @@ class TranslationsPresenter @Inject constructor(
     }
 
     private fun loadData() {
-        (if (setting == null && settingsSource.useLocalTranslationSettings) loadSettings()
-        else Completable.complete())
+        loadSettingsIfNeed()
                 .andThen(loadTranslations(type))
                 .doOnSubscribe { viewState.setTranslationType(type) }
                 .appendLoadingLogic(viewState)
@@ -52,15 +52,17 @@ class TranslationsPresenter @Inject constructor(
     }
 
     private fun loadSettings() =
-            interactor.getTranslationSettings(navigationData.animeId, navigationData.episodeIndex)
+            interactor.getTranslationSettings(navigationData.animeId)
                     .doOnSuccess { setting = it }
                     .doOnSuccess { type = it.lastType ?: settingsSource.translationType }
                     .ignoreElement()
 
-
     private fun loadTranslations(type: TranslationType) =
             interactor.getTranslations(type, navigationData.animeId, navigationData.episodeId, navigationData.isAlternative)
                     .map { converter.convertTranslations(it, setting) }
+
+    private fun loadSettingsIfNeed(): Completable =
+            (if (setting == null && settingsSource.useLocalTranslationSettings) loadSettings() else Completable.complete())
 
     private fun setData(data: List<TranslationViewModel>) {
         val items = data.toMutableList()
@@ -101,15 +103,18 @@ class TranslationsPresenter @Inject constructor(
     //Others players uses urls
     private fun openVideo(payload: TranslationVideo, playerType: PlayerType) {
         if (playerType == PlayerType.EMBEDDED) openPlayer(playerType, payload)
-        else getVideoAndExecute(payload) {
-            openPlayer(playerType, it.tracks.first().url)
-            setEpisodeWatched(navigationData.animeId, navigationData.episodeIndex, navigationData.rateId)
-        }
+        else getVideoAndExecute(payload) { openPlayer(playerType, it.tracks.first().url) }
     }
 
-    private fun setEpisodeWatched(animeId: Long, episodeIndex: Int, rateId: Long) {
-        interactor.setEpisodeWatched(animeId, episodeIndex, rateId)
-                .andThen(interactor.sendEpisodeChanges(EpisodeChanges(animeId, episodeIndex, true)))
+    override fun openPlayer(playerType: PlayerType, payload: Any?) {
+        super.openPlayer(playerType, payload)
+
+        setEpisodeWatched(selectedHosting)
+    }
+
+    private fun setEpisodeWatched(payload: TranslationVideo) {
+        interactor.sendEpisodeChanges(EpisodeChanges(payload.animeId, payload.episodeIndex, true))
+                .andThen(interactor.saveTranslationSettings(TranslationSetting(payload.animeId, payload.author, payload.type)))
                 .subscribe({router.exit()}, this::processErrors)
                 .addToDisposables()
     }

@@ -13,7 +13,9 @@ interface SeriesRepository {
 
     fun getVideo(payload : TranslationVideo) : Single<Video>
 
-    fun getTranslationSettings(animeId: Long, episodeIndex: Int): Single<TranslationSetting>
+    fun getTranslationSettings(animeId: Long): Single<TranslationSetting>
+
+    fun saveTranslationSettings(settings : TranslationSetting): Completable
 
     fun setEpisodeStatus(animeId: Long, episodeId: Int, isWatched : Boolean): Completable
 
