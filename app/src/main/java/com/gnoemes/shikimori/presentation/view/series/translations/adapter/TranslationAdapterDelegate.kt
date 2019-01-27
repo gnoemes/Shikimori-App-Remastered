@@ -57,7 +57,7 @@ class TranslationAdapterDelegate(
             itemView.hostingRecyclerView.apply {
                 layoutManager = this@ViewHolder.layoutManager
                 adapter = this@ViewHolder.adapter
-                addItemDecoration(HorizontalSpaceItemDecorator(resources.getDimension(R.dimen.margin_small).toInt(), snapOffset))
+                addItemDecoration(HorizontalSpaceItemDecorator(resources.getDimension(R.dimen.margin_normal).toInt(), snapOffset))
             }
             itemView.menuView.onClick { showPopup(item) }
         }
