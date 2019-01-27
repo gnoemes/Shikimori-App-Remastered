@@ -90,6 +90,8 @@ dependencies {
     implementation 'com.lapism:searchview:' + versions.searchView
     implementation 'de.hdodenhof:circleimageview:' + versions.circleImageView
 
+    implementation 'com.google.android.exoplayer:exoplayer:' + versions.exoplayer
+
     implementation 'org.kefirsf:kefirbb:' + versions.kefirBB
 
     implementation 'com.google.firebase:firebase-core:' + versions.firebase

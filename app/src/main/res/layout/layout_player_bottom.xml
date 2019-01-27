@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="@layout/layout_player_controller">
+
+    <TextView
+        android:id="@+id/exo_position"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginBottom="6dp"
+        android:textColor="@color/player_controls"
+        app:layout_constraintBottom_toTopOf="@+id/exo_progress"
+        app:layout_constraintStart_toStartOf="@+id/exo_progress"
+        tools:ignore="RtlHardcoded"
+        tools:text="02:09" />
+
+    <TextView
+        android:id="@+id/progressDivider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="2dp"
+        android:paddingEnd="2dp"
+        android:text="/"
+        android:textColor="@color/player_controls"
+        app:layout_constraintBottom_toBottomOf="@+id/exo_position"
+        app:layout_constraintStart_toEndOf="@+id/exo_position"
+        app:layout_constraintTop_toTopOf="@+id/exo_position"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/exo_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/player_controls"
+        app:layout_constraintBottom_toBottomOf="@+id/exo_position"
+        app:layout_constraintStart_toEndOf="@+id/progressDivider"
+        app:layout_constraintTop_toTopOf="@+id/exo_position"
+        tools:ignore="RtlHardcoded"
+        tools:text="23:41" />
+
+    <TextView
+        android:id="@+id/dragProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:textColor="#99ffffff"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/exo_duration"
+        app:layout_constraintStart_toEndOf="@+id/exo_duration"
+        app:layout_constraintTop_toTopOf="@+id/exo_duration"
+        tools:ignore="RtlHardcoded"
+        tools:text="+ 02.21"
+        tools:visibility="visible" />
+
+    <com.google.android.exoplayer2.ui.DefaultTimeBar
+        android:id="@+id/exo_progress"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="16dp"
+        app:buffered_color="?attr/colorAccentTransparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/lockView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:played_color="?attr/colorAccent"
+
+        app:scrubber_color="?attr/colorAccent"
+        app:unplayed_color="@color/player_controls"
+        tools:ignore="RtlHardcoded" />
+
+    <ImageButton
+        android:id="@+id/lockView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="16dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/pipView"
+        app:srcCompat="@drawable/ic_lock" />
+
+    <ImageButton
+        android:id="@+id/pipView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="@+id/lockView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/rotationView"
+        app:srcCompat="@drawable/ic_pip" />
+
+    <ImageButton
+        android:id="@+id/rotationView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="@+id/lockView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_screen_rotation" />
+</merge>

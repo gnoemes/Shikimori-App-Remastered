@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.appbar.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/appBarLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    android:fitsSystemWindows="true"
+    app:elevation="4dp"
+    app:layout_collapseMode="pin"
+    tools:showIn="@layout/layout_player_controller">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/transparent"
+        android:fitsSystemWindows="true"
+        app:contentInsetStartWithNavigation="0dp"
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:popupTheme="@style/PopupMenuTheme"
+        app:subtitleTextAppearance="@style/PlayerSubTitleTextAppearance"
+        app:subtitleTextColor="@color/player_controls"
+        app:titleTextAppearance="@style/PlayerTitleTextAppearance"
+        app:titleTextColor="@color/player_controls"
+        tools:subtitle="17 серия"
+        tools:title="Steins;Gate 0">
+
+        <com.santalu.widget.ReSpinner
+            android:id="@+id/resolutionSpinnerView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:popupBackground="@color/black"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+
+</com.google.android.material.appbar.AppBarLayout>

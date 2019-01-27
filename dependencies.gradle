@@ -35,6 +35,8 @@ ext.versions = [
     searchView        : '4.0',
     circleImageView   : '2.2.0',
 
+    exoplayer         : '2.9.4',
+
     kefirBB           : '1.5',
     firebase          : '16.0.6'
 ]

@@ -38,4 +38,16 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="PlayerTitleTextAppearance" parent="@style/Widget.MaterialComponents.Toolbar">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/player_controls</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="PlayerSubTitleTextAppearance" parent="@style/Widget.MaterialComponents.Toolbar">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/player_controls</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
 </resources>
