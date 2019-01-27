@@ -50,12 +50,19 @@
             android:label="@string/more_settings" />
 
         <activity
-            android:name=".presentation.view.player.WebPlayerActivity"
+            android:name=".presentation.view.player.web.WebPlayerActivity"
             android:configChanges="orientation|keyboardHidden|screenLayout|smallestScreenSize|screenSize"
             android:hardwareAccelerated="true"
             android:launchMode="singleTask"
             android:resizeableActivity="true"
             android:supportsPictureInPicture="true"
+            />
+        <activity android:name=".presentation.view.player.embedded.EmbeddedPlayerActivity"
+            android:configChanges="orientation|keyboardHidden|screenLayout|smallestScreenSize|screenSize"
+            android:launchMode="singleTask"
+            android:resizeableActivity="true"
+            android:supportsPictureInPicture="true"
+            android:hardwareAccelerated="true"
             />
 
 

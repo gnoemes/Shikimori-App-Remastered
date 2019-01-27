@@ -5,6 +5,7 @@ import com.arellomobile.mvp.InjectViewState
 import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.domain.series.SeriesInteractor
 import com.gnoemes.shikimori.entity.series.domain.*
+import com.gnoemes.shikimori.entity.series.presentation.EmbeddedPlayerNavigationData
 import com.gnoemes.shikimori.entity.series.presentation.TranslationVideo
 import com.gnoemes.shikimori.entity.series.presentation.TranslationViewModel
 import com.gnoemes.shikimori.entity.series.presentation.TranslationsNavigationData
@@ -104,7 +105,7 @@ class TranslationsPresenter @Inject constructor(
     //Only embedded player can process object payload
     //Others o uses urls
     private fun openVideo(payload: TranslationVideo, playerType: PlayerType) {
-        if (playerType == PlayerType.EMBEDDED) openPlayer(playerType, payload)
+        if (playerType == PlayerType.EMBEDDED) openPlayer(playerType, EmbeddedPlayerNavigationData(navigationData.name, navigationData.rateId, items.firstOrNull()!!.episodesSize, payload))
         else getVideoAndExecute(payload) { openPlayer(playerType, it.tracks.first().url) }
     }
 
@@ -141,7 +142,7 @@ class TranslationsPresenter @Inject constructor(
 
         Observable.fromIterable(filteredItems)
                 .flatMapSingle { interactor.getVideo(it) }
-                .flatMap {video ->
+                .flatMap { video ->
                     Observable.just(video)
                             .flatMapIterable { it.tracks }
                             .map { converter.convertTrack(video.hosting, it) }

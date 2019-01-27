@@ -10,6 +10,7 @@ import com.gnoemes.shikimori.entity.common.domain.Screens
 import com.gnoemes.shikimori.entity.forum.domain.ForumType
 import com.gnoemes.shikimori.entity.main.BottomScreens
 import com.gnoemes.shikimori.entity.search.presentation.SearchNavigationData
+import com.gnoemes.shikimori.entity.series.presentation.EmbeddedPlayerNavigationData
 import com.gnoemes.shikimori.entity.series.presentation.EpisodesNavigationData
 import com.gnoemes.shikimori.entity.series.presentation.TranslationsNavigationData
 import com.gnoemes.shikimori.presentation.view.anime.AnimeFragment
@@ -18,7 +19,8 @@ import com.gnoemes.shikimori.presentation.view.calendar.CalendarFragment
 import com.gnoemes.shikimori.presentation.view.character.CharacterFragment
 import com.gnoemes.shikimori.presentation.view.more.MoreFragment
 import com.gnoemes.shikimori.presentation.view.person.PersonFragment
-import com.gnoemes.shikimori.presentation.view.player.WebPlayerActivity
+import com.gnoemes.shikimori.presentation.view.player.embedded.EmbeddedPlayerActivity
+import com.gnoemes.shikimori.presentation.view.player.web.WebPlayerActivity
 import com.gnoemes.shikimori.presentation.view.rates.RatesContainerFragment
 import com.gnoemes.shikimori.presentation.view.search.SearchFragment
 import com.gnoemes.shikimori.presentation.view.series.episodes.EpisodesFragment
@@ -55,6 +57,7 @@ object RouteHolder {
             Screens.WEB -> Intent(Intent.ACTION_VIEW, Uri.parse(data as String))
             Screens.SETTINGS -> Intent(context, SettingsActivity::class.java)
             Screens.WEB_PLAYER -> Intent(context, WebPlayerActivity::class.java).apply { putExtra(AppExtras.ARGUMENT_URL, data as String) }
+            Screens.EMBEDDED_PLAYER -> Intent(context, EmbeddedPlayerActivity::class.java).apply { putExtra(AppExtras.ARGUMENT_PLAYER_DATA, data as EmbeddedPlayerNavigationData) }
             else -> null
         }
     }

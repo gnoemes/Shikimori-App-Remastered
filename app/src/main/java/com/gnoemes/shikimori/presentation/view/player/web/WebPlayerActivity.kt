@@ -1,4 +1,4 @@
-package com.gnoemes.shikimori.presentation.view.player
+package com.gnoemes.shikimori.presentation.view.player.web
 
 import android.annotation.SuppressLint
 import android.content.Intent

@@ -7,6 +7,7 @@ import com.gnoemes.shikimori.data.network.VideoApi
 import com.gnoemes.shikimori.data.repository.series.shikimori.converter.EpisodeResponseConverter
 import com.gnoemes.shikimori.data.repository.series.shikimori.converter.TranslationResponseConverter
 import com.gnoemes.shikimori.data.repository.series.shikimori.converter.VideoResponseConverter
+import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.series.domain.*
 import com.gnoemes.shikimori.entity.series.presentation.TranslationVideo
 import io.reactivex.Completable
@@ -19,7 +20,7 @@ class SeriesRepositoryImpl @Inject constructor(
         private val api: VideoApi,
         private val converter: EpisodeResponseConverter,
         private val translationConverter: TranslationResponseConverter,
-        private val videoConverter : VideoResponseConverter,
+        private val videoConverter: VideoResponseConverter,
         private val episodeSource: EpisodeDbSource,
         private val syncSource: AnimeRateSyncDbSource,
         private val translationSettingSource: TranslationSettingDbSource
@@ -46,14 +47,22 @@ class SeriesRepositoryImpl @Inject constructor(
                     .map(translationConverter)
 
     override fun getVideo(payload: TranslationVideo): Single<Video> =
-            api.getVideo(payload.animeId, payload.episodeIndex, payload.videoId.toString(), payload.language, payload.type.type!!, payload.authorSimple, payload.videoHosting.synonymType)
+            api.getVideo(
+                    payload.animeId,
+                    payload.episodeIndex,
+                    if (payload.videoId == Constants.NO_ID) null else payload.videoId.toString(),
+                    payload.language,
+                    payload.type.type!!,
+                    payload.authorSimple,
+                    payload.videoHosting.synonymType
+            )
                     .map(videoConverter)
 
     override fun getTranslationSettings(animeId: Long): Single<TranslationSetting> =
             translationSettingSource.getSetting(animeId)
 
     override fun saveTranslationSettings(settings: TranslationSetting): Completable =
-        translationSettingSource.saveSetting(settings)
+            translationSettingSource.saveSetting(settings)
 
     override fun setEpisodeStatus(animeId: Long, episodeId: Int, isWatched: Boolean): Completable =
             if (isWatched) episodeSource.episodeWatched(animeId, episodeId)

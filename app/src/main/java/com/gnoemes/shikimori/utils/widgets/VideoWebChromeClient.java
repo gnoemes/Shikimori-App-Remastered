@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
-import com.gnoemes.shikimori.presentation.view.player.WebPlayerActivity;
+import com.gnoemes.shikimori.presentation.view.player.web.WebPlayerActivity;
 
 
 public class VideoWebChromeClient extends WebChromeClient {

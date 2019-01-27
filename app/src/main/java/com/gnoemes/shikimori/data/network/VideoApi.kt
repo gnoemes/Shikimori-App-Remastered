@@ -31,7 +31,7 @@ interface VideoApi {
     @GET("/api/anime/{animeId}/{episodeId}/video/{videoId}")
     fun getVideo(@Path("animeId") animeId: Long,
                  @Path("episodeId") episodeId: Int,
-                 @Path("videoId") videoId: String,
+                 @Path("videoId") videoId: String?,
                  @Query("language") language: String,
                  @Query("kind") type: String,
                  @Query("author") author: String,
