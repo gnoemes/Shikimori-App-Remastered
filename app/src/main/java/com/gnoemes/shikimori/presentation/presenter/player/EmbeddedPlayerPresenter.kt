@@ -23,14 +23,12 @@ class EmbeddedPlayerPresenter @Inject constructor(
 
     private var currentEpisode: Int = -1
     private var currentTrack = 0
-    private var rateId: Long = Constants.NO_ID
     private lateinit var payload: TranslationVideo
 
     private val videos = hashSetOf<Video>()
 
     override fun initData() {
         super.initData()
-        navigationData.rateId?.let { rateId = it }
         currentEpisode = navigationData.payload.episodeIndex
         payload = navigationData.payload
 

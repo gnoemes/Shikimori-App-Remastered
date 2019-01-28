@@ -55,15 +55,15 @@
             android:hardwareAccelerated="true"
             android:launchMode="singleTask"
             android:resizeableActivity="true"
-            android:supportsPictureInPicture="true"
-            />
-        <activity android:name=".presentation.view.player.embedded.EmbeddedPlayerActivity"
+            android:supportsPictureInPicture="true" />
+
+        <activity
+            android:name=".presentation.view.player.embedded.EmbeddedPlayerActivity"
             android:configChanges="orientation|keyboardHidden|screenLayout|smallestScreenSize|screenSize"
+            android:hardwareAccelerated="true"
             android:launchMode="singleTask"
             android:resizeableActivity="true"
-            android:supportsPictureInPicture="true"
-            android:hardwareAccelerated="true"
-            />
+            android:supportsPictureInPicture="true" />
 
 
     </application>

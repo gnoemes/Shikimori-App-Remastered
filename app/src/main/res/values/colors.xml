@@ -45,5 +45,6 @@
     <color name="background_transparent_text">#99000000</color>
 
     <color name="player_controls">#deffffff</color>
+    <color name="player_surface">#80000000</color>
 
 </resources>

@@ -2,12 +2,15 @@ package com.gnoemes.shikimori.presentation.view.player.embedded
 
 import android.annotation.TargetApi
 import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.core.graphics.ColorUtils
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
@@ -30,6 +33,7 @@ import com.google.android.exoplayer2.ui.PlayerControlView
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
 import kotlinx.android.synthetic.main.activity_embedded_player.*
+import kotlinx.android.synthetic.main.layout_player_bottom.*
 import kotlinx.android.synthetic.main.layout_player_controls.*
 import kotlinx.android.synthetic.main.layout_player_toolbar.*
 import ru.terrakok.cicerone.Navigator
@@ -49,6 +53,10 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
     @Inject
     lateinit var localNavigatorHolder: NavigatorHolder
 
+    companion object {
+        const val CONTROLLER_HIDE_DELAY = 3500L
+    }
+
     private val controller by lazy { PlayerController() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,8 +67,11 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         toolbar.navigationIcon?.tint(baseContext.color(R.color.player_controls))
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 
+        exo_progress.setBufferedColor(ColorUtils.setAlphaComponent(colorAttr(R.attr.colorAccentTransparent), 153))
+
         prev.onClick { presenter.loadPrevEpisode() }
         next.onClick { presenter.loadNextEpisode() }
+        rotationView.onClick { toggleOrientation() }
     }
 
     override fun onStop() {
@@ -94,6 +105,23 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
                         // Hide the nav bar and status bar
                         or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         or View.SYSTEM_UI_FLAG_FULLSCREEN)
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration?) {
+        super.onConfigurationChanged(newConfig)
+
+        if (android.provider.Settings.System.getInt(contentResolver, Settings.System.ACCELEROMETER_ROTATION, 0) == 1) {
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+        }
+    }
+
+    fun toggleOrientation() {
+        val orientation = this.resources.configuration.orientation
+
+        when (orientation) {
+            ActivityInfo.SCREEN_ORIENTATION_PORTRAIT -> requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+            ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE, ActivityInfo.SCREEN_ORIENTATION_USER -> requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -131,6 +159,8 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
     override fun enablePrevButton(enable: Boolean) = controller.enablePrevButton(enable)
     override fun onShowLoading() = progressBar.visible()
     override fun onHideLoading() = progressBar.gone()
+    override fun onShowLightLoading() = bufferingProgressBar.visible()
+    override fun onHideLightLoading() = bufferingProgressBar.gone()
 
     override fun showMessage(s: String, exit: Boolean) {
         Toast.makeText(this, s, Toast.LENGTH_LONG).show()
@@ -200,6 +230,8 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
 
         override fun onVisibilityChange(visibility: Int) {
             controlsVisibility = visibility
+
+            if (visibility == View.VISIBLE) delayedHidingController()
         }
 
         override fun onPlayerError(error: ExoPlaybackException?) {
@@ -209,8 +241,8 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
 
         override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
             when (playbackState) {
-                Player.STATE_IDLE, Player.STATE_READY, Player.STATE_ENDED -> onHideLoading()
-                else -> onShowLoading()
+                Player.STATE_BUFFERING -> onShowLightLoading()
+                else -> onHideLightLoading()
             }
         }
 
@@ -222,5 +254,12 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
             player.stop()
             player.release()
         }
+
+        private fun delayedHidingController() {
+            playerView.removeCallbacks(postHideRunnable)
+            playerView.postDelayed(postHideRunnable, CONTROLLER_HIDE_DELAY)
+        }
+
+        private val postHideRunnable = Runnable { playerView.hideController() }
     }
 }
