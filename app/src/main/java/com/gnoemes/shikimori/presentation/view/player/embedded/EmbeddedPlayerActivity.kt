@@ -41,6 +41,7 @@ import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder
 import javax.inject.Inject
 
+//TODO create custom spinner and listener for open/close events
 class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPlayerView>(), EmbeddedPlayerView {
 
     @InjectPresenter
@@ -72,6 +73,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         exo_progress.setBufferedColor(ColorUtils.setAlphaComponent(colorAttr(R.attr.colorAccentTransparent), 153))
         resolutionSpinnerView.setPopupBackgroundResource(R.drawable.background_player_resolution)
         resolutionSpinnerView.background.tint(color(R.color.player_controls))
+        includedToolbar.gone()
 
         prev.onClick { presenter.loadPrevEpisode() }
         next.onClick { presenter.loadNextEpisode() }
@@ -119,7 +121,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         }
     }
 
-    fun toggleOrientation() {
+    private fun toggleOrientation() {
         val orientation = this.resources.configuration.orientation
 
         when (orientation) {
@@ -210,6 +212,10 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
             playerView.controllerAutoShow = false
         }
 
+        val isVisible
+            get() = controlsVisibility == View.VISIBLE
+
+
         fun enableNextButton(enable: Boolean) {
             val alpha =
                     if (!enable) 0.3f
@@ -243,7 +249,10 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         override fun onVisibilityChange(visibility: Int) {
             controlsVisibility = visibility
 
-            if (visibility == View.VISIBLE) delayedHidingController()
+            if (isVisible) {
+                includedToolbar.visible()
+                delayedHidingController()
+            }
         }
 
         override fun onPlayerError(error: ExoPlaybackException?) {
@@ -273,6 +282,10 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
             playerView.postDelayed(postHideRunnable, CONTROLLER_HIDE_DELAY)
         }
 
-        private val postHideRunnable = Runnable { playerView.hideController() }
+        private val postHideRunnable = Runnable {
+            includedToolbar.gone()
+            playerView.hideController()
+        }
+
     }
 }

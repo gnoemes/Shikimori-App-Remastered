@@ -4,8 +4,6 @@
     android:layout_height="match_parent"
     android:background="@color/player_surface">
 
-    <include layout="@layout/layout_player_toolbar" />
-
     <include layout="@layout/layout_player_controls" />
 
     <include layout="@layout/layout_player_bottom" />
