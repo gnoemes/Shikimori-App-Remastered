@@ -14,7 +14,7 @@
         android:minWidth="32dp"
         android:minHeight="32dp"
         app:layout_constraintBottom_toBottomOf="@+id/exo_play"
-        app:layout_constraintEnd_toStartOf="@+id/exo_play"
+        app:layout_constraintEnd_toStartOf="@+id/leftBarrier"
         app:layout_constraintTop_toTopOf="@+id/exo_play"
         app:srcCompat="@drawable/ic_prev"
         tools:ignore="ContentDescription" />
@@ -60,9 +60,23 @@
         android:minWidth="32dp"
         android:minHeight="32dp"
         app:layout_constraintBottom_toBottomOf="@+id/exo_play"
-        app:layout_constraintStart_toEndOf="@+id/exo_play"
+        app:layout_constraintStart_toEndOf="@+id/rightBarrier"
         app:layout_constraintTop_toTopOf="@+id/exo_play"
         app:srcCompat="@drawable/ic_next"
         tools:ignore="ContentDescription" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/rightBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="right"
+        app:constraint_referenced_ids="exo_play, exo_pause" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/leftBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="left"
+        app:constraint_referenced_ids="exo_play, exo_pause" />
 
 </merge>

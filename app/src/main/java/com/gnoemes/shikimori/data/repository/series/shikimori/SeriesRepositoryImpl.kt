@@ -50,7 +50,7 @@ class SeriesRepositoryImpl @Inject constructor(
             api.getVideo(
                     payload.animeId,
                     payload.episodeIndex,
-                    if (payload.videoId == Constants.NO_ID) null else payload.videoId.toString(),
+                    if (payload.videoId == Constants.NO_ID) "" else payload.videoId.toString(),
                     payload.language,
                     payload.type.type!!,
                     payload.authorSimple,

@@ -5,10 +5,8 @@ import com.gnoemes.shikimori.presentation.view.base.activity.BaseNetworkView
 
 interface EmbeddedPlayerView : BaseNetworkView {
 
-    fun enableNextButton()
-    fun disableNextButton()
-    fun enablePrevButton()
-    fun disablePrevButton()
+    fun enableNextButton(enable : Boolean)
+    fun enablePrevButton(enable : Boolean)
 
     fun showMessage(s: String, exit : Boolean = false)
 

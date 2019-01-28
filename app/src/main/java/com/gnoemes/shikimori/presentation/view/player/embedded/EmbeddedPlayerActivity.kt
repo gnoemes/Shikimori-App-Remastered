@@ -1,12 +1,37 @@
 package com.gnoemes.shikimori.presentation.view.player.embedded
 
+import android.annotation.TargetApi
+import android.content.pm.ActivityInfo
+import android.os.Build
+import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.view.WindowManager
+import android.widget.Toast
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.app.domain.AppExtras
+import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.series.domain.Track
+import com.gnoemes.shikimori.entity.series.domain.VideoFormat
 import com.gnoemes.shikimori.presentation.presenter.player.EmbeddedPlayerPresenter
 import com.gnoemes.shikimori.presentation.view.base.activity.BaseActivity
+import com.gnoemes.shikimori.utils.*
+import com.gnoemes.shikimori.utils.exoplayer.MediaSourceHelper
+import com.google.android.exoplayer2.ExoPlaybackException
+import com.google.android.exoplayer2.ExoPlayerFactory
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.source.MediaSource
+import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
+import com.google.android.exoplayer2.ui.PlayerControlView
+import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
+import kotlinx.android.synthetic.main.activity_embedded_player.*
+import kotlinx.android.synthetic.main.layout_player_controls.*
+import kotlinx.android.synthetic.main.layout_player_toolbar.*
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder
 import javax.inject.Inject
@@ -24,6 +49,52 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
     @Inject
     lateinit var localNavigatorHolder: NavigatorHolder
 
+    private val controller by lazy { PlayerController() }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+
+        toolbar.addBackButton { onBackPressed() }
+        toolbar.navigationIcon?.tint(baseContext.color(R.color.player_controls))
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+
+        prev.onClick { presenter.loadPrevEpisode() }
+        next.onClick { presenter.loadNextEpisode() }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        controller.onStop()
+    }
+
+    override fun onDestroy() {
+        controller.destroy()
+        super.onDestroy()
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                hideSystemUi()
+            }
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    private fun hideSystemUi() {
+        window.decorView.systemUiVisibility = (
+                View.SYSTEM_UI_FLAG_IMMERSIVE
+                        // Set the content to appear under the system bars so that the
+                        // content doesn't resize when the system bars hide and show.
+                        or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        // Hide the nav bar and status bar
+                        or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        or View.SYSTEM_UI_FLAG_FULLSCREEN)
+    }
 
     ///////////////////////////////////////////////////////////////////////////
     // GETTERS
@@ -43,29 +114,113 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
     ///////////////////////////////////////////////////////////////////////////
 
     override fun setTitle(title: String) {
+        toolbar.title = title
     }
 
     override fun setEpisodeSubtitle(currentEpisode: Int) {
+        val subTitle = String.format(getString(R.string.episode_number), currentEpisode)
+        toolbar.subtitle = subTitle
     }
 
-    override fun enableNextButton() {
+    override fun onBackPressed() {
+        super.finish()
     }
 
-    override fun disableNextButton() {
-    }
-
-    override fun enablePrevButton() {
-    }
-
-    override fun disablePrevButton() {
-    }
+    override fun selectTrack(currentTrack: Int) = controller.selectTrack(currentTrack)
+    override fun enableNextButton(enable: Boolean) = controller.enableNextButton(enable)
+    override fun enablePrevButton(enable: Boolean) = controller.enablePrevButton(enable)
+    override fun onShowLoading() = progressBar.visible()
+    override fun onHideLoading() = progressBar.gone()
 
     override fun showMessage(s: String, exit: Boolean) {
-    }
-
-    override fun selectTrack(currentTrack: Int) {
+        Toast.makeText(this, s, Toast.LENGTH_LONG).show()
+        if (exit) onBackPressed()
     }
 
     override fun playVideo(it: Track, needReset: Boolean) {
+        Log.i("PLAYER", "loading: ${it.url}")
+        val source = MediaSourceHelper
+                .withFactory(DefaultHttpDataSourceFactory("sap", DefaultBandwidthMeter(), Constants.LONG_TIMEOUT * 1000, Constants.LONG_TIMEOUT * 1000, true))
+                .withFormat(VideoFormat.MP4)
+                .withVideoUrl(it.url)
+                .get()
+
+        if (needReset) controller.addMediaSource(source)
+        else controller.updateTrack(source)
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Player controller
+    ///////////////////////////////////////////////////////////////////////////
+
+    private inner class PlayerController() : Player.EventListener, PlayerControlView.VisibilityListener {
+
+        val player: SimpleExoPlayer
+
+        private var controlsVisibility = 0
+
+        init {
+            val trackSelector = DefaultTrackSelector(AdaptiveTrackSelection.Factory())
+            player = ExoPlayerFactory.newSimpleInstance(this@EmbeddedPlayerActivity, trackSelector)
+            player.addListener(this)
+            playerView.player = player
+            playerView.setControllerVisibilityListener(this)
+            playerView.controllerAutoShow = false
+        }
+
+        fun enableNextButton(enable: Boolean) {
+            val alpha =
+                    if (!enable) 0.3f
+                    else 1f
+            next.alpha = alpha
+            next.isEnabled = enable
+        }
+
+        fun enablePrevButton(enable: Boolean) {
+            val alpha =
+                    if (!enable) 0.3f
+                    else 1f
+            prev.alpha = alpha
+            prev.isEnabled = enable
+        }
+
+        fun selectTrack(currentTrack: Int) {
+            resolutionSpinnerView.setSelection(currentTrack, false)
+        }
+
+        fun addMediaSource(source: MediaSource?) {
+            player.playWhenReady = true
+            player.prepare(source)
+        }
+
+        fun updateTrack(source: MediaSource?) {
+            player.playWhenReady = true
+            player.prepare(source, false, false)
+        }
+
+        override fun onVisibilityChange(visibility: Int) {
+            controlsVisibility = visibility
+        }
+
+        override fun onPlayerError(error: ExoPlaybackException?) {
+            error?.printStackTrace()
+            super.onPlayerError(error)
+        }
+
+        override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+            when (playbackState) {
+                Player.STATE_IDLE, Player.STATE_READY, Player.STATE_ENDED -> onHideLoading()
+                else -> onShowLoading()
+            }
+        }
+
+        fun onStop() {
+            player.playWhenReady = false
+        }
+
+        fun destroy() {
+            player.stop()
+            player.release()
+        }
     }
 }

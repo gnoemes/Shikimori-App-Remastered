@@ -5,9 +5,7 @@
     android:layout_height="match_parent"
     tools:background="@color/black">
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/layout_player_toolbar" />
+    <include layout="@layout/layout_player_toolbar" />
 
     <include layout="@layout/layout_player_controls" />
 

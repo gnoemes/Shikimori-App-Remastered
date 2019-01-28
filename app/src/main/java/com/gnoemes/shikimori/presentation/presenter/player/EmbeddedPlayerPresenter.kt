@@ -1,11 +1,9 @@
 package com.gnoemes.shikimori.presentation.presenter.player
 
 import com.arellomobile.mvp.InjectViewState
-import com.gnoemes.shikimori.domain.rates.RatesInteractor
 import com.gnoemes.shikimori.domain.series.SeriesInteractor
 import com.gnoemes.shikimori.entity.app.domain.Constants
-import com.gnoemes.shikimori.entity.common.domain.Type
-import com.gnoemes.shikimori.entity.rates.domain.RateStatus
+import com.gnoemes.shikimori.entity.series.domain.EpisodeChanges
 import com.gnoemes.shikimori.entity.series.domain.Track
 import com.gnoemes.shikimori.entity.series.domain.Video
 import com.gnoemes.shikimori.entity.series.presentation.EmbeddedPlayerNavigationData
@@ -14,13 +12,11 @@ import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
 import com.gnoemes.shikimori.presentation.view.player.embedded.EmbeddedPlayerView
 import com.gnoemes.shikimori.utils.Utils
 import com.gnoemes.shikimori.utils.appendLoadingLogic
-import io.reactivex.Single
 import javax.inject.Inject
 
 @InjectViewState
 class EmbeddedPlayerPresenter @Inject constructor(
-        private val interactor: SeriesInteractor,
-        private val ratesInteractor: RatesInteractor
+        private val interactor: SeriesInteractor
 ) : BaseNetworkPresenter<EmbeddedPlayerView>() {
 
     lateinit var navigationData: EmbeddedPlayerNavigationData
@@ -76,11 +72,8 @@ class EmbeddedPlayerPresenter @Inject constructor(
     }
 
     private fun updateControls() {
-        if (currentEpisode < navigationData.episodesSize) viewState.enableNextButton()
-        else viewState.disableNextButton()
-
-        if (currentEpisode > 1) viewState.enablePrevButton()
-        else viewState.disablePrevButton()
+        viewState.enableNextButton(currentEpisode < navigationData.episodesSize)
+        viewState.enablePrevButton(currentEpisode > 1)
     }
 
     private fun loadOrUpdateVideo(payload: TranslationVideo) {
@@ -89,9 +82,8 @@ class EmbeddedPlayerPresenter @Inject constructor(
     }
 
     private fun setEpisodeWatched() {
-        Single.just(rateId)
-                .flatMap { createRateIfNotExist(it) }
-                .flatMapCompletable { interactor.setEpisodeStatus(animeId, currentEpisode, it, true) }
+        interactor
+                .sendEpisodeChanges(EpisodeChanges(animeId, currentEpisode, true))
                 .subscribe({}, this::processErrors)
                 .addToDisposables()
     }
@@ -116,14 +108,6 @@ class EmbeddedPlayerPresenter @Inject constructor(
         track?.let {
             currentTrack = video.tracks.indexOf(it)
             updateVideo(video, false)
-        }
-    }
-
-    //TODO do something with rate creation, mb relocate logic to interactor
-    private fun createRateIfNotExist(rateId: Long): Single<Long> {
-        return when (rateId) {
-            Constants.NO_ID -> ratesInteractor.createRateWithResult(animeId, Type.ANIME, RateStatus.WATCHING).map { it.id!! }.doOnSuccess { this@EmbeddedPlayerPresenter.rateId = it }
-            else -> Single.just(rateId)
         }
     }
 
