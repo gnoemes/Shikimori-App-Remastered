@@ -4,6 +4,10 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@android:color/transparent"
-    android:padding="8dp"
+    android:padding="9dp"
+    android:paddingStart="16dp"
+    android:paddingLeft="16dp"
+    android:paddingEnd="16dp"
     android:textColor="@color/player_controls"
-    tools:text="720"/>
+    tools:background="#212121"
+    tools:text="720" />
