@@ -9,6 +9,7 @@ import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.graphics.ColorUtils
 import com.arellomobile.mvp.presenter.InjectPresenter
@@ -65,9 +66,12 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
 
         toolbar.addBackButton { onBackPressed() }
         toolbar.navigationIcon?.tint(baseContext.color(R.color.player_controls))
+        //TODO need setting?
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 
         exo_progress.setBufferedColor(ColorUtils.setAlphaComponent(colorAttr(R.attr.colorAccentTransparent), 153))
+        resolutionSpinnerView.setPopupBackgroundResource(R.drawable.background_player_resolution)
+        resolutionSpinnerView.background.tint(color(R.color.player_controls))
 
         prev.onClick { presenter.loadPrevEpisode() }
         next.onClick { presenter.loadNextEpisode() }
@@ -148,6 +152,14 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
     override fun setEpisodeSubtitle(currentEpisode: Int) {
         val subTitle = String.format(getString(R.string.episode_number), currentEpisode)
         toolbar.subtitle = subTitle
+    }
+
+    override fun setResolutions(resolutions: List<String>) {
+        resolutionSpinnerView.visibleIf { resolutions.isNotEmpty() }
+        if (resolutions.isNotEmpty()) {
+            resolutionSpinnerView.adapter = ArrayAdapter(this, R.layout.item_spinner_player, resolutions)
+            resolutionSpinnerView.setOnItemClickListener { _, _, position, _ -> presenter.onResolutionChanged(resolutions[position]) }
+        }
     }
 
     override fun onBackPressed() {
@@ -236,6 +248,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
 
         override fun onPlayerError(error: ExoPlaybackException?) {
             error?.printStackTrace()
+            //TODO process player error (404 on VK)
             super.onPlayerError(error)
         }
 

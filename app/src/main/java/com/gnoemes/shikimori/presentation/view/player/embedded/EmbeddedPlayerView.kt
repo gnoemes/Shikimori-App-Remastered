@@ -15,4 +15,6 @@ interface EmbeddedPlayerView : BaseNetworkView {
 
     fun playVideo(it: Track, needReset: Boolean)
 
+    fun setResolutions(resolutions: List<String>)
+
 }
