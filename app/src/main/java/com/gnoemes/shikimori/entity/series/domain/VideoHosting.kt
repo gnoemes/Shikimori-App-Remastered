@@ -26,6 +26,8 @@ enum class VideoHosting(
     RUTUBE("rutube", "rutube.ru"),
     @SerializedName("youtube.com", alternate = ["youtube"])
     YOUTUBE("youtube", "youtube.com"),
+    @SerializedName("gidfilm.ru", alternate = ["gidfilm"])
+    GIDFILM("gidfilm", "gidfilm.ru"),
     @SerializedName("")
     UNKNOWN("unknown", "unknown");
 
