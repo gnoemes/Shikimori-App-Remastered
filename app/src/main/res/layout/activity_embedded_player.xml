@@ -7,10 +7,6 @@
     android:background="@color/black"
     android:keepScreenOn="true">
 
-    <include
-        android:id="@+id/includedToolbar"
-        layout="@layout/layout_player_toolbar" />
-
     <com.google.android.exoplayer2.ui.PlayerView
         android:id="@+id/playerView"
         android:layout_width="0dp"
@@ -22,9 +18,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/includedToolbar"
+        app:layout_constraintTop_toTopOf="parent"
         app:shutter_background_color="@android:color/transparent"
         app:use_controller="true" />
+
+    <include
+        android:id="@+id/includedToolbar"
+        layout="@layout/layout_player_toolbar" />
 
     <include layout="@layout/layout_player_rewind_forward" />
 
