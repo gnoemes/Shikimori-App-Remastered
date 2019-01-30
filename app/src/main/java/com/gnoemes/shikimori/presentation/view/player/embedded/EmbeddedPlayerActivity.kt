@@ -2,10 +2,8 @@ package com.gnoemes.shikimori.presentation.view.player.embedded
 
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
-import android.app.Activity
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
-import android.graphics.Point
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
@@ -85,10 +83,13 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         resolutionSpinnerView.setPopupBackgroundResource(R.drawable.background_player_resolution)
         resolutionSpinnerView.background.tint(color(R.color.player_controls))
         includedToolbar.gone()
+        unlockView.hide()
 
         prev.onClick { presenter.loadPrevEpisode() }
         next.onClick { presenter.loadNextEpisode() }
         rotationView.onClick { toggleOrientation() }
+        lockView.onClick { controller.lock() }
+        unlockView.onClick { controller.unlock() }
     }
 
     override fun onStop() {
@@ -127,7 +128,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
     override fun onConfigurationChanged(newConfig: Configuration?) {
         super.onConfigurationChanged(newConfig)
 
-        if (android.provider.Settings.System.getInt(contentResolver, Settings.System.ACCELEROMETER_ROTATION, 0) == 1) {
+        if (isAutoRotationEnabled) {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
         }
     }
@@ -139,6 +140,18 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
             ActivityInfo.SCREEN_ORIENTATION_PORTRAIT -> requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
             ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE, ActivityInfo.SCREEN_ORIENTATION_USER -> requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
+    }
+
+
+    private fun updateOrientation() {
+        val orientation = this.resources.configuration.orientation
+
+        when (orientation) {
+            ActivityInfo.SCREEN_ORIENTATION_PORTRAIT -> requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+            ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE, ActivityInfo.SCREEN_ORIENTATION_USER -> requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        }
+
+        if (!controller.isLocked && isAutoRotationEnabled) requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -210,8 +223,9 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
 
     private inner class PlayerController() : Player.EventListener, PlayerControlView.VisibilityListener {
 
-        val player: SimpleExoPlayer
+        private val player: SimpleExoPlayer
 
+        var isLocked: Boolean = false
         private var controlsVisibility = View.GONE
         private val playerTouchMargin by lazy { dimenAttr(android.R.attr.actionBarSize) }
         private val detector: GestureDetector
@@ -229,18 +243,8 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
             playerView.setOnTouchListener(gestureListener)
         }
 
-        private fun toggleControllerVisibility(): Boolean {
-            //TODO add lock
-//            if (isLock) return false
-
-            if (isVisible) playerView.hideController()
-            else playerView.showController()
-            return true
-        }
-
         val isVisible
             get() = controlsVisibility == View.VISIBLE
-
 
         fun enableNextButton(enable: Boolean) {
             val alpha =
@@ -272,7 +276,30 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
             player.prepare(source, false, false)
         }
 
-        private fun onFastForward() {
+        fun onStop() {
+            player.playWhenReady = false
+        }
+
+        fun destroy() {
+            player.stop()
+            player.release()
+        }
+
+        fun lock() {
+            isLocked = true
+            updateOrientation()
+            onLockedScreenTouch()
+        }
+
+        fun unlock() {
+            isLocked = false
+            TransitionManager.beginDelayedTransition(container, Fade(Fade.MODE_OUT))
+            unlockSurface.gone()
+            unlockView.hide()
+            updateOrientation()
+        }
+
+        fun onFastForward() {
             //TODO get offset from settings
             seek(10000)
             forwardView.apply {
@@ -282,7 +309,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
             }
         }
 
-        private fun onRewind() {
+        fun onRewind() {
             //TODO get offset from settings
             seek(-10000)
             rewindView.apply {
@@ -331,13 +358,19 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
             }
         }
 
-        fun onStop() {
-            player.playWhenReady = false
+        private fun toggleControllerVisibility(): Boolean {
+            if (isVisible) playerView.hideController()
+            else playerView.showController()
+            return true
         }
 
-        fun destroy() {
-            player.stop()
-            player.release()
+        private fun onLockedScreenTouch(): Boolean {
+            unlockView.show()
+            TransitionManager.beginDelayedTransition(container, Fade(Fade.MODE_IN))
+            unlockSurface.visible()
+            playerView.hideController()
+            hideUnlockAfterTimeout()
+            return false
         }
 
         private fun hideAfterTimeout() {
@@ -345,9 +378,15 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
             playerView.postDelayed(postHideRunnable, CONTROLLER_HIDE_DELAY)
         }
 
+        private fun hideUnlockAfterTimeout() {
+            unlockView.removeCallbacks(delayedUnlockHide)
+            unlockView.postDelayed(delayedUnlockHide, CONTROLLER_HIDE_DELAY)
+        }
+
         private val postHideRunnable = Runnable { playerView.hideController() }
         private val delayedForwardHide = Runnable { forwardView.gone() }
         private val delayedRewindHide = Runnable { rewindView.gone() }
+        private val delayedUnlockHide = Runnable { unlockView.hide(); TransitionManager.beginDelayedTransition(container, Fade(Fade.MODE_OUT)); unlockSurface.gone() }
 
         private inner class ExoPlayerGestureListener : GestureDetector.SimpleOnGestureListener(), View.OnTouchListener {
 
@@ -355,14 +394,14 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
 
             @SuppressLint("ClickableViewAccessibility")
             override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-                //TODO lock
-//                if(!isLocked)
-                if (event?.action == MotionEvent.ACTION_UP && isDrag) {
-                    isDrag = false
-                    onScrollEnd()
-                }
+                return if (!isLocked) {
+                    if (event?.action == MotionEvent.ACTION_UP && isDrag) {
+                        isDrag = false
+                        onScrollEnd()
+                    }
 
-                return detector.onTouchEvent(event)
+                    detector.onTouchEvent(event)
+                } else onLockedScreenTouch()
             }
 
             override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
@@ -379,10 +418,8 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
                 //TODO remove and add volume/brightness callbacks
             }
         }
-
     }
 
-    private fun Activity.screenWidth(): Int {
-        return Point().let { windowManager.defaultDisplay.getSize(it);it }.x
-    }
+    private val isAutoRotationEnabled: Boolean
+        get() = android.provider.Settings.System.getInt(contentResolver, Settings.System.ACCELEROMETER_ROTATION, 0) == 1
 }
