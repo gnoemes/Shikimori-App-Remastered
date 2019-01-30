@@ -7,7 +7,7 @@
     android:background="@color/black"
     android:keepScreenOn="true">
 
-    <com.google.android.exoplayer2.ui.PlayerView
+    <com.gnoemes.shikimori.presentation.view.common.widget.PlayerView
         android:id="@+id/playerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -24,7 +24,10 @@
 
     <include
         android:id="@+id/includedToolbar"
-        layout="@layout/layout_player_toolbar" />
+        layout="@layout/layout_player_toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <include layout="@layout/layout_player_rewind_forward" />
 

@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/transparent"
-    android:fitsSystemWindows="true"
     app:elevation="4dp"
     app:layout_collapseMode="pin"
     tools:showIn="@layout/activity_embedded_player">
@@ -16,7 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@android:color/transparent"
-        android:fitsSystemWindows="true"
         app:contentInsetStartWithNavigation="0dp"
         app:layout_scrollFlags="scroll|enterAlways"
         app:popupTheme="@style/PopupMenuTheme"
@@ -30,7 +28,7 @@
         <com.santalu.widget.ReSpinner
             android:id="@+id/resolutionSpinnerView"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:popupBackground="@color/black"
             android:visibility="gone"
