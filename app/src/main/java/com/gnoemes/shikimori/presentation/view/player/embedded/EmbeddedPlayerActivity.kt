@@ -316,21 +316,25 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         }
 
         fun onFastForward() {
+            forwardView.text = smallOffsetText
             seek(smallOffset)
             hideForwardAfterTimeout()
         }
 
         fun onRewind() {
+            rewindView.text = bigOffsetText
             seek(-smallOffset)
             hideRewindAfterTimeout()
         }
 
         fun onBigForward() {
+            forwardView.text = bigOffsetText
             seek(bigOffset)
             hideForwardAfterTimeout()
         }
 
         fun onBigRewind() {
+            rewindView.text = bigOffsetText
             seek(-bigOffset)
             hideRewindAfterTimeout()
         }
@@ -448,9 +452,9 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
                 return toggleControllerVisibility()
             }
 
-            override fun onLongPress(e: MotionEvent?) {
-                //TODO big forward/rewind
-                super.onLongPress(e)
+            override fun onLongPress(e: MotionEvent) {
+                if (e.x > playerView.width / 2) onBigForward()
+                else onBigRewind()
             }
 
             override fun onDoubleTap(e: MotionEvent): Boolean {
