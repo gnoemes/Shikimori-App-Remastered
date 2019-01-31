@@ -20,6 +20,7 @@ import androidx.transition.TransitionManager
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.data.local.preference.PlayerSettingsSource
 import com.gnoemes.shikimori.entity.app.domain.AppExtras
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.series.domain.Track
@@ -61,12 +62,19 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
     @Inject
     lateinit var localNavigatorHolder: NavigatorHolder
 
+    @Inject
+    lateinit var settingsSource: PlayerSettingsSource
+
     companion object {
         const val CONTROLLER_HIDE_DELAY = 3500L
+        const val UNLOCK_HIDE_DELAY = 2000L
         const val FORWARD_REWIND_HIDE_DELAY = 750L
     }
 
     private val controller by lazy { PlayerController() }
+
+    private val smallOffsetText by lazy { "${settingsSource.forwardRewindOffset / 1000} ${getString(R.string.player_seconds_short)}" }
+    private val bigOffsetText by lazy { "${settingsSource.forwardRewindOffsetBig / 1000} ${getString(R.string.player_seconds_short)}" }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,10 +82,11 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
 
         toolbar.addBackButton { onBackPressed() }
         toolbar.navigationIcon?.tint(baseContext.color(R.color.player_controls))
-        //TODO need setting?
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 
-        //TODO set text for forward/rewind from settings
+        if (settingsSource.isOpenLandscape) requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+
+        forwardView.text = smallOffsetText
+        rewindView.text = smallOffsetText
 
         exo_progress.setBufferedColor(ColorUtils.setAlphaComponent(colorAttr(R.attr.colorAccentTransparent), 153))
         resolutionSpinnerView.setPopupBackgroundResource(R.drawable.background_player_resolution)
@@ -230,6 +239,14 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         private val detector: GestureDetector
         private val gestureListener = ExoPlayerGestureListener()
 
+        //TODO move to constructor?
+        private val smallOffset by lazy { settingsSource.forwardRewindOffset }
+        private val bigOffset by lazy { settingsSource.forwardRewindOffsetBig }
+        private val isGesturesEnabled by lazy { settingsSource.isGesturesEnabled }
+        private val isVolumeAndBrighnessGesturesEnabled by lazy { settingsSource.isVolumeAndBrightnessGesturesEnabled }
+        private val isVolumeAndBrightnessInverted by lazy { settingsSource.isVolumeAndBrightnessInverted }
+        private val isSlideControl by lazy { settingsSource.isForwardRewindSlide }
+
         init {
             val trackSelector = DefaultTrackSelector(AdaptiveTrackSelection.Factory())
             player = ExoPlayerFactory.newSimpleInstance(this@EmbeddedPlayerActivity, trackSelector)
@@ -299,23 +316,23 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         }
 
         fun onFastForward() {
-            //TODO get offset from settings
-            seek(10000)
-            forwardView.apply {
-                removeCallbacks(delayedForwardHide)
-                visible()
-                postDelayed(delayedForwardHide, FORWARD_REWIND_HIDE_DELAY)
-            }
+            seek(smallOffset)
+            hideForwardAfterTimeout()
         }
 
         fun onRewind() {
-            //TODO get offset from settings
-            seek(-10000)
-            rewindView.apply {
-                removeCallbacks(delayedRewindHide)
-                visible()
-                postDelayed(delayedRewindHide, FORWARD_REWIND_HIDE_DELAY)
-            }
+            seek(-smallOffset)
+            hideRewindAfterTimeout()
+        }
+
+        fun onBigForward() {
+            seek(bigOffset)
+            hideForwardAfterTimeout()
+        }
+
+        fun onBigRewind() {
+            seek(-bigOffset)
+            hideRewindAfterTimeout()
         }
 
         private fun seek(pos: Long) {
@@ -370,6 +387,22 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
             return false
         }
 
+        private fun hideForwardAfterTimeout() {
+            forwardView.apply {
+                removeCallbacks(delayedForwardHide)
+                visible()
+                postDelayed(delayedForwardHide, FORWARD_REWIND_HIDE_DELAY)
+            }
+        }
+
+        private fun hideRewindAfterTimeout() {
+            rewindView.apply {
+                removeCallbacks(delayedRewindHide)
+                visible()
+                postDelayed(delayedRewindHide, FORWARD_REWIND_HIDE_DELAY)
+            }
+        }
+
         private fun hideAfterTimeout() {
             playerView.removeCallbacks(postHideRunnable)
             playerView.postDelayed(postHideRunnable, CONTROLLER_HIDE_DELAY)
@@ -377,7 +410,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
 
         private fun hideUnlockAfterTimeout() {
             unlockView.removeCallbacks(delayedUnlockHide)
-            unlockView.postDelayed(delayedUnlockHide, CONTROLLER_HIDE_DELAY)
+            unlockView.postDelayed(delayedUnlockHide, UNLOCK_HIDE_DELAY)
         }
 
         private val postHideRunnable = Runnable { playerView.hideController() }
@@ -388,6 +421,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         private inner class ExoPlayerGestureListener : GestureDetector.SimpleOnGestureListener(), View.OnTouchListener {
 
             private var isDrag: Boolean = false
+            private var lastTapMills = 0L
 
             @SuppressLint("ClickableViewAccessibility")
             override fun onTouch(v: View?, event: MotionEvent?): Boolean {
@@ -397,7 +431,16 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
                         onScrollEnd()
                     }
 
-                    detector.onTouchEvent(event)
+                    if (isGesturesEnabled) detector.onTouchEvent(event)
+                    else {
+                        when {
+                            (event?.action == MotionEvent.ACTION_UP || event?.action == MotionEvent.ACTION_DOWN) && System.currentTimeMillis() - lastTapMills > 500 -> {
+                                lastTapMills = System.currentTimeMillis()
+                                toggleControllerVisibility()
+                            }
+                            else -> false
+                        }
+                    }
                 } else onLockedScreenTouch()
             }
 
@@ -405,10 +448,17 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
                 return toggleControllerVisibility()
             }
 
+            override fun onLongPress(e: MotionEvent?) {
+                //TODO big forward/rewind
+                super.onLongPress(e)
+            }
+
             override fun onDoubleTap(e: MotionEvent): Boolean {
-                if (e.x > playerView.width / 2) onFastForward()
-                else onRewind()
-                return true
+                return if (!isSlideControl) {
+                    if (e.x > playerView.width / 2) onFastForward()
+                    else onRewind()
+                    true
+                } else false
             }
 
             private fun onScrollEnd() {
