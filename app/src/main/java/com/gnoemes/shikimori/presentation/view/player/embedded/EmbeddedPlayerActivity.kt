@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
+import android.media.AudioManager
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
@@ -47,6 +48,7 @@ import kotlinx.android.synthetic.main.layout_player_toolbar.*
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder
 import javax.inject.Inject
+import kotlin.math.roundToInt
 
 //TODO create custom spinner and listener for open/close events
 class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPlayerView>(), EmbeddedPlayerView {
@@ -75,10 +77,18 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
 
     private val smallOffsetText by lazy { "${settingsSource.forwardRewindOffset / 1000} ${getString(R.string.player_seconds_short)}" }
     private val bigOffsetText by lazy { "${settingsSource.forwardRewindOffsetBig / 1000} ${getString(R.string.player_seconds_short)}" }
+    private val brightnessFormat by lazy { getString(R.string.player_brightness_format) }
+    private val volumeFormat by lazy { getString(R.string.player_volume_format) }
+
+    private var currentVolume: Int = 0
+    private var currentBrightness: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+
+        currentVolume = audioManager().getStreamVolume(AudioManager.STREAM_MUSIC)
+        currentBrightness = (window.attributes.screenBrightness / 255f * 100).toInt()
 
         toolbar.addBackButton { onBackPressed() }
         toolbar.navigationIcon?.tint(baseContext.color(R.color.player_controls))
@@ -163,6 +173,41 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         if (!controller.isLocked && isAutoRotationEnabled) requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
     }
 
+    private fun changeBrightness(percent: Int) {
+        currentBrightness += percent
+
+        if (currentBrightness > 100) currentBrightness = 100
+        else if (currentBrightness < 1) currentBrightness = 1
+
+        val text = String.format(brightnessFormat, currentBrightness)
+        paramChangesView.text = text
+
+        TransitionManager.beginDelayedTransition(container, Fade(Fade.MODE_IN))
+        paramChangesView.visible()
+        unlockSurface.visible()
+
+        window.attributes = window.attributes.apply { screenBrightness = 2.55f * currentBrightness / 255f }
+    }
+
+    private fun changeVolume(percent: Int) {
+        val manager = audioManager()
+
+        val max = manager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+        currentVolume += percent
+
+        if (currentVolume > max) currentVolume = max
+        else if (currentVolume < 0) currentVolume = 0
+
+        manager.setStreamVolume(AudioManager.STREAM_MUSIC, currentVolume, 0)
+        val percentVolume = if (currentVolume == 0) 0 else (currentVolume / (max * 0.01f)).roundToInt()
+        val text = String.format(volumeFormat, percentVolume)
+        paramChangesView.text = text
+
+        TransitionManager.beginDelayedTransition(container, Fade(Fade.MODE_IN))
+        paramChangesView.visible()
+        unlockSurface.visible()
+    }
+
     ///////////////////////////////////////////////////////////////////////////
     // GETTERS
     ///////////////////////////////////////////////////////////////////////////
@@ -230,7 +275,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
     // Player controller
     ///////////////////////////////////////////////////////////////////////////
 
-    private inner class PlayerController() : Player.EventListener, PlayerControlView.VisibilityListener {
+    private inner class PlayerController : Player.EventListener, PlayerControlView.VisibilityListener {
 
         private val player: SimpleExoPlayer
 
@@ -238,12 +283,13 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         private var controlsVisibility = View.GONE
         private val detector: GestureDetector
         private val gestureListener = ExoPlayerGestureListener()
+        private val playerTopMargin by lazy { dimenAttr(android.R.attr.actionBarSize) }
 
         //TODO move to constructor?
         private val smallOffset by lazy { settingsSource.forwardRewindOffset }
         private val bigOffset by lazy { settingsSource.forwardRewindOffsetBig }
         private val isGesturesEnabled by lazy { settingsSource.isGesturesEnabled }
-        private val isVolumeAndBrighnessGesturesEnabled by lazy { settingsSource.isVolumeAndBrightnessGesturesEnabled }
+        private val isVolumeAndBrightnessGesturesEnabled by lazy { settingsSource.isVolumeAndBrightnessGesturesEnabled }
         private val isVolumeAndBrightnessInverted by lazy { settingsSource.isVolumeAndBrightnessInverted }
         private val isSlideControl by lazy { settingsSource.isForwardRewindSlide }
 
@@ -421,16 +467,23 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         private val delayedForwardHide = Runnable { forwardView.gone() }
         private val delayedRewindHide = Runnable { rewindView.gone() }
         private val delayedUnlockHide = Runnable { unlockView.hide(); TransitionManager.beginDelayedTransition(container, Fade(Fade.MODE_OUT)); unlockSurface.gone() }
+        private val delayedParamChangesHide = Runnable { TransitionManager.beginDelayedTransition(container, Fade(Fade.MODE_OUT)); paramChangesView.gone(); unlockSurface.gone() }
 
         private inner class ExoPlayerGestureListener : GestureDetector.SimpleOnGestureListener(), View.OnTouchListener {
 
             private var isDrag: Boolean = false
             private var lastTapMills = 0L
 
+            private val MOVEMENT_TH = 30
+            private val stepBrightness = 5
+            private val stepVolume = 1
+
             @SuppressLint("ClickableViewAccessibility")
             override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+                if (event == null || event.y < playerTopMargin / 2) return false
+
                 return if (!isLocked) {
-                    if (event?.action == MotionEvent.ACTION_UP && isDrag) {
+                    if (event.action == MotionEvent.ACTION_UP && isDrag) {
                         isDrag = false
                         onScrollEnd()
                     }
@@ -438,7 +491,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
                     if (isGesturesEnabled) detector.onTouchEvent(event)
                     else {
                         when {
-                            (event?.action == MotionEvent.ACTION_UP || event?.action == MotionEvent.ACTION_DOWN) && System.currentTimeMillis() - lastTapMills > 500 -> {
+                            (event.action == MotionEvent.ACTION_UP || event.action == MotionEvent.ACTION_DOWN) && System.currentTimeMillis() - lastTapMills > 500 -> {
                                 lastTapMills = System.currentTimeMillis()
                                 toggleControllerVisibility()
                             }
@@ -452,12 +505,14 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
                 return toggleControllerVisibility()
             }
 
-            override fun onLongPress(e: MotionEvent) {
-                if (e.x > playerView.width / 2) onBigForward()
+            override fun onLongPress(e: MotionEvent?) {
+                if (e != null && e.x > playerView.width / 2) onBigForward()
                 else onBigRewind()
             }
 
-            override fun onDoubleTap(e: MotionEvent): Boolean {
+            override fun onDoubleTap(e: MotionEvent?): Boolean {
+                if (e == null) return false
+
                 return if (!isSlideControl) {
                     if (e.x > playerView.width / 2) onFastForward()
                     else onRewind()
@@ -465,8 +520,39 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
                 } else false
             }
 
+            override fun onScroll(e1: MotionEvent?, e2: MotionEvent?, distanceX: Float, distanceY: Float): Boolean {
+                if (e1 == null || e2 == null) return false
+
+                return if (isVolumeAndBrightnessGesturesEnabled) {
+                    val diff = Math.abs(e1.y - e2.y).toInt()
+                    isDrag = true
+
+                    val stepChanged = Math.abs(distanceY).roundToInt() % 3 == 0 && diff > MOVEMENT_TH
+
+                    if (stepChanged && (e1.y > playerTopMargin && e2.y > playerTopMargin)) {
+                        if (e1.x < playerView.width / 2) leftAreaScroll(distanceY > 0)
+                        else rightAreaScroll(distanceY > 0)
+
+                    } else false
+
+                } else false
+            }
+
             private fun onScrollEnd() {
-                //TODO remove and add volume/brightness callbacks
+                paramChangesView.removeCallbacks(delayedParamChangesHide)
+                paramChangesView.postDelayed(delayedParamChangesHide, UNLOCK_HIDE_DELAY)
+            }
+
+            private fun leftAreaScroll(increasing: Boolean): Boolean {
+                if (isVolumeAndBrightnessInverted) changeBrightness(if (increasing) stepBrightness else -stepBrightness)
+                else changeVolume(if (increasing) stepVolume else -stepVolume)
+                return true
+            }
+
+            private fun rightAreaScroll(increasing: Boolean): Boolean {
+                if (isVolumeAndBrightnessInverted) changeVolume(if (increasing) stepVolume else -stepVolume)
+                else changeBrightness(if (increasing) stepBrightness else -stepBrightness)
+                return true
             }
         }
     }
