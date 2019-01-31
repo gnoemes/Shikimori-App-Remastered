@@ -1,6 +1,7 @@
 package com.gnoemes.shikimori.entity.app.domain
 
 object SettingsExtras {
+    //TODO split to categories
     const val USER_BRIEF = "USER_BRIEF"
     const val USER_STATUS = "USER_STATUS"
     const val IS_AUTO_STATUS = "IS_AUTO_STATUS"
@@ -12,6 +13,18 @@ object SettingsExtras {
     const val DOWNLOAD_LOCATION_TYPE = "DOWNLOAD_LOCATION_TYPE"
     const val IS_NOTIFICATIONS_ENABLED = "IS_NOTIFICATIONS_ENABLED"
     const val IS_USE_LOCAL_TRANSLATION_SETTINGS = "IS_USE_LOCAL_TRANSLATION_SETTINGS"
+
+    ////////////////////////////////////////////////////////////////////////
+    // PLAYER
+    ////////////////////////////////////////////////////////////////////////
+    const val PLAYER_IS_GESTURES_ENABLED = "PLAYER_IS_GESTURES_ENABLED"
+    const val PLAYER_IS_VOLUME_BRIGHTNESS_GESTURES_ENABLED = "PLAYER_IS_VOLUME_BRIGHTNESS_GESTURES_ENABLED"
+    const val PLAYER_IS_VOLUME_AND_BRIGHTNESS_INVERTED = "PLAYER_IS_VOLUME_AND_BRIGHTNESS_INVERTED"
+    const val PLAYER_IS_FORWARD_REWIND_SLIDE = "PLAYER_IS_FORWARD_REWIND_SLIDE"
+    const val PLAYER_IS_OPEN_LANDSCAPE = "PLAYER_IS_OPEN_LANDSCAPE"
+    const val PLAYER_FORWARD_REWIND_OFFSET = "PLAYER_FORWARD_REWIND_OFFSET"
+    const val PLAYER_FORWARD_REWIND_OFFSET_BIG = "PLAYER_FORWARD_REWIND_OFFSET_BIG"
+
 
 
 }

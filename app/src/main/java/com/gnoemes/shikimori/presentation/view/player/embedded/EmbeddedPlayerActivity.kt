@@ -227,7 +227,6 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
 
         var isLocked: Boolean = false
         private var controlsVisibility = View.GONE
-        private val playerTouchMargin by lazy { dimenAttr(android.R.attr.actionBarSize) }
         private val detector: GestureDetector
         private val gestureListener = ExoPlayerGestureListener()
 
@@ -324,9 +323,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
             if (mills >= 0 || player.currentPosition != 0L) {
                 mills += player.currentPosition
 
-                if (mills < 0) {
-                    mills = 0
-                }
+                if (mills < 0) mills = 0
 
                 player.seekTo(mills)
             }

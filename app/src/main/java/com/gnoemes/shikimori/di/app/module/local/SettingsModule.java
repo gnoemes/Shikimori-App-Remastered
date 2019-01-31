@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.gnoemes.shikimori.data.local.preference.SettingsSource;
-import com.gnoemes.shikimori.data.local.preference.SettingsSourceImpl;
+import com.gnoemes.shikimori.data.local.preference.PlayerSettingsSource;
+import com.gnoemes.shikimori.data.local.preference.impl.SettingsSourceImpl;
 import com.gnoemes.shikimori.data.local.preference.UserSource;
-import com.gnoemes.shikimori.data.local.preference.UserSourceImpl;
+import com.gnoemes.shikimori.data.local.preference.impl.UserSourceImpl;
+import com.gnoemes.shikimori.data.local.preference.impl.PlayerSettingsSourceImpl;
 import com.gnoemes.shikimori.di.app.annotations.SettingsQualifier;
 import com.gnoemes.shikimori.di.app.annotations.UserQualifier;
 
@@ -41,4 +43,8 @@ public interface SettingsModule {
     @Binds
     @Singleton
     SettingsSource bindSettingsSource(SettingsSourceImpl source);
+
+    @Binds
+    @Singleton
+    PlayerSettingsSource bindVideoSettingsSource(PlayerSettingsSourceImpl source);
 }

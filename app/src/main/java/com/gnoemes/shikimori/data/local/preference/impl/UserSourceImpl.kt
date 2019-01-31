@@ -1,6 +1,7 @@
-package com.gnoemes.shikimori.data.local.preference
+package com.gnoemes.shikimori.data.local.preference.impl
 
 import android.content.SharedPreferences
+import com.gnoemes.shikimori.data.local.preference.UserSource
 import com.gnoemes.shikimori.di.app.annotations.UserQualifier
 import com.gnoemes.shikimori.entity.app.domain.SettingsExtras
 import com.gnoemes.shikimori.entity.user.domain.UserBrief
