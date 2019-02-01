@@ -368,7 +368,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         }
 
         fun onRewind() {
-            rewindView.text = bigOffsetText
+            rewindView.text = smallOffsetText
             seek(-smallOffset)
             hideRewindAfterTimeout()
         }
