@@ -20,4 +20,6 @@ interface SettingsSource {
     var playerType : PlayerType
 
     var useLocalTranslationSettings : Boolean
+
+    var isMyOngoingPriority : Boolean
 }

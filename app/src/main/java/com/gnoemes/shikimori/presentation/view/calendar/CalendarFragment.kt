@@ -168,4 +168,8 @@ class CalendarFragment : BaseFragment<CalendarPresenter, CalendarView>(), Calend
     override fun onHideEmptyView(calendarPage: CalendarPage) {
         getPage(calendarPage).emptyContentView.gone()
     }
+
+    override fun setPage(page: CalendarPage) {
+        postViewAction { pagesContainerView.currentItem = page.ordinal }
+    }
 }

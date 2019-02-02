@@ -51,4 +51,8 @@ class SettingsSourceImpl @Inject constructor(
     override var useLocalTranslationSettings: Boolean
         get() = prefs.getBoolean(SettingsExtras.IS_USE_LOCAL_TRANSLATION_SETTINGS, true)
         set(value) = prefs.putBoolean(SettingsExtras.IS_USE_LOCAL_TRANSLATION_SETTINGS, value)
+
+    override var isMyOngoingPriority: Boolean
+        get() = prefs.getBoolean(SettingsExtras.IS_MY_ONGOINGS_PRIORITY, false)
+        set(value) = prefs.putBoolean(SettingsExtras.IS_MY_ONGOINGS_PRIORITY, value)
 }

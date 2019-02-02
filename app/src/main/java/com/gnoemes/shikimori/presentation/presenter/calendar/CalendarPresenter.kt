@@ -1,6 +1,7 @@
 package com.gnoemes.shikimori.presentation.presenter.calendar
 
 import com.arellomobile.mvp.InjectViewState
+import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.domain.calendar.CalendarInteractor
 import com.gnoemes.shikimori.entity.app.domain.exceptions.BaseException
 import com.gnoemes.shikimori.entity.app.domain.exceptions.ContentException
@@ -16,12 +17,15 @@ import javax.inject.Inject
 @InjectViewState
 class CalendarPresenter @Inject constructor(
         private val interactor: CalendarInteractor,
-        private val converter: CalendarViewModelConverter
+        private val converter: CalendarViewModelConverter,
+        private val settingsSource: SettingsSource
 ) : BaseNetworkPresenter<CalendarView>() {
 
     override fun initData() {
         loadData()
         loadMyCalendar()
+
+        if (settingsSource.isMyOngoingPriority) viewState.setPage(CalendarPage.MY_ONGOINGS)
     }
 
     private fun loadMyCalendar() {
