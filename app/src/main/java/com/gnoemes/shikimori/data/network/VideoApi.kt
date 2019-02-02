@@ -13,7 +13,7 @@ interface VideoApi {
     @GET("/api/anime/{id}/series")
     fun getEpisodes(@Path("id") id: Long): Single<List<EpisodeResponse>>
 
-    @GET("/api/anime/{id}/series/alternative")
+    @GET("/api/anime/alternative/{id}/series")
     fun getEpisodesAlternative(@Path("id") id: Long): Single<List<EpisodeResponse>>
 
     @GET("/api/anime/{animeId}/{episodeId}/translations")
@@ -22,7 +22,7 @@ interface VideoApi {
                         @Query("type") type: String
     ): Single<List<TranslationResponse>>
 
-    @GET("/api/anime/{animeId}/{episodeId}/translations/alternative")
+    @GET("/api/anime/alternative/{animeId}/{episodeId}/translations")
     fun getTranslationsAlternative(@Path("animeId") animeId: Long,
                                    @Path("episodeId") episodeId: Long,
                                    @Query("type") type: String
