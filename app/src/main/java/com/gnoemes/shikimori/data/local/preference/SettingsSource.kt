@@ -7,7 +7,7 @@ interface SettingsSource {
 
     var isAutoStatus : Boolean
 
-    var isRomadziNaming: Boolean
+    var isRussianNaming: Boolean
 
     var isRememberTranslationType : Boolean
 

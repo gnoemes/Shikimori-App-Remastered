@@ -49,7 +49,7 @@ class DetailsContentViewModelConverterImpl @Inject constructor(
         val isAnime = it.type == Type.ANIME
 
         val type = if (isAnime) it.anime?.type?.type else it.manga?.type?.type
-        val name = when (settings.isRomadziNaming) {
+        val name = when (!settings.isRussianNaming) {
             true -> if (isAnime) it.anime?.name else it.manga?.name
             else -> if (isAnime) it.anime?.nameRu ?: it.anime?.name else it.manga?.nameRu
                     ?: it.manga?.name
@@ -86,7 +86,7 @@ class DetailsContentViewModelConverterImpl @Inject constructor(
         val isAnime = it.type == Type.ANIME
 
         val type = if (isAnime) it.anime?.type?.type else it.manga?.type?.type
-        val name = when (settings.isRomadziNaming) {
+        val name = when (!settings.isRussianNaming) {
             true -> if (isAnime) it.anime?.name else it.manga?.name
             else -> if (isAnime) it.anime?.nameRu ?: it.anime?.name else it.manga?.nameRu
                     ?: it.manga?.name
@@ -113,7 +113,7 @@ class DetailsContentViewModelConverterImpl @Inject constructor(
     }
 
     private fun convertPerson(it: Person): ContentItem {
-        val name = if (settings.isRomadziNaming) it.name else it.nameRu ?: it.name
+        val name = if (!settings.isRussianNaming) it.name else it.nameRu ?: it.name
         return ContentItem(
                 name,
                 null,
@@ -124,7 +124,7 @@ class DetailsContentViewModelConverterImpl @Inject constructor(
     }
 
     private fun convertCharacter(it: Character): ContentItem {
-        val name = if (settings.isRomadziNaming) it.name else it.nameRu ?: it.name
+        val name = if (!settings.isRussianNaming) it.name else it.nameRu ?: it.name
         return ContentItem(
                 name,
                 null,
@@ -135,7 +135,7 @@ class DetailsContentViewModelConverterImpl @Inject constructor(
     }
 
     private fun convertManga(it: Manga): ContentItem {
-        val name = if (settings.isRomadziNaming) it.name else it.nameRu ?: it.name
+        val name = if (!settings.isRussianNaming) it.name else it.nameRu ?: it.name
         return ContentItem(
                 name,
                 it.type.type,
@@ -146,7 +146,7 @@ class DetailsContentViewModelConverterImpl @Inject constructor(
     }
 
     private fun convertAnime(it: Anime): ContentItem {
-        val name = if (settings.isRomadziNaming) it.name else it.nameRu ?: it.name
+        val name = if (!settings.isRussianNaming) it.name else it.nameRu ?: it.name
         return ContentItem(
                 name,
                 it.type.type,

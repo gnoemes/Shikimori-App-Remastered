@@ -56,7 +56,7 @@ class MangaRateAdapterDelegate(
             with(itemView) {
                 imageLoader.setImageWithPlaceHolder(imageView, item.manga?.image?.original)
 
-                nameView.text = if (settings.isRomadziNaming) item.manga?.name else item.manga?.nameRu
+                nameView.text = if (!settings.isRussianNaming) item.manga?.name else item.manga?.nameRu
                         ?: item.manga?.name
 
                 rateSpinnerView.isAnime = false

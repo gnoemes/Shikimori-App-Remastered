@@ -26,8 +26,8 @@ class AnimeDetailsViewModelConverterImpl @Inject constructor(
 
     override fun convertHead(it: AnimeDetails): DetailsHeadItem {
 
-        val name = if (settings.isRomadziNaming) it.name else it.nameRu.nullIfEmpty() ?: it.name
-        val nameSecond = if (settings.isRomadziNaming) it.nameRu ?: it.name else it.name
+        val name = if (!settings.isRussianNaming) it.name else it.nameRu.nullIfEmpty() ?: it.name
+        val nameSecond = if (!settings.isRussianNaming) it.nameRu ?: it.name else it.name
 
         val type = convertType(it.type, it.episodes, it.duration)
         val season = converter.convertAnimeSeasonToString(it.dateAired)

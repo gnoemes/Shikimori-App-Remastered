@@ -60,7 +60,7 @@ class CalendarViewModelConverterImpl @Inject constructor(
 
         return CalendarAnimeItem(
                 item.anime.id,
-                (if (settings.isRomadziNaming) item.anime.name else item.anime.nameRu
+                (if (!settings.isRussianNaming) item.anime.name else item.anime.nameRu
                         ?: item.anime.name).plus(episodes),
                 item.anime.image,
                 item.anime.type,

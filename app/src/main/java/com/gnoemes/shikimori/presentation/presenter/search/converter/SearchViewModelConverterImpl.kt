@@ -31,7 +31,7 @@ class SearchViewModelConverterImpl @Inject constructor(
             }
 
     private fun convertPerson(it: Person): SearchItem {
-        val name = if (settings.isRomadziNaming) it.name else it.nameRu.nullIfEmpty() ?: it.name
+        val name = if (!settings.isRussianNaming) it.name else it.nameRu.nullIfEmpty() ?: it.name
         return SearchItem(
                 it.id,
                 Type.PERSON,
@@ -42,7 +42,7 @@ class SearchViewModelConverterImpl @Inject constructor(
     }
 
     private fun convertCharacter(it: Character): SearchItem {
-        val name = if (settings.isRomadziNaming) it.name else it.nameRu.nullIfEmpty() ?: it.name
+        val name = if (!settings.isRussianNaming) it.name else it.nameRu.nullIfEmpty() ?: it.name
         return SearchItem(
                 it.id,
                 Type.CHARACTER,
@@ -53,7 +53,7 @@ class SearchViewModelConverterImpl @Inject constructor(
     }
 
     private fun convertManga(it: Manga): SearchItem {
-        val name = if (settings.isRomadziNaming) it.name else it.nameRu.nullIfEmpty() ?: it.name
+        val name = if (!settings.isRussianNaming) it.name else it.nameRu.nullIfEmpty() ?: it.name
         val nameText = name.plus(String.format(context.getString(R.string.volumes_format), it.volumes.unknownIfZero(), it.chapters.unknownIfZero()))
         return SearchItem(
                 it.id,
@@ -65,7 +65,7 @@ class SearchViewModelConverterImpl @Inject constructor(
     }
 
     private fun convertAnime(it: Anime): SearchItem {
-        val name = if (settings.isRomadziNaming) it.name else it.nameRu.nullIfEmpty() ?: it.name
+        val name = if (!settings.isRussianNaming) it.name else it.nameRu.nullIfEmpty() ?: it.name
         val aired = if (it.status == Status.RELEASED) it.episodes else it.episodesAired
         val nameText = name.plus(String.format(context.getString(R.string.episodes_format), aired, it.episodes.unknownIfZero()))
         return SearchItem(

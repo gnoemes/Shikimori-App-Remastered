@@ -18,8 +18,8 @@ class SettingsSourceImpl @Inject constructor(
         get() = prefs.getBoolean(SettingsExtras.IS_AUTO_STATUS, true)
         set(value) = prefs.putBoolean(SettingsExtras.IS_AUTO_STATUS, value)
 
-    override var isRomadziNaming: Boolean
-        get() = prefs.getBoolean(SettingsExtras.IS_ROMADZI_NAMING, false)
+    override var isRussianNaming: Boolean
+        get() = prefs.getBoolean(SettingsExtras.IS_ROMADZI_NAMING, true)
         set(value) = prefs.putBoolean(SettingsExtras.IS_ROMADZI_NAMING, value)
 
     override var isRememberTranslationType: Boolean
