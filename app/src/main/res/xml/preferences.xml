@@ -16,6 +16,7 @@
     <Preference
         android:key="player_fragment"
         android:title="@string/settings_player"
+        app:fragment="com.gnoemes.shikimori.presentation.view.settings.fragments.SettingsPlayerFragment"
         app:iconSpaceReserved="false" />
 
     <Preference

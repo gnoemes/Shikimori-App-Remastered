@@ -248,6 +248,44 @@
     <string name="settings_anime_remember_translation_settings_summary_off">Не сохранять настройки просмотра для разных аниме</string>
     <string name="settings_anime_remember_translation_settings_key" translatable="false">IS_USE_LOCAL_TRANSLATION_SETTINGS</string>
 
+    <string name="settings_player_orientation_title">Альбомная ориентация</string>
+    <string name="settings_player_orientation_summary_on">При открытии плеера ориентация будет изменена на альбомную</string>
+    <string name="settings_player_orientation_summary_off">При открытии плеера ориентация не будет изменена</string>
+    <string name="settings_player_orientation_key" translatable="false">PLAYER_IS_OPEN_LANDSCAPE</string>
+
+    <string name="settings_player_gestures">Жесты</string>
+    <string name="settings_player_gestures_title">Управление жестами</string>
+    <string name="settings_player_gestures_key" translatable="false">PLAYER_IS_GESTURES_ENABLED</string>
+    <string name="settings_player_gestures_summary_on">Жесты включены</string>
+    <string name="settings_player_gestures_summary_off">Жесты отключены</string>
+
+    <string name="settings_player_gestures_offset_title">Перемотка слайдом</string>
+    <string name="settings_player_gestures_offset_key" translatable="false">PLAYER_IS_FORWARD_REWIND_SLIDE</string>
+    <string name="settings_player_gestures_offset_summary_on">Быстрая перемотка назад и вперед с помощью горизонтального жеста</string>
+    <string name="settings_player_gestures_offset_summary_off">Быстрая перемотка назад и вперед двойным нажатием</string>
+
+    <string name="settings_player_gestures_controls_title">Изменение яркости и громкости</string>
+    <string name="settings_player_gestures_controls_key" translatable="false">PLAYER_IS_VOLUME_BRIGHTNESS_GESTURES_ENABLED</string>
+    <string name="settings_player_gestures_controls_summary_on">Включить управление яркостью и громкостью жестами</string>
+    <string name="settings_player_gestures_controls_summary_off">Жесты изменения громкости и яркости отключены</string>
+
+    <string name="settings_player_gestures_controls_inverted_title">Инвертировать позиции</string>
+    <string name="settings_player_gestures_controls_inverted_key" translatable="false">PLAYER_IS_VOLUME_AND_BRIGHTNESS_INVERTED</string>
+    <string name="settings_player_gestures_controls_inverted_summary_on">Управление яркостью в левой части экрана, управление звуком в правой</string>
+    <string name="settings_player_gestures_controls_inverted_summary_off">Управление яркостью в правой части экрана, управление звуком в левой</string>
+
+    <string name="settings_player_gestures_offset_small_title">Перемотка двойным нажатием</string>
+    <string name="settings_player_gestures_offset_small_key" translatable="false">PLAYER_FORWARD_REWIND_OFFSET</string>
+    <string name="settings_player_gestures_offset_small_summary_default">При двойном нажатии по области пропускать 10 сек. в заданном направлении</string>
+    <string name="settings_player_gestures_offset_small_summary_format">При двойном нажатии по области пропускать %d сек. в заданном направлении</string>
+    <string name="settings_player_gestures_offset_small_validation_error">Введите число от 5 до 30</string>
+
+    <string name="settings_player_gestures_offset_big_title">Перемотка долгим нажатием</string>
+    <string name="settings_player_gestures_offset_big_key" translatable="false">PLAYER_FORWARD_REWIND_OFFSET_BIG</string>
+    <string name="settings_player_gestures_offset_big_summary_default">При долгом нажатии по области пропускать 90 сек. в заданном направлении</string>
+    <string name="settings_player_gestures_offset_big_summary_format">При долгом нажатии по области пропускать %d сек. в заданном направлении</string>
+    <string name="settings_player_gestures_offset_big_validation_error">Введите число от 80 до 180</string>
+
     <string name="topic_news">Новости</string>
     <string name="topic_my_feed">Моя лента</string>
     <string name="topic_forum">Форум</string>
