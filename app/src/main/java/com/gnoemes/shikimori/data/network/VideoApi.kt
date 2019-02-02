@@ -37,4 +37,7 @@ interface VideoApi {
                  @Query("author") author: String,
                  @Query("hosting") hosting: String
     ): Single<VideoResponse>
+
+    @GET("/api/anime/alternative/translation/{id}")
+    fun getVideoAlternative(@Path("id") translationId : Long) : Single<VideoResponse>
 }

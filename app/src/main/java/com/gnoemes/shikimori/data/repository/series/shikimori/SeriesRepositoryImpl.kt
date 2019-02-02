@@ -47,7 +47,8 @@ class SeriesRepositoryImpl @Inject constructor(
                     .map(translationConverter)
 
     override fun getVideo(payload: TranslationVideo): Single<Video> =
-            api.getVideo(
+            (if (payload.videoHosting == VideoHosting.SMOTRET_ANIME) api.getVideoAlternative(payload.videoId)
+            else api.getVideo(
                     payload.animeId,
                     payload.episodeIndex,
                     if (payload.videoId == Constants.NO_ID) "" else payload.videoId.toString(),
@@ -55,7 +56,7 @@ class SeriesRepositoryImpl @Inject constructor(
                     payload.type.type!!,
                     payload.authorSimple,
                     payload.videoHosting.synonymType
-            )
+            ))
                     .map(videoConverter)
 
     override fun getTranslationSettings(animeId: Long): Single<TranslationSetting> =

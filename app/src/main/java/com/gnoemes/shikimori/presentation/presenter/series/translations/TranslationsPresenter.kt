@@ -106,7 +106,7 @@ class TranslationsPresenter @Inject constructor(
     //Others o uses urls
     private fun openVideo(payload: TranslationVideo, playerType: PlayerType) {
         if (playerType == PlayerType.EMBEDDED) openPlayer(playerType, EmbeddedPlayerNavigationData(navigationData.name, navigationData.rateId, items.firstOrNull()!!.episodesSize, payload))
-        else getVideoAndExecute(payload) { openPlayer(playerType, it.tracks.first().url) }
+        else getVideoAndExecute(payload) { openPlayer(playerType, it.tracks.firstOrNull()?.url) }
     }
 
     override fun openPlayer(playerType: PlayerType, payload: Any?) {
@@ -116,7 +116,7 @@ class TranslationsPresenter @Inject constructor(
     }
 
     private fun setEpisodeWatched(payload: TranslationVideo) {
-        interactor.sendEpisodeChanges(EpisodeChanges(payload.animeId, payload.episodeIndex, true))
+        interactor.sendEpisodeChanges(EpisodeChanges(payload.animeId, navigationData.episodeIndex, true))
                 .andThen(interactor.saveTranslationSettings(TranslationSetting(payload.animeId, payload.author, payload.type)))
                 .doOnSubscribe { onBackPressed() }
                 .subscribe({}, this::processErrors)
