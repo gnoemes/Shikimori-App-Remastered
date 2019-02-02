@@ -190,6 +190,7 @@
 
     <string name="filter_not_selected">Не выбрано</string>
     <string name="filter_select">Выбрать</string>
+    <string name="filter_older">Более старые</string>
 
     <string name="more_authorized_hint">Перейти в профиль</string>
     <string name="more_guest_hint">Авторизоваться</string>
@@ -198,13 +199,54 @@
     <string name="dialog_auth_message">Войдите или зарегистрируйтесь для доступа ко всем возможностям приложения</string>
 
     <string name="settings_general">Общие</string>
-    <string name="settings_video">Видео</string>
+    <string name="settings_notifications">Уведомления</string>
+    <string name="settings_player">Плеер</string>
     <string name="settings_theme">Тема</string>
-    <string name="settings_manga">Манга</string>
-    <string name="settings_about">О программе</string>
-    <string name="settings_app">Приложение</string>
+    <string name="settings_about">О приложении</string>
+
     <string name="settings_content">Контент</string>
-    <string name="older">Более старые</string>
+    <string name="settings_content_naming_title">Русские названия</string>
+    <string name="settings_content_naming_key" translatable="false">IS_ROMADZI_NAMING</string>
+    <string name="settings_content_naming_summary_on">Названия аниме и манги на русском</string>
+    <string name="settings_content_naming_summary_off">Названия аниме и манги на ромадзи</string>
+
+    <string name="settings_content_download_folder_title">Папка загрузки</string>
+    <string name="settings_content_download_folder_key" translatable="false">DOWNLOAD_LOCATION</string>
+    <string name="settings_content_download_folder_summary">По указанному пути будут созданы папки отдельно для аниме и манги</string>
+
+    <string name="settings_statuses">Управление статусами</string>
+    <string name="settings_statuses_auto_increment_title">Включить автоматический режим</string>
+    <string name="settings_statuses_auto_increment_key" translatable="false">IS_AUTO_INCREMENT</string>
+    <string name="settings_statuses_auto_increment_summary_on">Количество просмотренных эпизодов и глав будет увеличиваться автоматический</string>
+    <string name="settings_statuses_auto_increment_summary_off">Управление количеством просмотренных эпизодов и глав в ручную</string>
+
+    <string name="settings_statuses_auto_status_title">Изменение статуса</string>
+    <string name="settings_statuses_auto_status_key" translatable="false">IS_AUTO_STATUS</string>
+    <string name="settings_statuses_auto_status_summary_on">Добавление статуса \"Смотрю\" после просмотра аниме или чтения манги без статуса</string>
+    <string name="settings_statuses_auto_status_summary_off">Управлять статусом аниме и манги в ручную</string>
+
+    <string name="settings_anime">Аниме</string>
+    <string name="settings_anime_my_ongoings_title">Приоритет \"Мои онгоинги\"</string>
+    <string name="settings_anime_my_ongoings_key" translatable="false">IS_MY_ONGOINGS_PRIORITY</string>
+    <string name="settings_anime_my_ongoings_summary_on">При переходе на \"Календарь\" будет открыта вкладка \"Мои онгоинги\"</string>
+    <string name="settings_anime_my_ongoings_summary_off">При переходе на \"Календарь\" будет открыта вкладка по умолчанию</string>
+
+    <string name="settings_anime_translation_type_title">Тип перевода по умолчанию</string>
+    <string name="settings_anime_translation_type_key" translatable="false">TRANSLATION_TYPE</string>
+
+    <string name="settings_anime_player_type_title">Плеер по умолчанию</string>
+    <string name="settings_anime_player_type_summary">Не выбрано</string>
+    <string name="settings_anime_player_type_key" translatable="false">PLAYER_TYPE</string>
+
+    <string name="settings_anime_player_remember_title">Запомнить плеер</string>
+    <string name="settings_anime_player_remember_summary_on">Не показывать диалог с выбором плеера</string>
+    <string name="settings_anime_player_remember_summary_off">Показывать диалог с выбором плеера</string>
+    <string name="settings_anime_player_remember_key" translatable="false">IS_REMEMBER_PLAYER</string>
+
+    <string name="settings_anime_remember_translation_settings_title">Локальные настройки просмотра</string>
+    <string name="settings_anime_remember_translation_settings_summary_on">Для каждого аниме будет сохранен тип перевода и автор</string>
+    <string name="settings_anime_remember_translation_settings_summary_off">Не сохранять настройки просмотра для разных аниме</string>
+    <string name="settings_anime_remember_translation_settings_key" translatable="false">IS_USE_LOCAL_TRANSLATION_SETTINGS</string>
 
     <string name="topic_news">Новости</string>
     <string name="topic_my_feed">Моя лента</string>
@@ -269,7 +311,6 @@
     <string name="player_seconds_short">сек.</string>
     <string name="player_brightness_format">Яркость %d%%</string>
     <string name="player_volume_format">Громкость %d%%</string>
-
 
     <string-array name="rate_types">
         <item>@string/common_anime</item>
@@ -478,6 +519,12 @@
         <item>@string/player_web</item>
         <item>@string/player_embedded</item>
         <item>@string/player_external</item>
+    </string-array>
+
+    <string-array name="translation_types">
+        <item>@string/translation_voice</item>
+        <item>@string/translation_subtitles</item>
+        <item>@string/translation_original</item>
     </string-array>
 
 </resources>

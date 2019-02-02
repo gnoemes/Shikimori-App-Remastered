@@ -2,7 +2,10 @@ package com.gnoemes.shikimori.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 
 fun Context.getDefaultSharedPreferences(): SharedPreferences {
@@ -52,6 +55,18 @@ fun Fragment.putSetting(key: String, value: Any?) {
             is Float -> prefs?.putFloat(key, data)
         }
     }
+}
+
+fun PreferenceFragmentCompat.preference(@StringRes stringRes: Int) : Preference? {
+    return preference(context?.getString(stringRes))
+}
+
+fun PreferenceFragmentCompat.preference(string: String?) : Preference? {
+    return findPreference(string)
+}
+
+fun PreferenceFragmentCompat.prefs() : SharedPreferences {
+    return this.preferenceManager.sharedPreferences
 }
 
 private fun SharedPreferences.getEditor(): SharedPreferences.Editor {

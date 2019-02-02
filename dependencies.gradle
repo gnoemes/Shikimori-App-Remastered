@@ -10,6 +10,8 @@ ext.versions = [
     kotlin            : '1.3.11',
     constraint        : '2.0.0-alpha3',
     androidx          : '1.0.0',
+    androidxFragment  : '1.1.0-alpha03',
+    androidxPrefs     : '1.1.0-alpha02',
 
     dagger            : '2.19',
     rxJava            : '2.2.6',

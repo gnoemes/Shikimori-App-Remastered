@@ -171,7 +171,7 @@ class SearchFragment : BasePaginationFragment<SearchItem, SearchPresenter, Searc
         if (fragment == null) {
             val filter = FilterDialogFragment.newInstance(type, filters)
             filter.setTargetFragment(this, 42)
-            postViewAction { filter.show(fragmentManager, tag) }
+            postViewAction { filter.show(fragmentManager!!, tag) }
         }
     }
 

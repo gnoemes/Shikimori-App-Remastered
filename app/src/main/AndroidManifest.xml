@@ -47,7 +47,8 @@
 
         <activity
             android:name=".presentation.view.settings.SettingsActivity"
-            android:label="@string/more_settings" />
+            android:label="@string/more_settings"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".presentation.view.player.web.WebPlayerActivity"

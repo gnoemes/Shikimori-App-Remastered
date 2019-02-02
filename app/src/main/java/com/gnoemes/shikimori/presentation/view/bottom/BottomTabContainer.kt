@@ -51,7 +51,7 @@ class BottomTabContainer : MvpFragment(), RouterProvider, BackButtonListener, Ha
     // UI METHODS
     ///////////////////////////////////////////////////////////////////////////
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
         super.onAttach(context)
     }

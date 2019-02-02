@@ -91,7 +91,7 @@ class MoreFragment : BaseFragment<MorePresenter, MoreView>(), MoreView, AuthDial
         if (dialog == null) {
             AuthDialog().apply {
                 setTargetFragment(this@MoreFragment, 42)
-            }.show(fragmentManager, tag)
+            }.show(fragmentManager!!, tag)
         }
     }
 }

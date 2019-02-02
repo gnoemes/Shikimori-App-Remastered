@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        android:title="@string/settings_content"
+        app:iconSpaceReserved="false">
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="@string/settings_content_naming_key"
+            android:summaryOff="@string/settings_content_naming_summary_off"
+            android:summaryOn="@string/settings_content_naming_summary_on"
+            android:title="@string/settings_content_naming_title"
+            app:iconSpaceReserved="false" />
+
+        <Preference
+            android:key="@string/settings_content_download_folder_key"
+            android:summary="@string/settings_content_download_folder_summary"
+            android:title="@string/settings_content_download_folder_title"
+            app:iconSpaceReserved="false" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/settings_statuses"
+        app:iconSpaceReserved="false">
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="@string/settings_statuses_auto_increment_key"
+            android:summaryOff="@string/settings_statuses_auto_increment_summary_off"
+            android:summaryOn="@string/settings_statuses_auto_increment_summary_on"
+            android:title="@string/settings_statuses_auto_increment_title"
+            app:iconSpaceReserved="false" />
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="@string/settings_statuses_auto_status_key"
+            android:summaryOff="@string/settings_statuses_auto_status_summary_off"
+            android:summaryOn="@string/settings_statuses_auto_status_summary_on"
+            android:title="@string/settings_statuses_auto_status_title"
+            app:iconSpaceReserved="false" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/settings_anime"
+        app:iconSpaceReserved="false">
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="@string/settings_anime_my_ongoings_key"
+            android:summaryOff="@string/settings_anime_my_ongoings_summary_off"
+            android:summaryOn="@string/settings_anime_my_ongoings_summary_on"
+            android:title="@string/settings_anime_my_ongoings_title"
+            app:iconSpaceReserved="false" />
+
+        <Preference
+            android:defaultValue="fandub"
+            android:key="@string/settings_anime_translation_type_key"
+            android:summary="@string/translation_voice"
+            android:title="@string/settings_anime_translation_type_title"
+            app:iconSpaceReserved="false" />
+
+        <Preference
+            android:key="@string/settings_anime_player_type_key"
+            android:summary="@string/settings_anime_player_type_summary"
+            android:title="@string/settings_anime_player_type_title"
+            app:iconSpaceReserved="false" />
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="@string/settings_anime_player_remember_key"
+            android:summaryOff="@string/settings_anime_player_remember_summary_off"
+            android:summaryOn="@string/settings_anime_player_remember_summary_on"
+            android:title="@string/settings_anime_player_remember_title"
+            app:iconSpaceReserved="false" />
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="@string/settings_anime_remember_translation_settings_key"
+            android:summaryOff="@string/settings_anime_remember_translation_settings_summary_off"
+            android:summaryOn="@string/settings_anime_remember_translation_settings_summary_on"
+            android:title="@string/settings_anime_remember_translation_settings_title"
+            app:iconSpaceReserved="false" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

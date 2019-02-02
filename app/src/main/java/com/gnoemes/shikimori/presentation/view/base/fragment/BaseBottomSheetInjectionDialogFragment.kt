@@ -12,7 +12,7 @@ abstract class BaseBottomSheetInjectionDialogFragment<Presenter : BasePresenter<
     @Inject
     lateinit var presenterProvider: Provider<Presenter>
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
         super.onAttach(context)
     }

@@ -125,7 +125,7 @@ class FilterResourceProviderImpl(
                     add(getYearFilter(2000..2010))
 
                     //older
-                    add(FilterItem(SearchConstants.SEASON, "1950_1999", context.getString(R.string.older)))
+                    add(FilterItem(SearchConstants.SEASON, "1950_1999", context.getString(R.string.filter_older)))
                 }
     }
 
