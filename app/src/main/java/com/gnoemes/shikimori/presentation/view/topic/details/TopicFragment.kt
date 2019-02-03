@@ -16,6 +16,8 @@ import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.comment.presentation.CommentViewModel
 import com.gnoemes.shikimori.entity.common.domain.LinkedContent
 import com.gnoemes.shikimori.entity.common.domain.Status
+import com.gnoemes.shikimori.entity.manga.domain.Manga
+import com.gnoemes.shikimori.entity.manga.domain.MangaType
 import com.gnoemes.shikimori.entity.topic.presentation.TopicContentViewModel
 import com.gnoemes.shikimori.entity.topic.presentation.TopicUserViewModel
 import com.gnoemes.shikimori.presentation.presenter.topic.details.TopicPresenter
@@ -170,6 +172,48 @@ class TopicFragment : BasePaginationFragment<CommentViewModel, TopicPresenter, T
                     typeView.text = typeText
                     seasonView.text = seasonText
                     statusView.text = statusText
+                } else if (linked is Manga) {
+                    fun getLocalizedType(type: MangaType): String {
+                        return when (type) {
+                            MangaType.MANGA -> context.getString(R.string.type_manga_translatable)
+                            MangaType.DOUJIN -> context.getString(R.string.type_doujin_translatable)
+                            MangaType.MANHUA -> context.getString(R.string.type_manhua_translatable)
+                            MangaType.MANHWA -> context.getString(R.string.type_manhwa_translatable)
+                            MangaType.NOVEL -> context.getString(R.string.type_novel_translatable)
+                            MangaType.ONE_SHOT -> context.getString(R.string.type_one_shot_translatable)
+                            MangaType.UNKNOWN -> ""
+                        }
+                    }
+
+                    fun convertStatus(status: Status): String {
+                        return when (status) {
+                            Status.ANONS -> context.getString(R.string.status_anons)
+                            Status.ONGOING -> context.getString(R.string.status_ongoing)
+                            Status.RELEASED -> context.getString(R.string.status_released)
+                            else -> context.getString(R.string.error_no_data)
+                        }
+                    }
+
+                    fun convertType(type: MangaType, volumes: Int, chapters: Int): String {
+                        val typeText = getLocalizedType(type)
+                        val format = context.getString(R.string.type_pattern_manga)
+                        return String.format(format, typeText, volumes.unknownIfZero(), chapters.unknownIfZero())
+                    }
+
+
+
+                    val type = convertType(linked.type, linked.volumes, linked.chapters)
+                    val season = converter.convertAnimeSeasonToString(linked.dateAired)
+                    val status = convertStatus(linked.status)
+
+                    val typeText = context.getString(R.string.details_type).toBold().append(" ").append(type)
+                    val seasonText = context.getString(R.string.details_season).toBold().append(" ").append(season)
+                    val statusText = context.getString(R.string.details_status).toBold().append(" ").append(status)
+
+                    typeView.text = typeText
+                    seasonView.text = seasonText
+                    statusView.text = statusText
+
                 }
             }
         }
