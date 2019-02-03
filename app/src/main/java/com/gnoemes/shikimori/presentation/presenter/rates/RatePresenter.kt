@@ -44,6 +44,11 @@ class RatePresenter @Inject constructor(
         paginator.refresh()
     }
 
+    //TODO don't trigger onViewReattached on orientation change
+    override fun onViewReattached() {
+        paginator.refresh()
+    }
+
     private fun loadRate(page: Int): Single<List<Rate>> =
             if (isAnime) ratesInteractor.getAnimeRates(userId, page, Constants.MAX_LIMIT, rateStatus)
             else ratesInteractor.getMangaRates(userId, page, Constants.MAX_LIMIT, rateStatus)
