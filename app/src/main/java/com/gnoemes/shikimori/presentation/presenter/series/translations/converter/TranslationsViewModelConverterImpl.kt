@@ -48,9 +48,12 @@ class TranslationsViewModelConverterImpl @Inject constructor(
         val canBeDownloaded = it.value.find { Utils.isHostingSupports(it.hosting, true) } != null
 
 
-        if (isSameAuthor) builder.append("")
+        if (isSameAuthor) builder.append(" ")
         if (hasBd) {
-            if (builder.isNotEmpty()) appendDot(true)
+            if (builder.isNotEmpty()) {
+                builder.replace(0, 1, "")
+                appendDot(true)
+            }
             val blueRay = context.getString(R.string.translation_blue_ray).colorSpan(descriptionColor)
             builder.append(blueRay)
         }
