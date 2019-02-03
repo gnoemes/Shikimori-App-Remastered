@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <Preference
+        android:key="@string/settings_about_feedback_key"
+        android:title="@string/settings_about_feedback_title"
+        app:iconSpaceReserved="false" />
+
+    <Preference
+        android:key="@string/settings_about_updates_key"
+        android:title="@string/settings_about_updates_title"
+        app:iconSpaceReserved="false" />
+
+    <Preference
+        android:icon="@mipmap/ic_launcher_round"
+        android:key="@string/settings_about_version_key"
+        android:title="@string/app_name"
+        tools:summary="v1.4.6" />
+
+</PreferenceScreen>

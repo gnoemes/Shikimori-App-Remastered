@@ -28,6 +28,7 @@
     <Preference
         android:key="about_fragment"
         android:title="@string/settings_about"
+        app:fragment="com.gnoemes.shikimori.presentation.view.settings.fragments.SettingsAboutFragment"
         app:iconSpaceReserved="false" />
 
 

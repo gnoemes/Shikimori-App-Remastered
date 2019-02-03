@@ -293,6 +293,14 @@
     <string name="settings_theme_custom_title">Создать свою</string>
     <string name="settings_theme_custom_key" translatable="false">CUSTOM_THEME_KEY</string>
 
+    <string name="settings_about_feedback_title">Оставить отзыв</string>
+    <string name="settings_about_feedback_key" translatable="false">FEEDBACK_KEY</string>
+
+    <string name="settings_about_updates_title">Проверить обновления</string>
+    <string name="settings_about_updates_key" translatable="false">UPDATES_KEY</string>
+
+    <string name="settings_about_version_key" translatable="false">VERSION_KEY</string>
+
     <string name="topic_news">Новости</string>
     <string name="topic_my_feed">Моя лента</string>
     <string name="topic_forum">Форум</string>
