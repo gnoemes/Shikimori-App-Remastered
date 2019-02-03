@@ -85,16 +85,19 @@ class RatesRepositoryImpl @Inject constructor(
                     .map { converter.convertCreateOrUpdateRequest(id, Type.ANIME, rate.copy(episodes = it), userId) }
                     .flatMap { api.createRate(it) }
                     .map { converter.convertUserRateResponse(id, it) }
+                    .flatMap { syncRate(it).toSingleDefault(it) }
 
     private fun createMangaRate(id: Long, rate: UserRate, userId: Long): Single<UserRate> =
             chapterDbSource.getReadedChapterCount(id)
                     .map { converter.convertCreateOrUpdateRequest(id, Type.MANGA, rate.copy(chapters = it), userId) }
                     .flatMap { api.createRate(it) }
                     .map { converter.convertUserRateResponse(id, it) }
+                    .flatMap { syncRate(it).toSingleDefault(it) }
 
     override fun getRate(id: Long): Single<UserRate> =
             api.getRate(id)
                     .map { converter.convertUserRateResponse(null, it) }
+                    .flatMap { syncRate(it).toSingleDefault(it) }
 
     private fun syncAnimeRate(it: UserRate): Completable =
             Single.just(it)
