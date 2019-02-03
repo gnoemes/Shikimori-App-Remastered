@@ -18,6 +18,10 @@ class SettingsSourceImpl @Inject constructor(
         get() = prefs.getBoolean(SettingsExtras.IS_AUTO_STATUS, true)
         set(value) = prefs.putBoolean(SettingsExtras.IS_AUTO_STATUS, value)
 
+    override var isAutoIncrement: Boolean
+        get() = prefs.getBoolean(SettingsExtras.IS_AUTO_INCREMENT, true)
+        set(value) = prefs.putBoolean(SettingsExtras.IS_AUTO_INCREMENT, value)
+
     override var isRussianNaming: Boolean
         get() = prefs.getBoolean(SettingsExtras.IS_ROMADZI_NAMING, true)
         set(value) = prefs.putBoolean(SettingsExtras.IS_ROMADZI_NAMING, value)

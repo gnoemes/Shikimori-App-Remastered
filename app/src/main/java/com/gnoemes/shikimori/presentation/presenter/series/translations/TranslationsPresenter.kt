@@ -116,7 +116,8 @@ class TranslationsPresenter @Inject constructor(
     }
 
     private fun setEpisodeWatched(payload: TranslationVideo) {
-        interactor.sendEpisodeChanges(EpisodeChanges(payload.animeId, navigationData.episodeIndex, true))
+        (if (settingsSource.isAutoIncrement) interactor.sendEpisodeChanges(EpisodeChanges(payload.animeId, navigationData.episodeIndex, true))
+        else Completable.complete())
                 .andThen(interactor.saveTranslationSettings(TranslationSetting(payload.animeId, payload.author, payload.type)))
                 .doOnSubscribe { onBackPressed() }
                 .subscribe({}, this::processErrors)

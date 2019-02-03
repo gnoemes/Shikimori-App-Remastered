@@ -1,6 +1,7 @@
 package com.gnoemes.shikimori.presentation.presenter.player
 
 import com.arellomobile.mvp.InjectViewState
+import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.domain.series.SeriesInteractor
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.series.domain.EpisodeChanges
@@ -16,7 +17,8 @@ import javax.inject.Inject
 
 @InjectViewState
 class EmbeddedPlayerPresenter @Inject constructor(
-        private val interactor: SeriesInteractor
+        private val interactor: SeriesInteractor,
+        private val settingsSource: SettingsSource
 ) : BaseNetworkPresenter<EmbeddedPlayerView>() {
 
     lateinit var navigationData: EmbeddedPlayerNavigationData
@@ -82,6 +84,8 @@ class EmbeddedPlayerPresenter @Inject constructor(
     }
 
     private fun setEpisodeWatched() {
+        if (!settingsSource.isAutoIncrement) return
+
         interactor
                 .sendEpisodeChanges(EpisodeChanges(animeId, currentEpisode, true))
                 .subscribe({}, this::processErrors)

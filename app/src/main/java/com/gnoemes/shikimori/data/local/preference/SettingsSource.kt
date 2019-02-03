@@ -7,6 +7,8 @@ interface SettingsSource {
 
     var isAutoStatus : Boolean
 
+    var isAutoIncrement : Boolean
+
     var isRussianNaming: Boolean
 
     var isRememberTranslationType : Boolean
