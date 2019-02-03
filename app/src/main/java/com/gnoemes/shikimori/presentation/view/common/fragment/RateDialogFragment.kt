@@ -79,12 +79,34 @@ class RateDialogFragment : MvpDialogFragment() {
             }
 
             val rating = rate?.score?.roundToInt() ?: 0
-            ratingBar.rating = rating.div(2).toFloat()
+            ratingBar.rating = rating.div(2f)
             ratingBar.setOnRatingBarChangeListener { _, fl, _ ->
                 val newRating = (fl * 2).roundToInt()
                 countRating(newRating)
             }
             countRating(rating)
+
+            ratingGroup.setOnClickListener { view ->
+                val currentRating = ratingValueView.text.toString().toIntOrNull()
+                currentRating?.let {
+                    val newRating = when (it) {
+                        10 -> 0
+                        else -> it + 1
+                    }
+                    countRating(newRating)
+                }
+            }
+
+            episodeIncrementView.setOnClickListener {
+                val newValue = episodesView.text?.toString()?.toIntOrNull()?.plus(1) ?: 0
+                episodesView.setText(newValue.toString())
+            }
+
+            episodeDecrementView.setOnClickListener {
+                var newValue = episodesView.text?.toString()?.toIntOrNull()?.minus(1) ?: 0
+                if (newValue < 0) newValue = 0
+                episodesView.setText(newValue.toString())
+            }
 
             commentView.setText(rate?.text)
 
@@ -101,6 +123,7 @@ class RateDialogFragment : MvpDialogFragment() {
     private fun countRating(rating: Int) {
         customView.ratingValueView.text = rating.toString()
         customView.ratingDescriptionView.text = ratingResourceProvider.getRatingDescription(rating)
+        customView.ratingBar.rating = rating.div(2f)
     }
 
     interface RateDialogCallback {
