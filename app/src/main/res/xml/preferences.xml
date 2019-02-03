@@ -22,6 +22,7 @@
     <Preference
         android:key="theme_fragment"
         android:title="@string/settings_theme"
+        app:fragment="com.gnoemes.shikimori.presentation.view.settings.fragments.SettingsThemeFragment"
         app:iconSpaceReserved="false" />
 
     <Preference
