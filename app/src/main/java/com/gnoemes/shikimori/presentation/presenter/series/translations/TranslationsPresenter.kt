@@ -47,7 +47,8 @@ class TranslationsPresenter @Inject constructor(
 
     private fun loadData() {
         loadSettingsIfNeed()
-                .andThen(loadTranslations(type))
+                .toSingleDefault(type)
+                .flatMap { loadTranslations(it) }
                 .doOnSubscribe { viewState.setTranslationType(type) }
                 .appendLoadingLogic(viewState)
                 .subscribe(this::setData, this::processErrors)

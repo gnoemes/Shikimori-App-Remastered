@@ -32,9 +32,19 @@
         android:layout_marginRight="8dp"
         android:textColor="?attr/colorOnPrimarySecondary"
         app:layout_constraintEnd_toStartOf="@+id/guideLine"
-        app:layout_constraintStart_toStartOf="@+id/authorView"
+        app:layout_constraintStart_toEndOf="@+id/sameAuthorView"
         app:layout_constraintTop_toBottomOf="@+id/authorView"
         tools:text="*  * Blue-ray * Можно скачать" />
+
+    <ImageView
+        android:id="@+id/sameAuthorView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tint="?attr/colorAccent"
+        app:layout_constraintBottom_toBottomOf="@+id/descriptionView"
+        app:layout_constraintStart_toStartOf="@+id/authorView"
+        app:layout_constraintTop_toTopOf="@+id/descriptionView"
+        app:srcCompat="@drawable/ic_translation_watched" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideLine"

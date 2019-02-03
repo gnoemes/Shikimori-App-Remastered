@@ -17,11 +17,16 @@ class TranslationSettingDbSourceImpl @Inject constructor(
 
     override fun saveSetting(setting: TranslationSetting): Completable {
         val dao = TranslationSettingDao(setting.animeId, setting.lastAuthor, setting.lastType?.type)
-        return storIOSQLite
-                .put()
-                .`object`(dao)
-                .prepare()
-                .asRxCompletable()
+        try {
+            storIOSQLite
+                    .put()
+                    .`object`(dao)
+                    .prepare()
+                    .executeAsBlocking()
+        } catch (e: Exception) {
+            return Completable.error(e)
+        }
+        return Completable.complete()
     }
 
     override fun getSetting(animeId: Long): Single<TranslationSetting> =
@@ -40,5 +45,5 @@ class TranslationSettingDbSourceImpl @Inject constructor(
                         else getDefaultItem(animeId)
                     }.onErrorReturnItem(getDefaultItem(animeId))
 
-    private fun getDefaultItem(animeId: Long): TranslationSetting = TranslationSetting(animeId,  null, null)
+    private fun getDefaultItem(animeId: Long): TranslationSetting = TranslationSetting(animeId, null, null)
 }

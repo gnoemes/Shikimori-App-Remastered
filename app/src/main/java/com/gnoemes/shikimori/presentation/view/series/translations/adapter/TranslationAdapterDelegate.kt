@@ -68,6 +68,7 @@ class TranslationAdapterDelegate(
                 authorView.text = item.authors
                 descriptionView.text = item.description
                 descriptionView.visibleIf { !item.description.isNullOrBlank() }
+                sameAuthorView.visibleIf { item.isSameAuthor }
                 adapter.bindItems(item.videos)
             }
         }

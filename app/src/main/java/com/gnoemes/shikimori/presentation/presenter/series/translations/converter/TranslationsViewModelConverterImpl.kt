@@ -1,9 +1,7 @@
 package com.gnoemes.shikimori.presentation.presenter.series.translations.converter
 
 import android.content.Context
-import android.text.Spannable
 import android.text.SpannableStringBuilder
-import android.text.style.ImageSpan
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.series.domain.*
 import com.gnoemes.shikimori.entity.series.presentation.TranslationVideo
@@ -39,8 +37,8 @@ class TranslationsViewModelConverterImpl @Inject constructor(
         val builder = SpannableStringBuilder()
 
         fun appendDot(withSpace: Boolean = false) {
-            val space = "  "
-            val dot = "\t•"
+            val space = " "
+            val dot = "•"
             builder.append(space.plus(dot).colorSpan(descriptionColor))
             if (withSpace) builder.append(space)
         }
@@ -50,7 +48,7 @@ class TranslationsViewModelConverterImpl @Inject constructor(
         val canBeDownloaded = it.value.find { Utils.isHostingSupports(it.hosting, true) } != null
 
 
-        if (isSameAuthor) builder.append("*").setSpan(ImageSpan(context, R.drawable.ic_translation_watched), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        if (isSameAuthor) builder.append("")
         if (hasBd) {
             if (builder.isNotEmpty()) appendDot(true)
             val blueRay = context.getString(R.string.translation_blue_ray).colorSpan(descriptionColor)
