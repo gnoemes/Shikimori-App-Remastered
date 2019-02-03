@@ -58,6 +58,7 @@ class AnimePresenter @Inject constructor(
 
     override fun onViewReattached() {
         loadDetails()
+                .doOnSuccess { loadOptions() }
                 .subscribe({ viewState.setHeadItem(it) }, this::processErrors)
                 .addToDisposables()
     }
