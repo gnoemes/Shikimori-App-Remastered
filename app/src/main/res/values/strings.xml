@@ -28,6 +28,7 @@
     <string name="common_characters">Персонажи</string>
     <string name="common_character">Персонаж</string>
     <string name="common_chronology">Порядок просмотра</string>
+    <string name="common_chronology_read">Порядок чтения</string>
     <string name="common_similar">Похожие</string>
     <string name="common_related">Связанные</string>
     <string name="common_links">Ссылки</string>
@@ -127,6 +128,7 @@
     <string name="episode_number">%d эпизод</string>
     <string name="episode_in">через %s</string>
     <string name="type_pattern">%s (%s эп.), %d мин.</string>
+    <string name="type_pattern_manga">%s, %s т. %s гл.</string>
     <string name="type_pattern_without_duration">%s (%s эп.)</string>
     <string name="error_no_data">Нет данных</string>
     <string name="details_type">Тип:</string>
@@ -134,6 +136,7 @@
     <string name="details_status">Статус:</string>
     <string name="details_studio">Студия:</string>
     <string name="details_watch_online">Смотреть онлайн</string>
+    <string name="details_read_online">Читать онлайн</string>
 
     <string name="opening">Опенинг</string>
     <string name="ending">Эндинг</string>

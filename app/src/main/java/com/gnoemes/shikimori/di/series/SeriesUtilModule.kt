@@ -1,8 +1,8 @@
 package com.gnoemes.shikimori.di.series
 
 import com.gnoemes.shikimori.data.repository.series.shikimori.converter.*
-import com.gnoemes.shikimori.presentation.presenter.anime.converter.EpisodeViewModelConverter
-import com.gnoemes.shikimori.presentation.presenter.anime.converter.EpisodeViewModelConverterImpl
+import com.gnoemes.shikimori.presentation.presenter.series.episodes.converter.EpisodeViewModelConverter
+import com.gnoemes.shikimori.presentation.presenter.series.episodes.converter.EpisodeViewModelConverterImpl
 import com.gnoemes.shikimori.presentation.presenter.series.translations.converter.TranslationsViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.series.translations.converter.TranslationsViewModelConverterImpl
 import dagger.Binds

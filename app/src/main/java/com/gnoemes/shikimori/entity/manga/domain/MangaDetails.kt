@@ -4,7 +4,6 @@ import com.gnoemes.shikimori.entity.common.domain.Genre
 import com.gnoemes.shikimori.entity.common.domain.Image
 import com.gnoemes.shikimori.entity.common.domain.Status
 import com.gnoemes.shikimori.entity.rates.domain.UserRate
-import com.gnoemes.shikimori.entity.roles.domain.Character
 import org.joda.time.DateTime
 
 data class MangaDetails(
@@ -23,8 +22,7 @@ data class MangaDetails(
         val description: String?,
         val descriptionHtml: String,
         val favoured: Boolean,
-        val topicId: Long,
+        val topicId: Long?,
         val genres: List<Genre>,
-        val characters: List<Character>,
         val userRate: UserRate?
 )

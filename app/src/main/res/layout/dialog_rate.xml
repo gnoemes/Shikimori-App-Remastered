@@ -60,6 +60,7 @@
         android:tint="?attr/colorAccent"
         app:layout_constraintBottom_toBottomOf="@+id/episodesView"
         app:layout_constraintEnd_toStartOf="@+id/episodesView"
+        app:layout_constraintStart_toStartOf="@+id/episodesLabelView"
         app:layout_constraintTop_toTopOf="@+id/episodesView"
         app:srcCompat="@drawable/ic_minus" />
 
@@ -67,13 +68,13 @@
         android:id="@+id/episodesView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:gravity="center"
         android:inputType="number"
         android:minWidth="40dp"
-        app:layout_constraintEnd_toEndOf="@+id/episodesLabelView"
-        app:layout_constraintHorizontal_bias="0.85"
-        app:layout_constraintStart_toStartOf="@+id/episodesLabelView"
+        app:layout_constraintStart_toEndOf="@+id/episodeDecrementView"
         app:layout_constraintTop_toBottomOf="@+id/episodesLabelView"
         tools:text="404" />
 
@@ -83,9 +84,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintHorizontal_bias="0"
         android:background="?attr/colorAccentTransparent"
         android:tint="?attr/colorAccent"
         app:layout_constraintBottom_toBottomOf="@+id/episodesView"
+        app:layout_constraintEnd_toStartOf="@+id/ratingGroup"
         app:layout_constraintStart_toEndOf="@+id/episodesView"
         app:layout_constraintTop_toTopOf="@+id/episodesView"
         app:srcCompat="@drawable/ic_plus" />

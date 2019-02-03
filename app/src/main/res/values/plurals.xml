@@ -49,4 +49,18 @@
         <item quantity="other">%1$d комментариев</item>
     </plurals>
 
+    <plurals name="volumes">
+        <item quantity="one">%1$d том</item>
+        <item quantity="few">%1$d тома</item>
+        <item quantity="many">%1$d томов</item>
+        <item quantity="other">%1$d томов</item>
+    </plurals>
+
+    <plurals name="chapters">
+        <item quantity="one">%1$d глава</item>
+        <item quantity="few">%1$d главы</item>
+        <item quantity="many">%1$d глав</item>
+        <item quantity="other">%1$d глав</item>
+    </plurals>
+
 </resources>

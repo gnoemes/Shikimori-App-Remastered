@@ -9,6 +9,7 @@ import com.gnoemes.shikimori.entity.auth.AuthType
 import com.gnoemes.shikimori.entity.common.domain.Screens
 import com.gnoemes.shikimori.entity.forum.domain.ForumType
 import com.gnoemes.shikimori.entity.main.BottomScreens
+import com.gnoemes.shikimori.entity.manga.presentation.MangaNavigationData
 import com.gnoemes.shikimori.entity.search.presentation.SearchNavigationData
 import com.gnoemes.shikimori.entity.series.presentation.EmbeddedPlayerNavigationData
 import com.gnoemes.shikimori.entity.series.presentation.EpisodesNavigationData
@@ -17,6 +18,7 @@ import com.gnoemes.shikimori.presentation.view.anime.AnimeFragment
 import com.gnoemes.shikimori.presentation.view.auth.AuthActivity
 import com.gnoemes.shikimori.presentation.view.calendar.CalendarFragment
 import com.gnoemes.shikimori.presentation.view.character.CharacterFragment
+import com.gnoemes.shikimori.presentation.view.manga.MangaFragment
 import com.gnoemes.shikimori.presentation.view.more.MoreFragment
 import com.gnoemes.shikimori.presentation.view.person.PersonFragment
 import com.gnoemes.shikimori.presentation.view.player.embedded.EmbeddedPlayerActivity
@@ -40,6 +42,7 @@ object RouteHolder {
             BottomScreens.MAIN -> ShikimoriMainFragment.newInstance()
             BottomScreens.MORE -> MoreFragment.newInstance()
             Screens.ANIME_DETAILS -> AnimeFragment.newInstance(data as Long)
+            Screens.MANGA_DETAILS -> MangaFragment.newInstance(data as MangaNavigationData)
             Screens.CHARACTER_DETAILS -> CharacterFragment.newInstance(data as Long)
             Screens.PERSON_DETAILS -> PersonFragment.newInstance(data as Long)
             Screens.TOPIC_DETAILS -> TopicFragment.newInstance(data as Long)

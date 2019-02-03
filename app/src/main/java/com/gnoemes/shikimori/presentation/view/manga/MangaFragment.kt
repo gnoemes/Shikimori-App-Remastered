@@ -1,4 +1,4 @@
-package com.gnoemes.shikimori.presentation.view.anime
+package com.gnoemes.shikimori.presentation.view.manga
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -11,10 +11,12 @@ import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.app.domain.AppExtras
+import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.common.presentation.*
+import com.gnoemes.shikimori.entity.manga.presentation.MangaNavigationData
 import com.gnoemes.shikimori.entity.rates.domain.UserRate
-import com.gnoemes.shikimori.presentation.presenter.anime.AnimePresenter
 import com.gnoemes.shikimori.presentation.presenter.common.provider.RatingResourceProvider
+import com.gnoemes.shikimori.presentation.presenter.manga.MangaPresenter
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragment
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
 import com.gnoemes.shikimori.presentation.view.common.adapter.GenreAdapter
@@ -32,8 +34,7 @@ import kotlinx.android.synthetic.main.fragment_details.*
 import kotlinx.android.synthetic.main.layout_collapsing_toolbar.*
 import javax.inject.Inject
 
-//TODO BaseDetailsFragment?
-class AnimeFragment : BaseFragment<AnimePresenter, AnimeView>(), AnimeView,
+class MangaFragment : BaseFragment<MangaPresenter, MangaView>(), MangaView,
         ListDialogFragment.DialogCallback, ListDialogFragment.DialogIdCallback, RateDialogFragment.RateDialogCallback {
 
     @Inject
@@ -43,25 +44,19 @@ class AnimeFragment : BaseFragment<AnimePresenter, AnimeView>(), AnimeView,
     lateinit var resourceProvider: RatingResourceProvider
 
     @InjectPresenter
-    lateinit var animePresenter: AnimePresenter
+    lateinit var mangaPresenter: MangaPresenter
 
     @ProvidePresenter
-    fun providePresenter(): AnimePresenter {
-        animePresenter = presenterProvider.get()
-
-        parentFragment.ifNotNull {
-            animePresenter.localRouter = (parentFragment as RouterProvider).localRouter
-        }
-
-        arguments.ifNotNull {
-            animePresenter.id = it.getLong(AppExtras.ARGUMENT_ANIME_ID)
-        }
-
-        return animePresenter
-    }
+    fun providePresenter(): MangaPresenter =
+            presenterProvider.get().apply {
+                localRouter = (parentFragment as RouterProvider).localRouter
+                val data = arguments?.getParcelable<MangaNavigationData>(AppExtras.ARGUMENT_MANGA_DATA)!!
+                id = data.id
+                isRanobe = data.type == Type.RANOBE
+            }
 
     companion object {
-        fun newInstance(id: Long) = AnimeFragment().withArgs { putLong(AppExtras.ARGUMENT_ANIME_ID, id) }
+        fun newInstance(data: MangaNavigationData) = MangaFragment().withArgs { putParcelable(AppExtras.ARGUMENT_MANGA_DATA, data) }
     }
 
     private val onOffsetChangedListener = AppBarLayout.OnOffsetChangedListener { appbar, verticalOffset ->
@@ -82,7 +77,6 @@ class AnimeFragment : BaseFragment<AnimePresenter, AnimeView>(), AnimeView,
 
     private val genreAdapter by lazy { GenreAdapter(getPresenter()::onAction) }
 
-    private val videoAdapter by lazy { ContentAdapter(imageLoader, getPresenter()::onContentClicked, getPresenter()::onAction) }
     private val charactersAdapter by lazy { ContentAdapter(imageLoader, getPresenter()::onContentClicked, getPresenter()::onAction) }
     private val similarAdapter by lazy { ContentAdapter(imageLoader, getPresenter()::onContentClicked, getPresenter()::onAction) }
     private val relatedAdapter by lazy { ContentAdapter(imageLoader, getPresenter()::onContentClicked, getPresenter()::onAction) }
@@ -95,7 +89,7 @@ class AnimeFragment : BaseFragment<AnimePresenter, AnimeView>(), AnimeView,
         super.onViewCreated(view, savedInstanceState)
 
         toolbar?.apply {
-            addBackButton {getPresenter().onBackPressed() }
+            addBackButton { getPresenter().onBackPressed() }
             title = null
         }
 
@@ -109,13 +103,13 @@ class AnimeFragment : BaseFragment<AnimePresenter, AnimeView>(), AnimeView,
 
         }
         appBarLayout.addOnOffsetChangedListener(onOffsetChangedListener)
+        videoLayout.gone()
 
         headHolder = DetailsHeadViewHolder(headLayout, imageLoader, resourceProvider, genreAdapter, getPresenter()::onAction)
         descriptionHolder = DetailsDescriptionViewHolder(descriptionLayout, getPresenter()::onContentClicked)
         optionsHolder = DetailsOptionsViewHolder(optionsLayout, getPresenter()::onAction)
 
         contentHolders.apply {
-            put(DetailsContentType.VIDEO, DetailsContentViewHolder(videoLayout, videoAdapter))
             put(DetailsContentType.CHARACTERS, DetailsContentViewHolder(charactersLayout, charactersAdapter))
             put(DetailsContentType.SIMILAR, DetailsContentViewHolder(similarLayout, similarAdapter))
             put(DetailsContentType.RELATED, DetailsContentViewHolder(relatedLayout, relatedAdapter))
@@ -124,7 +118,7 @@ class AnimeFragment : BaseFragment<AnimePresenter, AnimeView>(), AnimeView,
 
     private fun showToolbar() {
         toolbar?.apply {
-            setTitle(R.string.common_anime)
+            setTitle(R.string.common_manga)
             background = ColorDrawable(context.colorAttr(R.attr.colorPrimary))
         }
     }
@@ -137,7 +131,7 @@ class AnimeFragment : BaseFragment<AnimePresenter, AnimeView>(), AnimeView,
     }
 
     override fun dialogItemIdCallback(tag: String?, id: Long) {
-        getPresenter().onAnimeClicked(id)
+        getPresenter().onMangaClicked(id)
     }
 
     override fun dialogItemCallback(tag: String?, url: String) {
@@ -161,7 +155,7 @@ class AnimeFragment : BaseFragment<AnimePresenter, AnimeView>(), AnimeView,
     // GETTERS
     ///////////////////////////////////////////////////////////////////////////
 
-    override fun getPresenter(): AnimePresenter = animePresenter
+    override fun getPresenter(): MangaPresenter = mangaPresenter
 
     override fun getFragmentLayout(): Int = R.layout.fragment_details
 
@@ -190,7 +184,7 @@ class AnimeFragment : BaseFragment<AnimePresenter, AnimeView>(), AnimeView,
     }
 
     override fun showRateDialog(userRate: UserRate?) {
-        val dialog = RateDialogFragment.newInstance(rate = userRate)
+        val dialog = RateDialogFragment.newInstance(rate = userRate, isAnime = false)
         dialog.show(childFragmentManager, "RateTag")
     }
 
@@ -205,8 +199,9 @@ class AnimeFragment : BaseFragment<AnimePresenter, AnimeView>(), AnimeView,
     override fun showChronology(it: List<Pair<String, String>>) {
         val dialog = ListDialogFragment.newInstance(true)
         dialog.apply {
-            setTitle(R.string.common_chronology)
+            setTitle(R.string.common_chronology_read)
             setItems(it)
         }.show(childFragmentManager, "ChronologyTag")
     }
+
 }

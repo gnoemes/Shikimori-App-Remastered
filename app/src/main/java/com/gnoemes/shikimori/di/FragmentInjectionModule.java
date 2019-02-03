@@ -4,6 +4,7 @@ import com.gnoemes.shikimori.di.anime.AnimeModule;
 import com.gnoemes.shikimori.di.base.scopes.BottomChildScope;
 import com.gnoemes.shikimori.di.calendar.CalendarModule;
 import com.gnoemes.shikimori.di.character.CharacterModule;
+import com.gnoemes.shikimori.di.manga.MangaModule;
 import com.gnoemes.shikimori.di.more.MoreModule;
 import com.gnoemes.shikimori.di.person.PersonModule;
 import com.gnoemes.shikimori.di.rate.RateContainerModule;
@@ -16,6 +17,7 @@ import com.gnoemes.shikimori.di.topic.list.TopicListModule;
 import com.gnoemes.shikimori.presentation.view.anime.AnimeFragment;
 import com.gnoemes.shikimori.presentation.view.calendar.CalendarFragment;
 import com.gnoemes.shikimori.presentation.view.character.CharacterFragment;
+import com.gnoemes.shikimori.presentation.view.manga.MangaFragment;
 import com.gnoemes.shikimori.presentation.view.more.MoreFragment;
 import com.gnoemes.shikimori.presentation.view.person.PersonFragment;
 import com.gnoemes.shikimori.presentation.view.rates.RatesContainerFragment;
@@ -79,4 +81,8 @@ public interface FragmentInjectionModule {
     @BottomChildScope
     @ContributesAndroidInjector(modules = TranslationModule.class)
     TranslationsFragment translationsFragment();
+
+    @BottomChildScope
+    @ContributesAndroidInjector(modules = MangaModule.class)
+    MangaFragment mangaFragment();
 }

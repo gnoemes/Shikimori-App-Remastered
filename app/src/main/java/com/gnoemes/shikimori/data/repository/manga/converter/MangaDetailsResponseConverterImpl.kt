@@ -1,40 +1,37 @@
 package com.gnoemes.shikimori.data.repository.manga.converter
 
-import com.gnoemes.shikimori.data.repository.common.CharacterResponseConverter
 import com.gnoemes.shikimori.data.repository.common.GenreResponseConverter
 import com.gnoemes.shikimori.data.repository.common.ImageResponseConverter
 import com.gnoemes.shikimori.data.repository.common.RateResponseConverter
-import com.gnoemes.shikimori.entity.common.data.RolesResponse
 import com.gnoemes.shikimori.entity.manga.data.MangaDetailsResponse
 import com.gnoemes.shikimori.entity.manga.domain.MangaDetails
+import com.gnoemes.shikimori.utils.appendHostIfNeed
 import javax.inject.Inject
 
 class MangaDetailsResponseConverterImpl @Inject constructor(
         private val imageConverter: ImageResponseConverter,
         private val genreConverter: GenreResponseConverter,
-        private val rateConverter: RateResponseConverter,
-        private val charactersConverter: CharacterResponseConverter
+        private val rateConverter: RateResponseConverter
 ) : MangaDetailsResponseConverter {
-    override fun convertResponse(manga: MangaDetailsResponse, characters: List<RolesResponse>): MangaDetails =
-            MangaDetails(
-                    manga.id,
-                    manga.name,
-                    manga.nameRu,
-                    imageConverter.convertResponse(manga.image),
-                    manga.url,
-                    manga.type,
-                    manga.status,
-                    manga.volumes,
-                    manga.chapters,
-                    manga.dateAired,
-                    manga.dateReleased,
-                    manga.score,
-                    manga.description,
-                    manga.descriptionHtml,
-                    manga.favoured,
-                    manga.topicId,
-                    genreConverter.apply(manga.genres),
-                    charactersConverter.convertRoles(characters),
-                    rateConverter.convertUserRateResponse(manga.id, manga.userRate)
-            )
+
+    override fun apply(t: MangaDetailsResponse): MangaDetails = MangaDetails(
+            t.id,
+            t.name,
+            t.nameRu,
+            imageConverter.convertResponse(t.image),
+            t.url.appendHostIfNeed(),
+            t.type,
+            t.status,
+            t.volumes,
+            t.chapters,
+            t.dateAired,
+            t.dateReleased,
+            t.score,
+            t.description,
+            t.descriptionHtml,
+            t.favoured,
+            t.topicId,
+            genreConverter.apply(t.genres),
+            rateConverter.convertUserRateResponse(t.id, t.userRate)
+    )
 }

@@ -1,4 +1,4 @@
-package com.gnoemes.shikimori.presentation.presenter.anime.converter
+package com.gnoemes.shikimori.presentation.presenter.series.episodes.converter
 
 import com.gnoemes.shikimori.entity.series.domain.Episode
 import com.gnoemes.shikimori.entity.series.presentation.EpisodeViewModel
