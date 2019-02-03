@@ -1,4 +1,4 @@
-package com.gnoemes.shikimori.presentation.view.common.fragment
+package com.gnoemes.shikimori.presentation.view.details
 
 import com.arellomobile.mvp.viewstate.strategy.SkipStrategy
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType

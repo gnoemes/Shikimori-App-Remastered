@@ -18,7 +18,7 @@ import com.gnoemes.shikimori.presentation.presenter.common.converter.DetailsCont
 import com.gnoemes.shikimori.presentation.presenter.common.converter.FranchiseNodeViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.common.converter.LinkViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResourceProvider
-import com.gnoemes.shikimori.presentation.view.common.fragment.BaseDetailsView
+import com.gnoemes.shikimori.presentation.view.details.BaseDetailsView
 import com.gnoemes.shikimori.utils.appendLightLoadingLogic
 import io.reactivex.Completable
 import io.reactivex.Single
