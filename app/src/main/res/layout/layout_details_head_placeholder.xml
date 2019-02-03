@@ -81,7 +81,6 @@
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:background="@color/colorShimmer"
-            android:fontFamily="@font/open_sans"
             android:text="Alice or Alice: Siscon "
             android:textColor="@android:color/transparent"
             android:textSize="16sp"
