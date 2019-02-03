@@ -1,6 +1,7 @@
 package com.gnoemes.shikimori.presentation.presenter.series.episodes
 
 import com.arellomobile.mvp.InjectViewState
+import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.domain.rates.RatesInteractor
 import com.gnoemes.shikimori.domain.series.SeriesInteractor
 import com.gnoemes.shikimori.domain.user.UserInteractor
@@ -31,7 +32,8 @@ class EpisodesPresenter @Inject constructor(
         private val interactor: SeriesInteractor,
         private val ratesInteractor: RatesInteractor,
         private val userInteractor: UserInteractor,
-        private val converter: EpisodeViewModelConverter
+        private val converter: EpisodeViewModelConverter,
+        private val settingsSource: SettingsSource
 ) : BaseNetworkPresenter<EpisodesView>() {
 
     lateinit var navigationData: EpisodesNavigationData
@@ -116,7 +118,9 @@ class EpisodesPresenter @Inject constructor(
     }
 
     fun onEpisodeStatusChanged(item: EpisodeViewModel, newStatus: Boolean) {
-        interactor.sendEpisodeChanges(EpisodeChanges(item.animeId, item.index, newStatus))
+        (if (rateId == Constants.NO_ID) createRateIfNotExist(rateId).ignoreElement()
+        else Completable.complete())
+                .andThen(interactor.sendEpisodeChanges(EpisodeChanges(item.animeId, item.index, newStatus)))
                 .doOnSubscribe { showEpisodeLoading(item, newStatus) }
                 .subscribe({}, this::processErrors)
                 .addToDisposables()
@@ -208,9 +212,7 @@ class EpisodesPresenter @Inject constructor(
     }
 
     private fun syncRate(changes: MutableList<EpisodeChanges>): Single<List<EpisodeViewModel>> =
-            Single.just(rateId)
-                    .flatMap { createRateIfNotExist(it) }
-                    .flatMap { syncEpisodes(changes).andThen(loadEpisodes()) }
+            syncEpisodes(changes).andThen(loadEpisodes())
 
     private fun syncEpisodes(changes: List<EpisodeChanges>): Completable {
         return if (changes.size == 1) syncIterable(changes)
@@ -230,7 +232,10 @@ class EpisodesPresenter @Inject constructor(
     private fun subscribeToChanges() {
         interactor.getEpisodeChanges()
                 .buffer(interactor.getEpisodeChanges().debounce(Constants.BIG_DEBOUNCE_INTERVAL, TimeUnit.MILLISECONDS))
-                .flatMapSingle { syncRate(it) }
+                .flatMapSingle {
+                    if (rateId == Constants.NO_ID && !settingsSource.isAutoStatus) loadEpisodes()
+                    else syncRate(it)
+                }
                 .subscribe(this::setData, this::processErrors)
                 .addToDisposables()
     }
