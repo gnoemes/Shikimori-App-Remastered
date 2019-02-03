@@ -5,4 +5,6 @@ interface CommonResourceProvider {
     val emptyMessage: String
 
     val needAuth: String
+
+    val topicNotFound: String
 }

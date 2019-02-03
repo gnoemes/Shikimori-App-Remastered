@@ -59,6 +59,7 @@
     <string name="common_download">Скачать</string>
     <string name="common_remember_choice">Запомнить выбор</string>
     <string name="common_change_in_settings">Можно изменить в настройках</string>
+    <string name="common_topic_not_found">Не удалось найти тему</string>
 
     <string name="season_autumn">Осень</string>
     <string name="season_winter">Зима</string>
