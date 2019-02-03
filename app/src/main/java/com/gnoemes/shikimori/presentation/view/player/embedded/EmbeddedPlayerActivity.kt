@@ -90,8 +90,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         currentVolume = audioManager().getStreamVolume(AudioManager.STREAM_MUSIC)
         currentBrightness = (window.attributes.screenBrightness / 255f * 100).toInt()
 
-        toolbar.addBackButton { onBackPressed() }
-        toolbar.navigationIcon?.tint(baseContext.color(R.color.player_controls))
+        toolbar.addBackButton(icon = R.drawable.ic_arrow_back_player) { onBackPressed() }
 
         if (settingsSource.isOpenLandscape) requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 
