@@ -77,8 +77,8 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
 
     private val smallOffsetText by lazy { "${settingsSource.forwardRewindOffset / 1000} ${getString(R.string.player_seconds_short)}" }
     private val bigOffsetText by lazy { "${settingsSource.forwardRewindOffsetBig / 1000} ${getString(R.string.player_seconds_short)}" }
-    private val brightnessFormat by lazy { getString(R.string.player_brightness_format) }
-    private val volumeFormat by lazy { getString(R.string.player_volume_format) }
+    private val brightnessIcon by lazy { drawable(R.drawable.ic_brightness) }
+    private val volumeIcon by lazy { drawable(R.drawable.ic_volume) }
 
     private var currentVolume: Int = 0
     private var currentBrightness: Int = 0
@@ -88,7 +88,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
         currentVolume = audioManager().getStreamVolume(AudioManager.STREAM_MUSIC)
-        currentBrightness = (window.attributes.screenBrightness / 255f * 100).toInt()
+        currentBrightness = (window.attributes.screenBrightness / 2.55f).toInt()
 
         toolbar.addBackButton(icon = R.drawable.ic_arrow_back_player) { onBackPressed() }
 
@@ -178,12 +178,12 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         if (currentBrightness > 100) currentBrightness = 100
         else if (currentBrightness < 1) currentBrightness = 1
 
-        val text = String.format(brightnessFormat, currentBrightness)
+        val text = "$currentBrightness%"
         paramChangesView.text = text
+        paramChangesView.setCompoundDrawablesWithIntrinsicBounds(brightnessIcon, null, null, null)
 
         TransitionManager.beginDelayedTransition(container, Fade(Fade.MODE_IN))
         paramChangesView.visible()
-        unlockSurface.visible()
 
         window.attributes = window.attributes.apply { screenBrightness = 2.55f * currentBrightness / 255f }
     }
@@ -199,12 +199,12 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
 
         manager.setStreamVolume(AudioManager.STREAM_MUSIC, currentVolume, 0)
         val percentVolume = if (currentVolume == 0) 0 else (currentVolume / (max * 0.01f)).roundToInt()
-        val text = String.format(volumeFormat, percentVolume)
+        val text = "$percentVolume%"
         paramChangesView.text = text
+        paramChangesView.setCompoundDrawablesWithIntrinsicBounds(volumeIcon, null, null, null)
 
         TransitionManager.beginDelayedTransition(container, Fade(Fade.MODE_IN))
         paramChangesView.visible()
-        unlockSurface.visible()
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -466,7 +466,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         private val delayedForwardHide = Runnable { forwardView.gone() }
         private val delayedRewindHide = Runnable { rewindView.gone() }
         private val delayedUnlockHide = Runnable { unlockView.hide(); TransitionManager.beginDelayedTransition(container, Fade(Fade.MODE_OUT)); unlockSurface.gone() }
-        private val delayedParamChangesHide = Runnable { TransitionManager.beginDelayedTransition(container, Fade(Fade.MODE_OUT)); paramChangesView.gone(); unlockSurface.gone() }
+        private val delayedParamChangesHide = Runnable { TransitionManager.beginDelayedTransition(container, Fade(Fade.MODE_OUT)); paramChangesView.gone() }
 
         private inner class ExoPlayerGestureListener : GestureDetector.SimpleOnGestureListener(), View.OnTouchListener {
 
