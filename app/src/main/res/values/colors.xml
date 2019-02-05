@@ -46,6 +46,7 @@
 
     <color name="player_controls">#deffffff</color>
     <color name="player_surface">#80000000</color>
-    <color name="player_unlock_background">#61000000</color>
+    <color name="player_levels_background">#61000000</color>
+    <color name="player_unlock_background">#99ffffff</color>
 
 </resources>
