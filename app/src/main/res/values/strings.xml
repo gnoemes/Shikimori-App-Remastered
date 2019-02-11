@@ -60,6 +60,7 @@
     <string name="common_remember_choice">Запомнить выбор</string>
     <string name="common_change_in_settings">Можно изменить в настройках</string>
     <string name="common_topic_not_found">Не удалось найти тему</string>
+    <string name="common_favorite">Избранное</string>
 
     <string name="season_autumn">Осень</string>
     <string name="season_winter">Зима</string>
@@ -366,6 +367,20 @@
     <string name="player_error">Произошла ошибка во время загрузки видео</string>
     <string name="player_no_ads">Реклама во время просмотра не является частью приложения и отображается хостингом</string>
     <string name="player_seconds_short">сек.</string>
+
+    <string name="profile_write">Написать</string>
+    <string name="profile_friendship">Дружба</string>
+    <string name="profile_ignore">Игнор</string>
+    <string name="profile_bans">Баны</string>
+    <string name="profile_about_me">Обо мне</string>
+
+    <string name="profile_rate_anime">Список аниме</string>
+    <string name="profile_rate_manga">Список манги</string>
+    <string name="profile_rate_watched">Просмотрено</string>
+    <string name="profile_rate_watching">Смотрю/Планирую</string>
+    <string name="profile_rate_readed">Прочитано</string>
+    <string name="profile_rate_reading">Читаю/Планирую</string>
+    <string name="profile_rate_dropped">Брошено</string>
 
     <string-array name="rate_types">
         <item>@string/common_anime</item>

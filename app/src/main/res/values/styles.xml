@@ -6,7 +6,7 @@
         <item name="android:colorBackground">?attr/colorPrimary</item>
     </style>
 
-    <style name="ToolbarTextAppearance" parent="@style/Widget.MaterialComponents.Toolbar">
+    <style name="ToolbarTextAppearance">
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="titleTextColor">?attr/colorOnPrimary</item>
         <item name="android:textSize">20sp</item>
@@ -47,6 +47,29 @@
     <style name="PlayerSubTitleTextAppearance" parent="@style/Widget.MaterialComponents.Toolbar">
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textColor">@color/player_controls</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="ProfileLabelStyle">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/background_transparent_text</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="PlaceholderLabelStyle">
+        <item name="android:textColor">@android:color/transparent</item>
+        <item name="android:background">@color/colorShimmer</item>
+    </style>
+
+    <style name="RateProgressCountStyle">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="RateProgressLabelStyle">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/background_transparent_text</item>
         <item name="android:textSize">12sp</item>
     </style>
 

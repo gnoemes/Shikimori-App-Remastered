@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/infoContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:background="?attr/colorPrimary"
+    tools:ignore="SmallSp">
+
+    <TextView
+        android:id="@+id/infoView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:gravity="center"
+        android:textColor="@color/background_transparent_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Личные данные скрыты / на сайте с ноября 2012 г." />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/messageFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        app:backgroundTint="@color/colorDivider"
+        app:borderWidth="1dp"
+        app:elevation="0dp"
+        app:layout_constraintEnd_toStartOf="@+id/friendshipFab"
+        app:layout_constraintTop_toBottomOf="@+id/infoView"
+        app:pressedTranslationZ="0dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/friendshipFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:layout_marginRight="12dp"
+        app:backgroundTint="@color/colorDivider"
+        app:borderWidth="1dp"
+        app:elevation="0dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="@+id/messageFab"
+        app:pressedTranslationZ="0dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/ignoreFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        app:backgroundTint="@color/colorDivider"
+        app:borderWidth="1dp"
+        app:elevation="0dp"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="@+id/bansFab"
+        app:pressedTranslationZ="0dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/bansFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="24dp"
+        app:backgroundTint="@color/colorDivider"
+        app:borderWidth="1dp"
+        app:elevation="0dp"
+        app:layout_constraintStart_toEndOf="@+id/ignoreFab"
+        app:layout_constraintTop_toBottomOf="@+id/infoView"
+        app:pressedTranslationZ="0dp" />
+
+    <TextView
+        android:id="@+id/messageLabel"
+        style="@style/ProfileLabelStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/profile_write"
+        app:layout_constraintEnd_toEndOf="@+id/messageFab"
+        app:layout_constraintStart_toStartOf="@+id/messageFab"
+        app:layout_constraintTop_toBottomOf="@+id/messageFab" />
+
+    <TextView
+        android:id="@+id/friendshipLabel"
+        style="@style/ProfileLabelStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/profile_friendship"
+        app:layout_constraintEnd_toEndOf="@+id/friendshipFab"
+        app:layout_constraintStart_toStartOf="@+id/friendshipFab"
+        app:layout_constraintTop_toBottomOf="@+id/friendshipFab" />
+
+    <TextView
+        android:id="@+id/ignoreLabel"
+        style="@style/ProfileLabelStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/profile_ignore"
+        app:layout_constraintEnd_toEndOf="@+id/ignoreFab"
+        app:layout_constraintStart_toStartOf="@+id/ignoreFab"
+        app:layout_constraintTop_toBottomOf="@+id/ignoreFab" />
+
+    <TextView
+        android:id="@+id/bansLabel"
+        style="@style/ProfileLabelStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/profile_bans"
+        app:layout_constraintEnd_toEndOf="@+id/bansFab"
+        app:layout_constraintStart_toStartOf="@+id/bansFab"
+        app:layout_constraintTop_toBottomOf="@+id/bansFab" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/aboutBtn"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="sans-serif"
+        android:paddingStart="12dp"
+        android:paddingLeft="12dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="8dp"
+        android:text="@string/profile_about_me"
+        android:textAllCaps="false"
+        android:textColor="@color/background_transparent_text"
+        app:backgroundTint="@android:color/transparent"
+        app:cornerRadius="4dp"
+        app:icon="@drawable/ic_global"
+        app:iconTint="@color/background_transparent_text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/messageLabel"
+        app:strokeColor="@color/colorDivider"
+        app:strokeWidth="1dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

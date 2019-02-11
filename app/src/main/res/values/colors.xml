@@ -49,4 +49,10 @@
     <color name="player_levels_background">#61000000</color>
     <color name="player_unlock_background">#99ffffff</color>
 
+    <color name="anime_rate_progress_watched">#4682b4</color>
+    <color name="anime_rate_progress_watching">#79a9cf</color>
+    <color name="manga_rate_progress_readed">#b78bc7</color>
+    <color name="manga_rate_progress_reading">#edacd9</color>
+    <color name="rate_progress_dropped">#61000000</color>
+
 </resources>

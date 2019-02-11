@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/coordinator"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <include layout="@layout/layout_user_profile_toolbar" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/infoLayout"
+                layout="@layout/layout_user_profile_info" />
+
+            <include
+                android:id="@+id/animeRateLayout"
+                layout="@layout/layout_user_profile_rates" />
+
+            <include
+                android:id="@+id/mangaRateLayout"
+                layout="@layout/layout_user_profile_rates" />
+
+            <include
+                android:id="@+id/firstContentLayout"
+                layout="@layout/layout_user_profile_content"/>
+
+            <include
+                android:id="@+id/secondContentLayout"
+                layout="@layout/layout_user_profile_content"/>
+
+            <include
+                android:id="@+id/thirdContentLayout"
+                layout="@layout/layout_user_profile_content"/>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

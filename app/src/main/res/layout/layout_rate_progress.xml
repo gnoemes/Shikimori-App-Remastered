@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/progressCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="8dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="0dp"
+        app:cardPreventCornerOverlap="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:cardBackgroundColor="@color/anime_rate_progress_watched">
+
+        <LinearLayout
+            android:id="@+id/progressContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/watchedCountView"
+        style="@style/RateProgressCountStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:includeFontPadding="false"
+        app:layout_constraintEnd_toEndOf="@+id/watchedLabel"
+        app:layout_constraintStart_toStartOf="@+id/watchedLabel"
+        app:layout_constraintTop_toBottomOf="@+id/progressCard"
+        tools:text="9888" />
+
+    <ImageView
+        android:id="@+id/watchedIndicatorView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/watchedCountView"
+        app:layout_constraintStart_toEndOf="@+id/watchedCountView"
+        app:layout_constraintTop_toTopOf="@+id/watchedCountView"
+        app:layout_constraintVertical_bias="0"
+        app:srcCompat="@drawable/rate_progress_indicator" />
+
+    <TextView
+        android:id="@+id/watchedLabel"
+        style="@style/RateProgressLabelStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/watchingLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/watchedCountView"
+        tools:text="@string/profile_rate_watched" />
+
+    <TextView
+        android:id="@+id/watchingCountView"
+        style="@style/RateProgressCountStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:includeFontPadding="false"
+        app:layout_constraintEnd_toStartOf="@+id/droppedLabel"
+        app:layout_constraintStart_toStartOf="@+id/watchingLabel"
+        app:layout_constraintTop_toBottomOf="@+id/progressCard"
+        tools:text="9888" />
+
+    <ImageView
+        android:id="@+id/watchingIndicatorView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/watchingCountView"
+        app:layout_constraintStart_toEndOf="@+id/watchingCountView"
+        app:layout_constraintTop_toTopOf="@+id/watchingCountView"
+        app:layout_constraintVertical_bias="0"
+        app:srcCompat="@drawable/rate_progress_indicator" />
+
+    <TextView
+        android:id="@+id/watchingLabel"
+        style="@style/RateProgressLabelStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/droppedLabel"
+        app:layout_constraintStart_toEndOf="@+id/watchedLabel"
+        app:layout_constraintTop_toBottomOf="@+id/watchedCountView"
+        tools:text="@string/profile_rate_watching" />
+
+    <TextView
+        android:id="@+id/droppedCountView"
+        style="@style/RateProgressCountStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:includeFontPadding="false"
+        app:layout_constraintEnd_toEndOf="@+id/droppedLabel"
+        app:layout_constraintStart_toStartOf="@+id/droppedLabel"
+        app:layout_constraintTop_toBottomOf="@+id/progressCard"
+        tools:text="9888" />
+
+    <ImageView
+        android:id="@+id/droppedIndicatorView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/droppedCountView"
+        app:layout_constraintStart_toEndOf="@+id/droppedCountView"
+        app:layout_constraintTop_toTopOf="@+id/droppedCountView"
+        app:layout_constraintVertical_bias="0"
+        app:srcCompat="@drawable/rate_progress_indicator" />
+
+    <TextView
+        android:id="@+id/droppedLabel"
+        style="@style/RateProgressLabelStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/watchingLabel"
+        app:layout_constraintTop_toBottomOf="@+id/watchedCountView"
+        tools:text="@string/profile_rate_dropped" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

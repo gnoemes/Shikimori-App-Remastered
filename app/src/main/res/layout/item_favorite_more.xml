@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="@dimen/image_favorite_width"
+    android:layout_height="@dimen/image_favorite_height"
+    app:cardBackgroundColor="?attr/colorAccentTransparent"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="0dp"
+    app:cardPreventCornerOverlap="false"
+    app:strokeColor="?attr/colorAccentTransparent"
+    app:strokeWidth="1dp">
+
+
+    <TextView
+        android:id="@+id/moreItemsCountView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="?attr/colorAccent"
+        tools:text="+72" />
+
+</com.google.android.material.card.MaterialCardView>

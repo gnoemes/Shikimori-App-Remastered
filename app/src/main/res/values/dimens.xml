@@ -12,6 +12,15 @@
     <dimen name="image_search_height">235dp</dimen>
     <dimen name="image_search_width">175dp</dimen>
 
+    <dimen name="image_favorite_height">104dp</dimen>
+    <dimen name="image_favorite_width">76dp</dimen>
+
+    <dimen name="image_profile_height">48dp</dimen>
+    <dimen name="image_profile_width">48dp</dimen>
+
+    <dimen name="image_profile_big_height">80dp</dimen>
+    <dimen name="image_profile_big_width">80dp</dimen>
+
     <dimen name="item_min_width">380dp</dimen>
 
     <dimen name="margin_normal">8dp</dimen>
