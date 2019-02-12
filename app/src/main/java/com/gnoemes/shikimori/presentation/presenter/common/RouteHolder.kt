@@ -31,6 +31,7 @@ import com.gnoemes.shikimori.presentation.view.settings.SettingsActivity
 import com.gnoemes.shikimori.presentation.view.shikimorimain.ShikimoriMainFragment
 import com.gnoemes.shikimori.presentation.view.topic.details.TopicFragment
 import com.gnoemes.shikimori.presentation.view.topic.list.TopicListFragment
+import com.gnoemes.shikimori.presentation.view.user.UserFragment
 
 object RouteHolder {
 
@@ -46,6 +47,7 @@ object RouteHolder {
             Screens.CHARACTER_DETAILS -> CharacterFragment.newInstance(data as Long)
             Screens.PERSON_DETAILS -> PersonFragment.newInstance(data as Long)
             Screens.TOPIC_DETAILS -> TopicFragment.newInstance(data as Long)
+            Screens.USER_DETAILS -> UserFragment.newInstance(data as Long)
             Screens.TOPICS -> TopicListFragment.newInstance(data as ForumType)
             Screens.EPISODES -> EpisodesFragment.newInstance(data as EpisodesNavigationData)
             Screens.TRANSLATIONS -> TranslationsFragment.newInstance(data as TranslationsNavigationData)

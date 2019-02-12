@@ -63,10 +63,9 @@ class MorePresenter @Inject constructor(
         router.navigateTo(Screens.SETTINGS)
     }
 
-    //TODO navigation to user details
     private fun onProfileClicked() {
         if (user == null) viewState.showAuthDialog()
-        else Unit
+        else onUserClicked(user!!.id)
     }
 
     fun onSignIn() = openAuth(AuthType.SIGN_IN)

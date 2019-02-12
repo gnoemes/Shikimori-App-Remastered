@@ -1,10 +1,13 @@
 package com.gnoemes.shikimori.presentation.view.user.holders
 
+import android.graphics.drawable.ColorDrawable
 import android.view.View
+import android.widget.LinearLayout
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.user.presentation.RateProgressStatus
 import com.gnoemes.shikimori.utils.color
 import com.gnoemes.shikimori.utils.tint
+import com.gnoemes.shikimori.utils.visibleIf
 import kotlinx.android.synthetic.main.layout_rate_progress.view.*
 
 class RateProgressViewHolder(
@@ -38,6 +41,10 @@ class RateProgressViewHolder(
             watchedIndicatorView.tint(completedColor)
             droppedIndicatorView.tint(droppedColor)
 
+            firstSection.background = ColorDrawable(completedColor)
+            secondSection.background = ColorDrawable(progressColor)
+            thirdSection.background = ColorDrawable(droppedColor)
+
             watchingLabel.setText(progressText)
             watchedLabel.setText(completedText)
             droppedLabel.setText(droppedText)
@@ -46,15 +53,31 @@ class RateProgressViewHolder(
 
     fun bind(rates: Map<RateProgressStatus, Int>) {
         with(view) {
-            val watchedCount = rates.getValue(RateProgressStatus.WATCHED)
+            val watchedCount = rates.getValue(RateProgressStatus.COMPLETED)
             watchedCountView.text = "$watchedCount"
 
-            val watchingCount = rates.getValue(RateProgressStatus.WATCHING)
+            val watchingCount = rates.getValue(RateProgressStatus.IN_PROGRESS)
             watchingCountView.text = "$watchingCount"
 
             val droppedCount = rates.getValue(RateProgressStatus.DROPPED)
             droppedCountView.text = "$droppedCount"
+
+            val sum = rates.toList().sumBy { it.second }
+
+            if (sum != 0) {
+                val percents = rates.mapValues { it.value / sum.toDouble() }
+
+                firstSection.changeWeight(percents.getValue(RateProgressStatus.COMPLETED))
+                secondSection.changeWeight(percents.getValue(RateProgressStatus.IN_PROGRESS))
+                thirdSection.changeWeight(percents.getValue(RateProgressStatus.DROPPED))
+                progressContainer.invalidate()
+            }
         }
+    }
+
+    private fun View.changeWeight(newWeight: Double) {
+        visibleIf { newWeight != 0.0 }
+        (parent as? View)?.post { layoutParams = (layoutParams as LinearLayout.LayoutParams).apply { weight = newWeight.toFloat() } }
     }
 
 

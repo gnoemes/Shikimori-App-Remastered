@@ -1,5 +1,6 @@
 package com.gnoemes.shikimori.presentation.view.user.holders
 
+import android.text.Html
 import android.view.View
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.gnoemes.shikimori.R
@@ -45,18 +46,25 @@ class UserInfoViewHolder(
         placeholder.showContent()
 
         with(view) {
+            infoView.text = Html.fromHtml(item.info)
+
             if (item.isMe) {
                 friendshipFab.gone()
+                friendshipLabel.gone()
                 ignoreFab.gone()
+                ignoreLabel.gone()
             }
 
+            //TODO refactor
             if (item.isFriend) {
-                friendshipFab.background = friendshipFab.background.apply { tint(view.context.colorAttr(R.attr.colorAccent)) }
+                friendshipFab.isSelected = true
+                friendshipFab.background = friendshipFab.background.apply { tint(view.context.colorAttr(R.attr.colorAccentTransparent)) }
                 friendshipFab.setImageDrawable(context.drawable(R.drawable.ic_delete_person)?.apply { tint(colorAttr(R.attr.colorAccent)) })
             }
 
             if (item.isIgnored) {
-                ignoreFab.background = ignoreFab.background.apply { tint(view.context.colorAttr(R.attr.colorAccent)) }
+                ignoreFab.isSelected = true
+                ignoreFab.background = ignoreFab.background.apply { tint(view.context.colorAttr(R.attr.colorAccentTransparent)) }
                 ignoreFab.setImageDrawable(context.drawable(R.drawable.ic_visibility)?.apply { tint(colorAttr(R.attr.colorAccent)) })
             }
 

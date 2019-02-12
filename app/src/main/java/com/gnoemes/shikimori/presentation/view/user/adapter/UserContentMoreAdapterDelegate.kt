@@ -9,6 +9,7 @@ import com.gnoemes.shikimori.entity.user.presentation.UserContentMoreItem
 import com.gnoemes.shikimori.entity.user.presentation.UserProfileAction
 import com.gnoemes.shikimori.utils.inflate
 import com.gnoemes.shikimori.utils.onClick
+import com.google.android.material.card.MaterialCardView
 import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
 
 class UserContentMoreAdapterDelegate(
@@ -28,16 +29,18 @@ class UserContentMoreAdapterDelegate(
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
+        private val container = itemView.findViewById<MaterialCardView>(R.id.container)
         private val countView = itemView.findViewById<TextView>(R.id.moreItemsCountView)!!
         private lateinit var item : UserContentMoreItem
 
         init {
-            countView.onClick { actionCallback.invoke(UserProfileAction.More(item.type)) }
+            container.onClick { actionCallback.invoke(UserProfileAction.More(item.type)) }
         }
 
         fun bind(item : UserContentMoreItem) {
             this.item = item
-            countView.text = "${item.size}"
+            val text = "+${item.size}"
+            countView.text = text
         }
     }
 }

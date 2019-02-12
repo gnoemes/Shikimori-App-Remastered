@@ -8,6 +8,8 @@ import com.gnoemes.shikimori.entity.user.presentation.UserContentType
 import com.gnoemes.shikimori.entity.user.presentation.UserContentViewModel
 import com.gnoemes.shikimori.presentation.view.common.adapter.StartSnapHelper
 import com.gnoemes.shikimori.presentation.view.user.adapter.BaseUserContentAdapter
+import com.gnoemes.shikimori.utils.gone
+import com.gnoemes.shikimori.utils.visible
 import com.gnoemes.shikimori.utils.widgets.HorizontalSpaceItemDecorator
 import kotlinx.android.synthetic.main.layout_user_profile_content.view.*
 
@@ -32,6 +34,11 @@ class UserContentViewHolder(
     }
 
     fun bind(item: UserContentViewModel) {
+        if (item.content.isEmpty()) {
+            view.gone()
+            return
+        }
+
         val items = mutableListOf<Any>()
         items.addAll(item.content)
 
@@ -44,6 +51,10 @@ class UserContentViewHolder(
             UserContentType.FRIENDS -> R.string.common_friends
         }
 
-        view.contentLabelView.setText(stringRes)
+        with(view) {
+            contentLabelView.setText(stringRes)
+            progressBar.gone()
+            contentRecyclerView.visible()
+        }
     }
 }

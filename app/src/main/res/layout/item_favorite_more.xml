@@ -2,15 +2,16 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
     android:layout_width="@dimen/image_favorite_width"
     android:layout_height="@dimen/image_favorite_height"
+    android:foreground="?attr/selectableItemBackgroundBorderless"
     app:cardBackgroundColor="?attr/colorAccentTransparent"
     app:cardCornerRadius="8dp"
     app:cardElevation="0dp"
     app:cardPreventCornerOverlap="false"
     app:strokeColor="?attr/colorAccentTransparent"
     app:strokeWidth="1dp">
-
 
     <TextView
         android:id="@+id/moreItemsCountView"

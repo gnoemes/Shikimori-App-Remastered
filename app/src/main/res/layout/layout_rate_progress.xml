@@ -10,19 +10,41 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="8dp"
-        app:cardCornerRadius="8dp"
+        app:cardCornerRadius="4dp"
         app:cardElevation="0dp"
         app:cardPreventCornerOverlap="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:cardBackgroundColor="@color/anime_rate_progress_watched">
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:id="@+id/progressContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" />
+            android:orientation="horizontal">
+
+            <View
+                android:id="@+id/firstSection"
+                android:layout_width="0dp"
+                android:layout_height="8dp"
+                android:layout_weight="1"
+                tools:background="@color/manga_rate_progress_readed" />
+
+            <View
+                android:id="@+id/secondSection"
+                android:layout_width="0dp"
+                android:layout_height="8dp"
+                android:layout_weight="1"
+                tools:background="@color/manga_rate_progress_reading" />
+
+            <View
+                android:id="@+id/thirdSection"
+                android:layout_width="0dp"
+                android:layout_height="8dp"
+                android:layout_weight="1"
+                tools:background="@color/rate_progress_dropped" />
+
+        </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
 

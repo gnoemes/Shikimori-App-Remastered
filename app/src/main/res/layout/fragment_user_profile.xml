@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/coordinator"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
     <include layout="@layout/layout_user_profile_toolbar" />
 
@@ -33,15 +33,15 @@
 
             <include
                 android:id="@+id/firstContentLayout"
-                layout="@layout/layout_user_profile_content"/>
+                layout="@layout/layout_user_profile_content" />
 
             <include
                 android:id="@+id/secondContentLayout"
-                layout="@layout/layout_user_profile_content"/>
+                layout="@layout/layout_user_profile_content" />
 
             <include
                 android:id="@+id/thirdContentLayout"
-                layout="@layout/layout_user_profile_content"/>
+                layout="@layout/layout_user_profile_content" />
 
         </LinearLayout>
 

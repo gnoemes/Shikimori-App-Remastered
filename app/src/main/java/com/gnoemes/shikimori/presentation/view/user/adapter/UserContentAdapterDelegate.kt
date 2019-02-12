@@ -39,7 +39,8 @@ class UserContentAdapterDelegate(
 
         fun bind(item: UserContentItem) {
             this.item = item
-            if (layoutRes == R.layout.item_profile) imageLoader.setCircleImage(imageView, item.image.original)
+            if (layoutRes == R.layout.item_profile) imageLoader.setCircleImage(imageView, item.image)
+            else imageLoader.setImageWithPlaceHolder(imageView, item.image)
         }
 
     }

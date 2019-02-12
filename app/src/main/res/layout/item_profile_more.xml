@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
     android:layout_width="@dimen/image_profile_width"
     android:layout_height="@dimen/image_profile_height"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:foreground="?attr/selectableItemBackgroundBorderless"
     app:cardBackgroundColor="?attr/colorAccentTransparent"
     app:cardCornerRadius="24dp"
     app:cardPreventCornerOverlap="false"
@@ -15,9 +17,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:maxLines="1"
         android:ellipsize="end"
         android:fontFamily="sans-serif-medium"
+        android:maxLines="1"
         android:textColor="?attr/colorAccent"
         tools:text="+45" />
 

@@ -41,6 +41,11 @@ class UserRateViewHolder(
     }
 
     fun bind(item: UserRateViewModel) {
+        if (item.rates.toList().sumBy { it.second } == 0) {
+            view.gone()
+            return
+        }
+
         this.rawRates = item.rawRates.mapKeys { mapStatusToId(it) }
 
         holder.bind(item.rates)

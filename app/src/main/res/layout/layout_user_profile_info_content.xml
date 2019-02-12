@@ -17,6 +17,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
+        android:autoLink="all"
         android:gravity="center"
         android:textColor="@color/background_transparent_text"
         app:layout_constraintEnd_toEndOf="parent"
@@ -43,7 +44,8 @@
         app:elevation="0dp"
         app:layout_constraintEnd_toStartOf="@+id/friendshipFab"
         app:layout_constraintTop_toBottomOf="@+id/infoView"
-        app:pressedTranslationZ="0dp" />
+        app:layout_goneMarginEnd="12dp"
+        app:rippleColor="?attr/colorAccentTransparent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/friendshipFab"
@@ -51,12 +53,12 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="12dp"
         android:layout_marginRight="12dp"
-        app:backgroundTint="@color/colorDivider"
+        app:backgroundTint="@drawable/selector_profile_fab"
         app:borderWidth="1dp"
         app:elevation="0dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="@+id/messageFab"
-        app:pressedTranslationZ="0dp" />
+        app:rippleColor="?attr/colorAccentTransparent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/ignoreFab"
@@ -64,12 +66,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginLeft="12dp"
-        app:backgroundTint="@color/colorDivider"
+        app:backgroundTint="@drawable/selector_profile_fab"
         app:borderWidth="1dp"
         app:elevation="0dp"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="@+id/bansFab"
-        app:pressedTranslationZ="0dp" />
+        app:rippleColor="?attr/colorAccentTransparent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/bansFab"
@@ -83,7 +85,8 @@
         app:elevation="0dp"
         app:layout_constraintStart_toEndOf="@+id/ignoreFab"
         app:layout_constraintTop_toBottomOf="@+id/infoView"
-        app:pressedTranslationZ="0dp" />
+        app:layout_goneMarginStart="12dp"
+        app:rippleColor="?attr/colorAccentTransparent" />
 
     <TextView
         android:id="@+id/messageLabel"
