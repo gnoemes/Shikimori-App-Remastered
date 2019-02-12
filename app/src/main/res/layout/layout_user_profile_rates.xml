@@ -17,6 +17,7 @@
         tools:text="Список аниме" />
 
     <ImageButton
+        android:id="@+id/menuView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackgroundBorderless"
@@ -26,6 +27,7 @@
         app:srcCompat="@drawable/ic_three_dots" />
 
     <include
+        android:id="@+id/progressView"
         layout="@layout/layout_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -37,7 +39,7 @@
         tools:visibility="gone" />
 
     <include
-        android:id="@+id/include"
+        android:id="@+id/rateProgressLayout"
         layout="@layout/layout_rate_progress"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

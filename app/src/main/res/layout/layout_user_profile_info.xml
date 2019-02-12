@@ -7,13 +7,13 @@
     android:background="?attr/colorPrimary">
 
     <include
-        android:id="@+id/optionsContent"
+        android:id="@+id/infoContent"
         layout="@layout/layout_user_profile_info_content"
         android:visibility="gone"
         tools:visibility="visible" />
 
     <include
-        android:id="@+id/optionsPlaceholder"
+        android:id="@+id/infoPlaceholder"
         layout="@layout/layout_user_profile_info_placeholder"
         android:visibility="visible"
         tools:visibility="gone" />

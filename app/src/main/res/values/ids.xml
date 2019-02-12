@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="rate_watching" type="id"/>
+    <item name="rate_completed" type="id"/>
+    <item name="rate_planned" type="id"/>
+    <item name="rate_dropped" type="id"/>
+    <item name="rate_on_hold" type="id"/>
+    <item name="rate_rewatching" type="id"/>
+</resources>

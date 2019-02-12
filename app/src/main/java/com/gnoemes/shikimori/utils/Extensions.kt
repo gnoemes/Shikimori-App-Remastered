@@ -127,6 +127,12 @@ fun Context.drawable(@DrawableRes drawableResId: Int): Drawable? {
     return ContextCompat.getDrawable(this, drawableResId)
 }
 
+fun Context.drawable(@DrawableRes drawableResId: Int, @ColorRes tintColor : Int = 0): Drawable? {
+    val drawable = ContextCompat.getDrawable(this, drawableResId)
+    if (tintColor != 0) drawable?.tint(color(tintColor))
+    return drawable
+}
+
 fun Context.themeDrawable(@DrawableRes drawableResId: Int, @AttrRes attrResId: Int): Drawable? {
     val drawable = ContextCompat.getDrawable(this, drawableResId)
     drawable?.tint(this.colorAttr(attrResId))
