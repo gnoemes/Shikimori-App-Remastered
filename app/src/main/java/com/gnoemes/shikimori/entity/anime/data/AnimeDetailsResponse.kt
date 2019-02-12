@@ -16,7 +16,7 @@ data class AnimeDetailsResponse(
         @field:SerializedName("russian") val nameRu: String?,
         @field:SerializedName("image") val image: ImageResponse,
         @field:SerializedName("url") val url: String,
-        @field:SerializedName("kind") val type: AnimeType,
+        @field:SerializedName("kind") private val _type: AnimeType?,
         @field:SerializedName("status") private val _status: Status?,
         @field:SerializedName("episodes") val episodes: Int,
         @field:SerializedName("episodes_aired") val episodesAired: Int,
@@ -39,4 +39,7 @@ data class AnimeDetailsResponse(
 
     val status: Status
         get() = _status ?: Status.NONE
+
+    val type: AnimeType
+        get() = _type ?: AnimeType.NONE
 }
