@@ -4,7 +4,10 @@ import com.arellomobile.mvp.InjectViewState
 import com.gnoemes.shikimori.domain.user.UserInteractor
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.common.domain.Screens
+import com.gnoemes.shikimori.entity.common.domain.Type
+import com.gnoemes.shikimori.entity.main.BottomScreens
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
+import com.gnoemes.shikimori.entity.rates.presentation.RateNavigationData
 import com.gnoemes.shikimori.entity.user.domain.UserDetails
 import com.gnoemes.shikimori.entity.user.presentation.UserContentType
 import com.gnoemes.shikimori.entity.user.presentation.UserProfileAction
@@ -84,7 +87,8 @@ class UserPresenter @Inject constructor(
     }
 
     private fun onRateClicked(anime: Boolean, status: RateStatus) {
-        //TODO
+        val data = RateNavigationData(id, if (anime) Type.ANIME else Type.MANGA, status)
+        router.navigateTo(BottomScreens.RATES, data)
     }
 
     private fun onFriendshipStatusChanged(newStatus: Boolean) {

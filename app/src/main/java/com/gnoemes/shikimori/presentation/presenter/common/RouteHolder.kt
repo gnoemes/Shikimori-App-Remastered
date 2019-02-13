@@ -10,6 +10,7 @@ import com.gnoemes.shikimori.entity.common.domain.Screens
 import com.gnoemes.shikimori.entity.forum.domain.ForumType
 import com.gnoemes.shikimori.entity.main.BottomScreens
 import com.gnoemes.shikimori.entity.manga.presentation.MangaNavigationData
+import com.gnoemes.shikimori.entity.rates.presentation.RateNavigationData
 import com.gnoemes.shikimori.entity.search.presentation.SearchNavigationData
 import com.gnoemes.shikimori.entity.series.presentation.EmbeddedPlayerNavigationData
 import com.gnoemes.shikimori.entity.series.presentation.EpisodesNavigationData
@@ -37,7 +38,7 @@ object RouteHolder {
 
     fun createFragment(screenKey: String?, data: Any?): Fragment? {
         return when (screenKey) {
-            BottomScreens.RATES -> RatesContainerFragment.newInstance(data as? Long)
+            BottomScreens.RATES -> RatesContainerFragment.newInstance(data as? RateNavigationData)
             BottomScreens.CALENDAR -> CalendarFragment.newInstance()
             BottomScreens.SEARCH -> SearchFragment.newInstance(data as? SearchNavigationData)
             BottomScreens.MAIN -> ShikimoriMainFragment.newInstance()

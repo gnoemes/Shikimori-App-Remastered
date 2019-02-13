@@ -35,7 +35,7 @@ public enum Genre {
     SPORTS("sports", "Спорт", 30, 76),
     SUPER_POWER("super_power", "Супер силы", 31, 82),
     VAMPIRE("vampire", "Вампиры", 32, 64),
-    YAOI("yaoi", "Яойчик", 33, 65),
+    YAOI("yaoi", "Яой", 33, 65),
     YURI("yuri", "Юри", 34, 75),
     HAREM("harem", "Гарем", 35, 71),
     SLICE_OF_LIFE("slice_of_life", "Повседневность", 36, 54),

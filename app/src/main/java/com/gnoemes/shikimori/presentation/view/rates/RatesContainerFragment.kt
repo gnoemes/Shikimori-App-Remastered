@@ -15,10 +15,10 @@ import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.app.domain.AppExtras
-import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.rates.presentation.RateCategory
+import com.gnoemes.shikimori.entity.rates.presentation.RateNavigationData
 import com.gnoemes.shikimori.presentation.presenter.rates.RatesContainerPresenter
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragment
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
@@ -47,17 +47,15 @@ class RatesContainerFragment : BaseFragment<RatesContainerPresenter, RatesContai
 
     @ProvidePresenter
     fun providePresenter(): RatesContainerPresenter {
-        containerPresenter = presenterProvider.get()
-
-        parentFragment.ifNotNull {
-            containerPresenter.localRouter = (parentFragment as RouterProvider).localRouter
+        return presenterProvider.get().apply {
+            localRouter = (parentFragment as RouterProvider).localRouter
+            val data = arguments?.getParcelable<RateNavigationData>(AppExtras.ARGUMENT_RATE_DATA)
+            data?.let {
+                userId = it.userId
+                type = it.type
+                priorityStatus = it.status
+            }
         }
-
-        arguments.ifNotNull {
-            containerPresenter.userId = it.getLong(AppExtras.ARGUMENT_USER_ID)
-        }
-
-        return containerPresenter
     }
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = childFragmentInjector
@@ -65,8 +63,8 @@ class RatesContainerFragment : BaseFragment<RatesContainerPresenter, RatesContai
     private var spinner: ReSpinner? = null
 
     companion object {
-        fun newInstance(id: Long?) = RatesContainerFragment().withArgs {
-            putLong(AppExtras.ARGUMENT_USER_ID, id ?: Constants.NO_ID)
+        fun newInstance(data: RateNavigationData?) = RatesContainerFragment().withArgs {
+            putParcelable(AppExtras.ARGUMENT_RATE_DATA, data)
         }
 
         private const val SPINNER_KEY = "SPINNER_KEY"
@@ -208,5 +206,11 @@ class RatesContainerFragment : BaseFragment<RatesContainerPresenter, RatesContai
 
     override fun hideContainer() {
         rateContainer.gone()
+    }
+
+    override fun selectType(type: Type) {
+        if (type == Type.ANIME || type == Type.MANGA) {
+            spinner?.setSelection(type.ordinal, false)
+        }
     }
 }

@@ -23,12 +23,16 @@ class RatesContainerPresenter @Inject constructor(
 
     var type: Type = Type.ANIME
     var userId: Long = Constants.NO_ID
+    var priorityStatus : RateStatus? = null
 
     private val isAnime: Boolean
         get() = type == Type.ANIME
 
     override fun initData() {
         viewState.setNavigationItems(emptyList())
+
+        if (userId != Constants.NO_ID) viewState.selectType(type)
+
         loadData()
     }
 
@@ -62,10 +66,11 @@ class RatesContainerPresenter @Inject constructor(
     private fun setData(items: List<RateCategory>) {
         viewState.setNavigationItems(items)
         if (items.isNotEmpty()) {
-            onChangeStatus(items.first().status)
+            onChangeStatus(priorityStatus ?: items.first().status)
             viewState.hideEmptyView()
             viewState.hideNetworkView()
             viewState.showContainer()
+            priorityStatus = null
         } else {
             viewState.showEmptyView()
             viewState.hideNetworkView()

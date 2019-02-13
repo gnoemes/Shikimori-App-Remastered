@@ -18,4 +18,6 @@ interface RatesContainerView : BaseFragmentView {
 
     fun hideContainer()
 
+    fun selectType(type: Type)
+
 }
