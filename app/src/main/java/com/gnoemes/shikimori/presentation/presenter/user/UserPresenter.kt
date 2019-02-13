@@ -104,7 +104,10 @@ class UserPresenter @Inject constructor(
     }
 
     private fun onMoreClicked(type: UserContentType) {
-        //TODO
+        when (type) {
+            UserContentType.FRIENDS -> router.navigateTo(Screens.USER_FRIENDS, id)
+            else -> Unit
+        }
     }
 
     private fun onMessageClicked() {

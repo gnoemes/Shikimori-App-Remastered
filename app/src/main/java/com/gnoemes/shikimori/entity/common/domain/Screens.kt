@@ -28,6 +28,7 @@ object Screens {
     const val TRANSLATIONS = "TRANSLATIONS"
     const val USER_HISTORY = "USER_HISTORY"
     const val USER_BANS = "USER_BANS"
+    const val USER_FRIENDS = "USER_FRIENDS"
 
     ////////////////////////////////////////////////////////////////////////
     // Players

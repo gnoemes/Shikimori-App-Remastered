@@ -19,6 +19,7 @@ import com.gnoemes.shikimori.presentation.view.anime.AnimeFragment
 import com.gnoemes.shikimori.presentation.view.auth.AuthActivity
 import com.gnoemes.shikimori.presentation.view.calendar.CalendarFragment
 import com.gnoemes.shikimori.presentation.view.character.CharacterFragment
+import com.gnoemes.shikimori.presentation.view.friends.FriendsFragment
 import com.gnoemes.shikimori.presentation.view.manga.MangaFragment
 import com.gnoemes.shikimori.presentation.view.more.MoreFragment
 import com.gnoemes.shikimori.presentation.view.person.PersonFragment
@@ -52,6 +53,7 @@ object RouteHolder {
             Screens.TOPICS -> TopicListFragment.newInstance(data as ForumType)
             Screens.EPISODES -> EpisodesFragment.newInstance(data as EpisodesNavigationData)
             Screens.TRANSLATIONS -> TranslationsFragment.newInstance(data as TranslationsNavigationData)
+            Screens.USER_FRIENDS -> FriendsFragment.newInstance(data as Long)
             else -> null
         }
     }
