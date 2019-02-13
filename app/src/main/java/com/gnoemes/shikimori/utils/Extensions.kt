@@ -127,7 +127,7 @@ fun Context.drawable(@DrawableRes drawableResId: Int): Drawable? {
     return ContextCompat.getDrawable(this, drawableResId)
 }
 
-fun Context.drawable(@DrawableRes drawableResId: Int, @ColorRes tintColor : Int = 0): Drawable? {
+fun Context.drawable(@DrawableRes drawableResId: Int, @ColorRes tintColor: Int = 0): Drawable? {
     val drawable = ContextCompat.getDrawable(this, drawableResId)
     if (tintColor != 0) drawable?.tint(color(tintColor))
     return drawable
@@ -147,6 +147,10 @@ fun Context.color(@ColorRes colorRes: Int): Int {
 fun Context.calculateColumns(@DimenRes itemWidth: Int): Int {
     val metrics = this.resources.displayMetrics
     return (metrics.widthPixels / dimen(itemWidth)).toInt()
+}
+
+fun Context.dp(dp: Int): Int {
+    return (resources.displayMetrics.density * 40).toInt()
 }
 
 fun Drawable.tint(@ColorInt color: Int) {

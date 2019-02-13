@@ -14,51 +14,22 @@
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:fitsSystemWindows="true"
+        app:collapsedTitleTextAppearance="@style/ToolbarTextAppearance"
         app:contentScrim="@android:color/transparent"
+        app:expandedTitleGravity="center_horizontal|bottom"
+        app:expandedTitleMarginBottom="40dp"
+        app:expandedTitleTextAppearance="@style/ToolbarTextAppearance"
         app:layout_scrollFlags="scroll|exitUntilCollapsed"
-        app:titleEnabled="false">
+        tools:title="ヴァシリサセメノフ">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/lastOnlineView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="?attr/actionBarSize"
-            android:fitsSystemWindows="true">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/avatarView"
-                android:layout_width="@dimen/image_profile_big_width"
-                android:layout_height="@dimen/image_profile_big_height"
-                app:civ_border_width="1dp"
-                app:civ_border_color="@color/colorDivider"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/avatar_test" />
-
-            <TextView
-                android:id="@+id/nameView"
-                style="@style/ToolbarTextAppearance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="@+id/avatarView"
-                app:layout_constraintStart_toStartOf="@+id/avatarView"
-                app:layout_constraintTop_toBottomOf="@+id/avatarView"
-                tools:text="ヴァシリサセメノフ" />
-
-            <TextView
-                android:id="@+id/lastOnlineView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/nameView"
-                app:layout_constraintStart_toStartOf="@+id/nameView"
-                app:layout_constraintTop_toBottomOf="@+id/nameView"
-                tools:text="онлайн 41 минуту назад" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_marginTop="187dp"
+            android:layout_marginBottom="8dp"
+            tools:text="онлайн 41 минуту назад" />
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -67,7 +38,19 @@
             android:background="@android:color/transparent"
             android:fitsSystemWindows="true"
             app:layout_collapseMode="pin"
+            app:contentInsetStartWithNavigation="96dp"
             app:popupTheme="@style/PopupMenuTheme" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/avatarView"
+            android:layout_width="@dimen/image_profile_big_width"
+            android:layout_height="@dimen/image_profile_big_height"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:fitsSystemWindows="true"
+            app:civ_border_color="@color/colorDivider"
+            app:civ_border_width="1dp"
+            tools:src="@drawable/avatar_test" />
 
     </com.google.android.material.appbar.CollapsingToolbarLayout>
 

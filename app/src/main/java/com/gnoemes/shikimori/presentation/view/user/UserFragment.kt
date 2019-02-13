@@ -20,13 +20,13 @@ import com.gnoemes.shikimori.presentation.view.user.adapter.UserProfileContentAd
 import com.gnoemes.shikimori.presentation.view.user.holders.UserContentViewHolder
 import com.gnoemes.shikimori.presentation.view.user.holders.UserInfoViewHolder
 import com.gnoemes.shikimori.presentation.view.user.holders.UserRateViewHolder
-import com.gnoemes.shikimori.utils.addBackButton
-import com.gnoemes.shikimori.utils.hasImage
+import com.gnoemes.shikimori.utils.*
 import com.gnoemes.shikimori.utils.images.ImageLoader
-import com.gnoemes.shikimori.utils.withArgs
+import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_user_profile.*
 import kotlinx.android.synthetic.main.layout_user_profile_toolbar.*
 import javax.inject.Inject
+
 
 class UserFragment : BaseFragment<UserPresenter, UserView>(), UserView {
 
@@ -46,6 +46,12 @@ class UserFragment : BaseFragment<UserPresenter, UserView>(), UserView {
     companion object {
         fun newInstance(id: Long) = UserFragment().withArgs { putLong(AppExtras.ARGUMENT_USER_ID, id) }
     }
+
+    private val expandedAvatarSize by lazy { context?.dimen(R.dimen.image_profile_big_height)!! }
+    private val collapseAvatarSize by lazy { context?.dp(40)!! }
+    private val maxHeight by lazy { (appBarLayout.height - toolbar.height).toFloat() }
+    private val avatarEndYPosition by lazy { context?.dp(40)!! }
+    private val avatarEndXPosition by lazy { context?.dp(56)!! }
 
     private val favoritesAdapter by lazy { UserFavoriteContentAdapter(imageLoader, getPresenter()::onContentClicked, getPresenter()::onAction) }
     private val friendsAdapter by lazy { UserProfileContentAdapter(imageLoader, getPresenter()::onContentClicked, getPresenter()::onAction) }
@@ -71,6 +77,23 @@ class UserFragment : BaseFragment<UserPresenter, UserView>(), UserView {
         infoHolder = UserInfoViewHolder(infoLayout, getPresenter()::onAction)
         animeRateHolder = UserRateViewHolder(animeRateLayout, true, getPresenter()::onAction)
         mangaRateHolder = UserRateViewHolder(mangaRateLayout, false, getPresenter()::onAction)
+
+        appBarLayout.addOnOffsetChangedListener(appbarOffsetListener)
+    }
+
+    private val appbarOffsetListener = AppBarLayout.OnOffsetChangedListener { appBarLayout, offset ->
+        val percent = 1 - (-offset / maxHeight)
+
+        lastOnlineView.alpha = percent
+
+        avatarView.layoutParams = avatarView.layoutParams.apply {
+            val newSize = (collapseAvatarSize + (expandedAvatarSize - collapseAvatarSize) * percent).toInt()
+            width = newSize
+            height = newSize
+        }
+
+        avatarView.translationX = -avatarEndXPosition * ((1 - percent) * 2.75f)
+        avatarView.translationY = avatarEndYPosition * ((1 - percent) * 2.75f)
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -86,8 +109,7 @@ class UserFragment : BaseFragment<UserPresenter, UserView>(), UserView {
     ///////////////////////////////////////////////////////////////////////////
 
     override fun setHead(data: UserHeadViewModel) {
-        toolbar.title = data.name
-        nameView.text = data.name
+        collapsingToolbar.title = data.name
         lastOnlineView.text = data.lastOnline
 
         if (!avatarView.hasImage()) imageLoader.setCircleImage(avatarView, data.image.x160)
@@ -106,19 +128,19 @@ class UserFragment : BaseFragment<UserPresenter, UserView>(), UserView {
     }
 
     override fun setFavorites(isMe: Boolean, it: UserContentViewModel) {
-        val layout = if (isMe)  thirdContentLayout else firstContentLayout
+        val layout = if (isMe) thirdContentLayout else firstContentLayout
         favoritesHolder = UserContentViewHolder(layout, favoritesAdapter)
         favoritesHolder.bind(it)
     }
 
     override fun setFriends(isMe: Boolean, it: UserContentViewModel) {
-        val layout = if (isMe)  firstContentLayout else secondContentLayout
+        val layout = if (isMe) firstContentLayout else secondContentLayout
         friendsHolder = UserContentViewHolder(layout, friendsAdapter)
         friendsHolder.bind(it)
     }
 
     override fun setClubs(isMe: Boolean, it: UserContentViewModel) {
-        val layout = if (isMe)  secondContentLayout else thirdContentLayout
+        val layout = if (isMe) secondContentLayout else thirdContentLayout
         clubsHolder = UserContentViewHolder(layout, clubsAdapter)
         clubsHolder.bind(it)
     }
