@@ -54,6 +54,15 @@ class GlideImageLoader @Inject constructor(
                 .into(image)
     }
 
+    override fun setBlurredCircleImage(image: ImageView, url: String?, radius: Int, sampling: Int) {
+        GlideApp.with(image)
+                .asDrawable()
+                .load(url)
+                .transform(BlurTransformation(radius, sampling))
+                .dontAnimate()
+                .into(image)
+    }
+
     override fun clearImage(image: ImageView) {
         glide.clear(image)
     }

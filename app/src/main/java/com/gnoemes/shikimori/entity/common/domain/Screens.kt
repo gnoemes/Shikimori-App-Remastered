@@ -10,6 +10,7 @@ object Screens {
     const val PERSON_DETAILS = "PERSON_DETAILS"
     const val USER_DETAILS = "USER_DETAILS"
     const val TOPIC_DETAILS = "TOPIC_DETAILS"
+    const val CLUB_DETAILS = "CLUB_DETAILS"
 
     ////////////////////////////////////////////////////////////////////////
     // Activities
@@ -29,6 +30,7 @@ object Screens {
     const val USER_HISTORY = "USER_HISTORY"
     const val USER_BANS = "USER_BANS"
     const val USER_FRIENDS = "USER_FRIENDS"
+    const val USER_CLUBS = "USER_CLUBS"
 
     ////////////////////////////////////////////////////////////////////////
     // Players

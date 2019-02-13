@@ -33,6 +33,8 @@ abstract class BaseNavigationPresenter<View : BaseView> : BasePresenter<View>() 
 
     open fun onTopicClicked(id: Long) = router.navigateTo(Screens.TOPIC_DETAILS, id)
 
+    private fun onClubClicked(id: Long) = router.navigateTo(Screens.CLUB_DETAILS, id)
+
     fun onContentClicked(type: Type, id: Long) {
         when (type) {
             Type.ANIME -> onAnimeClicked(id)
@@ -42,6 +44,7 @@ abstract class BaseNavigationPresenter<View : BaseView> : BasePresenter<View>() 
             Type.USER -> onUserClicked(id)
             Type.PERSON -> onPersonClicked(id)
             Type.TOPIC -> onTopicClicked(id)
+            Type.CLUB -> onClubClicked(id)
         }
     }
 

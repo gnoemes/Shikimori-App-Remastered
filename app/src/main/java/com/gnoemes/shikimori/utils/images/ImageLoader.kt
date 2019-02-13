@@ -12,5 +12,7 @@ interface ImageLoader {
 
     fun setBlurredImage(image : ImageView, url : String?,  radius : Int = 25, sampling : Int = 1)
 
+    fun setBlurredCircleImage(image : ImageView, url : String?, radius : Int = 25, sampling : Int = 1)
+
     fun clearImage(image: ImageView)
 }

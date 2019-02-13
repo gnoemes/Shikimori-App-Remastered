@@ -385,6 +385,11 @@
     <string name="profile_rate_reading">Читаю/Планирую</string>
     <string name="profile_rate_dropped">Брошено</string>
 
+    <string name="club_free">Свободное обсуждение и вступление</string>
+    <string name="club_free_join">Свободное вступление</string>
+    <string name="club_free_discussion">Свободное обсуждение</string>
+    <string name="club_invite">По приглашениям</string>
+
     <string-array name="rate_types">
         <item>@string/common_anime</item>
         <item>@string/common_manga</item>

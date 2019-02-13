@@ -9,6 +9,6 @@ data class Club(
         val name: String,
         val image: Image,
         val isCensored: Boolean,
-        val policyJoin: ClubPolicy?,
-        val policyComment: ClubPolicy?
+        val policyJoin: ClubPolicy,
+        val policyComment: ClubCommentPolicy
 ) : LinkedContent(id, Type.CLUB, image.original, name)

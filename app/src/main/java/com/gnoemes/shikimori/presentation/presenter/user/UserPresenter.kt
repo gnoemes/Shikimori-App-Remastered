@@ -106,6 +106,7 @@ class UserPresenter @Inject constructor(
     private fun onMoreClicked(type: UserContentType) {
         when (type) {
             UserContentType.FRIENDS -> router.navigateTo(Screens.USER_FRIENDS, id)
+            UserContentType.CLUBS -> router.navigateTo(Screens.USER_CLUBS, id)
             else -> Unit
         }
     }
