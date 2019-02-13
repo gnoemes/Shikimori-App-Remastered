@@ -62,6 +62,7 @@
     <string name="common_topic_not_found">Не удалось найти тему</string>
     <string name="common_favorite">Избранное</string>
     <string name="common_friends">Друзья</string>
+    <string name="common_history">История</string>
 
     <string name="season_autumn">Осень</string>
     <string name="season_winter">Зима</string>

@@ -8,10 +8,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.app.domain.AppExtras
-import com.gnoemes.shikimori.entity.user.presentation.UserContentViewModel
-import com.gnoemes.shikimori.entity.user.presentation.UserHeadViewModel
-import com.gnoemes.shikimori.entity.user.presentation.UserInfoViewModel
-import com.gnoemes.shikimori.entity.user.presentation.UserRateViewModel
+import com.gnoemes.shikimori.entity.user.presentation.*
 import com.gnoemes.shikimori.presentation.presenter.user.UserPresenter
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragment
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
@@ -72,7 +69,16 @@ class UserFragment : BaseFragment<UserPresenter, UserView>(), UserView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        toolbar.addBackButton { getPresenter().onBackPressed() }
+        toolbar.apply {
+            addBackButton { getPresenter().onBackPressed() }
+            inflateMenu(R.menu.menu_user)
+            setOnMenuItemClickListener {
+                when(it.itemId) {
+                    R.id.menu_history -> getPresenter().onAction(UserProfileAction.History)
+                }
+                true
+            }
+        }
 
         infoHolder = UserInfoViewHolder(infoLayout, getPresenter()::onAction)
         animeRateHolder = UserRateViewHolder(animeRateLayout, true, getPresenter()::onAction)
@@ -81,7 +87,7 @@ class UserFragment : BaseFragment<UserPresenter, UserView>(), UserView {
         appBarLayout.addOnOffsetChangedListener(appbarOffsetListener)
     }
 
-    private val appbarOffsetListener = AppBarLayout.OnOffsetChangedListener { appBarLayout, offset ->
+    private val appbarOffsetListener = AppBarLayout.OnOffsetChangedListener { _, offset ->
         val percent = 1 - (-offset / maxHeight)
 
         lastOnlineView.alpha = percent
@@ -94,6 +100,11 @@ class UserFragment : BaseFragment<UserPresenter, UserView>(), UserView {
 
         avatarView.translationX = -avatarEndXPosition * ((1 - percent) * 2.75f)
         avatarView.translationY = avatarEndYPosition * ((1 - percent) * 2.75f)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        appBarLayout.removeOnOffsetChangedListener(appbarOffsetListener)
     }
 
     ///////////////////////////////////////////////////////////////////////////
