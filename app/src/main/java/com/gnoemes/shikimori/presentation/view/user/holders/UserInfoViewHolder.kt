@@ -60,12 +60,20 @@ class UserInfoViewHolder(
                 friendshipFab.isSelected = true
                 friendshipFab.background = friendshipFab.background.apply { tint(view.context.colorAttr(R.attr.colorAccentTransparent)) }
                 friendshipFab.setImageDrawable(context.drawable(R.drawable.ic_delete_person)?.apply { tint(colorAttr(R.attr.colorAccent)) })
+            } else {
+                friendshipFab.isSelected = false
+                friendshipFab.background = friendshipFab.background.apply { tint(view.context.colorAttr(R.attr.colorPrimary)) }
+                friendshipFab.setImageDrawable(context.drawable(R.drawable.ic_add_person, R.color.background_transparent_text))
             }
 
             if (item.isIgnored) {
                 ignoreFab.isSelected = true
                 ignoreFab.background = ignoreFab.background.apply { tint(view.context.colorAttr(R.attr.colorAccentTransparent)) }
                 ignoreFab.setImageDrawable(context.drawable(R.drawable.ic_visibility)?.apply { tint(colorAttr(R.attr.colorAccent)) })
+            } else {
+                ignoreFab.isSelected = false
+                ignoreFab.background = ignoreFab.background.apply { tint(view.context.colorAttr(R.attr.colorPrimary)) }
+                ignoreFab.setImageDrawable(context.drawable(R.drawable.ic_visibility_off, R.color.background_transparent_text))
             }
 
         }

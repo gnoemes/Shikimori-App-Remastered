@@ -26,6 +26,8 @@ object Screens {
     const val TOPICS = "TOPICS"
     const val EPISODES = "EPISODES"
     const val TRANSLATIONS = "TRANSLATIONS"
+    const val USER_HISTORY = "USER_HISTORY"
+    const val USER_BANS = "USER_BANS"
 
     ////////////////////////////////////////////////////////////////////////
     // Players
