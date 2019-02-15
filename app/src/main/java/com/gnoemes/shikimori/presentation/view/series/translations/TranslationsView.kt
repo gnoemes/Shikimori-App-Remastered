@@ -27,4 +27,7 @@ interface TranslationsView : BaseSeriesView {
     @StateStrategyType(SkipStrategy::class)
     fun showDownloadDialog(items: List<Pair<String, String>>)
 
+    @StateStrategyType(SkipStrategy::class)
+    fun showAuthorDialog(author: String)
+
 }

@@ -23,6 +23,7 @@ import com.gnoemes.shikimori.entity.series.presentation.TranslationViewModel
 import com.gnoemes.shikimori.entity.series.presentation.TranslationsNavigationData
 import com.gnoemes.shikimori.presentation.presenter.series.translations.TranslationsPresenter
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
+import com.gnoemes.shikimori.presentation.view.common.fragment.DescriptionDialogFragment
 import com.gnoemes.shikimori.presentation.view.common.fragment.ListDialogFragment
 import com.gnoemes.shikimori.presentation.view.series.BaseSeriesFragment
 import com.gnoemes.shikimori.presentation.view.series.PlayerSelectDialog
@@ -243,6 +244,12 @@ class TranslationsFragment : BaseSeriesFragment<TranslationsPresenter, Translati
         dialog.apply {
             setItems(items)
         }.show(childFragmentManager, "DownloadDialog")
+    }
+
+    override fun showAuthorDialog(author: String) {
+        val positiveText = context?.getString(R.string.common_understand)
+        DescriptionDialogFragment.newInstance(titleRes = R.string.translation_authors, text = author, positiveText = positiveText)
+                .show(childFragmentManager, "AuthorsDialog")
     }
 
     override fun onShowLoading() = progress.visible()

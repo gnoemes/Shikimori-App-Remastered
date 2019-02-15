@@ -135,6 +135,7 @@ class TranslationsPresenter @Inject constructor(
     fun onMenuClicked(category: TranslationMenu) {
         when (category) {
             is TranslationMenu.Download -> showDownloadDialog(category.videos)
+            is TranslationMenu.Author -> viewState.showAuthorDialog(category.author)
         }
     }
 
