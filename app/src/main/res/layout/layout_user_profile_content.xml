@@ -27,7 +27,7 @@
         android:visibility="gone"
         tools:itemCount="5"
         tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_favorite"
+        tools:listitem="@layout/item_user_favorite"
         tools:orientation="horizontal"
         tools:visibility="visible" />
 

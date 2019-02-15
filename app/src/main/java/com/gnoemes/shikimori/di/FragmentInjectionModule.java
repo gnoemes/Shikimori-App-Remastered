@@ -5,6 +5,7 @@ import com.gnoemes.shikimori.di.base.scopes.BottomChildScope;
 import com.gnoemes.shikimori.di.calendar.CalendarModule;
 import com.gnoemes.shikimori.di.character.CharacterModule;
 import com.gnoemes.shikimori.di.club.UserClubsModule;
+import com.gnoemes.shikimori.di.favorites.FavoritesModule;
 import com.gnoemes.shikimori.di.friends.FriendsModule;
 import com.gnoemes.shikimori.di.manga.MangaModule;
 import com.gnoemes.shikimori.di.more.MoreModule;
@@ -22,6 +23,7 @@ import com.gnoemes.shikimori.presentation.view.anime.AnimeFragment;
 import com.gnoemes.shikimori.presentation.view.calendar.CalendarFragment;
 import com.gnoemes.shikimori.presentation.view.character.CharacterFragment;
 import com.gnoemes.shikimori.presentation.view.clubs.UserClubsFragment;
+import com.gnoemes.shikimori.presentation.view.favorites.FavoritesFragment;
 import com.gnoemes.shikimori.presentation.view.friends.FriendsFragment;
 import com.gnoemes.shikimori.presentation.view.manga.MangaFragment;
 import com.gnoemes.shikimori.presentation.view.more.MoreFragment;
@@ -109,4 +111,8 @@ public interface FragmentInjectionModule {
     @BottomChildScope
     @ContributesAndroidInjector(modules = UserHistoryModule.class)
     UserHistoryFragment userHistoryFragment();
+
+    @BottomChildScope
+    @ContributesAndroidInjector(modules = FavoritesModule.class)
+    FavoritesFragment favoritesFragment();
 }

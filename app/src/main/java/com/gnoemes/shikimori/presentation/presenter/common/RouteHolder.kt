@@ -20,6 +20,7 @@ import com.gnoemes.shikimori.presentation.view.auth.AuthActivity
 import com.gnoemes.shikimori.presentation.view.calendar.CalendarFragment
 import com.gnoemes.shikimori.presentation.view.character.CharacterFragment
 import com.gnoemes.shikimori.presentation.view.clubs.UserClubsFragment
+import com.gnoemes.shikimori.presentation.view.favorites.FavoritesFragment
 import com.gnoemes.shikimori.presentation.view.friends.FriendsFragment
 import com.gnoemes.shikimori.presentation.view.manga.MangaFragment
 import com.gnoemes.shikimori.presentation.view.more.MoreFragment
@@ -58,6 +59,7 @@ object RouteHolder {
             Screens.USER_FRIENDS -> FriendsFragment.newInstance(data as Long)
             Screens.USER_CLUBS -> UserClubsFragment.newInstance(data as Long)
             Screens.USER_HISTORY -> UserHistoryFragment.newInstance(data as Long)
+            Screens.USER_FAVORITES -> FavoritesFragment.newInstance(data as Long)
             else -> null
         }
     }

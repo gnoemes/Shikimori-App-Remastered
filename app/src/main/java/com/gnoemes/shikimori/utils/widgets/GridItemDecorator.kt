@@ -27,7 +27,7 @@ class GridItemDecorator(
         }
 
         fun setBottomSpacing() {
-            if (pos / columns + 1 == rows) {
+            if (pos / columns  == rows) {
                 outRect.bottom = margin
             } else {
                 outRect.bottom = halfSpacing

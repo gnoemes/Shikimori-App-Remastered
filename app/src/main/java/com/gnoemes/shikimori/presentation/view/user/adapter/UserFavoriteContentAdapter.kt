@@ -15,8 +15,8 @@ class UserFavoriteContentAdapter(
 
     init {
         delegatesManager.apply {
-            addDelegate(UserContentAdapterDelegate(imageLoader, navigationCallback, R.layout.item_favorite))
-            addDelegate(UserContentMoreAdapterDelegate(actionCallback, R.layout.item_favorite_more))
+            addDelegate(UserContentAdapterDelegate(imageLoader, navigationCallback, R.layout.item_user_favorite))
+            addDelegate(UserContentMoreAdapterDelegate(actionCallback, R.layout.item_user_favorite_more))
         }
     }
 

@@ -31,6 +31,7 @@ object Screens {
     const val USER_BANS = "USER_BANS"
     const val USER_FRIENDS = "USER_FRIENDS"
     const val USER_CLUBS = "USER_CLUBS"
+    const val USER_FAVORITES = "USER_FAVORITES"
 
     ////////////////////////////////////////////////////////////////////////
     // Players

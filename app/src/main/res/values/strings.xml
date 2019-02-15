@@ -391,6 +391,10 @@
     <string name="club_free_discussion">Свободное обсуждение</string>
     <string name="club_invite">По приглашениям</string>
 
+    <string name="favorites_producers">Режиссеры</string>
+    <string name="favorites_mangakas">Мангаки</string>
+    <string name="favorites_other_people">Прочие люди</string>
+
     <string-array name="rate_types">
         <item>@string/common_anime</item>
         <item>@string/common_manga</item>

@@ -107,7 +107,7 @@ class UserPresenter @Inject constructor(
         when (type) {
             UserContentType.FRIENDS -> router.navigateTo(Screens.USER_FRIENDS, id)
             UserContentType.CLUBS -> router.navigateTo(Screens.USER_CLUBS, id)
-            else -> Unit
+            UserContentType.FAVORITES -> router.navigateTo(Screens.USER_FAVORITES, id)
         }
     }
 
