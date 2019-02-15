@@ -31,10 +31,8 @@ class PlayerSelectDialog : MvpDialogFragment() {
             checkBoxPrompt(res = R.string.common_remember_choice) {
                 putSetting(SettingsExtras.IS_REMEMBER_PLAYER, it)
             }
-            message(res = R.string.common_change_in_settings)
         }
     }
-
 
     interface Callback {
         fun onPlayerSelected(playerType: PlayerType)
