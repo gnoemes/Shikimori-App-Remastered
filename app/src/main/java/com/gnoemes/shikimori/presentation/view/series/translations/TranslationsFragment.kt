@@ -76,7 +76,7 @@ class TranslationsFragment : BaseSeriesFragment<TranslationsPresenter, Translati
         with(recyclerView) {
             adapter = this@TranslationsFragment.adapter
             layoutManager = LinearLayoutManager(context)
-            addItemDecoration(VerticalSpaceItemDecorator(context.dimen(R.dimen.margin_big).toInt()))
+            addItemDecoration(VerticalSpaceItemDecorator(context.dimen(R.dimen.margin_normal).toInt(), true))
             setHasFixedSize(true)
             addOnScrollListener(shadowScrollListener)
         }
