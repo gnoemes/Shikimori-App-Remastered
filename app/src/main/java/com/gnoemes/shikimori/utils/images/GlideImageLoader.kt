@@ -3,7 +3,6 @@ package com.gnoemes.shikimori.utils.images
 import android.content.Context
 import android.widget.ImageView
 import com.bumptech.glide.Priority
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.BitmapImageViewTarget
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.utils.images.blur.BlurTransformation
@@ -27,8 +26,6 @@ class GlideImageLoader @Inject constructor(
         GlideApp.with(image)
                 .asBitmap()
                 .load(url)
-                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                .priority(Priority.NORMAL)
                 .error(R.drawable.missing_original)
                 .centerCrop()
                 .into(image)
@@ -50,7 +47,6 @@ class GlideImageLoader @Inject constructor(
                 .asBitmap()
                 .load(url)
                 .transform(BlurTransformation(radius, sampling))
-                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .priority(Priority.HIGH)
                 .dontAnimate()
                 .into(image)
