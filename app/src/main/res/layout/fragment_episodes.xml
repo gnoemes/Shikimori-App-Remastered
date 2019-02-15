@@ -15,44 +15,71 @@
         android:layout_height="match_parent"
         android:animateLayoutChanges="true">
 
-        <TextView
-            android:id="@+id/alternativeLabel"
-            android:layout_width="wrap_content"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/alternativeAppBarLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:paddingBottom="4dp"
-            android:text="@string/series_alternative_source"
-            android:textColor="?attr/colorOnPrimarySecondary"
-            android:textSize="12sp"
             android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:visibility="visible" />
+            app:layout_constraintTop_toTopOf="@+id/holders"
+            app:liftOnScroll="true"
+            tools:visibility="visible">
+
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="46dp">
+
+                <TextView
+                    android:id="@+id/alternativeLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="16dp"
+                    android:paddingBottom="4dp"
+                    android:text="@string/series_alternative_source"
+                    android:textColor="?attr/colorOnPrimarySecondary"
+                    android:textSize="12sp" />
+
+            </androidx.appcompat.widget.Toolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginBottom="16dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/alternativeLabel"
+            app:layout_constraintTop_toBottomOf="@+id/alternativeAppBarLayout"
             tools:itemCount="5"
             tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_episode"
             tools:orientation="vertical" />
 
+        <ImageView
+            android:id="@+id/gradient"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/recyclerView"
+            app:srcCompat="@drawable/episodes_gradient" />
+
         <FrameLayout
             android:id="@+id/holders"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginBottom="16dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/alternativeLabel">
+            app:layout_constraintTop_toTopOf="parent">
 
 
             <include layout="@layout/layout_default_placeholders" />
@@ -60,7 +87,6 @@
             <include layout="@layout/layout_episode_error_placeholder" />
 
         </FrameLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

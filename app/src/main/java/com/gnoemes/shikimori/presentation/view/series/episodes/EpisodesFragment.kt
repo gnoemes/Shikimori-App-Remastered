@@ -168,7 +168,8 @@ class EpisodesFragment : BaseSeriesFragment<EpisodesPresenter, EpisodesView>(), 
     }
 
     override fun showAlternativeLabel(show: Boolean) {
-        alternativeLabel.visibleIf { show }
+        alternativeAppBarLayout.visibleIf { show }
+        gradient.visibleIf { !show }
     }
 
     override fun showEpisodeOptionsDialog(index: Int) {
