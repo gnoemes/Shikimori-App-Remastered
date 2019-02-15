@@ -175,11 +175,9 @@ class EpisodesFragment : BaseSeriesFragment<EpisodesPresenter, EpisodesView>(), 
         val dialog = ListDialogFragment.newInstance()
         val items = mutableListOf<Pair<String, String>>()
                 .apply {
-                    add(Pair(context!!.getString(R.string.episode_check_all_previous), CHECK_ALL_PREVIOUS_ACTION + index))
+                    add(Pair(context!!.getString(R.string.episode_check_all_previous) + " $index", CHECK_ALL_PREVIOUS_ACTION + index))
                 }
-        val title = String.format(context!!.getString(R.string.episode_number), index)
         dialog.apply {
-            setTitle(title)
             setItems(items)
         }.show(childFragmentManager, "OptionsTag")
     }
