@@ -19,11 +19,11 @@ interface SeriesInteractor {
 
     fun getVideo(payload : TranslationVideo, alternative: Boolean) : Single<Video>
 
-    fun setEpisodeWatched(animeId: Long, episodeId: Int, rateId: Long = Constants.NO_ID): Completable
+    fun setEpisodeWatched(animeId: Long, episodeId: Int, rateId: Long = Constants.NO_ID, onlyLocal: Boolean): Completable
 
-    fun setEpisodeUnwatched(animeId: Long, episodeId: Int, rateId: Long) : Completable
+    fun setEpisodeUnwatched(animeId: Long, episodeId: Int, rateId: Long, onlyLocal: Boolean) : Completable
 
-    fun setEpisodeStatus(animeId: Long, episodeId: Int, rateId: Long, isWatching : Boolean) : Completable
+    fun setEpisodeStatus(animeId: Long, episodeId: Int, rateId: Long, isWatching : Boolean, onlyLocal : Boolean = false) : Completable
 
     fun getEpisodeChanges() : Observable<EpisodeChanges>
 

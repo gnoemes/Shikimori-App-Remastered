@@ -44,32 +44,34 @@ class SeriesInteractorImpl @Inject constructor(
     override fun getEpisodeChanges(): Observable<EpisodeChanges> = changesRepository.getEpisodesChanges().applyErrorHandlerAndSchedulers()
     override fun sendEpisodeChanges(changes: EpisodeChanges): Completable = changesRepository.sendEpisodeChanges(changes).applyErrorHandlerAndSchedulers()
 
-    override fun setEpisodeStatus(animeId: Long, episodeId: Int, rateId: Long, isWatching: Boolean): Completable {
-        return if (isWatching) setEpisodeWatched(animeId, episodeId, rateId)
-        else setEpisodeUnwatched(animeId, episodeId, rateId)
+    override fun setEpisodeStatus(animeId: Long, episodeId: Int, rateId: Long, isWatching: Boolean, onlyLocal: Boolean): Completable {
+        return if (isWatching) setEpisodeWatched(animeId, episodeId, rateId, onlyLocal)
+        else setEpisodeUnwatched(animeId, episodeId, rateId, onlyLocal)
     }
 
-    override fun setEpisodeWatched(animeId: Long, episodeId: Int, rateId: Long): Completable =
+    override fun setEpisodeWatched(animeId: Long, episodeId: Int, rateId: Long, onlyLocal: Boolean): Completable =
             repository.isEpisodeWatched(animeId, episodeId)
                     .flatMapCompletable {
-                        if (!it) updateRate(animeId, episodeId, rateId, true)
+                        if (!it) updateRate(animeId, episodeId, rateId, true, onlyLocal)
                         else Completable.complete()
                     }
                     .applyErrorHandlerAndSchedulers()
 
-    override fun setEpisodeUnwatched(animeId: Long, episodeId: Int, rateId: Long): Completable =
+    override fun setEpisodeUnwatched(animeId: Long, episodeId: Int, rateId: Long, onlyLocal: Boolean): Completable =
             repository.isEpisodeWatched(animeId, episodeId)
                     .flatMapCompletable {
-                        if (it) updateRate(animeId, episodeId, rateId, false)
+                        if (it) updateRate(animeId, episodeId, rateId, false, onlyLocal)
                         else Completable.complete()
                     }.applyErrorHandlerAndSchedulers()
 
 
-    private fun updateRate(animeId: Long, episodeId: Int, rateId: Long, isWatched: Boolean): Completable =
+    private fun updateRate(animeId: Long, episodeId: Int, rateId: Long, isWatched: Boolean, onlyLocal: Boolean): Completable =
             repository.setEpisodeStatus(animeId, episodeId, isWatched)
                     .andThen(
-                            if (isWatched) incrementOrCreate(animeId, rateId)
-                            else decrement(rateId)
+                            if (!onlyLocal) {
+                                if (isWatched) incrementOrCreate(animeId, rateId)
+                                else decrement(rateId)
+                            } else Completable.complete()
                     )
 
     private fun decrement(rateId: Long): Completable {
