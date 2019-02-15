@@ -127,7 +127,7 @@ class TranslationsPresenter @Inject constructor(
 
     //TODO quality chooser
     private fun getVideoAndExecute(payload: TranslationVideo, onSubscribe: (Video) -> Unit) {
-        interactor.getVideo(payload)
+        interactor.getVideo(payload, navigationData.isAlternative)
                 .appendLoadingLogic(viewState)
                 .subscribe(onSubscribe::invoke, this::processErrors)
                 .addToDisposables()
@@ -143,7 +143,7 @@ class TranslationsPresenter @Inject constructor(
         val filteredItems = videos.filter { Utils.isHostingSupports(it.videoHosting, true) }
 
         Observable.fromIterable(filteredItems)
-                .flatMapSingle { interactor.getVideo(it) }
+                .flatMapSingle { interactor.getVideo(it, it.videoHosting == VideoHosting.SMOTRET_ANIME) }
                 .flatMap { video ->
                     Observable.just(video)
                             .flatMapIterable { it.tracks }

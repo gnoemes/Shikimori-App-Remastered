@@ -37,8 +37,8 @@ class SeriesInteractorImpl @Inject constructor(
             repository.saveTranslationSettings(settings)
                     .applyErrorHandlerAndSchedulers()
 
-    override fun getVideo(payload: TranslationVideo): Single<Video> =
-            repository.getVideo(payload)
+    override fun getVideo(payload: TranslationVideo, alternative: Boolean): Single<Video> =
+            repository.getVideo(payload, alternative)
                     .applyErrorHandlerAndSchedulers()
 
     override fun getEpisodeChanges(): Observable<EpisodeChanges> = changesRepository.getEpisodesChanges().applyErrorHandlerAndSchedulers()

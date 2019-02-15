@@ -41,7 +41,7 @@ class EmbeddedPlayerPresenter @Inject constructor(
     }
 
     private fun loadVideo(payload: TranslationVideo) {
-        interactor.getVideo(payload)
+        interactor.getVideo(payload, false)
                 .appendLoadingLogic(viewState)
                 .subscribe({ updateVideo(it) }, this::processErrors)
                 .addToDisposables()

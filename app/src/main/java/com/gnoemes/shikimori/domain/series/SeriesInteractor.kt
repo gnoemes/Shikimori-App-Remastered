@@ -17,7 +17,7 @@ interface SeriesInteractor {
 
     fun saveTranslationSettings(settings : TranslationSetting) : Completable
 
-    fun getVideo(payload : TranslationVideo) : Single<Video>
+    fun getVideo(payload : TranslationVideo, alternative: Boolean) : Single<Video>
 
     fun setEpisodeWatched(animeId: Long, episodeId: Int, rateId: Long = Constants.NO_ID): Completable
 
