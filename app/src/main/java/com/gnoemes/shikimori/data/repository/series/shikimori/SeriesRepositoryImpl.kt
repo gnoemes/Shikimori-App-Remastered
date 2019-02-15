@@ -31,7 +31,7 @@ class SeriesRepositoryImpl @Inject constructor(
 
     override fun getEpisodes(id: Long, alternative: Boolean): Single<List<Episode>> =
             (if (alternative) api.getEpisodesAlternative(id) else api.getEpisodes(id))
-                    .map { it.sortedBy { it.index } }
+                    .map { episodes -> episodes.filter { it.index > 0 }.sortedBy { it.index } }
                     .flatMap {
                         Observable.fromIterable(it)
                                 .flatMapSingle { episode ->
