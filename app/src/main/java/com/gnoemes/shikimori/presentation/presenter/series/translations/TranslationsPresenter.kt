@@ -17,6 +17,7 @@ import com.gnoemes.shikimori.utils.appendLoadingLogic
 import com.gnoemes.shikimori.utils.clearAndAddAll
 import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.Single
 import javax.inject.Inject
 
 //TODO base series presenter with search logic?
@@ -47,9 +48,7 @@ class TranslationsPresenter @Inject constructor(
 
     private fun loadData() {
         loadSettingsIfNeed()
-                .toSingleDefault(type)
                 .flatMap { loadTranslations(it) }
-                .doOnSubscribe { viewState.setTranslationType(type) }
                 .appendLoadingLogic(viewState)
                 .subscribe(this::setData, this::processErrors)
                 .addToDisposables()
@@ -58,15 +57,15 @@ class TranslationsPresenter @Inject constructor(
     private fun loadSettings() =
             interactor.getTranslationSettings(navigationData.animeId)
                     .doOnSuccess { setting = it }
-                    .doOnSuccess { type = it.lastType ?: settingsSource.translationType }
-                    .ignoreElement()
+                    .map { type = it.lastType ?: settingsSource.translationType;type }
 
     private fun loadTranslations(type: TranslationType) =
             interactor.getTranslations(type, navigationData.animeId, navigationData.episodeId, navigationData.isAlternative)
+                    .doOnSubscribe { viewState.setTranslationType(type) }
                     .map { converter.convertTranslations(it, setting) }
 
-    private fun loadSettingsIfNeed(): Completable =
-            (if (setting == null && settingsSource.useLocalTranslationSettings) loadSettings() else Completable.complete())
+    private fun loadSettingsIfNeed(): Single<TranslationType> =
+            (if (setting == null && settingsSource.useLocalTranslationSettings) loadSettings() else Single.just(type))
 
     private fun setData(data: List<TranslationViewModel>) {
         val items = data.toMutableList()
