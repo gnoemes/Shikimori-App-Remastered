@@ -9,8 +9,8 @@
     android:layout_marginEnd="16dp"
     app:cardBackgroundColor="?attr/colorPrimary"
     app:cardCornerRadius="4dp"
-    app:strokeWidth="1dp"
     app:strokeColor="@color/colorDivider"
+    app:strokeWidth="1dp"
     tools:layout_marginTop="8dp">
 
     <LinearLayout
@@ -30,7 +30,7 @@
             android:textSize="16sp"
             tools:text="1 эпизод" />
 
-        <CheckBox
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/watchedView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -41,9 +41,11 @@
             android:layout_marginBottom="12dp"
             android:layout_weight="0"
             android:visibility="visible"
-            android:background="@drawable/background_checkbox_circle"
-            android:button="@null"
-            android:checked="false" />
+            app:backgroundTint="@drawable/selector_episode_fab_background"
+            app:borderWidth="1dp"
+            app:elevation="0dp"
+            app:fabCustomSize="32dp"
+            app:srcCompat="@drawable/selector_episode_fab_icon" />
 
         <com.github.ybq.android.spinkit.SpinKitView xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -51,13 +53,13 @@
             style="@style/SpinKitView.ThreeBounce"
             android:layout_width="32dp"
             android:layout_height="32dp"
+            android:layout_gravity="center_vertical"
             android:layout_marginStart="12dp"
             android:layout_marginLeft="12dp"
             android:layout_marginTop="12dp"
             android:layout_marginBottom="12dp"
-            android:layout_gravity="center_vertical"
-            android:visibility="gone"
             android:layout_weight="0"
+            android:visibility="gone"
             app:SpinKit_Color="?colorAccent"
             app:layout_behavior="@string/appBarFixScrollingFooterBehavior" />
 

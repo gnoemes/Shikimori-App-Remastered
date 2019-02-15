@@ -5,9 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.series.presentation.EpisodeViewModel
-import com.gnoemes.shikimori.utils.inflate
-import com.gnoemes.shikimori.utils.onClick
-import com.gnoemes.shikimori.utils.visibleIf
+import com.gnoemes.shikimori.utils.*
 import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
 import kotlinx.android.synthetic.main.item_episode.view.*
 
@@ -36,8 +34,6 @@ class EpisodeAdapterDelegate(
             itemView.episodeContainer.onClick { callback.invoke(item) }
             itemView.episodeContainer.setOnLongClickListener { longPressListener.invoke(item);false }
             itemView.watchedView.onClick { episodeChanged.invoke(item, !item.isWatched) }
-            //block checkbox state
-            itemView.watchedView.setOnCheckedChangeListener { buttonView, _ -> buttonView.isChecked = item.isWatched }
         }
 
         fun bind(item: EpisodeViewModel) {
@@ -45,9 +41,13 @@ class EpisodeAdapterDelegate(
             with(itemView) {
                 val episodeName = String.format(context.getString(R.string.episode_number), item.index)
                 episodeNameView.text = episodeName
-                watchedView.isChecked = item.isWatched
+                watchedView.isSelected = item.isWatched
                 progressBar.visibleIf { item.state == EpisodeViewModel.State.Loading }
                 watchedView.visibleIf { item.state != EpisodeViewModel.State.Loading }
+                val tintColor =
+                        if (item.isWatched) R.attr.colorAccentTransparent
+                        else R.attr.colorPrimary
+                watchedView.background = watchedView.background.apply { tint(context.colorAttr(tintColor)) }
             }
         }
 
