@@ -63,7 +63,7 @@ class EmbeddedPlayerPresenter @Inject constructor(
             viewState.apply {
                 setEpisodeSubtitle(currentEpisode)
                 playVideo(it, needReset)
-                val resolutions = tracks.asSequence().filter { it.quality != "unknown" }.map { it.quality }.toList().asReversed()
+                val resolutions = tracks.asSequence().filter { it.quality != "unknown" }.map { it.quality }.toList()
                 setResolutions(resolutions)
                 selectTrack(currentTrack)
             }

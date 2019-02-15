@@ -38,6 +38,7 @@ android {
         it.buildConfigField 'String', 'ShikimoriClientSecret', ShikimoriClientSecret
         it.buildConfigField 'String', 'ShikimoriBaseUrl', ShikimoriBaseUrl
         it.buildConfigField 'String', 'VideoBaseUrl', VideoBaseUrl
+        it.buildConfigField 'String', 'VkRandomToken', VkRandomToken
     }
 
     kotlinOptions {

@@ -3,6 +3,7 @@ package com.gnoemes.shikimori.data.network
 import com.gnoemes.shikimori.entity.series.data.EpisodeResponse
 import com.gnoemes.shikimori.entity.series.data.TranslationResponse
 import com.gnoemes.shikimori.entity.series.data.VideoResponse
+import com.gnoemes.shikimori.entity.series.data.VkResponse
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -38,6 +39,11 @@ interface VideoApi {
                  @Query("hosting") hosting: String
     ): Single<VideoResponse>
 
+    @GET("https://api.vk.com/method/video.get?v=5.92&count=1&extended=0")
+    fun getVkVideoFiles(@Query("access_token") token: String,
+                        @Query("videos") videoId: String?
+    ) : Single<VkResponse>
+
     @GET("/api/anime/alternative/translation/{id}")
-    fun getVideoAlternative(@Path("id") translationId : Long) : Single<VideoResponse>
+    fun getVideoAlternative(@Path("id") translationId: Long): Single<VideoResponse>
 }

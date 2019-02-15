@@ -1,5 +1,6 @@
 package com.gnoemes.shikimori.data.repository.series.shikimori
 
+import com.gnoemes.shikimori.BuildConfig
 import com.gnoemes.shikimori.data.local.db.AnimeRateSyncDbSource
 import com.gnoemes.shikimori.data.local.db.EpisodeDbSource
 import com.gnoemes.shikimori.data.local.db.TranslationSettingDbSource
@@ -7,6 +8,7 @@ import com.gnoemes.shikimori.data.network.VideoApi
 import com.gnoemes.shikimori.data.repository.series.shikimori.converter.EpisodeResponseConverter
 import com.gnoemes.shikimori.data.repository.series.shikimori.converter.TranslationResponseConverter
 import com.gnoemes.shikimori.data.repository.series.shikimori.converter.VideoResponseConverter
+import com.gnoemes.shikimori.data.repository.series.shikimori.converter.VkVideoConverter
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.series.domain.*
 import com.gnoemes.shikimori.entity.series.presentation.TranslationVideo
@@ -23,7 +25,8 @@ class SeriesRepositoryImpl @Inject constructor(
         private val videoConverter: VideoResponseConverter,
         private val episodeSource: EpisodeDbSource,
         private val syncSource: AnimeRateSyncDbSource,
-        private val translationSettingSource: TranslationSettingDbSource
+        private val translationSettingSource: TranslationSettingDbSource,
+        private val vkConverter: VkVideoConverter
 ) : SeriesRepository {
 
     override fun getEpisodes(id: Long, alternative: Boolean): Single<List<Episode>> =
@@ -58,6 +61,11 @@ class SeriesRepositoryImpl @Inject constructor(
                     payload.videoHosting.synonymType
             ))
                     .map(videoConverter)
+                    .flatMap { if (it.hosting == VideoHosting.VK) getVkFiles(it) else Single.just(it) }
+
+    private fun getVkFiles(video: Video): Single<Video> =
+            api.getVkVideoFiles(BuildConfig.VkRandomToken, vkConverter.convertId(video))
+                    .map { vkConverter.convertTracks(video, it) }
 
     override fun getTranslationSettings(animeId: Long): Single<TranslationSetting> =
             translationSettingSource.getSetting(animeId)
