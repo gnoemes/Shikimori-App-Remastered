@@ -1,6 +1,9 @@
 package com.gnoemes.shikimori.utils
 
+import android.graphics.Bitmap
 import com.gnoemes.shikimori.entity.series.domain.VideoHosting
+
+
 
 object Utils {
 
@@ -15,4 +18,12 @@ object Utils {
         return supports.contains(hosting)
 
     }
+
+    fun getDominantColor(bitmap: Bitmap): Int {
+        val newBitmap = Bitmap.createScaledBitmap(bitmap, 1, 1, true)
+        val color = newBitmap.getPixel(0, 0)
+        newBitmap.recycle()
+        return color
+    }
+
 }

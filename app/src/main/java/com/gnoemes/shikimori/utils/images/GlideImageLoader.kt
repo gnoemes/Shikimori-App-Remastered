@@ -50,6 +50,8 @@ class GlideImageLoader @Inject constructor(
                 .asBitmap()
                 .load(url)
                 .transform(BlurTransformation(radius, sampling))
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                .priority(Priority.HIGH)
                 .dontAnimate()
                 .into(image)
     }

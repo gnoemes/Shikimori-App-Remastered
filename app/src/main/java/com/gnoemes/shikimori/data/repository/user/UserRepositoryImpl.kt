@@ -56,6 +56,8 @@ class UserRepositoryImpl @Inject constructor(
     override fun getHistory(id: Long, page: Int, limit: Int): Single<List<UserHistory>> =
             api.getUserHistory(id, page, limit)
                     .map(historyConverter)
+                    //server returns N+1 elements, if next page exists
+                    .map { if (it.isNotEmpty()) it.take(limit) else it }
 
     override fun ignore(id: Long): Completable = api.ignoreUser(id)
 

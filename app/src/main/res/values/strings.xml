@@ -64,6 +64,7 @@
     <string name="common_friends">Друзья</string>
     <string name="common_history">История</string>
     <string name="common_online">Онлайн</string>
+    <string name="common_user_history">История пользователя</string>
 
     <string name="season_autumn">Осень</string>
     <string name="season_winter">Зима</string>
