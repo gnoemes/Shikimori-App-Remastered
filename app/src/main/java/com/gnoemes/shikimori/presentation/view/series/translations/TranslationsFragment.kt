@@ -33,6 +33,7 @@ import com.gnoemes.shikimori.utils.widgets.VerticalSpaceItemDecorator
 import com.lapism.searchview.SearchView
 import kotlinx.android.synthetic.main.fragment_base_series.*
 import kotlinx.android.synthetic.main.fragment_translations.*
+import kotlinx.android.synthetic.main.layout_default_placeholders.*
 import kotlinx.android.synthetic.main.layout_toolbar_transparent.*
 import kotlinx.android.synthetic.main.layout_translations_toolbar.*
 
@@ -80,6 +81,12 @@ class TranslationsFragment : BaseSeriesFragment<TranslationsPresenter, Translati
             setHasFixedSize(true)
             addOnScrollListener(shadowScrollListener)
         }
+
+        emptyContentView.setText(R.string.translations_nothing)
+        emptyContentView.hideButton()
+
+        networkErrorView.callback = { getPresenter().onRefresh() }
+        networkErrorView.showButton()
 
         titleView.gone()
         fab.onClick { getPresenter().onDiscussionClicked() }
@@ -228,6 +235,22 @@ class TranslationsFragment : BaseSeriesFragment<TranslationsPresenter, Translati
     override fun showSearchEmpty() {
         val emptyItem = SeriesPlaceholderItem(R.string.translation_search_empty_title, R.string.translation_search_empty_desc)
         adapter.bindItems(mutableListOf(emptyItem))
+    }
+
+    override fun showEmptyView() {
+        emptyContentView.visible()
+    }
+
+    override fun hideEmptyView() {
+        emptyContentView.gone()
+    }
+
+    override fun showNetworkView() {
+        networkErrorView.visible()
+    }
+
+    override fun hideNetworkView() {
+        networkErrorView.gone()
     }
 
     override fun scrollToPosition(position: Int) {

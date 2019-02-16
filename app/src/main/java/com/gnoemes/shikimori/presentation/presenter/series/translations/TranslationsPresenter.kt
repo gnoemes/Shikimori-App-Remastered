@@ -164,6 +164,10 @@ class TranslationsPresenter @Inject constructor(
         //TODO find related topic (can be parsed from episode link or topic api)
     }
 
+    fun onRefresh() {
+        loadData()
+    }
+
     fun onTypeChanged(newType: TranslationType) {
         this.type = newType
         loadData()

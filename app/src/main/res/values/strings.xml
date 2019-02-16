@@ -115,6 +115,7 @@
     <string name="rating_perfect">Шедевр!</string>
 
     <string name="search_nothing">Ничего не найдено.\n Попробуйте поискать что-нибудь другое</string>
+    <string name="translations_nothing">Ничего не найдено.\n Попробуйте изменить тип перевода</string>
 
     <string name="common_this_week">На этой неделе</string>
     <string name="day_ago">день назад</string>
