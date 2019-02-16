@@ -1,20 +1,29 @@
 package com.gnoemes.shikimori.entity.app.domain
 
 object SettingsExtras {
-    //TODO split to categories
+    ////////////////////////////////////////////////////////////////////////
+    // USER
+    ////////////////////////////////////////////////////////////////////////
     const val USER_BRIEF = "USER_BRIEF"
     const val USER_STATUS = "USER_STATUS"
-    const val IS_AUTO_STATUS = "IS_AUTO_STATUS"
-    const val IS_AUTO_INCREMENT = "IS_AUTO_INCREMENT"
+
+    ////////////////////////////////////////////////////////////////////////
+    // GENERAL
+    ////////////////////////////////////////////////////////////////////////
     const val IS_ROMADZI_NAMING = "IS_ROMADZI_NAMING"
-    const val IS_REMEMBER_TRANSLATION_TYPE = "IS_REMEMBER_TRANSLATION_TYPE"
-    const val IS_REMEMBER_PLAYER = "IS_REMEMBER_PLAYER"
+    const val DOWNLOAD_FOLDER = "DOWNLOAD_FOLDER"
+    const val IS_AUTO_INCREMENT = "IS_AUTO_INCREMENT"
+    const val IS_AUTO_STATUS = "IS_AUTO_STATUS"
+    const val IS_MY_ONGOINGS_PRIORITY = "IS_MY_ONGOINGS_PRIORITY"
     const val TRANSLATION_TYPE = "TRANSLATION_TYPE"
     const val PLAYER_TYPE = "PLAYER_TYPE"
-    const val DOWNLOAD_LOCATION = "DOWNLOAD_LOCATION"
-    const val IS_MY_ONGOINGS_PRIORITY = "IS_MY_ONGOINGS_PRIORITY"
-    const val IS_NOTIFICATIONS_ENABLED = "IS_NOTIFICATIONS_ENABLED"
+    const val IS_REMEMBER_PLAYER = "IS_REMEMBER_PLAYER"
     const val IS_USE_LOCAL_TRANSLATION_SETTINGS = "IS_USE_LOCAL_TRANSLATION_SETTINGS"
+
+    ////////////////////////////////////////////////////////////////////////
+    // NOTIFICATIONS
+    ////////////////////////////////////////////////////////////////////////
+    const val IS_NOTIFICATIONS_ENABLED = "IS_NOTIFICATIONS_ENABLED"
 
     ////////////////////////////////////////////////////////////////////////
     // PLAYER
@@ -26,7 +35,4 @@ object SettingsExtras {
     const val PLAYER_IS_OPEN_LANDSCAPE = "PLAYER_IS_OPEN_LANDSCAPE"
     const val PLAYER_FORWARD_REWIND_OFFSET = "PLAYER_FORWARD_REWIND_OFFSET"
     const val PLAYER_FORWARD_REWIND_OFFSET_BIG = "PLAYER_FORWARD_REWIND_OFFSET_BIG"
-
-
-
 }

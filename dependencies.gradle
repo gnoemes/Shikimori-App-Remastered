@@ -36,6 +36,7 @@ ext.versions = [
     shimmer           : '0.3.0',
     searchView        : '4.0',
     circleImageView   : '2.2.0',
+    kotlinPermissions : '1.0.3',
 
     exoplayer         : '2.9.4',
 

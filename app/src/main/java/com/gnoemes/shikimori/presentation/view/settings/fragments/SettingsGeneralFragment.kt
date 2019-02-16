@@ -1,9 +1,12 @@
 package com.gnoemes.shikimori.presentation.view.settings.fragments
 
+import android.Manifest
 import android.os.Bundle
+import android.os.Environment
 import androidx.annotation.ArrayRes
 import androidx.preference.Preference
 import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.files.folderChooser
 import com.afollestad.materialdialogs.list.ItemListener
 import com.afollestad.materialdialogs.list.listItems
 import com.gnoemes.shikimori.R
@@ -14,6 +17,9 @@ import com.gnoemes.shikimori.utils.firstUpperCase
 import com.gnoemes.shikimori.utils.preference
 import com.gnoemes.shikimori.utils.prefs
 import com.gnoemes.shikimori.utils.putString
+import com.kotlinpermissions.KotlinPermissions
+import java.io.File
+
 
 class SettingsGeneralFragment : BaseSettingsFragment() {
 
@@ -34,6 +40,17 @@ class SettingsGeneralFragment : BaseSettingsFragment() {
             onPreferenceClickListener = translationClickListener
         }
 
+        preference(R.string.settings_content_download_folder_key)?.apply {
+            setOnPreferenceClickListener { checkStoragePermissions();true }
+        }
+
+    }
+
+    private fun checkStoragePermissions() {
+        KotlinPermissions.with(activity!!)
+                .permissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
+                .onAccepted { showFolderChooserDialog() }
+                .ask()
     }
 
     override val preferenceScreen: Int
@@ -74,6 +91,26 @@ class SettingsGeneralFragment : BaseSettingsFragment() {
             PlayerType.EXTERNAL -> context?.getString(R.string.player_external)!!
             PlayerType.WEB -> context?.getString(R.string.player_web)!!
             else -> context?.getString(R.string.player_embedded)!!
+        }
+    }
+
+    private fun showFolderChooserDialog() {
+        val path = prefs().getString(SettingsExtras.DOWNLOAD_FOLDER, "")!!
+        val initialDirectory = try {
+            File(path).let { if (it.canWrite()) it else Environment.getExternalStorageDirectory() }
+        } catch (e: Exception) {
+            Environment.getExternalStorageDirectory()
+        }
+
+        MaterialDialog(context!!).show {
+            folderChooser(
+                    initialDirectory = initialDirectory,
+                    allowFolderCreation = true,
+                    emptyTextRes = R.string.download_folder_empty,
+                    folderCreationLabel = R.string.download_new_folder)
+            { dialog, file ->
+                prefs().putString(SettingsExtras.DOWNLOAD_FOLDER, file.absolutePath)
+            }
         }
     }
 }

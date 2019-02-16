@@ -26,10 +26,6 @@ class SettingsSourceImpl @Inject constructor(
         get() = prefs.getBoolean(SettingsExtras.IS_ROMADZI_NAMING, true)
         set(value) = prefs.putBoolean(SettingsExtras.IS_ROMADZI_NAMING, value)
 
-    override var isRememberTranslationType: Boolean
-        get() = prefs.getBoolean(SettingsExtras.IS_REMEMBER_TRANSLATION_TYPE, false)
-        set(value) = prefs.putBoolean(SettingsExtras.IS_REMEMBER_TRANSLATION_TYPE, value)
-
     override var isRememberPlayer: Boolean
         get() = prefs.getBoolean(SettingsExtras.IS_REMEMBER_PLAYER, false)
         set(value) = prefs.putBoolean(SettingsExtras.IS_REMEMBER_PLAYER, value)
