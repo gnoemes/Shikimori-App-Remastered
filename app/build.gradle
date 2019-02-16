@@ -90,6 +90,7 @@ dependencies {
     implementation 'ru.terrakok.cicerone:cicerone:' + versions.cicerone
     implementation 'com.afollestad.material-dialogs:core:' + versions.materialDialogs
     implementation 'com.afollestad.material-dialogs:input:' + versions.materialDialogs
+    implementation 'com.afollestad.material-dialogs:files:' + versions.materialDialogs
     implementation 'com.github.ybq:Android-SpinKit:' + versions.spinKit
     implementation 'com.github.santalu:respinner:' + versions.reSpinner
     implementation 'com.hannesdorfmann:adapterdelegates4:' + versions.adapterDelegate
