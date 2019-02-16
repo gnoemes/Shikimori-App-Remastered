@@ -1,11 +1,15 @@
 package com.gnoemes.shikimori.di.app.module;
 
+import com.gnoemes.shikimori.data.local.services.DownloadSource;
+import com.gnoemes.shikimori.data.local.services.impl.DownloadManagerSourceImpl;
 import com.gnoemes.shikimori.data.repository.app.AuthorizationRepository;
 import com.gnoemes.shikimori.data.repository.app.TokenRepository;
 import com.gnoemes.shikimori.data.repository.app.TokenSource;
 import com.gnoemes.shikimori.data.repository.app.impl.AuthorizationRepositoryImpl;
 import com.gnoemes.shikimori.data.repository.app.impl.TokenRepositoryImpl;
 import com.gnoemes.shikimori.data.repository.app.impl.TokenSourceImpl;
+import com.gnoemes.shikimori.data.repository.download.DownloadRepository;
+import com.gnoemes.shikimori.data.repository.download.DownloadRepositoryImpl;
 import com.gnoemes.shikimori.data.repository.rates.RatesRepository;
 import com.gnoemes.shikimori.data.repository.rates.RatesRepositoryImpl;
 import com.gnoemes.shikimori.data.repository.series.shikimori.EpisodeChangesRepository;
@@ -45,5 +49,13 @@ public interface RepositoryModule {
     @Binds
     @Singleton
     EpisodeChangesRepository bindEpisodeChangesRepository(EpisodeChangesRepositoryImpl repository);
+
+    @Binds
+    @Singleton
+    DownloadSource bindDownloadSource(DownloadManagerSourceImpl source);
+
+    @Binds
+    @Reusable
+    DownloadRepository bindDownloadRepository(DownloadRepositoryImpl repository);
 
 }

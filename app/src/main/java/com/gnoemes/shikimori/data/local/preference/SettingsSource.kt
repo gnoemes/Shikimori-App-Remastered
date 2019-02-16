@@ -22,4 +22,6 @@ interface SettingsSource {
     var useLocalTranslationSettings : Boolean
 
     var isMyOngoingPriority : Boolean
+
+    var downloadFolder : String
 }

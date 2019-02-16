@@ -1,5 +1,6 @@
 package com.gnoemes.shikimori.presentation.view.series.translations
 
+import android.Manifest
 import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
@@ -12,10 +13,13 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.AutoTransition
 import androidx.transition.Fade
 import androidx.transition.TransitionManager
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.files.folderChooser
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.app.domain.AppExtras
+import com.gnoemes.shikimori.entity.app.domain.SettingsExtras
 import com.gnoemes.shikimori.entity.series.domain.PlayerType
 import com.gnoemes.shikimori.entity.series.domain.TranslationType
 import com.gnoemes.shikimori.entity.series.presentation.SeriesPlaceholderItem
@@ -30,6 +34,7 @@ import com.gnoemes.shikimori.presentation.view.series.PlayerSelectDialog
 import com.gnoemes.shikimori.presentation.view.series.translations.adapter.TranslationsAdapter
 import com.gnoemes.shikimori.utils.*
 import com.gnoemes.shikimori.utils.widgets.VerticalSpaceItemDecorator
+import com.kotlinpermissions.KotlinPermissions
 import com.lapism.searchview.SearchView
 import kotlinx.android.synthetic.main.fragment_base_series.*
 import kotlinx.android.synthetic.main.fragment_translations.*
@@ -273,6 +278,26 @@ class TranslationsFragment : BaseSeriesFragment<TranslationsPresenter, Translati
         val positiveText = context?.getString(R.string.common_understand)
         DescriptionDialogFragment.newInstance(titleRes = R.string.translation_authors, text = author, positiveText = positiveText)
                 .show(childFragmentManager, "AuthorsDialog")
+    }
+
+    override fun checkPermissions() {
+        KotlinPermissions.with(activity!!)
+                .permissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
+                .onAccepted { getPresenter().onStoragePermissionsAccepted() }
+                .ask()
+    }
+
+    override fun showFolderChooserDialog() {
+        MaterialDialog(context!!).show {
+            folderChooser(
+                    allowFolderCreation = true,
+                    emptyTextRes = R.string.download_folder_empty,
+                    folderCreationLabel = R.string.download_new_folder)
+            { dialog, file ->
+                putSetting(SettingsExtras.DOWNLOAD_FOLDER, file.absolutePath)
+            }
+            positiveButton { getPresenter().onStoragePermissionsAccepted() }
+        }
     }
 
     override fun onShowLoading() = progress.visible()

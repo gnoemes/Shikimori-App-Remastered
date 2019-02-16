@@ -1,9 +1,10 @@
 package com.gnoemes.shikimori.presentation.presenter.series.translations
 
-import android.util.Log
 import com.arellomobile.mvp.InjectViewState
 import com.gnoemes.shikimori.data.local.preference.SettingsSource
+import com.gnoemes.shikimori.domain.download.DownloadInteractor
 import com.gnoemes.shikimori.domain.series.SeriesInteractor
+import com.gnoemes.shikimori.entity.download.DownloadVideoData
 import com.gnoemes.shikimori.entity.series.domain.*
 import com.gnoemes.shikimori.entity.series.presentation.EmbeddedPlayerNavigationData
 import com.gnoemes.shikimori.entity.series.presentation.TranslationVideo
@@ -25,6 +26,7 @@ import javax.inject.Inject
 @InjectViewState
 class TranslationsPresenter @Inject constructor(
         private val interactor: SeriesInteractor,
+        private val downloadInteractor: DownloadInteractor,
         private val settingsSource: SettingsSource,
         private val converter: TranslationsViewModelConverter
 ) : BaseNetworkPresenter<TranslationsView>() {
@@ -36,6 +38,7 @@ class TranslationsPresenter @Inject constructor(
 
     private val items = mutableListOf<TranslationViewModel>()
     private lateinit var selectedHosting: TranslationVideo
+    private var selectedDownloadUrl: String? = null
 
     override fun initData() {
         super.initData()
@@ -155,9 +158,23 @@ class TranslationsPresenter @Inject constructor(
                 .addToDisposables()
     }
 
+    private fun downloadVideo(url: String?) {
+        val data = DownloadVideoData(navigationData.animeId, navigationData.name, navigationData.episodeIndex, url)
+        downloadInteractor.downloadVideo(data)
+                .subscribe({}, this::processDownloadErrors)
+                .addToDisposables()
+    }
+
     fun onTrackForDownloadSelected(url: String) {
-        //TODO download
-        Log.i("DEVE", url)
+        selectedDownloadUrl = url
+        viewState.checkPermissions()
+    }
+
+    fun onStoragePermissionsAccepted() {
+        val downloadPath = settingsSource.downloadFolder
+
+        if (downloadPath.isNotEmpty()) downloadVideo(selectedDownloadUrl)
+        else viewState.showFolderChooserDialog()
     }
 
     fun onDiscussionClicked() {
@@ -193,5 +210,8 @@ class TranslationsPresenter @Inject constructor(
     fun onSearchClosed() {
         viewState.onSearchClosed()
         showData(items)
+    }
+
+    private fun processDownloadErrors(throwable: Throwable) {
     }
 }

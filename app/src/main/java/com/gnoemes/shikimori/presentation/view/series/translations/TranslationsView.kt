@@ -30,4 +30,10 @@ interface TranslationsView : BaseSeriesView {
     @StateStrategyType(SkipStrategy::class)
     fun showAuthorDialog(author: String)
 
+    @StateStrategyType(SkipStrategy::class)
+    fun checkPermissions()
+
+    @StateStrategyType(SkipStrategy::class)
+    fun showFolderChooserDialog()
+
 }
