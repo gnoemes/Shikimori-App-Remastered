@@ -9,5 +9,6 @@ data class TranslationViewModel(
         val description: CharSequence?,
         val videos: List<TranslationVideo>,
         val isSameAuthor: Boolean,
+        val canBeDownloaded : Boolean,
         val episodesSize : Int
 )

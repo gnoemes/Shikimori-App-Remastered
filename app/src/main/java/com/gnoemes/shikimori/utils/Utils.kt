@@ -13,6 +13,7 @@ object Utils {
                 VideoHosting.VK
         )
 
+        //need subscription
         if (includeDownload) supports.add(VideoHosting.SMOTRET_ANIME)
 
         return supports.contains(hosting)

@@ -77,7 +77,7 @@ class TranslationAdapterDelegate(
             val wrapper = ContextThemeWrapper(itemView.context, R.style.PopupMenuTheme)
             val menu = PopupMenu(wrapper, itemView.menuView)
                     .apply {
-                        inflate(R.menu.menu_translation)
+                        inflate(if (item.canBeDownloaded) R.menu.menu_translation_downloadable else R.menu.menu_translation)
                         setOnMenuItemClickListener(menuItemClickListener.invoke(item))
                     }
             itemView.post(menu::show)

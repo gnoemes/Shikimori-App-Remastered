@@ -40,7 +40,7 @@ class TranslationsViewModelConverterImpl @Inject constructor(
 
         val hasBd = it.value.find { it.quality == TranslationQuality.BD || it.quality == TranslationQuality.DVD } != null
         val isSameAuthor = author == setting?.lastAuthor
-        val canBeDownloaded = it.value.find { Utils.isHostingSupports(it.hosting, true) } != null
+        val canBeDownloaded = it.value.find { Utils.isHostingSupports(it.hosting) } != null
 
 
         if (isSameAuthor) builder.append(" ")
@@ -68,6 +68,7 @@ class TranslationsViewModelConverterImpl @Inject constructor(
                 description,
                 videos,
                 isSameAuthor,
+                canBeDownloaded,
                 it.value.first().episodesSize
         )
     }

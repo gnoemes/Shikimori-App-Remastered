@@ -140,7 +140,7 @@ class TranslationsPresenter @Inject constructor(
     }
 
     private fun showDownloadDialog(videos: List<TranslationVideo>) {
-        val filteredItems = videos.filter { Utils.isHostingSupports(it.videoHosting, true) }
+        val filteredItems = videos.filter { Utils.isHostingSupports(it.videoHosting) }
 
         Observable.fromIterable(filteredItems)
                 .flatMapSingle { interactor.getVideo(it, it.videoHosting == VideoHosting.SMOTRET_ANIME) }
