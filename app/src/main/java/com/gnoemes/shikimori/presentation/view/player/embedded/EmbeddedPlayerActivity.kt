@@ -73,7 +73,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         const val FORWARD_REWIND_HIDE_DELAY = 750L
     }
 
-    private val controller by lazy { PlayerController() }
+    private val controller by lazy { PlayerController(settingsSource) }
 
     private val smallOffsetText by lazy { "${settingsSource.forwardRewindOffset / 1000} ${getString(R.string.player_seconds_short)}" }
     private val bigOffsetText by lazy { "${settingsSource.forwardRewindOffsetBig / 1000} ${getString(R.string.player_seconds_short)}" }
@@ -274,7 +274,9 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
     // Player controller
     ///////////////////////////////////////////////////////////////////////////
 
-    private inner class PlayerController : Player.EventListener, PlayerControlView.VisibilityListener {
+    private inner class PlayerController(
+            private val settingsSource: PlayerSettingsSource
+    ) : Player.EventListener, PlayerControlView.VisibilityListener {
 
         private val player: SimpleExoPlayer
 
@@ -284,7 +286,6 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         private val gestureListener = ExoPlayerGestureListener()
         private val playerTopMargin by lazy { dimenAttr(android.R.attr.actionBarSize) }
 
-        //TODO move to constructor?
         private val smallOffset by lazy { settingsSource.forwardRewindOffset }
         private val bigOffset by lazy { settingsSource.forwardRewindOffsetBig }
         private val isGesturesEnabled by lazy { settingsSource.isGesturesEnabled }
