@@ -545,7 +545,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
 
                 scaleFactor = Math.max(0.1f, Math.min(scaleFactor, 1.0f))
 
-                if (scaleFactor > 0.5f) playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FILL
+                if (scaleFactor > 0.5f) playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
                 else playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
 
                 return true
