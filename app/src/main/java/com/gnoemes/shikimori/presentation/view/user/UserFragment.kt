@@ -47,8 +47,10 @@ class UserFragment : BaseFragment<UserPresenter, UserView>(), UserView {
     private val expandedAvatarSize by lazy { context?.dimen(R.dimen.image_profile_big_height)!! }
     private val collapseAvatarSize by lazy { context?.dp(40)!! }
     private val maxHeight by lazy { (appBarLayout.height - toolbar.height).toFloat() }
-    private val avatarEndYPosition by lazy { context?.dp(40)!! }
-    private val avatarEndXPosition by lazy { context?.dp(56)!! }
+    private val avatarStartXPosition by lazy { appBarLayout.width / 2 - expandedAvatarSize / 2 }
+    private val avatarStartYPosition by lazy { context?.dimenAttr(android.R.attr.actionBarSize)!! }
+    private val avatarEndXPosition by lazy { context?.dp(40)!! }
+    private val avatarEndYPosition by lazy { maxHeight - context?.dp(46)!! - avatarStartYPosition }
 
     private val favoritesAdapter by lazy { UserFavoriteContentAdapter(imageLoader, getPresenter()::onContentClicked, getPresenter()::onAction) }
     private val friendsAdapter by lazy { UserProfileContentAdapter(imageLoader, getPresenter()::onContentClicked, getPresenter()::onAction) }
@@ -73,7 +75,7 @@ class UserFragment : BaseFragment<UserPresenter, UserView>(), UserView {
             addBackButton { getPresenter().onBackPressed() }
             inflateMenu(R.menu.menu_user)
             setOnMenuItemClickListener {
-                when(it.itemId) {
+                when (it.itemId) {
                     R.id.menu_history -> getPresenter().onAction(UserProfileAction.History)
                 }
                 true
@@ -98,8 +100,8 @@ class UserFragment : BaseFragment<UserPresenter, UserView>(), UserView {
             height = newSize
         }
 
-        avatarView.translationX = -avatarEndXPosition * ((1 - percent) * 2.75f)
-        avatarView.translationY = avatarEndYPosition * ((1 - percent) * 2.75f)
+        avatarView.translationY = (avatarStartYPosition + avatarEndYPosition) * (1 - percent)
+        avatarView.translationX = (avatarEndXPosition - avatarStartXPosition) * (1 - percent)
     }
 
     override fun onDestroyView() {

@@ -53,6 +53,7 @@ class UserRateViewHolder(
         with(view) {
             progressView.gone()
             rateProgressLayout.visible()
+            menuView.visible()
         }
     }
 

@@ -37,8 +37,8 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@android:color/transparent"
             android:fitsSystemWindows="true"
+            app:contentInsetStartWithNavigation="108dp"
             app:layout_collapseMode="pin"
-            app:contentInsetStartWithNavigation="96dp"
             app:popupTheme="@style/PopupMenuTheme" />
 
         <de.hdodenhof.circleimageview.CircleImageView

@@ -150,7 +150,7 @@ fun Context.calculateColumns(@DimenRes itemWidth: Int): Int {
 }
 
 fun Context.dp(dp: Int): Int {
-    return (resources.displayMetrics.density * 40).toInt()
+    return (resources.displayMetrics.density * dp).toInt()
 }
 
 fun Drawable.tint(@ColorInt color: Int) {
