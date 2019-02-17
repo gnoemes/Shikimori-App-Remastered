@@ -27,10 +27,7 @@ import com.gnoemes.shikimori.presentation.presenter.player.EmbeddedPlayerPresent
 import com.gnoemes.shikimori.presentation.view.base.activity.BaseActivity
 import com.gnoemes.shikimori.utils.*
 import com.gnoemes.shikimori.utils.exoplayer.MediaSourceHelper
-import com.google.android.exoplayer2.ExoPlaybackException
-import com.google.android.exoplayer2.ExoPlayerFactory
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
@@ -96,8 +93,14 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         rewindView.text = smallOffsetText
 
         exo_progress.setBufferedColor(ColorUtils.setAlphaComponent(colorAttr(R.attr.colorAccentTransparent), 153))
-        resolutionSpinnerView.setPopupBackgroundResource(R.drawable.background_player_resolution)
         resolutionSpinnerView.background.tint(color(R.color.player_controls))
+
+        speedSpinnerView.apply {
+            background.tint(color(R.color.player_controls))
+            adapter = ArrayAdapter(this@EmbeddedPlayerActivity, R.layout.item_spinner_player, resources.getStringArray(R.array.player_speed_rates))
+            setOnItemClickListener { _, _, position, _ -> controller.changePlaySpeed(position)}
+            setSelection(2, false)
+        }
         includedToolbar.gone()
         unlockView.hide()
 
@@ -292,6 +295,8 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         private val isVolumeAndBrightnessInverted by lazy { settingsSource.isVolumeAndBrightnessInverted }
         private val isSlideControl by lazy { settingsSource.isForwardRewindSlide }
 
+        private val speedRates = listOf(0.25f, 0.5f, 1f, 1.5f, 2f)
+
         init {
             val trackSelector = DefaultTrackSelector(AdaptiveTrackSelection.Factory())
             player = ExoPlayerFactory.newSimpleInstance(this@EmbeddedPlayerActivity, trackSelector)
@@ -326,6 +331,11 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
 
         fun selectTrack(currentTrack: Int) {
             resolutionSpinnerView.setSelection(currentTrack, false)
+        }
+
+        fun changePlaySpeed(currentSpeed: Int) {
+            player.playbackParameters = PlaybackParameters(speedRates[currentSpeed])
+            speedSpinnerView.setSelection(currentSpeed, false)
         }
 
         fun addMediaSource(source: MediaSource?) {

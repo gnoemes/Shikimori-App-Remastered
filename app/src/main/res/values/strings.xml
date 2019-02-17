@@ -618,4 +618,12 @@
         <item>@string/translation_original</item>
     </string-array>
 
+    <string-array name="player_speed_rates">
+        <item>0.25x</item>
+        <item>0.5x</item>
+        <item>1x</item>
+        <item>1.5x</item>
+        <item>2x</item>
+    </string-array>
+
 </resources>
