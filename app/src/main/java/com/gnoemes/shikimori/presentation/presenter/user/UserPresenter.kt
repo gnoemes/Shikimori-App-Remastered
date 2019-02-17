@@ -132,4 +132,8 @@ class UserPresenter @Inject constructor(
                 .subscribe({ }, this@UserPresenter::processErrors)
                 .addToDisposables()
     }
+
+    fun onRefresh() {
+        loadData()
+    }
 }

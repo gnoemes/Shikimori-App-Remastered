@@ -21,6 +21,7 @@ import com.gnoemes.shikimori.utils.*
 import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_user_profile.*
+import kotlinx.android.synthetic.main.layout_default_placeholders.*
 import kotlinx.android.synthetic.main.layout_user_profile_toolbar.*
 import javax.inject.Inject
 
@@ -87,6 +88,9 @@ class UserFragment : BaseFragment<UserPresenter, UserView>(), UserView {
         mangaRateHolder = UserRateViewHolder(mangaRateLayout, false, getPresenter()::onAction)
 
         appBarLayout.addOnOffsetChangedListener(appbarOffsetListener)
+
+        networkErrorView.callback = {getPresenter().onRefresh()}
+        networkErrorView.showButton()
     }
 
     private val appbarOffsetListener = AppBarLayout.OnOffsetChangedListener { _, offset ->
@@ -157,4 +161,11 @@ class UserFragment : BaseFragment<UserPresenter, UserView>(), UserView {
         clubsHolder = UserContentViewHolder(layout, clubsAdapter)
         clubsHolder.bind(it)
     }
+
+    override fun showContent(show: Boolean) {
+        scrollView.visibleIf { show }
+        appBarLayout.visibleIf { show }
+    }
+    override fun showNetworkView() = networkErrorView.visible()
+    override fun hideNetworkView() = networkErrorView.gone()
 }

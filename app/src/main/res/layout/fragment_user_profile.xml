@@ -47,4 +47,6 @@
 
     </androidx.core.widget.NestedScrollView>
 
+    <include layout="@layout/layout_default_placeholders" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
