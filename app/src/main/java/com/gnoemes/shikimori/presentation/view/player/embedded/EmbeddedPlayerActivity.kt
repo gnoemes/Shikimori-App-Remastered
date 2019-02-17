@@ -33,6 +33,7 @@ import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.PlayerControlView
+import com.google.android.exoplayer2.ui.TimeBar
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
 import kotlinx.android.synthetic.main.activity_embedded_player.*
@@ -40,6 +41,7 @@ import kotlinx.android.synthetic.main.layout_player_bottom.*
 import kotlinx.android.synthetic.main.layout_player_controls.*
 import kotlinx.android.synthetic.main.layout_player_rewind_forward.*
 import kotlinx.android.synthetic.main.layout_player_toolbar.*
+import org.joda.time.Duration
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder
 import javax.inject.Inject
@@ -98,7 +100,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         speedSpinnerView.apply {
             background.tint(color(R.color.player_controls))
             adapter = ArrayAdapter(this@EmbeddedPlayerActivity, R.layout.item_spinner_player, resources.getStringArray(R.array.player_speed_rates))
-            setOnItemClickListener { _, _, position, _ -> controller.changePlaySpeed(position)}
+            setOnItemClickListener { _, _, position, _ -> controller.changePlaySpeed(position) }
             setSelection(2, false)
         }
         includedToolbar.gone()
@@ -296,6 +298,31 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         private val isSlideControl by lazy { settingsSource.isForwardRewindSlide }
 
         private val speedRates = listOf(0.25f, 0.5f, 1f, 1.5f, 2f)
+        private var controlsInAction: Boolean = false
+
+        private val progressListener = object : TimeBar.OnScrubListener {
+            private var prevPosition = 0L
+
+            override fun onScrubStart(timeBar: TimeBar?, position: Long) {
+                prevPosition = position
+                controlsInAction = true
+            }
+
+            override fun onScrubStop(timeBar: TimeBar?, position: Long, canceled: Boolean) {
+                prevPosition = if (!canceled) position else 0L
+                onActionEnd()
+            }
+
+            override fun onScrubMove(timeBar: TimeBar?, position: Long) {
+                val dragText = (if (prevPosition < position) "+" else "-").plus(" ${Duration.millis(Math.abs(prevPosition - position)).toMinutesAndSeconds()}")
+                dragProgress.apply {
+                    text = dragText
+                    visible()
+                    removeCallbacks(dragPostHideRunnable)
+                    postDelayed(dragPostHideRunnable, CONTROLLER_HIDE_DELAY)
+                }
+            }
+        }
 
         init {
             val trackSelector = DefaultTrackSelector(AdaptiveTrackSelection.Factory())
@@ -308,6 +335,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
             detector = GestureDetector(this@EmbeddedPlayerActivity, gestureListener)
             scaleDetector = ScaleGestureDetector(this@EmbeddedPlayerActivity, gestureListener)
             playerView.setOnTouchListener(gestureListener)
+            exo_progress.addListener(progressListener)
         }
 
         val isVisible
@@ -409,11 +437,11 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         override fun onVisibilityChange(visibility: Int) {
             controlsVisibility = visibility
 
-            if (isVisible) {
+            if (isVisible && !controlsInAction) {
                 hideAfterTimeout()
                 TransitionManager.beginDelayedTransition(container, Fade(Fade.MODE_IN))
                 includedToolbar.visible()
-            } else {
+            } else if (!controlsInAction){
                 TransitionManager.beginDelayedTransition(container, Fade(Fade.MODE_OUT))
                 includedToolbar.gone()
             }
@@ -434,8 +462,13 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
 
         private fun toggleControllerVisibility(): Boolean {
             if (isVisible) playerView.hideController()
-            else playerView.showController()
+            else if (!controlsInAction) playerView.showController()
             return true
+        }
+
+        private fun onActionEnd() {
+            controlsInAction = false
+            hideAfterTimeout()
         }
 
         private fun onLockedScreenTouch(): Boolean {
@@ -473,11 +506,12 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
             unlockView.postDelayed(delayedUnlockHide, UNLOCK_HIDE_DELAY)
         }
 
-        private val postHideRunnable = Runnable { playerView.hideController() }
+        private val postHideRunnable = Runnable { if (!controlsInAction) playerView.hideController() }
         private val delayedForwardHide = Runnable { forwardView.gone() }
         private val delayedRewindHide = Runnable { rewindView.gone() }
         private val delayedUnlockHide = Runnable { unlockView.hide(); TransitionManager.beginDelayedTransition(container, Fade(Fade.MODE_OUT)); unlockSurface.gone() }
         private val delayedParamChangesHide = Runnable { TransitionManager.beginDelayedTransition(container, Fade(Fade.MODE_OUT)); paramChangesView.gone() }
+        private val dragPostHideRunnable = Runnable { dragProgress.gone(); dragProgress.text = null }
 
         private inner class ExoPlayerGestureListener : GestureDetector.SimpleOnGestureListener(), View.OnTouchListener, ScaleGestureDetector.OnScaleGestureListener {
 

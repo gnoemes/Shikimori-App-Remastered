@@ -16,3 +16,14 @@ fun Duration.toHoursAndMinutesAndSeconds() : String =
             .appendSeconds()
             .toFormatter()
             .print(toPeriod())
+
+fun Duration.toMinutesAndSeconds() : String =
+        PeriodFormatterBuilder()
+                .printZeroAlways()
+                .minimumPrintedDigits(2)
+                .appendMinutes()
+                .appendSeparator(":")
+                .minimumPrintedDigits(2)
+                .appendSeconds()
+                .toFormatter()
+                .print(toPeriod())

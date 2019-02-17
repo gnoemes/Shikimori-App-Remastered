@@ -70,7 +70,6 @@
         app:layout_constraintEnd_toStartOf="@+id/lockView"
         app:layout_constraintStart_toStartOf="parent"
         app:played_color="?attr/colorAccent"
-
         app:scrubber_color="?attr/colorAccent"
         app:unplayed_color="@color/player_controls"
         tools:ignore="RtlHardcoded" />
