@@ -11,6 +11,7 @@ import com.gnoemes.shikimori.entity.series.presentation.EmbeddedPlayerNavigation
 import com.gnoemes.shikimori.entity.series.presentation.TranslationVideo
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
 import com.gnoemes.shikimori.presentation.view.player.embedded.EmbeddedPlayerView
+import com.gnoemes.shikimori.presentation.view.player.embedded.provider.EmbeddedPlayerResourceProvider
 import com.gnoemes.shikimori.utils.Utils
 import com.gnoemes.shikimori.utils.appendLoadingLogic
 import javax.inject.Inject
@@ -18,7 +19,8 @@ import javax.inject.Inject
 @InjectViewState
 class EmbeddedPlayerPresenter @Inject constructor(
         private val interactor: SeriesInteractor,
-        private val settingsSource: SettingsSource
+        private val settingsSource: SettingsSource,
+        private val resourceProvider: EmbeddedPlayerResourceProvider
 ) : BaseNetworkPresenter<EmbeddedPlayerView>() {
 
     lateinit var navigationData: EmbeddedPlayerNavigationData
@@ -50,11 +52,9 @@ class EmbeddedPlayerPresenter @Inject constructor(
     private fun updateVideo(video: Video, needReset: Boolean = true) {
         videos.add(video)
 
-        //TODO hosting error message
-        if (!Utils.isHostingSupports(video.hosting)) viewState.showMessage("ss")
+        if (!Utils.isHostingSupports(video.hosting)) viewState.showMessage(resourceProvider.hostingErrorMessage)
         else if (video.tracks.isNotEmpty()) setTrack(video.tracks, needReset)
-        //TODO player error message
-        else viewState.showMessage("ss", true)
+        else viewState.showMessage(resourceProvider.playerErrorMessage, true)
     }
 
     private fun setTrack(tracks: List<Track>, needReset: Boolean) {
@@ -69,8 +69,7 @@ class EmbeddedPlayerPresenter @Inject constructor(
             }
             currentTrack = 0
             setEpisodeWatched()
-            //TODO track error message
-        } ?: viewState.showMessage("ss")
+        } ?: viewState.showMessage(resourceProvider.playerErrorMessage)
     }
 
     private fun updateControls() {
