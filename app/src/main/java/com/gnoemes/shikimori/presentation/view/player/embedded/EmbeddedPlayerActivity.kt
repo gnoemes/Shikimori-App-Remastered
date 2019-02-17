@@ -9,10 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
-import android.view.GestureDetector
-import android.view.MotionEvent
-import android.view.View
-import android.view.WindowManager
+import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.graphics.ColorUtils
@@ -37,6 +34,7 @@ import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.PlayerControlView
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
@@ -283,6 +281,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         var isLocked: Boolean = false
         private var controlsVisibility = View.GONE
         private val detector: GestureDetector
+        private val scaleDetector: ScaleGestureDetector
         private val gestureListener = ExoPlayerGestureListener()
         private val playerTopMargin by lazy { dimenAttr(android.R.attr.actionBarSize) }
 
@@ -302,6 +301,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
             playerView.setControllerVisibilityListener(this)
             playerView.controllerAutoShow = false
             detector = GestureDetector(this@EmbeddedPlayerActivity, gestureListener)
+            scaleDetector = ScaleGestureDetector(this@EmbeddedPlayerActivity, gestureListener)
             playerView.setOnTouchListener(gestureListener)
         }
 
@@ -469,10 +469,11 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         private val delayedUnlockHide = Runnable { unlockView.hide(); TransitionManager.beginDelayedTransition(container, Fade(Fade.MODE_OUT)); unlockSurface.gone() }
         private val delayedParamChangesHide = Runnable { TransitionManager.beginDelayedTransition(container, Fade(Fade.MODE_OUT)); paramChangesView.gone() }
 
-        private inner class ExoPlayerGestureListener : GestureDetector.SimpleOnGestureListener(), View.OnTouchListener {
+        private inner class ExoPlayerGestureListener : GestureDetector.SimpleOnGestureListener(), View.OnTouchListener, ScaleGestureDetector.OnScaleGestureListener {
 
             private var isDrag: Boolean = false
             private var lastTapMills = 0L
+            private var scaleFactor = 0.5f
 
             private val MOVEMENT_TH = 30
             private val stepBrightness = 5
@@ -488,7 +489,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
                         onScrollEnd()
                     }
 
-                    if (isGesturesEnabled) detector.onTouchEvent(event)
+                    if (isGesturesEnabled) kotlin.run { scaleDetector.onTouchEvent(event); detector.onTouchEvent(event) }
                     else {
                         when {
                             (event.action == MotionEvent.ACTION_UP || event.action == MotionEvent.ACTION_DOWN) && System.currentTimeMillis() - lastTapMills > 500 -> {
@@ -529,14 +530,29 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
 
                     val stepChanged = Math.abs(distanceY).roundToInt() % 3 == 0 && diff > MOVEMENT_TH
 
-                    if (stepChanged && (e1.y > playerTopMargin && e2.y > playerTopMargin)) {
-                        if (e1.x < playerView.width / 2) leftAreaScroll(distanceY > 0)
-                        else rightAreaScroll(distanceY > 0)
-
-                    } else false
+                    if (stepChanged && (e1.y > playerTopMargin && e2.y > playerTopMargin)) when {
+                        e1.x < playerView.width / 3 -> leftAreaScroll(distanceY > 0)
+                        e1.x > playerView.width - playerView.width / 3 -> rightAreaScroll(distanceY > 0)
+                        else -> false
+                    }
+                    else false
 
                 } else false
             }
+
+            override fun onScale(detector: ScaleGestureDetector?): Boolean {
+                scaleFactor *= scaleDetector.scaleFactor
+
+                scaleFactor = Math.max(0.1f, Math.min(scaleFactor, 1.0f))
+
+                if (scaleFactor > 0.5f) playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FILL
+                else playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
+
+                return true
+            }
+
+            override fun onScaleBegin(detector: ScaleGestureDetector?): Boolean = true
+            override fun onScaleEnd(detector: ScaleGestureDetector?) = Unit
 
             private fun onScrollEnd() {
                 paramChangesView.removeCallbacks(delayedParamChangesHide)
