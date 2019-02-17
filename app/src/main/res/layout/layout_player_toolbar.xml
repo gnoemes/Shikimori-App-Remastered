@@ -25,7 +25,7 @@
         tools:subtitle="17 серия"
         tools:title="Steins;Gate 0">
 
-        <com.santalu.widget.ReSpinner
+        <com.gnoemes.shikimori.presentation.view.common.widget.CustomSpinner
             android:id="@+id/resolutionSpinnerView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
             android:visibility="gone"
             tools:visibility="visible" />
 
-        <com.santalu.widget.ReSpinner
+        <com.gnoemes.shikimori.presentation.view.common.widget.CustomSpinner
             android:id="@+id/speedSpinnerView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

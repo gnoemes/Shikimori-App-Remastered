@@ -25,6 +25,8 @@ import com.gnoemes.shikimori.entity.series.domain.Track
 import com.gnoemes.shikimori.entity.series.domain.VideoFormat
 import com.gnoemes.shikimori.presentation.presenter.player.EmbeddedPlayerPresenter
 import com.gnoemes.shikimori.presentation.view.base.activity.BaseActivity
+import com.gnoemes.shikimori.presentation.view.common.widget.CustomSpinner
+import com.gnoemes.shikimori.presentation.view.common.widget.ReSpinner
 import com.gnoemes.shikimori.utils.*
 import com.gnoemes.shikimori.utils.exoplayer.MediaSourceHelper
 import com.google.android.exoplayer2.*
@@ -47,7 +49,6 @@ import ru.terrakok.cicerone.NavigatorHolder
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
-//TODO create custom spinner and listener for open/close events
 class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPlayerView>(), EmbeddedPlayerView {
 
     @InjectPresenter
@@ -162,7 +163,6 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
             ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE, ActivityInfo.SCREEN_ORIENTATION_USER -> requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
     }
-
 
     private fun updateOrientation() {
         val orientation = this.resources.configuration.orientation
@@ -324,6 +324,14 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
             }
         }
 
+        private val spinnerOpenListener = object : CustomSpinner.OnSpinnerEventsListener {
+            override fun onSpinnerOpened(spinner: ReSpinner?) {
+                controlsInAction = true
+            }
+
+            override fun onSpinnerClosed(spinner: ReSpinner?) = onActionEnd()
+        }
+
         init {
             val trackSelector = DefaultTrackSelector(AdaptiveTrackSelection.Factory())
             player = ExoPlayerFactory.newSimpleInstance(this@EmbeddedPlayerActivity, trackSelector)
@@ -336,6 +344,8 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
             scaleDetector = ScaleGestureDetector(this@EmbeddedPlayerActivity, gestureListener)
             playerView.setOnTouchListener(gestureListener)
             exo_progress.addListener(progressListener)
+            resolutionSpinnerView.setSpinnerEventsListener(spinnerOpenListener)
+            speedSpinnerView.setSpinnerEventsListener(spinnerOpenListener)
         }
 
         val isVisible
@@ -441,7 +451,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
                 hideAfterTimeout()
                 TransitionManager.beginDelayedTransition(container, Fade(Fade.MODE_IN))
                 includedToolbar.visible()
-            } else if (!controlsInAction){
+            } else if (!controlsInAction) {
                 TransitionManager.beginDelayedTransition(container, Fade(Fade.MODE_OUT))
                 includedToolbar.gone()
             }
@@ -461,7 +471,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         }
 
         private fun toggleControllerVisibility(): Boolean {
-            if (isVisible) playerView.hideController()
+            if (isVisible && !controlsInAction) playerView.hideController()
             else if (!controlsInAction) playerView.showController()
             return true
         }
