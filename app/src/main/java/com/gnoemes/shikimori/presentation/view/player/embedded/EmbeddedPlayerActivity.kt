@@ -459,7 +459,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
 
         override fun onPlayerError(error: ExoPlaybackException?) {
             error?.printStackTrace()
-            //TODO process player error (404 on VK)
+            showMessage(getString(R.string.player_error))
             super.onPlayerError(error)
         }
 
