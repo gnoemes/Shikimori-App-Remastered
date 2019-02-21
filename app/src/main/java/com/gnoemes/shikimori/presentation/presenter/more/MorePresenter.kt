@@ -46,7 +46,7 @@ class MorePresenter @Inject constructor(
 
         val first = items.firstOrNull()
         if (first is MoreProfileItem && first.status == UserStatus.GUEST) {
-            items[0] = MoreProfileItem(UserStatus.AUTHORIZED, user.name, user.image.x148)
+            items[0] = MoreProfileItem(UserStatus.AUTHORIZED, user.nickname, user.image.x148)
             viewState.showData(items)
         }
     }
