@@ -16,7 +16,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="97dp">
+        android:minHeight="93dp">
 
         <ImageView
             android:id="@+id/targetImageView"
@@ -89,23 +89,29 @@
             app:layout_constraintTop_toBottomOf="@+id/targetNameView"
             tools:text="Просмотрены с 800-го по 822-й эпизоды" />
 
-
         <TextView
             android:id="@+id/dateView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:layout_marginBottom="16dp"
             android:includeFontPadding="false"
             android:textAllCaps="true"
             android:textColor="@color/background_transparent_text"
             android:textSize="10sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/actionView"
             app:layout_constraintStart_toStartOf="@+id/actionView"
             app:layout_constraintTop_toBottomOf="@+id/actionView"
             tools:ignore="SmallSp"
             tools:text="2 года назад" />
+
+        <View
+            android:id="@+id/spaceView"
+            android:layout_width="0dp"
+            android:layout_height="18dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dateView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
