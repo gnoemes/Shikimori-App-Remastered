@@ -42,9 +42,11 @@
         app:backgroundTint="@color/colorDivider"
         app:borderWidth="1dp"
         app:elevation="0dp"
+        app:hoveredFocusedTranslationZ="0dp"
         app:layout_constraintEnd_toStartOf="@+id/friendshipFab"
         app:layout_constraintTop_toBottomOf="@+id/infoView"
         app:layout_goneMarginEnd="12dp"
+        app:pressedTranslationZ="0dp"
         app:rippleColor="?attr/colorAccentTransparent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -56,8 +58,10 @@
         app:backgroundTint="@drawable/selector_profile_fab"
         app:borderWidth="1dp"
         app:elevation="0dp"
+        app:hoveredFocusedTranslationZ="0dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="@+id/messageFab"
+        app:pressedTranslationZ="0dp"
         app:rippleColor="?attr/colorAccentTransparent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -69,8 +73,10 @@
         app:backgroundTint="@drawable/selector_profile_fab"
         app:borderWidth="1dp"
         app:elevation="0dp"
+        app:hoveredFocusedTranslationZ="0dp"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="@+id/bansFab"
+        app:pressedTranslationZ="0dp"
         app:rippleColor="?attr/colorAccentTransparent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -83,9 +89,11 @@
         app:backgroundTint="@color/colorDivider"
         app:borderWidth="1dp"
         app:elevation="0dp"
+        app:hoveredFocusedTranslationZ="0dp"
         app:layout_constraintStart_toEndOf="@+id/ignoreFab"
         app:layout_constraintTop_toBottomOf="@+id/infoView"
         app:layout_goneMarginStart="12dp"
+        app:pressedTranslationZ="0dp"
         app:rippleColor="?attr/colorAccentTransparent" />
 
     <TextView
