@@ -9,9 +9,7 @@
     app:cardBackgroundColor="?attr/colorAccentTransparent"
     app:cardCornerRadius="8dp"
     app:cardPreventCornerOverlap="false"
-    app:contentPadding="16dp"
-    app:strokeColor="?attr/colorAccentTransparent"
-    app:strokeWidth="1dp">
+    app:contentPadding="16dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
