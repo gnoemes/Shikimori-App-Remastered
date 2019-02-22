@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
@@ -21,11 +22,8 @@ import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
 import com.gnoemes.shikimori.presentation.view.common.fragment.ListDialogFragment
 import com.gnoemes.shikimori.presentation.view.series.BaseSeriesFragment
 import com.gnoemes.shikimori.presentation.view.series.episodes.adapter.EpisodeAdapter
-import com.gnoemes.shikimori.utils.dimen
-import com.gnoemes.shikimori.utils.gone
-import com.gnoemes.shikimori.utils.visibleIf
+import com.gnoemes.shikimori.utils.*
 import com.gnoemes.shikimori.utils.widgets.VerticalSpaceItemDecorator
-import com.gnoemes.shikimori.utils.withArgs
 import com.lapism.searchview.SearchView
 import kotlinx.android.synthetic.main.fragment_base_series.*
 import kotlinx.android.synthetic.main.fragment_episodes.*
@@ -74,6 +72,7 @@ class EpisodesFragment : BaseSeriesFragment<EpisodesPresenter, EpisodesView>(), 
             layoutManager = LinearLayoutManager(context)
             addItemDecoration(VerticalSpaceItemDecorator(context.dimen(R.dimen.margin_normal).toInt(), true))
             setHasFixedSize(true)
+            addOnScrollListener(onScrollListener)
         }
 
         emptyContentView.setText(R.string.episodes_not_found)
@@ -81,6 +80,15 @@ class EpisodesFragment : BaseSeriesFragment<EpisodesPresenter, EpisodesView>(), 
         networkErrorView.callback = { getPresenter().onRefresh() }
         altBtnView.setOnClickListener { getPresenter().onAlternativeSourceClicked() }
         fab.gone()
+    }
+
+    private val onScrollListener = object  : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            if (!gradient.isGone()) {
+                if (recyclerView.canScrollVertically(-1)) gradient.visible()
+                else gradient.invisible()
+            }
+        }
     }
 
     private fun configureSearchView() {
