@@ -22,7 +22,7 @@
         android:id="@+id/contentRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginBottom="28dp"
         android:visibility="gone"
         tools:itemCount="5"
@@ -42,5 +42,5 @@
         tools:visibility="gone" />
 
 
-</com.gnoemes.shikimori.utils.widgets.UniqueStateLinearLayout >
+</com.gnoemes.shikimori.utils.widgets.UniqueStateLinearLayout>
 
