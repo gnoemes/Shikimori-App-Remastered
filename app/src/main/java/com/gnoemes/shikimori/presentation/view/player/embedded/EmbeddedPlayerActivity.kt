@@ -2,7 +2,9 @@ package com.gnoemes.shikimori.presentation.view.player.embedded
 
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
+import android.app.PictureInPictureParams
 import android.content.pm.ActivityInfo
+import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.drawable.Drawable
 import android.media.AudioManager
@@ -110,16 +112,34 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         includedToolbar.gone()
         unlockView.hide()
 
+        pipView.visibleIf { hasPip }
+
         prev.onClick { presenter.loadPrevEpisode() }
         next.onClick { presenter.loadNextEpisode() }
         rotationView.onClick { toggleOrientation() }
         lockView.onClick { controller.lock() }
         unlockView.onClick { controller.unlock() }
+        pipView.onClick { enterPip() }
+    }
+
+    private fun enterPip() {
+        if (hasPip) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) enterPictureInPictureMode(PictureInPictureParams.Builder().build())
+            else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) enterPictureInPictureMode()
+        }
+    }
+
+
+    override fun onUserLeaveHint() {
+        super.onUserLeaveHint()
+        enterPip()
     }
 
     override fun onStop() {
         super.onStop()
         controller.onStop()
+
+        if (hasPip && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) finishAndRemoveTask()
     }
 
     override fun onDestroy() {
@@ -681,4 +701,8 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
     private fun toMinutesAndSecond(value: Long): String {
         return Duration.millis(Math.abs(value)).toMinutesAndSeconds()
     }
+
+    private val hasPip: Boolean
+        get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && packageManager.hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE)
+
 }
