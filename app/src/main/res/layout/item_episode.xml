@@ -31,23 +31,17 @@
             android:textSize="16sp"
             tools:text="1 эпизод" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/watchedView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/CircleButtonStyle"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="12dp"
             android:layout_marginLeft="12dp"
             android:layout_marginTop="12dp"
             android:layout_marginBottom="12dp"
-            android:layout_weight="0"
-            android:visibility="visible"
-            app:backgroundTint="@drawable/selector_episode_fab_background"
-            app:borderWidth="1dp"
-            app:elevation="0dp"
-            app:fabCustomSize="32dp"
-            app:pressedTranslationZ="0dp"
-            app:srcCompat="@drawable/selector_episode_fab_icon" />
+            app:icon="@drawable/selector_episode_fab_icon" />
 
         <com.github.ybq.android.spinkit.SpinKitView xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"

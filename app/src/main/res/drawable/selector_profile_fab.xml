@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_selected="false" android:color="@color/colorDivider"/>
-    <item android:state_selected="true" android:color="@color/default_colorSecondaryTransparent"/>
-    <item android:state_pressed="true" android:color="@android:color/transparent"/>
-</selector>
