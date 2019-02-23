@@ -50,7 +50,7 @@
         android:layout_marginRight="16dp"
         android:ellipsize="end"
         android:maxLines="1"
-        android:textColor="@color/background_transparent_text"
+        android:textColor="?attr/colorOnPrimarySecondary"
         app:layout_constraintBottom_toBottomOf="@+id/avatarView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/nameView"

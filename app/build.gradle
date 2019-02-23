@@ -60,7 +60,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:' + versions.constraint
     implementation 'androidx.fragment:fragment:' + versions.androidxFragment
     implementation 'androidx.preference:preference:' + versions.androidxPrefs
-    implementation 'com.google.android.material:material:' + versions.androidx
+    implementation 'com.google.android.material:material:' + versions.material
     implementation 'androidx.palette:palette:' + versions.androidx
 
     implementation "com.google.dagger:dagger-android:" + versions.dagger

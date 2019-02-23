@@ -86,7 +86,7 @@ class RateDialogFragment : MvpDialogFragment() {
             }
             countRating(rating)
 
-            ratingGroup.setOnClickListener { view ->
+            ratingGroup.setOnClickListener {
                 val currentRating = ratingValueView.text.toString().toIntOrNull()
                 currentRating?.let {
                     val newRating = when (it) {

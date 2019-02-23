@@ -14,7 +14,7 @@
         android:layout_marginBottom="16dp"
         android:clickable="false"
         android:focusable="false"
-        android:textColor="@color/background_transparent_text"
+        android:textColor="?attr/colorOnPrimarySecondary"
         app:chipBackgroundColor="?attr/colorPrimary"
         app:chipStrokeColor="@color/colorDivider"
         app:chipStrokeWidth="1dp"

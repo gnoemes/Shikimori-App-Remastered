@@ -68,8 +68,8 @@ class CalendarFragment : BaseFragment<CalendarPresenter, CalendarView>(), Calend
         progressBar?.gone()
 
         if (!::pages.isInitialized) {
-            val ongoingsPage = layoutInflater?.inflate(R.layout.page_calendar, null)!!
-            val myOngoingsPage = layoutInflater?.inflate(R.layout.page_calendar, null)!!
+            val ongoingsPage = layoutInflater.inflate(R.layout.page_calendar, null)!!
+            val myOngoingsPage = layoutInflater.inflate(R.layout.page_calendar, null)!!
 
             pages = listOf(
                     Pair(getString(R.string.common_all), ongoingsPage),

@@ -45,7 +45,7 @@ class EpisodeAdapterDelegate(
                 progressBar.visibleIf { item.state == EpisodeViewModel.State.Loading }
                 watchedView.visibleIf { item.state != EpisodeViewModel.State.Loading }
                 val tintColor =
-                        if (item.isWatched) R.attr.colorAccentTransparent
+                        if (item.isWatched) R.attr.colorSecondaryTransparent
                         else R.attr.colorPrimary
                 watchedView.background = watchedView.background.apply { tint(context.colorAttr(tintColor)) }
             }

@@ -6,10 +6,10 @@
     android:layout_width="@dimen/image_profile_width"
     android:layout_height="@dimen/image_profile_height"
     android:foreground="?attr/selectableItemBackgroundBorderless"
-    app:cardBackgroundColor="?attr/colorAccentTransparent"
+    app:cardBackgroundColor="?attr/colorSecondaryTransparent"
     app:cardCornerRadius="24dp"
     app:cardPreventCornerOverlap="false"
-    app:strokeColor="?attr/colorAccentTransparent"
+    app:strokeColor="?attr/colorSecondaryTransparent"
     app:strokeWidth="1dp">
 
     <TextView

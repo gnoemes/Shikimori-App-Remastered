@@ -6,11 +6,11 @@
     android:layout_width="@dimen/image_favorite_width"
     android:layout_height="@dimen/image_favorite_height"
     android:foreground="?attr/selectableItemBackgroundBorderless"
-    app:cardBackgroundColor="?attr/colorAccentTransparent"
+    app:cardBackgroundColor="?attr/colorSecondaryTransparent"
     app:cardCornerRadius="8dp"
     app:cardElevation="0dp"
     app:cardPreventCornerOverlap="false"
-    app:strokeColor="?attr/colorAccentTransparent"
+    app:strokeColor="?attr/colorSecondaryTransparent"
     app:strokeWidth="1dp">
 
     <TextView

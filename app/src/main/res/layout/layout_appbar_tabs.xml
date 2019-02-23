@@ -17,6 +17,7 @@
         app:tabIndicatorHeight="4dp"
         app:tabMode="scrollable"
         app:tabPadding="4dp"
+        app:tabSelectedTextColor="?attr/colorOnPrimary"
         app:tabTextAppearance="@style/TabsTextStyle" />
 
 </com.google.android.material.appbar.AppBarLayout>

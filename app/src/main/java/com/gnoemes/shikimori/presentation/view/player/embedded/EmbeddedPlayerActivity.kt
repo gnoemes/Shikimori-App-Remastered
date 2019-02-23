@@ -95,7 +95,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         forwardView.text = smallOffsetText
         rewindView.text = smallOffsetText
 
-        exo_progress.setBufferedColor(ColorUtils.setAlphaComponent(colorAttr(R.attr.colorAccentTransparent), 153))
+        exo_progress.setBufferedColor(ColorUtils.setAlphaComponent(colorAttr(R.attr.colorSecondaryTransparent), 153))
         resolutionSpinnerView.background.tint(color(R.color.player_controls))
 
         speedSpinnerView.apply {

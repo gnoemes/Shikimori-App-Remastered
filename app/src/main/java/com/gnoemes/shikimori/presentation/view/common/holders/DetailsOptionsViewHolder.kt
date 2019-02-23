@@ -39,9 +39,9 @@ class DetailsOptionsViewHolder(
                 setOnClickListener { callback.invoke(DetailsAction.WatchOnline()) }
             }
 
-            chronologyView.tintCompoundDrawables(context.colorAttr(R.attr.colorPrimaryDark))
-            linksView.tintCompoundDrawables(context.colorAttr(R.attr.colorPrimaryDark))
-            discussionView.tintCompoundDrawables(context.colorAttr(R.attr.colorPrimaryDark))
+            chronologyView.tintCompoundDrawables(context.colorAttr(R.attr.colorPrimaryVariant))
+            linksView.tintCompoundDrawables(context.colorAttr(R.attr.colorPrimaryVariant))
+            discussionView.tintCompoundDrawables(context.colorAttr(R.attr.colorPrimaryVariant))
 
             chronologyView.text = item.chronologyText
 

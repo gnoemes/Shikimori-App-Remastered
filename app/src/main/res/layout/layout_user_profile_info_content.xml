@@ -19,7 +19,7 @@
         android:layout_marginRight="16dp"
         android:autoLink="all"
         android:gravity="center"
-        android:textColor="@color/background_transparent_text"
+        android:textColor="?attr/colorOnPrimarySecondary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -47,7 +47,7 @@
         app:layout_constraintTop_toBottomOf="@+id/infoView"
         app:layout_goneMarginEnd="12dp"
         app:pressedTranslationZ="0dp"
-        app:rippleColor="?attr/colorAccentTransparent" />
+        app:rippleColor="?attr/colorSecondaryTransparent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/friendshipFab"
@@ -62,7 +62,7 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="@+id/messageFab"
         app:pressedTranslationZ="0dp"
-        app:rippleColor="?attr/colorAccentTransparent" />
+        app:rippleColor="?attr/colorSecondaryTransparent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/ignoreFab"
@@ -77,7 +77,7 @@
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="@+id/bansFab"
         app:pressedTranslationZ="0dp"
-        app:rippleColor="?attr/colorAccentTransparent" />
+        app:rippleColor="?attr/colorSecondaryTransparent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/bansFab"
@@ -94,7 +94,7 @@
         app:layout_constraintTop_toBottomOf="@+id/infoView"
         app:layout_goneMarginStart="12dp"
         app:pressedTranslationZ="0dp"
-        app:rippleColor="?attr/colorAccentTransparent" />
+        app:rippleColor="?attr/colorSecondaryTransparent" />
 
     <TextView
         android:id="@+id/messageLabel"
@@ -156,11 +156,11 @@
         android:paddingBottom="8dp"
         android:text="@string/profile_about_me"
         android:textAllCaps="false"
-        android:textColor="@color/background_transparent_text"
+        android:textColor="?attr/colorOnPrimarySecondary"
         app:backgroundTint="@android:color/transparent"
         app:cornerRadius="4dp"
         app:icon="@drawable/ic_global"
-        app:iconTint="@color/background_transparent_text"
+        app:iconTint="?attr/colorOnPrimarySecondary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="@+id/guideline"

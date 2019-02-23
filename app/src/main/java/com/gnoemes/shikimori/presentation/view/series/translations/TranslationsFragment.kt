@@ -293,7 +293,7 @@ class TranslationsFragment : BaseSeriesFragment<TranslationsPresenter, Translati
                     allowFolderCreation = true,
                     emptyTextRes = R.string.download_folder_empty,
                     folderCreationLabel = R.string.download_new_folder)
-            { dialog, file ->
+            { _, file ->
                 putSetting(SettingsExtras.DOWNLOAD_FOLDER, file.absolutePath)
             }
             positiveButton { getPresenter().onStoragePermissionsAccepted() }

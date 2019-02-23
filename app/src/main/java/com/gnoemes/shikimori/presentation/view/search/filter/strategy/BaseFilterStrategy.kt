@@ -174,12 +174,12 @@ abstract class BaseFilterStrategy(
         val chip = context.layoutInflater().inflate(R.layout.view_filter_chip, null) as Chip
 
         fun tintActive() {
-            chip.background?.tint(context.colorAttr(R.attr.colorAccent))
-            chip.setTextColor(context.colorAttr(R.attr.colorOnAccent))
+            chip.background?.tint(context.colorAttr(R.attr.colorSecondary))
+            chip.setTextColor(context.colorAttr(R.attr.colorOnSecondary))
         }
 
         fun tintDefault() {
-            chip.background?.tint(context.colorAttr(R.attr.colorPrimaryDark))
+            chip.background?.tint(context.colorAttr(R.attr.colorPrimaryVariant))
             chip.setTextColor(context.colorAttr(R.attr.colorOnPrimary))
         }
 

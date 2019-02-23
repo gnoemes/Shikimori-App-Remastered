@@ -12,6 +12,7 @@ ext.versions = [
     androidx          : '1.0.0',
     androidxFragment  : '1.1.0-alpha03',
     androidxPrefs     : '1.1.0-alpha02',
+    material          : '1.1.0-alpha03',
 
     dagger            : '2.19',
     rxJava            : '2.2.6',
