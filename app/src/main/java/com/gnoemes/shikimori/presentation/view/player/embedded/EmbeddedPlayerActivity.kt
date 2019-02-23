@@ -449,10 +449,8 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
 
             if (isVisible && !controlsInAction) {
                 hideAfterTimeout()
-                TransitionManager.beginDelayedTransition(container, Fade(Fade.MODE_IN))
                 includedToolbar.visible()
             } else if (!controlsInAction) {
-                TransitionManager.beginDelayedTransition(container, Fade(Fade.MODE_OUT))
                 includedToolbar.gone()
             }
         }
