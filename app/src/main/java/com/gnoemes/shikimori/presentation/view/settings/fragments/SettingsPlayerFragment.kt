@@ -34,10 +34,11 @@ class SettingsPlayerFragment : BaseSettingsFragment() {
 
         preference(SettingsExtras.PLAYER_IS_FORWARD_REWIND_SLIDE)?.apply {
             onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-                if (newValue as Boolean) putSetting(dependency, false)
+                if (newValue as Boolean) putSetting(SettingsExtras.PLAYER_IS_VOLUME_BRIGHTNESS_GESTURES_ENABLED, false)
                 notifyDependencyChange(true)
                 return@OnPreferenceChangeListener true
             }
+
         }
     }
 

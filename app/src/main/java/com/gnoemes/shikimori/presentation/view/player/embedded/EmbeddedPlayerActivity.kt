@@ -212,7 +212,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
             else -> offset
         }
 
-        val validatedCurrent  = when {
+        val validatedCurrent = when {
             current + offset < 0 -> 0
             current + offset > max -> max
             else -> current + offset
@@ -550,7 +550,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         private inner class ExoPlayerGestureListener : GestureDetector.SimpleOnGestureListener(), View.OnTouchListener, ScaleGestureDetector.OnScaleGestureListener {
 
             private var isDrag: Boolean = false
-            private var isSlide : Boolean = false
+            private var isSlide: Boolean = false
             private var slideOffset = 0L
             private var lastTapMills = 0L
             private var scaleFactor = 0.5f
@@ -588,7 +588,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
             }
 
             override fun onLongPress(e: MotionEvent?) {
-                if (e == null) return
+                if (e == null || isSlideControl) return
 
                 when {
                     e.x > playerView.width - playerView.width / 3 -> onBigForward()
@@ -597,13 +597,13 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
             }
 
             override fun onDoubleTap(e: MotionEvent?): Boolean {
-                if (e == null) return false
+                if (e == null || isSlideControl) return false
 
-                return if (!isSlideControl) when {
+                return when {
                     e.x > playerView.width - playerView.width / 3 -> onFastForward()
                     e.x < playerView.width / 3 -> onRewind()
                     else -> false
-                } else false
+                }
             }
 
             override fun onScroll(e1: MotionEvent?, e2: MotionEvent?, distanceX: Float, distanceY: Float): Boolean {
