@@ -22,6 +22,7 @@ import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_user_profile.*
 import kotlinx.android.synthetic.main.layout_default_placeholders.*
+import kotlinx.android.synthetic.main.layout_user_profile_info_content.*
 import kotlinx.android.synthetic.main.layout_user_profile_toolbar.*
 import javax.inject.Inject
 
@@ -45,13 +46,7 @@ class UserFragment : BaseFragment<UserPresenter, UserView>(), UserView {
         fun newInstance(id: Long) = UserFragment().withArgs { putLong(AppExtras.ARGUMENT_USER_ID, id) }
     }
 
-    private val expandedAvatarSize by lazy { context?.dimen(R.dimen.image_profile_big_height)!! }
-    private val collapseAvatarSize by lazy { context?.dp(40)!! }
     private val maxHeight by lazy { (appBarLayout.height - toolbar.height).toFloat() }
-    private val avatarStartXPosition by lazy { appBarLayout.width / 2 - expandedAvatarSize / 2 }
-    private val avatarStartYPosition by lazy { context?.dimenAttr(android.R.attr.actionBarSize)!! }
-    private val avatarEndXPosition by lazy { context?.dp(40)!! }
-    private val avatarEndYPosition by lazy { maxHeight - context?.dp(46)!! - avatarStartYPosition }
 
     private val favoritesAdapter by lazy { UserFavoriteContentAdapter(imageLoader, getPresenter()::onContentClicked, getPresenter()::onAction) }
     private val friendsAdapter by lazy { UserProfileContentAdapter(imageLoader, getPresenter()::onContentClicked, getPresenter()::onAction) }
@@ -89,7 +84,7 @@ class UserFragment : BaseFragment<UserPresenter, UserView>(), UserView {
 
         appBarLayout.addOnOffsetChangedListener(appbarOffsetListener)
 
-        networkErrorView.callback = {getPresenter().onRefresh()}
+        networkErrorView.callback = { getPresenter().onRefresh() }
         networkErrorView.showButton()
     }
 
@@ -97,15 +92,10 @@ class UserFragment : BaseFragment<UserPresenter, UserView>(), UserView {
         val percent = 1 - (-offset / maxHeight)
 
         lastOnlineView.alpha = percent
-
-        avatarView.layoutParams = avatarView.layoutParams.apply {
-            val newSize = (collapseAvatarSize + (expandedAvatarSize - collapseAvatarSize) * percent).toInt()
-            width = newSize
-            height = newSize
-        }
-
-        avatarView.translationY = (avatarStartYPosition + avatarEndYPosition) * (1 - percent)
-        avatarView.translationX = (avatarEndXPosition - avatarStartXPosition) * (1 - percent)
+        nameView.alpha = percent
+        avatarView.alpha = percent
+        avatarCollapsedView.alpha = 1 - percent
+        nameCollapsedView.alpha = 1 - percent
     }
 
     override fun onDestroyView() {
@@ -126,10 +116,12 @@ class UserFragment : BaseFragment<UserPresenter, UserView>(), UserView {
     ///////////////////////////////////////////////////////////////////////////
 
     override fun setHead(data: UserHeadViewModel) {
-        collapsingToolbar.title = data.name
         lastOnlineView.text = data.lastOnline
+        nameView.text = data.name
+        nameCollapsedView.text = data.name
 
-        if (!avatarView.hasImage()) imageLoader.setCircleImage(avatarView, data.image.x160)
+        imageLoader.setCircleImage(avatarView, data.image.x160)
+        imageLoader.setCircleImage(avatarCollapsedView, data.image.x160)
     }
 
     override fun setInfo(data: UserInfoViewModel) {
@@ -166,6 +158,7 @@ class UserFragment : BaseFragment<UserPresenter, UserView>(), UserView {
         scrollView.visibleIf { show }
         appBarLayout.visibleIf { show }
     }
+
     override fun showNetworkView() = networkErrorView.visible()
     override fun hideNetworkView() = networkErrorView.gone()
 }

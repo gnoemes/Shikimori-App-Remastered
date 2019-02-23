@@ -18,8 +18,8 @@
     <dimen name="image_favorite_height_big">142dp</dimen>
     <dimen name="image_favorite_width_big">104dp</dimen>
 
-    <dimen name="image_profile_height">48dp</dimen>
-    <dimen name="image_profile_width">48dp</dimen>
+    <dimen name="image_profile_height">40dp</dimen>
+    <dimen name="image_profile_width">40dp</dimen>
 
     <dimen name="image_profile_big_height">80dp</dimen>
     <dimen name="image_profile_big_width">80dp</dimen>

@@ -15,6 +15,39 @@
         tools:background="?attr/colorPrimary"
         tools:ignore="SmallSp">
 
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/avatarPlaceholder"
+            android:layout_width="@dimen/image_profile_big_width"
+            android:layout_height="@dimen/image_profile_big_height"
+            app:cardBackgroundColor="@color/colorShimmer"
+            app:cardCornerRadius="40dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/nameView"
+            style="@style/PlaceholderLabelStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textAppearance="@style/ToolbarTextAppearance"
+            app:layout_constraintEnd_toEndOf="@+id/avatarPlaceholder"
+            app:layout_constraintStart_toStartOf="@+id/avatarPlaceholder"
+            app:layout_constraintTop_toBottomOf="@+id/avatarPlaceholder"
+            tools:text="ヴァシリサセメノフ" />
+
+        <TextView
+            android:id="@+id/lastOnlineView"
+            style="@style/PlaceholderLabelStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/nameView"
+            app:layout_constraintStart_toStartOf="@+id/nameView"
+            app:layout_constraintTop_toBottomOf="@+id/nameView"
+            tools:text="онлайн 41 минуту назад" />
+
         <TextView
             android:id="@+id/infoView"
             style="@style/PlaceholderLabelStyle"
@@ -22,14 +55,15 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
+            android:autoLink="all"
             android:gravity="center"
-            android:text="Личные данные скрыты / на сайте с ноября 2012 г."
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/lastOnlineView"
+            tools:text="Личные данные скрыты / на сайте с ноября 2012 г." />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
