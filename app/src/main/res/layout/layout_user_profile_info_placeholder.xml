@@ -38,59 +38,53 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.5" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/messageFab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/CircleButtonStyle"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="24dp"
             android:layout_marginRight="24dp"
             app:backgroundTint="@color/colorShimmer"
-            app:borderWidth="1dp"
-            app:elevation="0dp"
             app:layout_constraintEnd_toStartOf="@+id/friendshipFab"
             app:layout_constraintTop_toBottomOf="@+id/infoView"
-            app:pressedTranslationZ="0dp" />
+            app:layout_goneMarginEnd="12dp" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/friendshipFab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/CircleButtonStyle"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_marginEnd="12dp"
             android:layout_marginRight="12dp"
             app:backgroundTint="@color/colorShimmer"
-            app:borderWidth="1dp"
-            app:elevation="0dp"
             app:layout_constraintEnd_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toTopOf="@+id/messageFab"
-            app:pressedTranslationZ="0dp" />
+            app:layout_constraintTop_toTopOf="@+id/messageFab" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/ignoreFab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/CircleButtonStyle"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_marginStart="12dp"
             android:layout_marginLeft="12dp"
             app:backgroundTint="@color/colorShimmer"
-            app:borderWidth="1dp"
-            app:elevation="0dp"
             app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toTopOf="@+id/bansFab"
-            app:pressedTranslationZ="0dp" />
+            app:layout_constraintTop_toTopOf="@+id/bansFab" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/bansFab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/CircleButtonStyle"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_marginStart="24dp"
             android:layout_marginLeft="24dp"
             android:layout_marginTop="24dp"
             app:backgroundTint="@color/colorShimmer"
-            app:borderWidth="1dp"
-            app:elevation="0dp"
             app:layout_constraintStart_toEndOf="@+id/ignoreFab"
             app:layout_constraintTop_toBottomOf="@+id/infoView"
-            app:pressedTranslationZ="0dp" />
+            app:layout_goneMarginStart="12dp" />
 
         <TextView
             android:id="@+id/messageLabel"

@@ -73,4 +73,30 @@
         <item name="android:textSize">12sp</item>
     </style>
 
+    <style name="CircleShapeAppearance" parent="ShapeAppearance.MaterialComponents">
+        <item name="cornerSizeBottomLeft">24dp</item>
+        <item name="cornerSizeBottomRight">24dp</item>
+        <item name="cornerSizeTopRight">24dp</item>
+        <item name="cornerSizeTopLeft">24dp</item>
+        <item name="cornerFamilyTopLeft">rounded</item>
+        <item name="cornerFamilyBottomLeft">rounded</item>
+        <item name="cornerFamilyTopRight">rounded</item>
+        <item name="cornerFamilyBottomRight">rounded</item>
+    </style>
+
+    <style name="CircleButtonStyle" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:padding">0dp</item>
+        <item name="backgroundTint">@drawable/selector_circle_button_background_color</item>
+        <item name="iconTint">@drawable/selector_circle_button_text_color</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">0dp</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="strokeColor">@drawable/selector_circle_button_stroke_color</item>
+        <item name="android:shadowColor">?attr/colorSecondaryTransparent</item>
+        <item name="rippleColor">?attr/colorSecondaryTransparent</item>
+        <item name="shapeAppearance">@style/CircleShapeAppearance</item>
+    </style>
+
 </resources>

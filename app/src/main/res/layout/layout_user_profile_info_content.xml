@@ -32,69 +32,53 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.5" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/messageFab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/CircleButtonStyle"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
-        app:backgroundTint="@color/colorDivider"
-        app:borderWidth="1dp"
-        app:elevation="0dp"
-        app:hoveredFocusedTranslationZ="0dp"
+        app:icon="@drawable/ic_message"
         app:layout_constraintEnd_toStartOf="@+id/friendshipFab"
         app:layout_constraintTop_toBottomOf="@+id/infoView"
-        app:layout_goneMarginEnd="12dp"
-        app:pressedTranslationZ="0dp"
-        app:rippleColor="?attr/colorSecondaryTransparent" />
+        app:layout_goneMarginEnd="12dp" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/friendshipFab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/CircleButtonStyle"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginEnd="12dp"
         android:layout_marginRight="12dp"
-        app:backgroundTint="@drawable/selector_profile_fab"
-        app:borderWidth="1dp"
-        app:elevation="0dp"
-        app:hoveredFocusedTranslationZ="0dp"
+        app:icon="@drawable/selector_friendship_icon"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toTopOf="@+id/messageFab"
-        app:pressedTranslationZ="0dp"
-        app:rippleColor="?attr/colorSecondaryTransparent" />
+        app:layout_constraintTop_toTopOf="@+id/messageFab" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/ignoreFab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/CircleButtonStyle"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginStart="12dp"
         android:layout_marginLeft="12dp"
-        app:backgroundTint="@drawable/selector_profile_fab"
-        app:borderWidth="1dp"
-        app:elevation="0dp"
-        app:hoveredFocusedTranslationZ="0dp"
+        app:icon="@drawable/selector_ignore_icon"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toTopOf="@+id/bansFab"
-        app:pressedTranslationZ="0dp"
-        app:rippleColor="?attr/colorSecondaryTransparent" />
+        app:layout_constraintTop_toTopOf="@+id/bansFab" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/bansFab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/CircleButtonStyle"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="24dp"
-        app:backgroundTint="@color/colorDivider"
-        app:borderWidth="1dp"
-        app:elevation="0dp"
-        app:hoveredFocusedTranslationZ="0dp"
+        app:icon="@drawable/ic_ban_history"
         app:layout_constraintStart_toEndOf="@+id/ignoreFab"
         app:layout_constraintTop_toBottomOf="@+id/infoView"
-        app:layout_goneMarginStart="12dp"
-        app:pressedTranslationZ="0dp"
-        app:rippleColor="?attr/colorSecondaryTransparent" />
+        app:layout_goneMarginStart="12dp" />
 
     <TextView
         android:id="@+id/messageLabel"
@@ -156,16 +140,17 @@
         android:paddingBottom="8dp"
         android:text="@string/profile_about_me"
         android:textAllCaps="false"
-        android:textColor="?attr/colorOnPrimarySecondary"
-        app:backgroundTint="@android:color/transparent"
+        android:textColor="@drawable/selector_circle_button_text_color"
+        app:backgroundTint="@drawable/selector_circle_button_background_color"
         app:cornerRadius="4dp"
         app:icon="@drawable/ic_global"
-        app:iconTint="?attr/colorOnPrimarySecondary"
+        app:iconTint="@drawable/selector_circle_button_text_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/messageLabel"
-        app:strokeColor="@color/colorDivider"
+        app:rippleColor="?attr/colorSecondaryTransparent"
+        app:strokeColor="@drawable/selector_circle_button_stroke_color"
         app:strokeWidth="1dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
