@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="PopupMenuTheme" parent="@android:style/Widget.PopupMenu">
         <item name="android:textColor">?attr/colorOnPrimary</item>
@@ -97,6 +97,15 @@
         <item name="android:shadowColor">?attr/colorSecondaryTransparent</item>
         <item name="rippleColor">?attr/colorSecondaryTransparent</item>
         <item name="shapeAppearance">@style/CircleShapeAppearance</item>
+    </style>
+    
+    <style name="ActionChipStyle" parent="Widget.MaterialComponents.Chip.Action">
+        <item name="android:textColor">?attr/colorSecondary</item>
+        <item name="chipBackgroundColor">?attr/colorSurface</item>
+        <item name="chipStrokeColor">@drawable/selector_action_chip_stroke_color</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="rippleColor">?attr/colorSecondaryTransparent</item>
+        <item name="android:outlineAmbientShadowColor" tools:targetApi="p">?attr/colorSecondaryTransparent</item>
     </style>
 
 </resources>
