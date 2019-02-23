@@ -31,6 +31,14 @@ class SettingsPlayerFragment : BaseSettingsFragment() {
             summary = String.format(context?.getString(R.string.settings_player_gestures_offset_big_summary_format)!!, value)
             onPreferenceClickListener = bigOffsetClickListener
         }
+
+        preference(SettingsExtras.PLAYER_IS_FORWARD_REWIND_SLIDE)?.apply {
+            onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+                if (newValue as Boolean) putSetting(dependency, false)
+                notifyDependencyChange(true)
+                return@OnPreferenceChangeListener true
+            }
+        }
     }
 
     private val smallOffsetClickListener = Preference.OnPreferenceClickListener { preference ->
@@ -73,7 +81,7 @@ class SettingsPlayerFragment : BaseSettingsFragment() {
         }
     }
 
-    private fun showNumberEditTextDialog(message : String, prefill: String, callback: InputCallback): Boolean {
+    private fun showNumberEditTextDialog(message: String, prefill: String, callback: InputCallback): Boolean {
         MaterialDialog(context!!).show {
             message(text = message)
             input(prefill = prefill, inputType = InputType.TYPE_CLASS_NUMBER, waitForPositiveButton = false, callback = callback)

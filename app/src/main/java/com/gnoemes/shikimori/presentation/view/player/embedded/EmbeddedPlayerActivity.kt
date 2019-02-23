@@ -4,10 +4,12 @@ import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
+import android.graphics.drawable.Drawable
 import android.media.AudioManager
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.text.SpannableStringBuilder
 import android.util.Log
 import android.view.*
 import android.widget.ArrayAdapter
@@ -77,6 +79,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
     private val bigOffsetText by lazy { "${settingsSource.forwardRewindOffsetBig / 1000} ${getString(R.string.player_seconds_short)}" }
     private val brightnessIcon by lazy { drawable(R.drawable.ic_brightness) }
     private val volumeIcon by lazy { drawable(R.drawable.ic_volume) }
+    private val offsetColor by lazy { color(R.color.player_unlock_background)!! }
 
     private var currentVolume: Int = 0
     private var currentBrightness: Int = 0
@@ -182,11 +185,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         else if (currentBrightness < 1) currentBrightness = 1
 
         val text = "$currentBrightness%"
-        paramChangesView.text = text
-        paramChangesView.setCompoundDrawablesWithIntrinsicBounds(brightnessIcon, null, null, null)
-
-        TransitionManager.beginDelayedTransition(container, Fade(Fade.MODE_IN))
-        paramChangesView.visible()
+        showParamChanges(text, brightnessIcon)
 
         window.attributes = window.attributes.apply { screenBrightness = 2.55f * currentBrightness / 255f }
     }
@@ -203,10 +202,34 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         manager.setStreamVolume(AudioManager.STREAM_MUSIC, currentVolume, 0)
         val percentVolume = if (currentVolume == 0) 0 else (currentVolume / (max * 0.01f)).roundToInt()
         val text = "$percentVolume%"
-        paramChangesView.text = text
-        paramChangesView.setCompoundDrawablesWithIntrinsicBounds(volumeIcon, null, null, null)
+        showParamChanges(text, volumeIcon)
+    }
 
-        TransitionManager.beginDelayedTransition(container, Fade(Fade.MODE_IN))
+    private fun changeProgressSlide(current: Long, max: Long, offset: Long) {
+        val validatedOffset = when {
+            current + offset < 0 -> current
+            current + offset > max -> max - current
+            else -> offset
+        }
+
+        val validatedCurrent  = when {
+            current + offset < 0 -> 0
+            current + offset > max -> max
+            else -> current + offset
+        }
+
+        val offsetText = (if (offset > 0) "+" else "-").plus(toMinutesAndSecond(validatedOffset))
+        val text = "${toMinutesAndSecond(validatedCurrent)} / ${toMinutesAndSecond(max)} "
+
+        val spanString = SpannableStringBuilder(text)
+                .append(offsetText.colorSpan(offsetColor))
+
+        showParamChanges(spanString, null)
+    }
+
+    private fun showParamChanges(text: CharSequence, icon: Drawable?) {
+        paramChangesView.text = text
+        paramChangesView.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null)
         paramChangesView.visible()
     }
 
@@ -288,7 +311,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         private val detector: GestureDetector
         private val scaleDetector: ScaleGestureDetector
         private val gestureListener = ExoPlayerGestureListener()
-        private val playerTopMargin by lazy { dimenAttr(android.R.attr.actionBarSize) }
+        private val playerMargin by lazy { dimenAttr(android.R.attr.actionBarSize) }
 
         private val smallOffset by lazy { settingsSource.forwardRewindOffset }
         private val bigOffset by lazy { settingsSource.forwardRewindOffsetBig }
@@ -314,7 +337,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
             }
 
             override fun onScrubMove(timeBar: TimeBar?, position: Long) {
-                val dragText = (if (prevPosition < position) "+" else "-").plus(" ${Duration.millis(Math.abs(prevPosition - position)).toMinutesAndSeconds()}")
+                val dragText = (if (prevPosition < position) "+" else "-").plus(" ${toMinutesAndSecond(prevPosition - position)}")
                 dragProgress.apply {
                     text = dragText
                     visible()
@@ -409,16 +432,18 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
             updateOrientation()
         }
 
-        fun onFastForward() {
+        fun onFastForward(): Boolean {
             forwardView.text = smallOffsetText
             seek(smallOffset)
             hideForwardAfterTimeout()
+            return true
         }
 
-        fun onRewind() {
+        fun onRewind(): Boolean {
             rewindView.text = smallOffsetText
             seek(-smallOffset)
             hideRewindAfterTimeout()
+            return true
         }
 
         fun onBigForward() {
@@ -439,6 +464,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
                 mills += player.currentPosition
 
                 if (mills < 0) mills = 0
+                if (mills > player.duration) mills = player.duration
 
                 player.seekTo(mills)
             }
@@ -524,8 +550,11 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         private inner class ExoPlayerGestureListener : GestureDetector.SimpleOnGestureListener(), View.OnTouchListener, ScaleGestureDetector.OnScaleGestureListener {
 
             private var isDrag: Boolean = false
+            private var isSlide : Boolean = false
+            private var slideOffset = 0L
             private var lastTapMills = 0L
             private var scaleFactor = 0.5f
+            private var scrollFirstTapX = 0
 
             private val MOVEMENT_TH = 30
             private val stepBrightness = 5
@@ -533,7 +562,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
 
             @SuppressLint("ClickableViewAccessibility")
             override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-                if (event == null || event.y < playerTopMargin / 2) return false
+                if (event == null || event.y < playerMargin / 2 || event.x > playerView.width - playerMargin) return false
 
                 return if (!isLocked) {
                     if (event.action == MotionEvent.ACTION_UP && isDrag) {
@@ -559,17 +588,21 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
             }
 
             override fun onLongPress(e: MotionEvent?) {
-                if (e != null && e.x > playerView.width / 2) onBigForward()
-                else onBigRewind()
+                if (e == null) return
+
+                when {
+                    e.x > playerView.width - playerView.width / 3 -> onBigForward()
+                    e.x < playerView.width / 3 -> onBigRewind()
+                }
             }
 
             override fun onDoubleTap(e: MotionEvent?): Boolean {
                 if (e == null) return false
 
-                return if (!isSlideControl) {
-                    if (e.x > playerView.width / 2) onFastForward()
-                    else onRewind()
-                    true
+                return if (!isSlideControl) when {
+                    e.x > playerView.width - playerView.width / 3 -> onFastForward()
+                    e.x < playerView.width / 3 -> onRewind()
+                    else -> false
                 } else false
             }
 
@@ -582,13 +615,23 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
 
                     val stepChanged = Math.abs(distanceY).roundToInt() % 3 == 0 && diff > MOVEMENT_TH
 
-                    if (stepChanged && (e1.y > playerTopMargin && e2.y > playerTopMargin)) when {
+                    if (stepChanged && (e1.y > playerMargin && e2.y > playerMargin)) when {
                         e1.x < playerView.width / 3 -> leftAreaScroll(distanceY > 0)
                         e1.x > playerView.width - playerView.width / 3 -> rightAreaScroll(distanceY > 0)
                         else -> false
                     }
                     else false
 
+                } else if (isSlideControl) {
+                    slideOffset = -(scrollFirstTapX - e2.x).toInt() * 100L
+                    isDrag = true
+                    isSlide = true
+
+                    changeProgressSlide(player.currentPosition, player.duration, slideOffset)
+                    Log.i("DEVE", " $slideOffset")
+                    scrollFirstTapX = e1.x.toInt()
+
+                    return true
                 } else false
             }
 
@@ -609,6 +652,13 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
             private fun onScrollEnd() {
                 paramChangesView.removeCallbacks(delayedParamChangesHide)
                 paramChangesView.postDelayed(delayedParamChangesHide, UNLOCK_HIDE_DELAY)
+
+                if (isSlide) {
+                    seek(slideOffset)
+                    isSlide = false
+                    slideOffset = 0L
+                    scrollFirstTapX = 0
+                }
             }
 
             private fun leftAreaScroll(increasing: Boolean): Boolean {
@@ -627,4 +677,8 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
 
     private val isAutoRotationEnabled: Boolean
         get() = android.provider.Settings.System.getInt(contentResolver, Settings.System.ACCELEROMETER_ROTATION, 0) == 1
+
+    private fun toMinutesAndSecond(value: Long): String {
+        return Duration.millis(Math.abs(value)).toMinutesAndSeconds()
+    }
 }
