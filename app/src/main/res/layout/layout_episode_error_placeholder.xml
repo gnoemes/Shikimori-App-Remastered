@@ -5,8 +5,7 @@
     android:id="@+id/placeholderContainer"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    >
+    android:layout_gravity="center">
 
     <TextView
         android:id="@+id/errorTextView"
@@ -26,14 +25,17 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/altBtnView"
+        style="@style/Widget.MaterialComponents.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
-        android:background="?attr/colorPrimary"
+        android:layout_marginBottom="8dp"
         android:padding="@dimen/margin_normal"
         android:text="@string/series_alternative_source"
         android:textAllCaps="false"
+        android:textColor="?attr/colorOnSecondary"
+        app:backgroundTint="?attr/colorSecondary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
