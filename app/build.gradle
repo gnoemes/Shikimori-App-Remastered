@@ -102,6 +102,7 @@ dependencies {
     implementation 'ru.superjob:kotlin-permissions:' + versions.kotlinPermissions
 
     implementation 'com.google.android.exoplayer:exoplayer:' + versions.exoplayer
+    implementation 'com.google.android.exoplayer:extension-mediasession:' + versions.exoplayer
 
     implementation 'org.kefirsf:kefirbb:' + versions.kefirBB
 

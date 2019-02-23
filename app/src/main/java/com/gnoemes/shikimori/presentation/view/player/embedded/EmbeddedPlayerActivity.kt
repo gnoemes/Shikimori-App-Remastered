@@ -10,7 +10,10 @@ import android.graphics.drawable.Drawable
 import android.media.AudioManager
 import android.os.Build
 import android.os.Bundle
+import android.os.ResultReceiver
 import android.provider.Settings
+import android.support.v4.media.session.MediaSessionCompat
+import android.support.v4.media.session.PlaybackStateCompat
 import android.text.SpannableStringBuilder
 import android.util.Log
 import android.view.*
@@ -34,6 +37,7 @@ import com.gnoemes.shikimori.presentation.view.common.widget.ReSpinner
 import com.gnoemes.shikimori.utils.*
 import com.gnoemes.shikimori.utils.exoplayer.MediaSourceHelper
 import com.google.android.exoplayer2.*
+import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
@@ -135,6 +139,11 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         enterPip()
     }
 
+    override fun onStart() {
+        super.onStart()
+        controller.onStart()
+    }
+
     override fun onStop() {
         super.onStop()
         controller.onStop()
@@ -176,6 +185,10 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         if (isAutoRotationEnabled) {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
         }
+    }
+
+    override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean, newConfig: Configuration?) {
+        playerView.useController = !isInPictureInPictureMode
     }
 
     private fun toggleOrientation() {
@@ -343,6 +356,8 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         private val speedRates = listOf(0.25f, 0.5f, 1f, 1.5f, 2f)
         private var controlsInAction: Boolean = false
 
+        private val connector: MediaSessionConnector
+
         private val progressListener = object : TimeBar.OnScrubListener {
             private var prevPosition = 0L
 
@@ -389,6 +404,9 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
             exo_progress.addListener(progressListener)
             resolutionSpinnerView.setSpinnerEventsListener(spinnerOpenListener)
             speedSpinnerView.setSpinnerEventsListener(spinnerOpenListener)
+
+            val mediaSession = MediaSessionCompat(this@EmbeddedPlayerActivity, packageName)
+            connector = MediaSessionConnector(mediaSession)
         }
 
         val isVisible
@@ -429,13 +447,21 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
             player.prepare(source, false, false)
         }
 
+        fun onStart() {
+            connector.setPlayer(player, null)
+            connector.mediaSession.isActive = true
+        }
+
         fun onStop() {
             player.playWhenReady = false
+            connector.setPlayer(null, null)
+            connector.mediaSession.isActive = false
         }
 
         fun destroy() {
             player.stop()
             player.release()
+            connector.mediaSession.release()
         }
 
         fun lock() {
@@ -691,6 +717,45 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
                 if (isVolumeAndBrightnessInverted) changeVolume(if (increasing) stepVolume else -stepVolume)
                 else changeBrightness(if (increasing) stepBrightness else -stepBrightness)
                 return true
+            }
+        }
+
+        private inner class PlaybackController : MediaSessionConnector.PlaybackController {
+            override fun onRewind(player: Player?) {
+            }
+
+            override fun onSeekTo(player: Player?, position: Long) {
+            }
+
+            override fun onCommand(player: Player?, command: String?, extras: Bundle?, cb: ResultReceiver?) {
+            }
+
+            override fun onPause(player: Player?) {
+            }
+
+            override fun onFastForward(player: Player?) {
+            }
+
+            override fun onPlay(player: Player?) {
+            }
+
+            override fun onStop(player: Player?) {
+            }
+
+            override fun onSetShuffleMode(player: Player?, shuffleMode: Int) {
+            }
+
+            override fun getSupportedPlaybackActions(player: Player?): Long =
+                    PlaybackStateCompat.ACTION_PLAY_PAUSE or
+                            PlaybackStateCompat.ACTION_PLAY or
+                            PlaybackStateCompat.ACTION_PAUSE or
+                            PlaybackStateCompat.ACTION_STOP
+
+            override fun getCommands(): Array<String> {
+                return emptyArray()
+            }
+
+            override fun onSetRepeatMode(player: Player?, repeatMode: Int) {
             }
         }
     }
