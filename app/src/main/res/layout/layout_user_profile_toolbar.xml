@@ -41,8 +41,8 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/avatarCollapsedView"
-                android:layout_width="@dimen/image_profile_width"
-                android:layout_height="@dimen/image_profile_height"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_gravity="start"
                 android:fitsSystemWindows="true"
                 app:civ_border_color="@color/colorDivider"

@@ -2,14 +2,13 @@ package com.gnoemes.shikimori.presentation.view.user.adapter
 
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.user.presentation.UserContentMoreItem
 import com.gnoemes.shikimori.entity.user.presentation.UserProfileAction
 import com.gnoemes.shikimori.utils.inflate
 import com.gnoemes.shikimori.utils.onClick
-import com.google.android.material.card.MaterialCardView
+import com.google.android.material.button.MaterialButton
 import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
 
 class UserContentMoreAdapterDelegate(
@@ -29,8 +28,7 @@ class UserContentMoreAdapterDelegate(
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        private val container = itemView.findViewById<MaterialCardView>(R.id.container)
-        private val countView = itemView.findViewById<TextView>(R.id.moreItemsCountView)!!
+        private val container = itemView.findViewById<MaterialButton>(R.id.container)
         private lateinit var item : UserContentMoreItem
 
         init {
@@ -40,7 +38,8 @@ class UserContentMoreAdapterDelegate(
         fun bind(item : UserContentMoreItem) {
             this.item = item
             val text = "+${item.size}"
-            countView.text = text
+            container.isSelected = true
+            container.text = text
         }
     }
 }

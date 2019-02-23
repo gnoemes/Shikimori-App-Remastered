@@ -1,25 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.button.MaterialButton xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
+    style="@style/CircleButtonStyle"
     android:layout_width="@dimen/image_favorite_width"
     android:layout_height="@dimen/image_favorite_height"
-    android:foreground="?attr/selectableItemBackgroundBorderless"
-    app:cardBackgroundColor="?attr/colorSecondaryTransparent"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="0dp"
-    app:cardPreventCornerOverlap="false"
-    app:strokeColor="?attr/colorSecondaryTransparent"
-    app:strokeWidth="1dp">
-
-    <TextView
-        android:id="@+id/moreItemsCountView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:fontFamily="sans-serif-medium"
-        android:textColor="?attr/colorAccent"
-        tools:text="+72" />
-
-</com.google.android.material.card.MaterialCardView>
+    android:fontFamily="sans-serif-medium"
+    app:cornerRadius="8dp"
+    tools:text="+72" />

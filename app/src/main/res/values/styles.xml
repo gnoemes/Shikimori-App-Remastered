@@ -93,12 +93,13 @@
         <item name="iconGravity">textStart</item>
         <item name="iconPadding">0dp</item>
         <item name="strokeWidth">1dp</item>
+        <item name="android:textColor">@drawable/selector_circle_button_text_color</item>
         <item name="strokeColor">@drawable/selector_circle_button_stroke_color</item>
         <item name="android:shadowColor">?attr/colorSecondaryTransparent</item>
         <item name="rippleColor">@drawable/selector_button_ripple_color</item>
         <item name="shapeAppearance">@style/CircleShapeAppearance</item>
     </style>
-    
+
     <style name="ActionChipStyle" parent="Widget.MaterialComponents.Chip.Action">
         <item name="android:textColor">?attr/colorSecondary</item>
         <item name="chipBackgroundColor">?attr/colorSurface</item>
