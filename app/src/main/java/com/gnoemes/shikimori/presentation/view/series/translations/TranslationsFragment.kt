@@ -22,6 +22,7 @@ import com.gnoemes.shikimori.entity.app.domain.AppExtras
 import com.gnoemes.shikimori.entity.app.domain.SettingsExtras
 import com.gnoemes.shikimori.entity.series.domain.PlayerType
 import com.gnoemes.shikimori.entity.series.domain.TranslationType
+import com.gnoemes.shikimori.entity.series.domain.Video
 import com.gnoemes.shikimori.entity.series.presentation.SeriesPlaceholderItem
 import com.gnoemes.shikimori.entity.series.presentation.TranslationViewModel
 import com.gnoemes.shikimori.entity.series.presentation.TranslationsNavigationData
@@ -34,6 +35,7 @@ import com.gnoemes.shikimori.presentation.view.series.PlayerSelectDialog
 import com.gnoemes.shikimori.presentation.view.series.translations.adapter.TranslationsAdapter
 import com.gnoemes.shikimori.utils.*
 import com.gnoemes.shikimori.utils.widgets.VerticalSpaceItemDecorator
+import com.google.gson.Gson
 import com.kotlinpermissions.KotlinPermissions
 import com.lapism.searchview.SearchView
 import kotlinx.android.synthetic.main.fragment_base_series.*
@@ -181,8 +183,13 @@ class TranslationsFragment : BaseSeriesFragment<TranslationsPresenter, Translati
         getPresenter().onPlayerSelected(playerType)
     }
 
-    override fun dialogItemCallback(tag: String?, url: String) {
-        getPresenter().onTrackForDownloadSelected(url)
+    override fun dialogItemCallback(tag: String?, action: String) {
+        val actions = action.split("$")
+        if (actions.size == 2) {
+            val url = actions[0]
+            val video = Gson().fromJson<Video>(actions[1], Video::class.java)
+            getPresenter().onTrackForDownloadSelected(url, video)
+        }
     }
 
     ///////////////////////////////////////////////////////////////////////////

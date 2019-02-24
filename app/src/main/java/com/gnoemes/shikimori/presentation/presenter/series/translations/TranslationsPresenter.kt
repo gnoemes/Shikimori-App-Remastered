@@ -39,6 +39,7 @@ class TranslationsPresenter @Inject constructor(
     private val items = mutableListOf<TranslationViewModel>()
     private lateinit var selectedHosting: TranslationVideo
     private var selectedDownloadUrl: String? = null
+    private var selectedDownloadVideo : Video? = null
 
     override fun initData() {
         super.initData()
@@ -150,7 +151,7 @@ class TranslationsPresenter @Inject constructor(
                 .flatMap { video ->
                     Observable.just(video)
                             .flatMapIterable { it.tracks }
-                            .map { converter.convertTrack(video.hosting, it) }
+                            .map { converter.convertTrack(video, it) }
                 }
                 .toList()
                 .appendLoadingLogic(viewState)
@@ -158,22 +159,23 @@ class TranslationsPresenter @Inject constructor(
                 .addToDisposables()
     }
 
-    private fun downloadVideo(url: String?) {
-        val data = DownloadVideoData(navigationData.animeId, navigationData.name, navigationData.episodeIndex, url, emptyMap())
+    private fun downloadVideo(url: String?, video : Video?) {
+        val data = DownloadVideoData(navigationData.animeId, navigationData.name, navigationData.episodeIndex, url, Utils.getRequestHeadersForHosting(video))
         downloadInteractor.downloadVideo(data)
                 .subscribe({}, this::processDownloadErrors)
                 .addToDisposables()
     }
 
-    fun onTrackForDownloadSelected(url: String) {
+    fun onTrackForDownloadSelected(url: String, video : Video) {
         selectedDownloadUrl = url
+        selectedDownloadVideo = video
         viewState.checkPermissions()
     }
 
     fun onStoragePermissionsAccepted() {
         val downloadPath = settingsSource.downloadFolder
 
-        if (downloadPath.isNotEmpty()) downloadVideo(selectedDownloadUrl)
+        if (downloadPath.isNotEmpty()) downloadVideo(selectedDownloadUrl, selectedDownloadVideo)
         else viewState.showFolderChooserDialog()
     }
 

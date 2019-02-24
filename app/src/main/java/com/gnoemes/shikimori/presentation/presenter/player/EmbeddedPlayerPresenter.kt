@@ -6,7 +6,6 @@ import com.gnoemes.shikimori.domain.series.SeriesInteractor
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.series.domain.EpisodeChanges
 import com.gnoemes.shikimori.entity.series.domain.Video
-import com.gnoemes.shikimori.entity.series.domain.VideoHosting
 import com.gnoemes.shikimori.entity.series.presentation.EmbeddedPlayerNavigationData
 import com.gnoemes.shikimori.entity.series.presentation.TranslationVideo
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
@@ -62,7 +61,7 @@ class EmbeddedPlayerPresenter @Inject constructor(
         track?.let {
             viewState.apply {
                 setEpisodeSubtitle(currentEpisode)
-                playVideo(it, needReset, putHeaders(video))
+                playVideo(it, needReset, Utils.getRequestHeadersForHosting(video))
                 val resolutions = video.tracks.asSequence().filter { it.quality != "unknown" }.map { it.quality }.toList()
                 setResolutions(resolutions)
                 selectTrack(currentTrack)
@@ -71,12 +70,6 @@ class EmbeddedPlayerPresenter @Inject constructor(
             setEpisodeWatched()
         } ?: viewState.showMessage(resourceProvider.playerErrorMessage)
     }
-
-    private fun putHeaders(video: Video): Map<String, String> = when {
-        video.hosting == VideoHosting.SOVET_ROMANTICA -> mapOf(Pair("Referer", video.player))
-        else -> emptyMap()
-    }
-
 
     private fun updateControls() {
         viewState.enableNextButton(currentEpisode < navigationData.episodesSize)

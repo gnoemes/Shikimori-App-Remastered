@@ -6,6 +6,7 @@ import com.gnoemes.shikimori.entity.series.domain.*
 import com.gnoemes.shikimori.entity.series.presentation.TranslationVideo
 import com.gnoemes.shikimori.entity.series.presentation.TranslationViewModel
 import com.gnoemes.shikimori.utils.Utils
+import com.google.gson.Gson
 import java.net.URLEncoder
 import javax.inject.Inject
 
@@ -73,11 +74,13 @@ class TranslationsViewModelConverterImpl @Inject constructor(
         )
     }
 
-    override fun convertTrack(hosting: VideoHosting, track: Track): Pair<String, String> {
-        var title = hosting.synonymType
+    override fun convertTrack(video: Video, track: Track): Pair<String, String> {
+        var title = video.hosting.synonymType
         //TODO colorspan for quality
         if (track.quality != "unknown") title += "   ".plus("${track.quality}p")
-        return Pair(title, track.url)
+        val videoJson = Gson().toJson(video)
+        val action = track.url + "$" + videoJson
+        return Pair(title, action)
     }
 
     private fun convertVideo(t: Translation): TranslationVideo {

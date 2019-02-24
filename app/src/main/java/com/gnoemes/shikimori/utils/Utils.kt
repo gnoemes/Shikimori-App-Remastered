@@ -1,6 +1,7 @@
 package com.gnoemes.shikimori.utils
 
 import android.graphics.Bitmap
+import com.gnoemes.shikimori.entity.series.domain.Video
 import com.gnoemes.shikimori.entity.series.domain.VideoHosting
 
 
@@ -18,6 +19,11 @@ object Utils {
         if (includeDownload) supports.add(VideoHosting.SMOTRET_ANIME)
 
         return supports.contains(hosting)
+    }
+
+    fun getRequestHeadersForHosting(video : Video?) : Map<String, String> = when {
+        video?.hosting == VideoHosting.SOVET_ROMANTICA -> mapOf(Pair("Referer", video.player))
+        else -> emptyMap()
     }
 
     fun getDominantColor(bitmap: Bitmap): Int {
