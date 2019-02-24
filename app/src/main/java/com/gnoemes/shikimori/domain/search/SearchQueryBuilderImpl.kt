@@ -70,7 +70,7 @@ class SearchQueryBuilderImpl @Inject constructor() : SearchQueryBuilder {
         val queryMap = ArrayMap<String, String>()
         queryMap[SearchConstants.PAGE] = page.toString()
         queryMap[SearchConstants.LIMIT] = limit.toString()
-        queryMap[SearchConstants.ORDER] = SearchConstants.ORDER_BY.POPULARITY.toString()
+        queryMap[SearchConstants.ORDER] = SearchConstants.ORDER_BY.RANKED.toString()
         queryMap[SearchConstants.CENSORED] = true.toString()
         return queryMap
     }
