@@ -159,7 +159,7 @@ class TranslationsPresenter @Inject constructor(
     }
 
     private fun downloadVideo(url: String?) {
-        val data = DownloadVideoData(navigationData.animeId, navigationData.name, navigationData.episodeIndex, url)
+        val data = DownloadVideoData(navigationData.animeId, navigationData.name, navigationData.episodeIndex, url, emptyMap())
         downloadInteractor.downloadVideo(data)
                 .subscribe({}, this::processDownloadErrors)
                 .addToDisposables()

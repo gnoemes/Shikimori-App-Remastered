@@ -5,8 +5,8 @@ import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.domain.series.SeriesInteractor
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.series.domain.EpisodeChanges
-import com.gnoemes.shikimori.entity.series.domain.Track
 import com.gnoemes.shikimori.entity.series.domain.Video
+import com.gnoemes.shikimori.entity.series.domain.VideoHosting
 import com.gnoemes.shikimori.entity.series.presentation.EmbeddedPlayerNavigationData
 import com.gnoemes.shikimori.entity.series.presentation.TranslationVideo
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
@@ -53,17 +53,17 @@ class EmbeddedPlayerPresenter @Inject constructor(
         videos.add(video)
 
         if (!Utils.isHostingSupports(video.hosting)) viewState.showMessage(resourceProvider.hostingErrorMessage)
-        else if (video.tracks.isNotEmpty()) setTrack(video.tracks, needReset)
+        else if (video.tracks.isNotEmpty()) setTrack(video, needReset)
         else viewState.showMessage(resourceProvider.playerErrorMessage, true)
     }
 
-    private fun setTrack(tracks: List<Track>, needReset: Boolean) {
-        val track = tracks.getOrNull(currentTrack)
+    private fun setTrack(video: Video, needReset: Boolean) {
+        val track = video.tracks.getOrNull(currentTrack)
         track?.let {
             viewState.apply {
                 setEpisodeSubtitle(currentEpisode)
-                playVideo(it, needReset)
-                val resolutions = tracks.asSequence().filter { it.quality != "unknown" }.map { it.quality }.toList()
+                playVideo(it, needReset, putHeaders(video))
+                val resolutions = video.tracks.asSequence().filter { it.quality != "unknown" }.map { it.quality }.toList()
                 setResolutions(resolutions)
                 selectTrack(currentTrack)
             }
@@ -71,6 +71,12 @@ class EmbeddedPlayerPresenter @Inject constructor(
             setEpisodeWatched()
         } ?: viewState.showMessage(resourceProvider.playerErrorMessage)
     }
+
+    private fun putHeaders(video: Video): Map<String, String> = when {
+        video.hosting == VideoHosting.SOVET_ROMANTICA -> mapOf(Pair("Referer", video.player))
+        else -> emptyMap()
+    }
+
 
     private fun updateControls() {
         viewState.enableNextButton(currentEpisode < navigationData.episodesSize)

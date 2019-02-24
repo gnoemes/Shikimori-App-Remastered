@@ -317,10 +317,13 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         if (exit) onBackPressed()
     }
 
-    override fun playVideo(it: Track, needReset: Boolean) {
+    override fun playVideo(it: Track, needReset: Boolean, headers: Map<String, String>) {
         Log.i("PLAYER", "loading: ${it.url}")
+        val factory = DefaultHttpDataSourceFactory("sap", DefaultBandwidthMeter(), Constants.LONG_TIMEOUT * 1000, Constants.LONG_TIMEOUT * 1000, true)
+        factory.defaultRequestProperties.set(headers)
+
         val source = MediaSourceHelper
-                .withFactory(DefaultHttpDataSourceFactory("sap", DefaultBandwidthMeter(), Constants.LONG_TIMEOUT * 1000, Constants.LONG_TIMEOUT * 1000, true))
+                .withFactory(factory)
                 .withFormat(VideoFormat.MP4)
                 .withVideoUrl(it.url)
                 .get()

@@ -34,6 +34,7 @@ class DownloadManagerSourceImpl @Inject constructor(
                     .apply {
                         allowScanningByMediaScanner()
                         setDestinationUri(path)
+                        data.requestHeaders.entries.forEach { addRequestHeader(it.key, it.value) }
                     }
 
             manager?.enqueue(request)

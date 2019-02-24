@@ -10,14 +10,14 @@ object Utils {
     fun isHostingSupports(hosting: VideoHosting, includeDownload: Boolean = false) : Boolean{
         val supports = mutableListOf(
                 VideoHosting.SIBNET,
-                VideoHosting.VK
+                VideoHosting.VK,
+                VideoHosting.SOVET_ROMANTICA
         )
 
         //need subscription
         if (includeDownload) supports.add(VideoHosting.SMOTRET_ANIME)
 
         return supports.contains(hosting)
-
     }
 
     fun getDominantColor(bitmap: Bitmap): Int {
