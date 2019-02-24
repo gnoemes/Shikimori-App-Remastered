@@ -307,6 +307,7 @@ class TranslationsFragment : BaseSeriesFragment<TranslationsPresenter, Translati
         }
     }
 
+    override fun hideFab() = fab.hide()
     override fun onShowLoading() = progress.visible()
     override fun onHideLoading() = progress.gone()
     override fun onShowLightLoading() = progress.visible()

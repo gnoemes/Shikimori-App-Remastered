@@ -11,6 +11,7 @@ import com.gnoemes.shikimori.entity.series.presentation.TranslationVideo
 import com.gnoemes.shikimori.entity.series.presentation.TranslationViewModel
 import com.gnoemes.shikimori.entity.series.presentation.TranslationsNavigationData
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
+import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResourceProvider
 import com.gnoemes.shikimori.presentation.presenter.series.translations.converter.TranslationsViewModelConverter
 import com.gnoemes.shikimori.presentation.view.series.translations.TranslationsView
 import com.gnoemes.shikimori.utils.Utils
@@ -28,7 +29,8 @@ class TranslationsPresenter @Inject constructor(
         private val interactor: SeriesInteractor,
         private val downloadInteractor: DownloadInteractor,
         private val settingsSource: SettingsSource,
-        private val converter: TranslationsViewModelConverter
+        private val converter: TranslationsViewModelConverter,
+        private val resourceProvider: CommonResourceProvider
 ) : BaseNetworkPresenter<TranslationsView>() {
 
     lateinit var navigationData: TranslationsNavigationData
@@ -39,7 +41,7 @@ class TranslationsPresenter @Inject constructor(
     private val items = mutableListOf<TranslationViewModel>()
     private lateinit var selectedHosting: TranslationVideo
     private var selectedDownloadUrl: String? = null
-    private var selectedDownloadVideo : Video? = null
+    private var selectedDownloadVideo: Video? = null
 
     override fun initData() {
         super.initData()
@@ -159,14 +161,14 @@ class TranslationsPresenter @Inject constructor(
                 .addToDisposables()
     }
 
-    private fun downloadVideo(url: String?, video : Video?) {
+    private fun downloadVideo(url: String?, video: Video?) {
         val data = DownloadVideoData(navigationData.animeId, navigationData.name, navigationData.episodeIndex, url, Utils.getRequestHeadersForHosting(video))
         downloadInteractor.downloadVideo(data)
                 .subscribe({}, this::processDownloadErrors)
                 .addToDisposables()
     }
 
-    fun onTrackForDownloadSelected(url: String, video : Video) {
+    fun onTrackForDownloadSelected(url: String, video: Video) {
         selectedDownloadUrl = url
         selectedDownloadVideo = video
         viewState.checkPermissions()
@@ -180,7 +182,9 @@ class TranslationsPresenter @Inject constructor(
     }
 
     fun onDiscussionClicked() {
-        //TODO find related topic (can be parsed from episode link or topic api)
+        interactor.getTopic(navigationData.animeId, navigationData.episodeIndex)
+                .subscribe(this::onTopicClicked, this::onDiscussionNotExist)
+                .addToDisposables()
     }
 
     fun onRefresh() {
@@ -212,6 +216,11 @@ class TranslationsPresenter @Inject constructor(
     fun onSearchClosed() {
         viewState.onSearchClosed()
         showData(items)
+    }
+
+    private fun onDiscussionNotExist(throwable: Throwable?) {
+        router.showSystemMessage(resourceProvider.topicNotFound)
+        viewState.hideFab()
     }
 
     private fun processDownloadErrors(throwable: Throwable) {

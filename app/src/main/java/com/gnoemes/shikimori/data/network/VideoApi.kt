@@ -1,9 +1,6 @@
 package com.gnoemes.shikimori.data.network
 
-import com.gnoemes.shikimori.entity.series.data.EpisodeResponse
-import com.gnoemes.shikimori.entity.series.data.TranslationResponse
-import com.gnoemes.shikimori.entity.series.data.VideoResponse
-import com.gnoemes.shikimori.entity.series.data.VkResponse
+import com.gnoemes.shikimori.entity.series.data.*
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -46,4 +43,9 @@ interface VideoApi {
 
     @GET("/api/anime/alternative/translation/{id}")
     fun getVideoAlternative(@Path("id") translationId: Long): Single<VideoResponse>
+
+    @GET("/api/anime/{animeId}/{episodeId}/topic")
+    fun getTopic(@Path("animeId") animeId : Long,
+                 @Path("episodeId") episodeId : Int
+    ) : Single<EpisodeTopicIdResponse>
 }

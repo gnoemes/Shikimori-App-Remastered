@@ -73,6 +73,10 @@ class SeriesRepositoryImpl @Inject constructor(
     override fun saveTranslationSettings(settings: TranslationSetting): Completable =
             translationSettingSource.saveSetting(settings)
 
+    override fun getTopic(animeId: Long, episodeId: Int): Single<Long> =
+            api.getTopic(animeId, episodeId)
+                    .map { it.id }
+
     override fun setEpisodeStatus(animeId: Long, episodeId: Int, isWatched: Boolean): Completable =
             if (isWatched) episodeSource.episodeWatched(animeId, episodeId)
             else episodeSource.episodeUnWatched(animeId, episodeId)

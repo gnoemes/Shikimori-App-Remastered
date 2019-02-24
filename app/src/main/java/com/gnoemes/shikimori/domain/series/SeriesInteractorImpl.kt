@@ -41,6 +41,10 @@ class SeriesInteractorImpl @Inject constructor(
             repository.getVideo(payload, alternative)
                     .applyErrorHandlerAndSchedulers()
 
+    override fun getTopic(animeId: Long, episodeId: Int): Single<Long> =
+            repository.getTopic(animeId, episodeId)
+                    .applyErrorHandlerAndSchedulers()
+
     override fun getEpisodeChanges(): Observable<EpisodeChanges> = changesRepository.getEpisodesChanges().applyErrorHandlerAndSchedulers()
     override fun sendEpisodeChanges(changes: EpisodeChanges): Completable = changesRepository.sendEpisodeChanges(changes).applyErrorHandlerAndSchedulers()
 

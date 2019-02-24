@@ -28,4 +28,6 @@ interface SeriesInteractor {
     fun getEpisodeChanges() : Observable<EpisodeChanges>
 
     fun sendEpisodeChanges(changes: EpisodeChanges) : Completable
+
+    fun getTopic(animeId: Long, episodeId: Int) : Single<Long>
 }

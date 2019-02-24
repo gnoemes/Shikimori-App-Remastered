@@ -21,4 +21,6 @@ interface SeriesRepository {
 
     fun isEpisodeWatched(animeId: Long, episodeId: Int): Single<Boolean>
 
+    fun getTopic(animeId: Long, episodeId: Int) : Single<Long>
+
 }
