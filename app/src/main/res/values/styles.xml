@@ -109,4 +109,16 @@
         <item name="android:outlineAmbientShadowColor" tools:targetApi="p">?attr/colorSecondaryTransparent</item>
     </style>
 
+    <style name="ActionUnelevatedButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:textColor">@drawable/selector_action_button_text_color</item>
+        <item name="backgroundTint">@drawable/selector_action_button_background_color</item>
+        <item name="strokeColor">@drawable/selector_action_button_stroke_color</item>
+        <item name="iconTint">@drawable/selector_action_button_text_color</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:padding">0dp</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="cornerRadius">4dp</item>
+    </style>
+
 </resources>
