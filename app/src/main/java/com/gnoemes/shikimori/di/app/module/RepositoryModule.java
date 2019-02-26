@@ -2,10 +2,12 @@ package com.gnoemes.shikimori.di.app.module;
 
 import com.gnoemes.shikimori.data.local.services.DownloadSource;
 import com.gnoemes.shikimori.data.local.services.impl.DownloadManagerSourceImpl;
+import com.gnoemes.shikimori.data.repository.app.AnalyticRepository;
 import com.gnoemes.shikimori.data.repository.app.AuthorizationRepository;
 import com.gnoemes.shikimori.data.repository.app.TokenRepository;
 import com.gnoemes.shikimori.data.repository.app.TokenSource;
 import com.gnoemes.shikimori.data.repository.app.impl.AuthorizationRepositoryImpl;
+import com.gnoemes.shikimori.data.repository.app.impl.FirebaseAnalyticRepositoryImpl;
 import com.gnoemes.shikimori.data.repository.app.impl.TokenRepositoryImpl;
 import com.gnoemes.shikimori.data.repository.app.impl.TokenSourceImpl;
 import com.gnoemes.shikimori.data.repository.download.DownloadRepository;
@@ -57,5 +59,9 @@ public interface RepositoryModule {
     @Binds
     @Reusable
     DownloadRepository bindDownloadRepository(DownloadRepositoryImpl repository);
+
+    @Binds
+    @Singleton
+    AnalyticRepository bindAnalyticRepository(FirebaseAnalyticRepositoryImpl repository);
 
 }

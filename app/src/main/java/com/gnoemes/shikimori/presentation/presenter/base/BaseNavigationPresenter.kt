@@ -1,5 +1,6 @@
 package com.gnoemes.shikimori.presentation.presenter.base
 
+import com.gnoemes.shikimori.entity.app.domain.AnalyticEvent
 import com.gnoemes.shikimori.entity.common.domain.Screens
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.manga.presentation.MangaNavigationData
@@ -8,7 +9,7 @@ import com.gnoemes.shikimori.presentation.view.base.activity.BaseView
 import ru.terrakok.cicerone.Router
 
 
-abstract class BaseNavigationPresenter<View : BaseView> : BasePresenter<View>() {
+abstract class BaseNavigationPresenter<View : BaseView> : BaseAnalyticPresenter<View>() {
 
     lateinit var localRouter: Router
 
@@ -33,7 +34,7 @@ abstract class BaseNavigationPresenter<View : BaseView> : BasePresenter<View>() 
 
     open fun onTopicClicked(id: Long) = router.navigateTo(Screens.TOPIC_DETAILS, id)
 
-    private fun onClubClicked(id: Long) = router.navigateTo(Screens.CLUB_DETAILS, id)
+    open fun onClubClicked(id: Long) = router.navigateTo(Screens.CLUB_DETAILS, id)
 
     fun onContentClicked(type: Type, id: Long) {
         when (type) {
@@ -48,12 +49,25 @@ abstract class BaseNavigationPresenter<View : BaseView> : BasePresenter<View>() 
         }
     }
 
-    open fun openPlayer(playerType: PlayerType, payload: Any?) {
-        when (playerType) {
-            PlayerType.EMBEDDED -> router.navigateTo(Screens.EMBEDDED_PLAYER, payload)
-            PlayerType.WEB -> router.navigateTo(Screens.WEB_PLAYER, payload)
-            PlayerType.EXTERNAL -> router.navigateTo(Screens.EXTERNAL_PLAYER, payload)
-        }
+    open fun openPlayer(playerType: PlayerType, payload: Any?) = when (playerType) {
+        PlayerType.EMBEDDED -> openEmbeddedPlayer(payload)
+        PlayerType.WEB -> openWebPlayer(payload)
+        PlayerType.EXTERNAL -> openExternalPlayer(payload)
+    }
+
+    open fun openEmbeddedPlayer(payload: Any?) {
+        router.navigateTo(Screens.EMBEDDED_PLAYER, payload)
+        logEvent(AnalyticEvent.PLAYER_OPENED_EMBEDDED)
+    }
+
+    open fun openWebPlayer(payload: Any?) {
+        router.navigateTo(Screens.WEB_PLAYER, payload)
+        logEvent(AnalyticEvent.PLAYER_OPENED_WEB)
+    }
+
+    open fun openExternalPlayer(payload: Any?) {
+        router.navigateTo(Screens.EXTERNAL_PLAYER, payload)
+        logEvent(AnalyticEvent.PLAYER_OPENED_EXTERNAL)
     }
 
 }

@@ -1,5 +1,7 @@
 package com.gnoemes.shikimori.di.app.module;
 
+import android.content.Context;
+
 import com.gnoemes.shikimori.data.repository.club.ClubResponseConverter;
 import com.gnoemes.shikimori.data.repository.club.ClubResponseConverterImpl;
 import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResourceProvider;
@@ -14,11 +16,13 @@ import com.gnoemes.shikimori.utils.date.impl.DateTimeResourceProviderImpl;
 import com.gnoemes.shikimori.utils.date.impl.DateTimeUtilsImpl;
 import com.gnoemes.shikimori.utils.images.GlideImageLoader;
 import com.gnoemes.shikimori.utils.images.ImageLoader;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import javax.inject.Singleton;
 
 import dagger.Binds;
 import dagger.Module;
+import dagger.Provides;
 import dagger.Reusable;
 
 @Module
@@ -51,4 +55,11 @@ public interface UtilModule {
     @Binds
     @Reusable
     SortResourceProvider bindSortResourceProvider(SortResourceProviderImpl provider);
+
+    @Singleton
+    @Provides
+    static FirebaseAnalytics provideFirebaseAnalytics(Context context) {
+        return FirebaseAnalytics.getInstance(context);
+    }
+
 }
