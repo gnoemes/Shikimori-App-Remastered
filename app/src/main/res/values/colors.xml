@@ -10,6 +10,7 @@
     <color name="default_colorOnSurface">#DE000000</color>
     <color name="default_colorOnPrimary">#000000</color>
     <color name="default_colorOnPrimarySecondary">#99000000</color>
+    <color name="default_colorOnPrimaryDisabled">#61000000</color>
     <color name="default_colorOnBackground">#7b8084</color>
     <color name="default_colorSecondaryTransparent">#1ffe5722</color>
 
@@ -46,7 +47,7 @@
 
     <color name="player_controls">#deffffff</color>
     <color name="player_surface">#80000000</color>
-    <color name="player_levels_background">#61000000</color>
+    <color name="player_levels_background">#91000000</color>
     <color name="player_unlock_background">#99ffffff</color>
 
     <color name="anime_rate_progress_watched">#4682b4</color>

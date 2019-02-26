@@ -23,7 +23,7 @@
 
         <item name="colorOnPrimary">@color/default_colorOnPrimary</item>
         <item name="colorOnPrimarySecondary">@color/default_colorOnPrimarySecondary</item>
-        <item name="colorOnPrimaryDisabled">@color/player_levels_background</item>
+        <item name="colorOnPrimaryDisabled">@color/default_colorOnPrimaryDisabled</item>
         <item name="colorOnSecondary">@color/default_colorOnSecondary</item>
         <item name="colorOnSurface">@color/default_colorOnSurface</item>
         <item name="colorOnBackground">@color/default_colorOnBackground</item>
