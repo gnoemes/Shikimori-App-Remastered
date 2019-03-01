@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="http://schemas.android.com/tools">
+    <declare-styleable name="MaterialSpinner" ns1:ignore="ResourceName">
+        <attr format="color" name="ms_arrow_tint"/>
+        <attr format="boolean" name="ms_hide_arrow"/>
+        <attr format="color" name="ms_background_color"/>
+        <attr format="color" name="ms_text_color"/>
+        <attr format="dimension" name="ms_dropdown_max_height"/>
+        <attr format="dimension" name="ms_dropdown_height">
+            <enum name="fill_parent" value="-1"/>
+            <enum name="match_parent" value="-1"/>
+            <enum name="wrap_content" value="-2"/>
+        </attr>
+        <attr format="integer" name="ms_background_selector"/>
+        <attr format="dimension" name="ms_padding_top"/>
+        <attr format="dimension" name="ms_padding_left"/>
+        <attr format="dimension" name="ms_padding_bottom"/>
+        <attr format="dimension" name="ms_padding_right"/>
+        <attr format="dimension" name="ms_popup_padding_top"/>
+        <attr format="dimension" name="ms_popup_padding_left"/>
+        <attr format="dimension" name="ms_popup_padding_bottom"/>
+        <attr format="dimension" name="ms_popup_padding_right"/>
+        <attr format="string" name="ms_hint"/>
+        <attr format="color" name="ms_hint_color"/>
+    </declare-styleable>
+    <dimen name="ms__item_height">48dp</dimen>
+    <dimen name="ms__padding_left">24dp</dimen>
+    <dimen name="ms__padding_top">12dp</dimen>
+    <dimen name="ms__popup_padding_left">24dp</dimen>
+    <dimen name="ms__popup_padding_top">12dp</dimen>
+</resources>
