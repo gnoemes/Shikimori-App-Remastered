@@ -2,7 +2,7 @@
 <resources>
     <color name="default_colorPrimary">#ffffff</color>
     <color name="default_colorPrimaryVariant">#c7c7c7</color>
-    <color name="default_colorSecondary">#ff5722</color>
+    <color name="default_colorSecondary">#ff7043</color>
     <color name="default_colorSecondaryVariant">#c41c00</color>
     <color name="default_colorSurface">#ffffff</color>
     <color name="default_colorOnSecondary">#FFFFFF</color>
@@ -11,7 +11,7 @@
     <color name="default_colorOnPrimary">#000000</color>
     <color name="default_colorOnPrimarySecondary">#99000000</color>
     <color name="default_colorOnPrimaryDisabled">#61000000</color>
-    <color name="default_colorOnBackground">#7b8084</color>
+    <color name="default_colorOnBackground">#617b8084</color>
     <color name="default_colorSecondaryTransparent">#1ffe5722</color>
     <color name="default_colorDivider">#0F000000</color>
 
