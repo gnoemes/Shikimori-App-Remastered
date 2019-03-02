@@ -10,7 +10,7 @@
     app:cardCornerRadius="8dp"
     app:cardElevation="0dp"
     app:cardPreventCornerOverlap="false"
-    app:strokeColor="@color/colorDivider"
+    app:strokeColor="?attr/colorDivider"
     app:strokeWidth="1dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout

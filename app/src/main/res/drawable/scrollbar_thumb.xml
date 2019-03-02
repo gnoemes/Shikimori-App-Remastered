@@ -3,8 +3,8 @@
 
     <gradient
         android:angle="45"
-        android:endColor="@color/colorDivider"
-        android:startColor="@color/colorDivider" />
+        android:endColor="?attr/colorDivider"
+        android:startColor="?attr/colorDivider" />
 
     <padding android:top="8dp" />
 

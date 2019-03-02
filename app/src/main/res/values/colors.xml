@@ -13,10 +13,10 @@
     <color name="default_colorOnPrimaryDisabled">#61000000</color>
     <color name="default_colorOnBackground">#7b8084</color>
     <color name="default_colorSecondaryTransparent">#1ffe5722</color>
+    <color name="default_colorDivider">#0F000000</color>
 
     <color name="colorTextProtector">#96000000</color>
     <color name="colorOnProtector">#DEffffff</color>
-    <color name="colorDivider">#1f000000</color>
     <color name="colorShimmer">#8b8a8a</color>
 
     <color name="black">#000000</color>

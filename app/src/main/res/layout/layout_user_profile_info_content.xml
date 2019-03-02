@@ -14,7 +14,7 @@
         android:layout_height="@dimen/image_profile_big_height"
         android:layout_gravity="center_horizontal"
         android:fitsSystemWindows="true"
-        app:civ_border_color="@color/colorDivider"
+        app:civ_border_color="?attr/colorDivider"
         app:civ_border_width="1dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

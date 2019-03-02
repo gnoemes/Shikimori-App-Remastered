@@ -16,7 +16,7 @@
         android:focusable="false"
         android:textColor="?attr/colorOnPrimarySecondary"
         app:chipBackgroundColor="?attr/colorPrimary"
-        app:chipStrokeColor="@color/colorDivider"
+        app:chipStrokeColor="?attr/colorDivider"
         app:chipStrokeWidth="1dp"
         tools:text="Сегодня, 3 февраля" />
 

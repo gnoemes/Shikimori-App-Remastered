@@ -5,5 +5,5 @@
     android:layout_width="@dimen/image_profile_width"
     android:layout_height="@dimen/image_profile_height"
     android:src="@drawable/avatar_test"
-    app:civ_border_color="@color/colorDivider"
+    app:civ_border_color="?attr/colorDivider"
     app:civ_border_width="1dp" />
