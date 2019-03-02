@@ -82,6 +82,7 @@ class SearchFragment : BasePaginationFragment<SearchItem, SearchPresenter, Searc
                 resources.getStringArray(R.array.search_types
                 ))
         spinner?.setOnItemClickListener { _, _, position, _ -> getPresenter().onTypeChanged(position) }
+        spinner?.background = spinner?.background?.apply { tint(context!!.colorAttr(R.attr.colorOnPrimary)) }
 
         searchView = com.lapism.searchview.SearchView(context)
                 .apply {
