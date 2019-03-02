@@ -31,6 +31,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        app:itemTextColor="?attr/colorOnPrimary"
+        app:itemIconTint="?attr/colorOnPrimary"
         android:maxWidth="200dp" />
 
 </com.infideap.drawerbehavior.AdvanceDrawerLayout>

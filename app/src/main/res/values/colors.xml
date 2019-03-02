@@ -25,8 +25,8 @@
     <color name="dark_colorOnSurface">#deffffff</color>
     <color name="dark_colorOnPrimary">#ffffff</color>
     <color name="dark_colorOnPrimarySecondary">#99ffffff</color>
-    <color name="dark_colorOnPrimaryDisabled">#61ffffff</color>
-    <color name="dark_colorOnBackground">#617b8084</color>
+    <color name="dark_colorOnPrimaryDisabled">#1FFFFFFF</color>
+    <color name="dark_colorOnBackground">#61ffffff</color>
     <color name="dark_colorSecondaryTransparent">#1ffe5722</color>
     <color name="dark_colorDivider">#0FFFFFFF</color>
 

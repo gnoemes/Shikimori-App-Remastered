@@ -121,4 +121,8 @@
         <item name="cornerRadius">4dp</item>
     </style>
 
+    <style name="DrawerIconStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">?attr/colorOnPrimary</item>
+    </style>
+
 </resources>
