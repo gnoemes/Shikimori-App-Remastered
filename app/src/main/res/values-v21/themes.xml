@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="ShikimoriAppTheme.Default" parent="ShikimoriAppTheme.Base">
         <item name="colorPrimary">@color/default_colorPrimary</item>
@@ -18,11 +18,17 @@
         <item name="colorDivider">@color/default_colorDivider</item>
 
         <item name="android:textColor">@color/default_colorOnSurface</item>
+        <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
+        <item name="android:textColorSecondary">?attr/colorOnPrimarySecondary</item>
         <item name="android:windowBackground">@color/default_colorBackground</item>
 
         <item name="colorPrimaryDark">@color/default_colorPrimaryVariant</item>
         <item name="android:statusBarColor">@color/default_colorPrimary</item>
         <item name="md_background_color">@color/default_colorBackground</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="colorControlHighlight">@color/default_colorRipple</item>
+
+        <item name="dialogCustomBackground">@drawable/dialog_surface</item>
     </style>
 
     <style name="ShikimoriAppTheme.Dark" parent="ShikimoriAppTheme.Base">
@@ -42,10 +48,16 @@
         <item name="colorDivider">@color/dark_colorDivider</item>
 
         <item name="android:textColor">@color/dark_colorOnSurface</item>
+        <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
+        <item name="android:textColorSecondary">?attr/colorOnPrimarySecondary</item>
         <item name="android:windowBackground">@color/dark_colorBackground</item>
 
         <item name="colorPrimaryDark">@color/dark_colorPrimaryVariant</item>
         <item name="android:statusBarColor">@color/dark_colorPrimary</item>
         <item name="md_background_color">@color/dark_colorBackground</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+        <item name="colorControlHighlight">@color/dark_colorRipple</item>
+
+        <item name="dialogCustomBackground">@drawable/dialog_surface_dark</item>
     </style>
 </resources>

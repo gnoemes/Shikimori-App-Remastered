@@ -1,5 +1,6 @@
 package com.gnoemes.shikimori.presentation.view.series.episodes
 
+import android.graphics.Color
 import android.os.Bundle
 import android.text.InputType
 import android.view.View
@@ -65,6 +66,8 @@ class EpisodesFragment : BaseSeriesFragment<EpisodesPresenter, EpisodesView>(), 
                 }
                 true
             }
+            var i = menu.size()
+            while (i-- != 0) menu.getItem(i).icon = menu.getItem(i).icon.apply { tint(Color.BLACK) }
         }
 
         with(recyclerView) {
@@ -100,11 +103,13 @@ class EpisodesFragment : BaseSeriesFragment<EpisodesPresenter, EpisodesView>(), 
         searchView.setArrowOnly(true)
         searchView.shouldClearOnClose = true
         searchView.inputType = InputType.TYPE_CLASS_NUMBER
+        searchView.setHintColor(context!!.colorAttr(R.attr.colorOnPrimarySecondary))
         val defaultPadding = context?.dimen(R.dimen.margin_big)?.toInt() ?: 0
         searchView.findViewById<LinearLayout>(R.id.linearLayout).setPadding(0, 0, defaultPadding, 0)
         searchView.findViewById<ImageView>(R.id.imageView_arrow_back).apply {
             (layoutParams as LinearLayout.LayoutParams).apply { width = LinearLayout.LayoutParams.WRAP_CONTENT; height = LinearLayout.LayoutParams.WRAP_CONTENT }
             setPadding(defaultPadding, defaultPadding, 0, defaultPadding)
+            tint(context.colorAttr(R.attr.colorOnPrimary))
         }
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {

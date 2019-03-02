@@ -3,7 +3,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android"
     android:opacity="opaque">
 
-    <item android:drawable="@color/default_colorBackground" />
+    <item android:drawable="?attr/colorPrimary" />
 
     <item
         android:drawable="@drawable/ic_launch_screen_logo"

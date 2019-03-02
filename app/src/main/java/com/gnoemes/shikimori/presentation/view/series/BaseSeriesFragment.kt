@@ -1,5 +1,6 @@
 package com.gnoemes.shikimori.presentation.view.series
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragment
 import com.gnoemes.shikimori.utils.addBackButton
 import com.gnoemes.shikimori.utils.images.ImageLoader
+import com.gnoemes.shikimori.utils.tint
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_base_series.*
 import kotlinx.android.synthetic.main.layout_toolbar_transparent.*
@@ -34,6 +36,7 @@ abstract class BaseSeriesFragment<Presenter : BaseNetworkPresenter<View>, View :
             setTitle(R.string.series_show)
             (layoutParams as AppBarLayout.LayoutParams).apply { scrollFlags = 0 }
             addBackButton { getPresenter().onBackPressed() }
+            toolbar?.navigationIcon = toolbar?.navigationIcon?.apply { tint(Color.BLACK) }
         }
     }
 

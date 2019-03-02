@@ -3,12 +3,9 @@ package com.gnoemes.shikimori.presentation.view.settings.fragments
 import android.Manifest
 import android.os.Bundle
 import android.os.Environment
-import androidx.annotation.ArrayRes
 import androidx.preference.Preference
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.files.folderChooser
-import com.afollestad.materialdialogs.list.ItemListener
-import com.afollestad.materialdialogs.list.listItems
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.app.domain.SettingsExtras
 import com.gnoemes.shikimori.entity.series.domain.PlayerType
@@ -76,13 +73,6 @@ class SettingsGeneralFragment : BaseSettingsFragment() {
             }
             preference.summary = text
         }
-    }
-
-    private fun showListDialog(@ArrayRes items: Int, listener: ItemListener): Boolean {
-        MaterialDialog(context!!).show {
-            listItems(items, selection = listener)
-        }
-        return true
     }
 
     private fun PlayerType?.localizePlayer(): String {

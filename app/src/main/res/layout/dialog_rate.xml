@@ -161,7 +161,7 @@
         android:layout_marginRight="8dp"
         android:hint="@string/rate_comment_hint"
         android:inputType="text"
-        android:textColorHint="@color/default_colorOnSurface"
+        android:textColorHint="?attr/colorOnPrimarySecondary"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

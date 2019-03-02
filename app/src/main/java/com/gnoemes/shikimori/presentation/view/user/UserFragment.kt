@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.graphics.ColorUtils
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
@@ -47,6 +48,7 @@ class UserFragment : BaseFragment<UserPresenter, UserView>(), UserView {
     }
 
     private val maxHeight by lazy { (appBarLayout.height - toolbar.height).toFloat() }
+    private val primaryColor by lazy { context?.colorAttr(R.attr.colorPrimary)!! }
 
     private val favoritesAdapter by lazy { UserFavoriteContentAdapter(imageLoader, getPresenter()::onContentClicked, getPresenter()::onAction) }
     private val friendsAdapter by lazy { UserProfileContentAdapter(imageLoader, getPresenter()::onContentClicked, getPresenter()::onAction) }
@@ -96,6 +98,7 @@ class UserFragment : BaseFragment<UserPresenter, UserView>(), UserView {
         avatarView.alpha = percent
         avatarCollapsedView.alpha = 1 - percent
         nameCollapsedView.alpha = 1 - percent
+        toolbar.setBackgroundColor(ColorUtils.setAlphaComponent(primaryColor, 255 - (255 * percent).toInt()))
     }
 
     override fun onDestroyView() {

@@ -2,10 +2,10 @@ package com.gnoemes.shikimori.presentation.view.splash
 
 import android.content.Intent
 import android.os.Bundle
-import com.gnoemes.shikimori.presentation.view.base.activity.BaseThemedActivity
+import com.gnoemes.shikimori.presentation.view.base.activity.MvpActivity
 import com.gnoemes.shikimori.presentation.view.main.MainActivity
 
-class SplashActivity : BaseThemedActivity() {
+class SplashActivity : MvpActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -4,6 +4,8 @@
     <attr name="colorOnPrimarySecondary" format="color"/>
     <attr name="colorDivider" format="color"/>
 
+    <attr name="dialogCustomBackground" format="reference"/>
+
     <declare-styleable name="RateSpinnerView">
         <attr name="anime" format="boolean" />
         <attr name="showEdit" format="boolean" />

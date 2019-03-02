@@ -1,15 +1,30 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="PopupMenuTheme" parent="@android:style/Widget.PopupMenu">
+    <style name="PopupMenuTheme" parent="Widget.AppCompat.ListPopupWindow">
         <item name="android:textColor">?attr/colorOnPrimary</item>
-        <item name="android:popupBackground">@drawable/dialog_surface</item>
+        <item name="android:popupBackground">?attr/dialogCustomBackground</item>
         <item name="android:colorBackground">?attr/colorPrimary</item>
+    </style>
+
+    <style name="ToolbarStyle" parent="Widget.MaterialComponents.Toolbar.Primary">
+        <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
+        <item name="android:textColorSecondary">?attr/colorOnPrimarySecondary</item>
+        <item name="actionMenuTextColor">?attr/colorOnPrimary</item>
+        <item name="titleTextAppearance">@style/ToolbarTextAppearance</item>
     </style>
 
     <style name="ToolbarTextAppearance">
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="titleTextColor">?attr/colorOnPrimary</item>
         <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="Toolbar.Button.Navigation.Tinted" parent="Widget.AppCompat.Toolbar.Button.Navigation">
+        <item name="tint">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="Toolbar.Button.Overflow.Tinted" parent="Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:tint">?attr/colorOnPrimary</item>
     </style>
 
     <style name="RateChooserTextAppearance">

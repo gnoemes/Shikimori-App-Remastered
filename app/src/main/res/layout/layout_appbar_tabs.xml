@@ -11,6 +11,7 @@
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
+        android:background="?attr/colorPrimary"
         app:tabContentStart="20dp"
         app:tabIndicatorColor="?attr/colorAccent"
         app:tabIndicatorFullWidth="true"

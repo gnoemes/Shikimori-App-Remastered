@@ -12,5 +12,6 @@ class AccentSwipeRefreshLayout @JvmOverloads constructor(context: Context,
 
     init {
         setColorSchemeColors(context.colorAttr(R.attr.colorAccent))
+        setProgressBackgroundColorSchemeColor(context.colorAttr(R.attr.colorPrimary))
     }
 }

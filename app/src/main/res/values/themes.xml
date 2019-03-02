@@ -8,9 +8,14 @@
         <item name="android:popupMenuStyle">@style/PopupMenuTheme</item>
         <item name="popupMenuStyle">@style/PopupMenuTheme</item>
         <item name="drawerArrowStyle">@style/DrawerIconStyle</item>
+        <item name="toolbarNavigationButtonStyle">@style/Toolbar.Button.Navigation.Tinted</item>
+        <item name="actionOverflowButtonStyle">@style/Toolbar.Button.Overflow.Tinted</item>
     </style>
 
-    <style name="ShikimoriAppTheme.Launch" parent="ShikimoriAppTheme.Default">
+    <style name="ShikimoriAppTheme.Launch" parent="ShikimoriAppTheme.Base">
+        <item name="colorPrimary">@color/default_colorPrimary</item>
+        <item name="colorPrimaryDark">@color/default_colorPrimaryVariant</item>
+        <item name="colorSecondary">@color/default_colorSecondary</item>
         <item name="android:windowBackground">@drawable/launch_screen</item>
     </style>
 
@@ -31,10 +36,15 @@
         <item name="colorDivider">@color/default_colorDivider</item>
 
         <item name="android:textColor">@color/default_colorOnSurface</item>
+        <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
+        <item name="android:textColorSecondary">?attr/colorOnPrimarySecondary</item>
         <item name="android:windowBackground">@color/default_colorBackground</item>
 
         <item name="colorPrimaryDark">@color/default_colorPrimaryVariant</item>
         <item name="md_background_color">@color/default_colorBackground</item>
+
+        <item name="dialogCustomBackground">@drawable/dialog_surface</item>
+        <item name="colorControlHighlight">@color/default_colorRipple</item>
     </style>
 
     <style name="ShikimoriAppTheme.Dark" parent="ShikimoriAppTheme.Base">
@@ -54,10 +64,15 @@
         <item name="colorDivider">@color/dark_colorDivider</item>
 
         <item name="android:textColor">@color/dark_colorOnSurface</item>
+        <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
+        <item name="android:textColorSecondary">?attr/colorOnPrimarySecondary</item>
         <item name="android:windowBackground">@color/dark_colorBackground</item>
 
         <item name="colorPrimaryDark">@color/dark_colorPrimaryVariant</item>
         <item name="md_background_color">@color/dark_colorBackground</item>
+
+        <item name="dialogCustomBackground">@drawable/dialog_surface_dark</item>
+        <item name="colorControlHighlight">@color/dark_colorRipple</item>
     </style>
 
 </resources>

@@ -402,6 +402,9 @@
     <string name="download_new_folder_hint">Введите название новой папки</string>
     <string name="download_folder_empty">Папка пуста</string>
 
+    <string name="theme_default">Стандартная тема</string>
+    <string name="theme_dark">Темная тема</string>
+
 
     <string-array name="rate_types">
         <item>@string/common_anime</item>
@@ -624,6 +627,11 @@
         <item>1x</item>
         <item>1.5x</item>
         <item>2x</item>
+    </string-array>
+
+    <string-array name="themes">
+        <item>@string/theme_default</item>
+        <item>@string/theme_dark</item>
     </string-array>
 
 </resources>

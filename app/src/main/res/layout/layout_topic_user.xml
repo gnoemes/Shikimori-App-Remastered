@@ -64,7 +64,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:includeFontPadding="false"
-        android:textColor="@color/default_colorOnPrimarySecondary"
+        android:textColor="?attr/colorOnPrimarySecondary"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/avatarView"
         app:layout_constraintEnd_toStartOf="@+id/tagView"

@@ -5,7 +5,7 @@
     android:id="@+id/infoContainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:background="?attr/colorPrimary"
+    tools:background="?attr/colorSurface"
     tools:ignore="SmallSp">
 
     <de.hdodenhof.circleimageview.CircleImageView

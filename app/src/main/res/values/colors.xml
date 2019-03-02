@@ -14,9 +14,10 @@
     <color name="default_colorOnBackground">#617b8084</color>
     <color name="default_colorSecondaryTransparent">#1ffe5722</color>
     <color name="default_colorDivider">#0F000000</color>
+    <color name="default_colorRipple">#0f000000</color>
 
-    <color name="dark_colorPrimary">#212121</color>
-    <color name="dark_colorPrimaryVariant">#c7c7c7</color>
+    <color name="dark_colorPrimary">#2a2a2a</color>
+    <color name="dark_colorPrimaryVariant">#99ffffff</color>
     <color name="dark_colorSecondary">#ff7043</color>
     <color name="dark_colorSecondaryVariant">#c41c00</color>
     <color name="dark_colorSurface">#212121</color>
@@ -29,6 +30,7 @@
     <color name="dark_colorOnBackground">#61ffffff</color>
     <color name="dark_colorSecondaryTransparent">#1ffe5722</color>
     <color name="dark_colorDivider">#0FFFFFFF</color>
+    <color name="dark_colorRipple">#0FFFFFFF</color>
 
     <color name="colorTextProtector">#96000000</color>
     <color name="colorOnProtector">#DEffffff</color>
