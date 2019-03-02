@@ -6,7 +6,7 @@ import com.gnoemes.shikimori.R
 abstract class BaseThemedActivity  : MvpActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.ShikimoriAppTheme_Default)
+        setTheme(R.style.ShikimoriAppTheme_Dark)
         super.onCreate(savedInstanceState)
     }
 }

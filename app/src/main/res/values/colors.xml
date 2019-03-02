@@ -15,6 +15,21 @@
     <color name="default_colorSecondaryTransparent">#1ffe5722</color>
     <color name="default_colorDivider">#0F000000</color>
 
+    <color name="dark_colorPrimary">#212121</color>
+    <color name="dark_colorPrimaryVariant">#c7c7c7</color>
+    <color name="dark_colorSecondary">#ff7043</color>
+    <color name="dark_colorSecondaryVariant">#c41c00</color>
+    <color name="dark_colorSurface">#212121</color>
+    <color name="dark_colorOnSecondary">#212121</color>
+    <color name="dark_colorBackground">#212121</color>
+    <color name="dark_colorOnSurface">#deffffff</color>
+    <color name="dark_colorOnPrimary">#ffffff</color>
+    <color name="dark_colorOnPrimarySecondary">#99ffffff</color>
+    <color name="dark_colorOnPrimaryDisabled">#61ffffff</color>
+    <color name="dark_colorOnBackground">#617b8084</color>
+    <color name="dark_colorSecondaryTransparent">#1ffe5722</color>
+    <color name="dark_colorDivider">#0FFFFFFF</color>
+
     <color name="colorTextProtector">#96000000</color>
     <color name="colorOnProtector">#DEffffff</color>
     <color name="colorShimmer">#8b8a8a</color>

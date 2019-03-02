@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="ShikimoriAppTheme.Base" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="textAppearanceHeadline6">@style/ToolbarTextAppearance</item>
-
-        <item name="md_corner_radius">8dp</item>
-        <item name="android:popupMenuStyle">@style/PopupMenuTheme</item>
-        <item name="popupMenuStyle">@style/PopupMenuTheme</item>
-    </style>
-
-    <style name="ShikimoriAppTheme.Launch" parent="ShikimoriAppTheme.Default">
-        <item name="android:windowBackground">@drawable/launch_screen</item>
-    </style>
-
     <style name="ShikimoriAppTheme.Default" parent="ShikimoriAppTheme.Base">
         <item name="colorPrimary">@color/default_colorPrimary</item>
         <item name="colorPrimaryVariant">@color/default_colorPrimaryVariant</item>
@@ -33,6 +21,7 @@
         <item name="android:windowBackground">@color/default_colorBackground</item>
 
         <item name="colorPrimaryDark">@color/default_colorPrimaryVariant</item>
+        <item name="android:statusBarColor">@color/default_colorPrimary</item>
         <item name="md_background_color">@color/default_colorBackground</item>
     </style>
 
@@ -56,7 +45,7 @@
         <item name="android:windowBackground">@color/dark_colorBackground</item>
 
         <item name="colorPrimaryDark">@color/dark_colorPrimaryVariant</item>
+        <item name="android:statusBarColor">@color/dark_colorPrimary</item>
         <item name="md_background_color">@color/dark_colorBackground</item>
     </style>
-
 </resources>
