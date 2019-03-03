@@ -30,6 +30,8 @@
         app:queryBackground="?attr/colorPrimary"
         app:search_hint="@string/episode_number_hint"
         app:search_shadow="true"
+        app:search_icon_color="?attr/colorOnPrimary"
+        app:search_text_color="?attr/colorOnPrimary"
         app:search_version="menu_item"
         app:search_version_margins="menu_item"
         app:search_voice="false" />

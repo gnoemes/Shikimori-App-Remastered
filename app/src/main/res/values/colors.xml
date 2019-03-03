@@ -11,7 +11,7 @@
     <color name="default_colorOnPrimary">#000000</color>
     <color name="default_colorOnPrimarySecondary">#99000000</color>
     <color name="default_colorOnPrimaryDisabled">#61000000</color>
-    <color name="default_colorOnBackground">#617b8084</color>
+    <color name="default_colorOnBackground">#7b8084</color>
     <color name="default_colorSecondaryTransparent">#1ffe5722</color>
     <color name="default_colorDivider">#0F000000</color>
     <color name="default_colorRipple">#0f000000</color>
@@ -22,7 +22,7 @@
     <color name="dark_colorSecondaryVariant">#c41c00</color>
     <color name="dark_colorSurface">#212121</color>
     <color name="dark_colorOnSecondary">#212121</color>
-    <color name="dark_colorBackground">#212121</color>
+    <color name="dark_colorBackground">#1d1d1d</color>
     <color name="dark_colorOnSurface">#deffffff</color>
     <color name="dark_colorOnPrimary">#ffffff</color>
     <color name="dark_colorOnPrimarySecondary">#99ffffff</color>

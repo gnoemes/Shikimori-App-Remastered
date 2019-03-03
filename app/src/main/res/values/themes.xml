@@ -10,6 +10,7 @@
         <item name="drawerArrowStyle">@style/DrawerIconStyle</item>
         <item name="toolbarNavigationButtonStyle">@style/Toolbar.Button.Navigation.Tinted</item>
         <item name="actionOverflowButtonStyle">@style/Toolbar.Button.Overflow.Tinted</item>
+        <item name="android:listDivider">@drawable/list_divider</item>
     </style>
 
     <style name="ShikimoriAppTheme.Launch" parent="ShikimoriAppTheme.Base">
@@ -42,6 +43,7 @@
 
         <item name="colorPrimaryDark">@color/default_colorPrimaryVariant</item>
         <item name="md_background_color">@color/default_colorBackground</item>
+        <item name="md_color_content">@color/default_colorOnPrimarySecondary</item>
 
         <item name="dialogCustomBackground">@drawable/dialog_surface</item>
         <item name="colorControlHighlight">@color/default_colorRipple</item>
@@ -70,6 +72,7 @@
 
         <item name="colorPrimaryDark">@color/dark_colorPrimaryVariant</item>
         <item name="md_background_color">@color/dark_colorBackground</item>
+        <item name="md_color_content">@color/dark_colorOnPrimarySecondary</item>
 
         <item name="dialogCustomBackground">@drawable/dialog_surface_dark</item>
         <item name="colorControlHighlight">@color/dark_colorRipple</item>

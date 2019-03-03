@@ -27,8 +27,10 @@
         <item name="md_background_color">@color/default_colorBackground</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <item name="colorControlHighlight">@color/default_colorRipple</item>
+        <item name="md_color_content">@color/default_colorOnPrimarySecondary</item>
 
         <item name="dialogCustomBackground">@drawable/dialog_surface</item>
+
     </style>
 
     <style name="ShikimoriAppTheme.Dark" parent="ShikimoriAppTheme.Base">
@@ -57,6 +59,7 @@
         <item name="md_background_color">@color/dark_colorBackground</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="colorControlHighlight">@color/dark_colorRipple</item>
+        <item name="md_color_content">@color/dark_colorOnPrimarySecondary</item>
 
         <item name="dialogCustomBackground">@drawable/dialog_surface_dark</item>
     </style>
