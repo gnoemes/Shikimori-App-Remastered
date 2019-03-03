@@ -5,14 +5,16 @@ import androidx.fragment.app.Fragment
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.gnoemes.shikimori.R
-import com.gnoemes.shikimori.presentation.view.base.activity.BaseThemedActivity
+import com.gnoemes.shikimori.presentation.view.base.activity.MvpActivity
 import com.gnoemes.shikimori.presentation.view.settings.fragments.SettingsFragment
 import com.gnoemes.shikimori.utils.addBackButton
+import com.gnoemes.shikimori.utils.getCurrentTheme
 import kotlinx.android.synthetic.main.layout_toolbar.*
 
-class SettingsActivity : BaseThemedActivity(), PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
+class SettingsActivity : MvpActivity(), PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(getCurrentTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
