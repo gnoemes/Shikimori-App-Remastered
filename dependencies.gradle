@@ -42,5 +42,8 @@ ext.versions = [
     exoplayer         : '2.9.4',
 
     kefirBB           : '1.5',
-    firebase          : '16.0.6'
+    firebase          : '16.0.6',
+
+    fabric            : '1.27.1',
+    crashlytics       : '2.9.9@aar'
 ]

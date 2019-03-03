@@ -1,5 +1,6 @@
 apply from: '../dependencies.gradle'
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
@@ -107,6 +108,10 @@ dependencies {
     implementation 'org.kefirsf:kefirbb:' + versions.kefirBB
 
     implementation 'com.google.firebase:firebase-core:' + versions.firebase
+
+    implementation('com.crashlytics.sdk.android:crashlytics:' + versions.crashlytics) {
+        transitive = true
+    }
 
     implementation project(":storio-common")
     implementation project(":storio-sqlite")

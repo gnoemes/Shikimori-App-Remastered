@@ -5,8 +5,10 @@ import android.app.Application
 import android.app.Service
 import android.content.BroadcastReceiver
 import androidx.appcompat.app.AppCompatDelegate
+import com.crashlytics.android.Crashlytics
 import com.gnoemes.shikimori.di.app.component.DaggerAppComponent
 import dagger.android.*
+import io.fabric.sdk.android.Fabric
 import net.danlew.android.joda.JodaTimeAndroid
 import javax.inject.Inject
 
@@ -23,6 +25,7 @@ class App : Application(), HasActivityInjector, HasServiceInjector, HasBroadcast
 
     override fun onCreate() {
         super.onCreate()
+        Fabric.with(this, Crashlytics())
         JodaTimeAndroid.init(this)
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
         DaggerAppComponent.builder().create(this).inject(this)
