@@ -47,6 +47,11 @@
                 android:id="@+id/otherLayout"
                 layout="@layout/layout_favorite_category" />
 
+            <View
+                android:id="@+id/space"
+                android:layout_width="match_parent"
+                android:layout_height="24dp" />
+
         </LinearLayout>
 
 
