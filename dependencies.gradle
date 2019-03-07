@@ -7,7 +7,7 @@ ext.versions = [
     jetifier          : '1.0.0-beta02',
     gms               : '4.2.0',
 
-    kotlin            : '1.3.11',
+    kotlin            : '1.3.21',
     constraint        : '2.0.0-alpha3',
     androidx          : '1.0.0',
     androidxFragment  : '1.1.0-alpha03',
@@ -45,5 +45,6 @@ ext.versions = [
     firebase          : '16.0.6',
 
     fabric            : '1.27.1',
-    crashlytics       : '2.9.9@aar'
+    crashlytics       : '2.9.9@aar',
+    advancedVersioning: '1.6.0'
 ]

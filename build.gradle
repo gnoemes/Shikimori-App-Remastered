@@ -14,6 +14,7 @@ buildscript {
         classpath 'com.android.tools.build.jetifier:jetifier-processor:' + versions.jetifier
         classpath 'com.google.gms:google-services:' + versions.gms
         classpath 'io.fabric.tools:gradle:' + versions.fabric
+        classpath 'org.moallemi.gradle.advanced-build-version:gradle-plugin:' + versions.advancedVersioning
     }
 }
 
