@@ -1,6 +1,7 @@
 package com.gnoemes.shikimori.presentation.view.settings
 
 import android.os.Bundle
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -18,8 +19,11 @@ class SettingsActivity : MvpActivity(), PreferenceFragmentCompat.OnPreferenceSta
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-        toolbar?.setTitle(R.string.more_settings)
-        toolbar?.addBackButton { onBackPressed() }
+        toolbar?.apply {
+            setDefaultTitle()
+            addBackButton { onBackPressed() }
+        }
+
 
         replaceFragment(SettingsFragment())
     }
@@ -43,6 +47,8 @@ class SettingsActivity : MvpActivity(), PreferenceFragmentCompat.OnPreferenceSta
 
         return true
     }
+
+    private fun Toolbar.setDefaultTitle() = setTitle(R.string.more_settings)
 
     private fun replaceFragment(fragment: Fragment) {
         supportFragmentManager
