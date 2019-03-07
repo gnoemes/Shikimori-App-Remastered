@@ -9,11 +9,6 @@
         app:iconSpaceReserved="false" />
 
     <Preference
-        android:key="notification_fragment"
-        android:title="@string/settings_notifications"
-        app:iconSpaceReserved="false" />
-
-    <Preference
         android:key="player_fragment"
         android:title="@string/settings_player"
         app:fragment="com.gnoemes.shikimori.presentation.view.settings.fragments.SettingsPlayerFragment"
