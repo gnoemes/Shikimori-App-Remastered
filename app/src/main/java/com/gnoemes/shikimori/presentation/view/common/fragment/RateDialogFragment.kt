@@ -50,9 +50,8 @@ class RateDialogFragment : MvpDialogFragment() {
         return MaterialDialog(context!!).show {
             customView(view = customView, scrollable = true)
             positiveButton(res = R.string.common_save) { callback?.onUpdateRate(createRate()) }
-            negativeButton(res = R.string.common_cancel)
             rate.ifNotNull { rate ->
-                neutralButton(res = R.string.common_delete) {
+                neutralButton (res = R.string.common_delete) {
                     callback?.onDeleteRate(rate.id ?: Constants.NO_ID)
                 }
             }

@@ -29,6 +29,7 @@ class SettingsActivity : MvpActivity(), PreferenceFragmentCompat.OnPreferenceSta
     }
 
     override fun onBackPressed() {
+        toolbar?.setDefaultTitle()
         val fragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
         if (fragment is SettingsFragment) super.finish()
         else super.onBackPressed()
@@ -42,7 +43,7 @@ class SettingsActivity : MvpActivity(), PreferenceFragmentCompat.OnPreferenceSta
                 pref.extras)
                 .apply { setTargetFragment(caller, 0) }
 
-        toolbar.title = "$pref"
+        toolbar?.title = "$pref"
         replaceFragment(fragment)
 
         return true
