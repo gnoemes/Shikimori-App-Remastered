@@ -57,3 +57,4 @@
 -keep class com.google.firebase.**
 -dontnote com.google.android.gms.**
 -dontwarn org.slf4j.**
+-keep public class * extends androidx.preference.PreferenceFragmentCompat
