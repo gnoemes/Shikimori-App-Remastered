@@ -30,7 +30,7 @@
         <item name="md_color_content">@color/default_colorOnPrimarySecondary</item>
 
         <item name="dialogCustomBackground">@drawable/dialog_surface</item>
-
+        <item name="android:navigationBarColor">@color/default_colorPrimary</item>
     </style>
 
     <style name="ShikimoriAppTheme.Dark" parent="ShikimoriAppTheme.Base">
@@ -62,5 +62,6 @@
         <item name="md_color_content">@color/dark_colorOnPrimarySecondary</item>
 
         <item name="dialogCustomBackground">@drawable/dialog_surface_dark</item>
+        <item name="android:navigationBarColor">@color/dark_colorPrimary</item>
     </style>
 </resources>
