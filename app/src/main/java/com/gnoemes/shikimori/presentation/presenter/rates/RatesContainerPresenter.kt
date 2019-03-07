@@ -36,10 +36,9 @@ class RatesContainerPresenter @Inject constructor(
         loadData()
     }
 
-    override fun attachView(view: RatesContainerView) {
-        super.attachView(view)
-
-        if (userId == Constants.NO_ID) loadMyUser()
+    override fun onViewReattached() {
+        super.onViewReattached()
+        loadData()
     }
 
     private fun loadData() {
