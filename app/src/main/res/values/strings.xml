@@ -66,6 +66,7 @@
     <string name="common_online">Онлайн</string>
     <string name="common_user_history">История пользователя</string>
     <string name="common_understand">Понятно</string>
+    <string name="common_apply">Применить</string>
 
     <string name="season_autumn">Осень</string>
     <string name="season_winter">Зима</string>
@@ -202,6 +203,9 @@
     <string name="filter_not_selected">Не выбрано</string>
     <string name="filter_select">Выбрать</string>
     <string name="filter_older">Более старые</string>
+    <string name="filter_drop">Сбросить</string>
+    <string name="filters">Фильтры</string>
+    <string name="filters_latest">Недавно вышедшие</string>
 
     <string name="more_authorized_hint">Перейти в профиль</string>
     <string name="more_guest_hint">Авторизоваться</string>
@@ -404,7 +408,6 @@
 
     <string name="theme_default">Стандартная тема</string>
     <string name="theme_dark">Темная тема</string>
-
 
     <string-array name="rate_types">
         <item>@string/common_anime</item>

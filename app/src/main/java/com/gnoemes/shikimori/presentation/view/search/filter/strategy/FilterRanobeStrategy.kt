@@ -8,7 +8,6 @@ import com.gnoemes.shikimori.entity.common.domain.FilterItem
 import com.gnoemes.shikimori.entity.common.domain.SearchConstants
 import com.gnoemes.shikimori.entity.search.presentation.FilterCategory
 import com.gnoemes.shikimori.presentation.view.search.filter.provider.FilterResourceProvider
-import kotlinx.android.synthetic.main.fragment_filter.view.*
 
 class FilterRanobeStrategy(
         private val view: View,
@@ -20,15 +19,15 @@ class FilterRanobeStrategy(
     private val ranobeFilters by lazy { resourceProvider.getRanobeFilters() }
     private val ranobeChipContainers by lazy {
         listOf(
-                Container(SearchConstants.STATUS, view.statusGroup),
-                Container(SearchConstants.RATE, view.rateGroup)
+                Container(SearchConstants.STATUS, view),
+                Container(SearchConstants.RATE, view)
         )
     }
 
     private val mangaListContainers by lazy {
         listOf(
-                Container(SearchConstants.GENRE, view.genresGroup),
-                Container(SearchConstants.SEASON, view.seasonGroup)
+                Container(SearchConstants.GENRE, view),
+                Container(SearchConstants.SEASON, view)
         )
     }
 

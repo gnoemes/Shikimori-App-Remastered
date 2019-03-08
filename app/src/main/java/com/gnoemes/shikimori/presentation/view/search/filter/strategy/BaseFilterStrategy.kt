@@ -10,12 +10,13 @@ import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.common.domain.FilterItem
 import com.gnoemes.shikimori.entity.common.domain.SearchConstants
 import com.gnoemes.shikimori.entity.search.presentation.FilterCategory
-import com.gnoemes.shikimori.utils.*
+import com.gnoemes.shikimori.utils.colorAttr
+import com.gnoemes.shikimori.utils.gone
+import com.gnoemes.shikimori.utils.layoutInflater
+import com.gnoemes.shikimori.utils.tint
 import com.google.android.material.chip.Chip
 import com.santalu.widget.ReSpinner
 import kotlinx.android.synthetic.main.dialog_base_bottom_sheet.view.*
-import kotlinx.android.synthetic.main.layout_category_with_button.view.*
-import kotlinx.android.synthetic.main.layout_category_with_chip_group.view.*
 
 abstract class BaseFilterStrategy(
         private val view: View,
@@ -71,27 +72,27 @@ abstract class BaseFilterStrategy(
     }
 
     private fun initChipContainer(container: View, key: String) {
-        initContainer(container, key) { category ->
-            with(container) {
-                visible()
-                categoryNameView.text = category.category
-                chipGroup.removeAllViews()
-                category.filters.forEach { chipGroup.addView(convertChip(it)) }
-            }
-        }
+//        initContainer(container, key) { category ->
+//            with(container) {
+//                visible()
+//                categoryNameView.text = category.category
+//                chipGroup.removeAllViews()
+//                category.filters.forEach { chipGroup.addView(convertChip(it)) }
+//            }
+//        }
     }
 
     private fun initListContainer(container: View, key: String) {
-        initContainer(container, key) { category ->
-            with(container) {
-                visible()
-                val names = convertSelected(getAppliedFilter(category.filters.firstOrNull()?.action))
-
-                categoryName.text = category.category
-                selectedValuesView.text = names
-                container.setOnClickListener { clickListener.invoke(category) }
-            }
-        }
+//        initContainer(container, key) { category ->
+//            with(container) {
+//                visible()
+//                val names = convertSelected(getAppliedFilter(category.filters.firstOrNull()?.action))
+//
+//                categoryName.text = category.category
+//                selectedValuesView.text = names
+//                container.setOnClickListener { clickListener.invoke(category) }
+//            }
+//        }
     }
 
     private fun initContainer(container: View, key: String, init: (FilterCategory) -> Unit) {

@@ -1,26 +1,21 @@
 package com.gnoemes.shikimori.presentation.view.search.filter
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.common.domain.FilterItem
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.search.presentation.FilterCategory
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseBottomSheetDialogFragment
 import com.gnoemes.shikimori.presentation.view.common.fragment.MultiCheckDialogFragment
-import com.gnoemes.shikimori.presentation.view.search.filter.provider.FilterResourceConverterImpl
-import com.gnoemes.shikimori.presentation.view.search.filter.provider.FilterResourceProvider
-import com.gnoemes.shikimori.presentation.view.search.filter.provider.FilterResourceProviderImpl
-import com.gnoemes.shikimori.presentation.view.search.filter.strategy.FilterAnimeStrategy
-import com.gnoemes.shikimori.presentation.view.search.filter.strategy.FilterMangaStrategy
-import com.gnoemes.shikimori.presentation.view.search.filter.strategy.FilterRanobeStrategy
 import com.gnoemes.shikimori.presentation.view.search.filter.strategy.FilterStrategy
 import com.gnoemes.shikimori.utils.addBackButton
 import com.gnoemes.shikimori.utils.onClick
 import com.gnoemes.shikimori.utils.withArgs
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_filter.*
-import kotlinx.android.synthetic.main.layout_toolbar.*
 
 
 class FilterDialogFragment : BaseBottomSheetDialogFragment(), MultiCheckDialogFragment.DialogCallback {
@@ -45,23 +40,16 @@ class FilterDialogFragment : BaseBottomSheetDialogFragment(), MultiCheckDialogFr
         appliedFilters = getAppliedFilters(savedInstanceState)
     }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(getDialogLayout(), container, false)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val resourceProvider: FilterResourceProvider = FilterResourceProviderImpl(view.context, FilterResourceConverterImpl())
-
-        strategy = when (type) {
-            Type.ANIME -> FilterAnimeStrategy(view, resourceProvider, { showSelectDialog(it) })
-            Type.MANGA -> FilterMangaStrategy(view, resourceProvider, { showSelectDialog(it) })
-            else -> FilterRanobeStrategy(view, resourceProvider, { showSelectDialog(it) })
-        }
-
-        strategy.init(appliedFilters)
-
         with(toolbar) {
-            title = null
+            setTitle(R.string.filters)
             addBackButton(R.drawable.ic_close) { dismiss() }
-            inflateMenu(R.menu.menu_filter)
             setOnMenuItemClickListener { onAcceptFilters(); true }
         }
 

@@ -8,7 +8,6 @@ import com.gnoemes.shikimori.entity.common.domain.FilterItem
 import com.gnoemes.shikimori.entity.common.domain.SearchConstants
 import com.gnoemes.shikimori.entity.search.presentation.FilterCategory
 import com.gnoemes.shikimori.presentation.view.search.filter.provider.FilterResourceProvider
-import kotlinx.android.synthetic.main.fragment_filter.view.*
 
 class FilterAnimeStrategy(
         private val view: View,
@@ -21,18 +20,18 @@ class FilterAnimeStrategy(
 
     private val animeChipContainers by lazy {
         listOf(
-                Container(SearchConstants.STATUS, view.statusGroup),
-                Container(SearchConstants.DURATION, view.durationGroup),
-                Container(SearchConstants.RATE, view.rateGroup),
-                Container(SearchConstants.AGE_RATING, view.ageGroup)
+                Container(SearchConstants.STATUS, view),
+                Container(SearchConstants.DURATION, view),
+                Container(SearchConstants.RATE, view),
+                Container(SearchConstants.AGE_RATING, view)
         )
     }
 
     private val animeListContainers by lazy {
         listOf(
-                Container(SearchConstants.GENRE, view.genresGroup),
-                Container(SearchConstants.TYPE, view.typeGroup),
-                Container(SearchConstants.SEASON, view.seasonGroup)
+                Container(SearchConstants.GENRE, view),
+                Container(SearchConstants.TYPE, view),
+                Container(SearchConstants.SEASON, view)
         )
     }
 
