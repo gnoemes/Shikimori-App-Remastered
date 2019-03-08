@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="64dp"
     android:layout_gravity="bottom"
+    app:cardBackgroundColor="?attr/colorPrimary"
     app:cardCornerRadius="0dp"
     app:cardElevation="0dp">
 
@@ -15,6 +16,12 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_gravity="top"
+            android:background="?attr/colorDivider" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_gravity="bottom"
             android:background="?attr/colorDivider" />
 
         <LinearLayout

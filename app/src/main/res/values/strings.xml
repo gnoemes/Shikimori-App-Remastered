@@ -15,7 +15,7 @@
     <string name="common_status">Статус</string>
     <string name="common_season">Сезон</string>
     <string name="common_year">Год</string>
-    <string name="common_duration">Продолжительность</string>
+    <string name="common_duration">Продолжительность эпизода</string>
     <string name="common_yesterday">Вчера</string>
     <string name="common_error_message">Похоже, что у Вас отсуствует интернет-соединение или произошла ошибка.\n Потяните, что бы обновить</string>
     <string name="common_error_message_without_pull">Похоже, что у Вас отсуствует интернет-соединение или произошла ошибка.</string>
@@ -527,6 +527,13 @@
         <item>@string/status_anons</item>
         <item>@string/status_ongoing</item>
         <item>@string/status_released</item>
+    </string-array>
+
+    <string-array name="filter_statuses">
+        <item>@string/status_anons</item>
+        <item>@string/status_ongoing</item>
+        <item>@string/status_released</item>
+        <item>@string/filters_latest</item>
     </string-array>
 
     <string-array name="statuses_names">

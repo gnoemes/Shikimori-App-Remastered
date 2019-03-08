@@ -10,9 +10,7 @@ import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.search.presentation.FilterCategory
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseBottomSheetDialogFragment
 import com.gnoemes.shikimori.presentation.view.common.fragment.MultiCheckDialogFragment
-import com.gnoemes.shikimori.presentation.view.search.filter.strategy.FilterStrategy
 import com.gnoemes.shikimori.utils.addBackButton
-import com.gnoemes.shikimori.utils.onClick
 import com.gnoemes.shikimori.utils.withArgs
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_filter.*
@@ -31,7 +29,6 @@ class FilterDialogFragment : BaseBottomSheetDialogFragment(), MultiCheckDialogFr
     }
 
     private lateinit var type: Type
-    private lateinit var strategy: FilterStrategy
     private var appliedFilters = HashMap<String, MutableList<FilterItem>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,7 +50,6 @@ class FilterDialogFragment : BaseBottomSheetDialogFragment(), MultiCheckDialogFr
             setOnMenuItemClickListener { onAcceptFilters(); true }
         }
 
-        resetBtn.onClick { strategy.reset() }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -77,9 +73,6 @@ class FilterDialogFragment : BaseBottomSheetDialogFragment(), MultiCheckDialogFr
     }
 
     override fun dialogItemCallback(tag: String?, items: List<String>) {
-        val newAppliedFilters = convertFilters(items, tag!!)
-        appliedFilters[newAppliedFilters.category] = newAppliedFilters.filters
-        strategy.init(appliedFilters)
     }
 
     private fun showSelectDialog(category: FilterCategory) {
@@ -109,10 +102,5 @@ class FilterDialogFragment : BaseBottomSheetDialogFragment(), MultiCheckDialogFr
             val action = Gson().toJson(filter)
             return@map Pair(isApplied, Pair(filter.localizedText!!, action))
         }
-    }
-
-    private fun convertFilters(applied: List<String>, tag: String): FilterCategory {
-        val items = applied.map { Gson().fromJson(it, FilterItem::class.java) }.toMutableList()
-        return FilterCategory(tag, items)
     }
 }
