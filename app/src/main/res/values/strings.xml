@@ -67,6 +67,7 @@
     <string name="common_user_history">История пользователя</string>
     <string name="common_understand">Понятно</string>
     <string name="common_apply">Применить</string>
+    <string name="common_ok">ок</string>
 
     <string name="season_autumn">Осень</string>
     <string name="season_winter">Зима</string>
@@ -164,7 +165,7 @@
     <string name="type_tv_translatable">TV сериал</string>
     <string name="type_movie_translatable">Фильм</string>
     <string name="type_special_translatable">Спешл</string>
-    <string name="type_music_translatable">Музыка</string>
+    <string name="type_music_translatable">Клип</string>
     <string name="type_tv_13" translatable="false">TV 13</string>
     <string name="type_tv_24" translatable="false">TV 24</string>
     <string name="type_tv_48" translatable="false">TV 48</string>
@@ -206,6 +207,7 @@
     <string name="filter_drop">Сбросить</string>
     <string name="filters">Фильтры</string>
     <string name="filters_latest">Недавно вышедшие</string>
+    <string name="filters_hint">Долгое нажатие на элемент фильтра исключает его.</string>
 
     <string name="more_authorized_hint">Перейти в профиль</string>
     <string name="more_guest_hint">Авторизоваться</string>
@@ -544,11 +546,11 @@
 
     <string-array name="anime_types">
         <item>@string/type_tv_translatable</item>
+        <item>@string/type_movie_translatable</item>
+        <item>@string/type_special_translatable</item>
+        <item>@string/type_music_translatable</item>
         <item>@string/type_ova</item>
         <item>@string/type_ona</item>
-        <item>@string/type_special_translatable</item>
-        <item>@string/type_movie_translatable</item>
-        <item>@string/type_music_translatable</item>
         <item>@string/type_tv_13</item>
         <item>@string/type_tv_24</item>
         <item>@string/type_tv_48</item>

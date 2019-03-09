@@ -61,21 +61,30 @@
         app:layout_constraintTop_toTopOf="@+id/categoryNameView"
         app:srcCompat="@drawable/ic_done_all" />
 
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/chipGroup"
+    <View
+        android:id="@+id/dynamicSpace"
+        android:layout_width="0dp"
+        android:layout_height="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/categoryNameView" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chipList"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginRight="12dp"
         android:layout_marginBottom="24dp"
-        app:chipSpacing="4dp"
+        tools:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
+        tools:listitem="@layout/item_chip_filter"
+        tools:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/categoryNameView"/>
+        app:layout_constraintTop_toBottomOf="@+id/dynamicSpace" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

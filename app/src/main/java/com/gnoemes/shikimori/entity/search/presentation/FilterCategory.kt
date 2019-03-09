@@ -8,6 +8,6 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class FilterCategory(
         val filterType: FilterType,
-        val category : String,
+        val categoryLocalized : String,
         val filters : MutableList<FilterItem>
 ) : Parcelable

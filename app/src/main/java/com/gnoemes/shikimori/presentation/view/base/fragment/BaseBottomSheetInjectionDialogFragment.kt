@@ -17,4 +17,6 @@ abstract class BaseBottomSheetInjectionDialogFragment<Presenter : BasePresenter<
         super.onAttach(context)
     }
 
+    abstract val presenter : Presenter
+
 }
