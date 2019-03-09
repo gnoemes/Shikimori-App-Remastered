@@ -87,7 +87,7 @@ class FilterSourceImpl @Inject constructor(
 
     private fun getStatuses(): MutableList<FilterItem> =
             getList(R.array.filter_statuses)
-                    .zip(Status.values().map { it.status.toLowerCase() }.toMutableList().apply { add("latest") })
+                    .zip(Status.values().map { it.status.toLowerCase() }.toMutableList().apply { set(lastIndex, "latest") })
                     .map { (name, value) -> convert(FilterType.STATUS.value, value, name) }
                     .toMutableList()
 
