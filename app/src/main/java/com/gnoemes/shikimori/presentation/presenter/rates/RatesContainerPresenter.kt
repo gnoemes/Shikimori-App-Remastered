@@ -38,7 +38,8 @@ class RatesContainerPresenter @Inject constructor(
 
     override fun onViewReattached() {
         super.onViewReattached()
-        loadData()
+
+        if (userId == Constants.NO_ID) loadMyUser()
     }
 
     private fun loadData() {
