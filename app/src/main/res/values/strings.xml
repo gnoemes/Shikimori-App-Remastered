@@ -103,6 +103,8 @@
     <string name="rate_remove">Удалить из списка</string>
     <string name="rate_comment">Комментарий</string>
     <string name="rate_status">Статус просмотра</string>
+    <string name="rates_need_auth">Для измения статуса необходимо авторизоваться в приложении</string>
+
 
     <string name="rating_empty">Нет оценки</string>
     <string name="rating_bad_ass">Хуже некуда</string>

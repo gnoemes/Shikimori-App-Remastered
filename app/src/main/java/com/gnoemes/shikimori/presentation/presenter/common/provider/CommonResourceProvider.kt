@@ -6,5 +6,7 @@ interface CommonResourceProvider {
 
     val needAuth: String
 
+    val needAuthRates: String
+
     val topicNotFound: String
 }

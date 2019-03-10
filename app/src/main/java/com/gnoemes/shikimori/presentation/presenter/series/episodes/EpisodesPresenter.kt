@@ -17,7 +17,9 @@ import com.gnoemes.shikimori.entity.series.domain.EpisodeChanges
 import com.gnoemes.shikimori.entity.series.presentation.EpisodeViewModel
 import com.gnoemes.shikimori.entity.series.presentation.EpisodesNavigationData
 import com.gnoemes.shikimori.entity.series.presentation.TranslationsNavigationData
+import com.gnoemes.shikimori.entity.user.domain.UserStatus
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
+import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResourceProvider
 import com.gnoemes.shikimori.presentation.presenter.series.episodes.converter.EpisodeViewModelConverter
 import com.gnoemes.shikimori.presentation.view.series.episodes.EpisodesView
 import com.gnoemes.shikimori.utils.clearAndAddAll
@@ -33,7 +35,8 @@ class EpisodesPresenter @Inject constructor(
         private val ratesInteractor: RatesInteractor,
         private val userInteractor: UserInteractor,
         private val converter: EpisodeViewModelConverter,
-        private val settingsSource: SettingsSource
+        private val settingsSource: SettingsSource,
+        private val resourceProvider: CommonResourceProvider
 ) : BaseNetworkPresenter<EpisodesView>() {
 
     lateinit var navigationData: EpisodesNavigationData
@@ -118,6 +121,11 @@ class EpisodesPresenter @Inject constructor(
     }
 
     fun onEpisodeStatusChanged(item: EpisodeViewModel, newStatus: Boolean) {
+        if (userInteractor.getUserStatus() == UserStatus.GUEST) {
+            router.showSystemMessage(resourceProvider.needAuthRates)
+            return
+        }
+
         (if (rateId == Constants.NO_ID) createRateIfNotExist(rateId).ignoreElement()
         else Completable.complete())
                 .andThen(interactor.sendEpisodeChanges(EpisodeChanges(item.animeId, item.index, newStatus)))
