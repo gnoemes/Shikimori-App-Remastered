@@ -41,6 +41,10 @@ fun <E> MutableList<E>.clearAndAddAll(items: Collection<E>) {
     addAll(items)
 }
 
+inline fun <E> MutableList<E>.exist(crossinline block: (E) -> Boolean): Boolean {
+    return find { block.invoke(it) } != null
+}
+
 fun String.toBold(): SpannableStringBuilder {
     val builder = SpannableStringBuilder()
             .append(this)

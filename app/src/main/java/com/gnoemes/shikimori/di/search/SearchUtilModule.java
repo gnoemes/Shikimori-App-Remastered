@@ -16,4 +16,5 @@ public interface SearchUtilModule {
 
     @Binds
     SearchViewModelConverter bindSearchViewModelConverter(SearchViewModelConverterImpl converter);
+
 }

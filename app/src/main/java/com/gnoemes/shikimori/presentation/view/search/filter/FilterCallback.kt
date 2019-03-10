@@ -4,5 +4,5 @@ import com.gnoemes.shikimori.entity.common.domain.FilterItem
 
 interface FilterCallback {
 
-    fun onFiltersSelected(appliedFilters: HashMap<String, MutableList<FilterItem>>)
+    fun onFiltersSelected(tag : String?, appliedFilters: HashMap<String, MutableList<FilterItem>>)
 }

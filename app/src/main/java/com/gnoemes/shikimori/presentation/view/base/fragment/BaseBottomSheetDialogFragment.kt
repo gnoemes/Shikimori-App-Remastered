@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -19,6 +20,10 @@ abstract class BaseBottomSheetDialogFragment : MvpDialogFragment() {
     protected lateinit var bottomSheet: FrameLayout
     var autoExpand = true
 
+    var peekHeight = -1
+
+    private val viewHandler = Handler()
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): android.view.View? {
         val view = inflater.inflate(R.layout.dialog_base_bottom_sheet, container, false)
         if (getDialogLayout() != android.view.View.NO_ID) {
@@ -32,7 +37,9 @@ abstract class BaseBottomSheetDialogFragment : MvpDialogFragment() {
                 .apply {
                     setOnShowListener {
                         bottomSheet = (it as BottomSheetDialog).findViewById(R.id.design_bottom_sheet)!!
-                        bottomSheet.layoutParams = bottomSheet.layoutParams.apply { height = ViewGroup.LayoutParams.MATCH_PARENT }
+                        bottomSheet.background = ColorDrawable(Color.TRANSPARENT)
+                        if (peekHeight == -1) bottomSheet.layoutParams = bottomSheet.layoutParams.apply { height = ViewGroup.LayoutParams.MATCH_PARENT }
+                        else BottomSheetBehavior.from(bottomSheet).peekHeight = peekHeight
 
                         it.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
@@ -52,6 +59,15 @@ abstract class BaseBottomSheetDialogFragment : MvpDialogFragment() {
         BottomSheetBehavior.from(bottomSheet).state = BottomSheetBehavior.STATE_COLLAPSED
     }
 
+    override fun onDestroyView() {
+        viewHandler.removeCallbacksAndMessages(null)
+        super.onDestroyView()
+    }
+
     @LayoutRes
     abstract fun getDialogLayout(): Int
+
+    protected fun postViewAction(action: () -> Unit) {
+        viewHandler.post { action.invoke() }
+    }
 }

@@ -15,7 +15,7 @@
     <string name="common_status">Статус</string>
     <string name="common_season">Сезон</string>
     <string name="common_year">Год</string>
-    <string name="common_duration">Продолжительность</string>
+    <string name="common_duration">Продолжительность эпизода</string>
     <string name="common_yesterday">Вчера</string>
     <string name="common_error_message">Похоже, что у Вас отсуствует интернет-соединение или произошла ошибка.\n Потяните, что бы обновить</string>
     <string name="common_error_message_without_pull">Похоже, что у Вас отсуствует интернет-соединение или произошла ошибка.</string>
@@ -66,6 +66,8 @@
     <string name="common_online">Онлайн</string>
     <string name="common_user_history">История пользователя</string>
     <string name="common_understand">Понятно</string>
+    <string name="common_apply">Применить</string>
+    <string name="common_ok">ок</string>
 
     <string name="season_autumn">Осень</string>
     <string name="season_winter">Зима</string>
@@ -163,7 +165,7 @@
     <string name="type_tv_translatable">TV сериал</string>
     <string name="type_movie_translatable">Фильм</string>
     <string name="type_special_translatable">Спешл</string>
-    <string name="type_music_translatable">Музыка</string>
+    <string name="type_music_translatable">Клип</string>
     <string name="type_tv_13" translatable="false">TV 13</string>
     <string name="type_tv_24" translatable="false">TV 24</string>
     <string name="type_tv_48" translatable="false">TV 48</string>
@@ -179,7 +181,7 @@
 
     <string name="sort_id">По порядку</string>
     <string name="sort_type">По типу</string>
-    <string name="sort_date">По дате</string>
+    <string name="sort_date">По дате выхода</string>
     <string name="sort_status">По статусу</string>
     <string name="sort_episodes">По кол-ву эпизодов</string>
     <string name="sort_chapters">По кол-ву глав</string>
@@ -189,7 +191,7 @@
     <string name="sort_score">По оценке</string>
     <string name="sort_random">Рандом</string>
     <string name="sort_popularity">По популярности</string>
-    <string name="sort_name">По имени</string>
+    <string name="sort_name">По алфавиту</string>
     <string name="sort_rating">По рейтингу</string>
     <string name="rate_drawer_open">rate_drawer_open</string>
     <string name="rate_drawer_close">rate_drawer_close</string>
@@ -202,6 +204,25 @@
     <string name="filter_not_selected">Не выбрано</string>
     <string name="filter_select">Выбрать</string>
     <string name="filter_older">Более старые</string>
+    <string name="filter_drop">Сбросить</string>
+    <string name="filters">Фильтры</string>
+    <string name="filters_latest">Недавно вышедшие</string>
+    <string name="filters_hint">Долгое нажатие на элемент фильтра исключает его.</string>
+    <string name="filters_genres">Жанры</string>
+    <string name="filter_genres_main">Главные</string>
+    <string name="filter_genres_other">Список</string>
+    <string name="filter_custom">Кастомный фильтр</string>
+    <string name="filter_custom_seasons">Кастомный фильтр сезонов</string>
+    <string name="filter_custom_input_hint">Нажмите сюда, чтобы начать ввод</string>
+    <string name="filter_seasons">Сезоны</string>
+    <!--<string name="filter_custom_seasons_hint"><![CDATA[<p>Позволяет выделить и исключить введённый год и сезон в каком-то году. Вводить нужно на английском. Ключевые слова для сезонов: зима - winter, весна - spring, лето - summer, осень - fall. Восклицательный знак даёт исключение. Примеры:</p><br><p><b>1983</b> - 1983 год</p><br><p><b>winter_2016</b> - Зима 2016 года</p><br><p><b>2003_2015</b> - с 2003 по 2015 год</p><br><p><b>!2013</b> - кроме 2013 года</p><br><p><b>!summer_2001</b> - кроме Лета 2001 года</p>]]></string>-->
+    <string name="filter_custom_seasons_hint"><![CDATA[Позволяет выделить и исключить введённый год и сезон в каком-то году. Вводить нужно на английском. Ключевые слова для сезонов: зима - winter, весна - spring, лето - summer, осень - fall. Восклицательный знак даёт исключение. Примеры:
+    <br>
+    <br><b>1983</b> - 1983 год
+    <br><b>winter_2016</b> - Зима 2016 года
+    <br><b>2003_2015</b> - с 2003 по 2015 год
+    <br><b>!2013</b> - кроме 2013 года
+    <br><b>!summer_2001</b> - кроме Лета 2001 года]]></string>
 
     <string name="more_authorized_hint">Перейти в профиль</string>
     <string name="more_guest_hint">Авторизоваться</string>
@@ -405,7 +426,6 @@
     <string name="theme_default">Стандартная тема</string>
     <string name="theme_dark">Темная тема</string>
 
-
     <string-array name="rate_types">
         <item>@string/common_anime</item>
         <item>@string/common_manga</item>
@@ -497,33 +517,48 @@
     </string-array>
 
     <string-array name="anime_search_sort">
-        <item>@string/sort_name</item>
-        <item>@string/sort_date</item>
-        <item>@string/sort_type</item>
-        <item>@string/sort_id</item>
-        <item>@string/sort_status</item>
-        <item>@string/sort_random</item>
-        <item>@string/sort_episodes</item>
-        <item>@string/sort_score</item>
         <item>@string/sort_popularity</item>
+        <item>@string/sort_score</item>
+        <item>@string/sort_episodes</item>
+        <item>@string/sort_date</item>
+        <item>@string/sort_name</item>
+    </string-array>
+
+    <string-array name="anime_search_sort_values">
+        <item>popularity</item>
+        <item>ranked</item>
+        <item>episodes</item>
+        <item>aired_on</item>
+        <item>name</item>
     </string-array>
 
     <string-array name="manga_search_sort">
-        <item>@string/sort_name</item>
-        <item>@string/sort_date</item>
-        <item>@string/sort_id</item>
-        <item>@string/sort_status</item>
-        <item>@string/sort_random</item>
-        <item>@string/sort_volumes</item>
-        <item>@string/sort_chapters</item>
-        <item>@string/sort_score</item>
         <item>@string/sort_popularity</item>
+        <item>@string/sort_score</item>
+        <item>@string/sort_chapters</item>
+        <item>@string/sort_date</item>
+        <item>@string/sort_name</item>
+    </string-array>
+
+    <string-array name="manga_search_sort_values">
+        <item>popularity</item>
+        <item>ranked</item>
+        <item>chapters</item>
+        <item>aired_on</item>
+        <item>name</item>
     </string-array>
 
     <string-array name="statuses">
         <item>@string/status_anons</item>
         <item>@string/status_ongoing</item>
         <item>@string/status_released</item>
+    </string-array>
+
+    <string-array name="filter_statuses">
+        <item>@string/status_anons</item>
+        <item>@string/status_ongoing</item>
+        <item>@string/status_released</item>
+        <item>@string/filters_latest</item>
     </string-array>
 
     <string-array name="statuses_names">
@@ -534,11 +569,11 @@
 
     <string-array name="anime_types">
         <item>@string/type_tv_translatable</item>
+        <item>@string/type_movie_translatable</item>
+        <item>@string/type_special_translatable</item>
+        <item>@string/type_music_translatable</item>
         <item>@string/type_ova</item>
         <item>@string/type_ona</item>
-        <item>@string/type_special_translatable</item>
-        <item>@string/type_movie_translatable</item>
-        <item>@string/type_music_translatable</item>
         <item>@string/type_tv_13</item>
         <item>@string/type_tv_24</item>
         <item>@string/type_tv_48</item>

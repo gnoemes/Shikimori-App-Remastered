@@ -3,6 +3,7 @@ package com.gnoemes.shikimori.presentation.view.search
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
@@ -18,13 +19,16 @@ import com.gnoemes.shikimori.presentation.view.base.fragment.BasePaginationFragm
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
 import com.gnoemes.shikimori.presentation.view.search.adapter.SearchAdapter
 import com.gnoemes.shikimori.presentation.view.search.filter.FilterCallback
-import com.gnoemes.shikimori.presentation.view.search.filter.FilterDialogFragment
+import com.gnoemes.shikimori.presentation.view.search.filter.FilterFragment
 import com.gnoemes.shikimori.utils.*
 import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.gnoemes.shikimori.utils.widgets.GridItemDecorator
 import com.lapism.searchview.SearchView.VERSION_MARGINS_MENU_ITEM
 import com.lapism.searchview.SearchView.VERSION_MENU_ITEM
 import com.santalu.widget.ReSpinner
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.layout_default_list.*
 import kotlinx.android.synthetic.main.layout_default_placeholders.*
@@ -32,13 +36,18 @@ import kotlinx.android.synthetic.main.layout_progress.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import javax.inject.Inject
 
-class SearchFragment : BasePaginationFragment<SearchItem, SearchPresenter, SearchView>(), SearchView, FilterCallback {
+class SearchFragment : BasePaginationFragment<SearchItem, SearchPresenter, SearchView>(), SearchView, FilterCallback, HasSupportFragmentInjector {
 
     @Inject
     lateinit var imageLoader: ImageLoader
 
     @InjectPresenter
     lateinit var searchPresenter: SearchPresenter
+
+    @Inject
+    lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
+
+    override fun supportFragmentInjector(): AndroidInjector<Fragment> = fragmentInjector
 
     @ProvidePresenter
     fun providePresenter(): SearchPresenter {
@@ -158,7 +167,7 @@ class SearchFragment : BasePaginationFragment<SearchItem, SearchPresenter, Searc
     // CALLBACKS
     ///////////////////////////////////////////////////////////////////////////
 
-    override fun onFiltersSelected(appliedFilters: HashMap<String, MutableList<FilterItem>>) {
+    override fun onFiltersSelected(tag : String?, appliedFilters: HashMap<String, MutableList<FilterItem>>) {
         getPresenter().onFilterSelected(appliedFilters)
     }
 
@@ -170,7 +179,7 @@ class SearchFragment : BasePaginationFragment<SearchItem, SearchPresenter, Searc
         val tag = "filterDialog"
         val fragment = fragmentManager?.findFragmentByTag(tag)
         if (fragment == null) {
-            val filter = FilterDialogFragment.newInstance(type, filters)
+            val filter = FilterFragment.newInstance(type, filters)
             filter.setTargetFragment(this, 42)
             postViewAction { filter.show(fragmentManager!!, tag) }
         }

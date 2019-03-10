@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.appbar.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/appBarLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/colorSurface"
+    android:fitsSystemWindows="true"
+    app:elevation="0dp">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:fitsSystemWindows="true"
+        app:layout_scrollFlags="snap"
+        app:popupTheme="@style/PopupMenuTheme"
+        app:title="@string/app_name">
+
+        <ImageButton
+            android:id="@+id/acceptBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@android:color/transparent"
+            android:foreground="?selectableItemBackgroundBorderless"
+            android:padding="4dp"
+            android:tint="?attr/colorOnPrimary"
+            app:srcCompat="@drawable/ic_check"
+            tools:ignore="UnusedAttribute" />
+
+        <ImageButton
+            android:id="@+id/clearBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@android:color/transparent"
+            android:foreground="?selectableItemBackgroundBorderless"
+            android:padding="4dp"
+            android:tint="?attr/colorOnPrimary"
+            app:srcCompat="@drawable/ic_delete"
+            tools:ignore="UnusedAttribute" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_gravity="bottom"
+        android:background="?attr/colorDivider" />
+
+</com.google.android.material.appbar.AppBarLayout>

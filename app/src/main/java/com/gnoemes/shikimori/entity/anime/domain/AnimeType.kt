@@ -7,14 +7,14 @@ enum class AnimeType(val type: String) {
     TV("tv"),
     @SerializedName("movie")
     MOVIE("movie"),
-    @SerializedName("ova")
-    OVA("ova"),
-    @SerializedName("ona")
-    ONA("ona"),
     @SerializedName("special")
     SPECIAL("special"),
     @SerializedName("music")
     MUSIC("music"),
+    @SerializedName("ova")
+    OVA("ova"),
+    @SerializedName("ona")
+    ONA("ona"),
     @SerializedName("tv_13")
     TV_13("tv_13"),
     @SerializedName("tv_24")
