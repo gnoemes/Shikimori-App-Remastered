@@ -194,21 +194,7 @@ class EpisodesPresenter @Inject constructor(
     }
 
     fun onCheckAllPrevious(index: Int) {
-        //TODO refactor?
-        Single.just(rateId)
-                .flatMap { createRateIfNotExist(it) }
-                .flatMap { userInteractor.getMyUserBrief() }
-                .map { it.id }
-                .map { UserRate(rateId, it, navigationData.animeId, Type.ANIME, episodes = index) }
-                .flatMapCompletable { ratesInteractor.updateRate(it) }
-                .andThen(Observable
-                        .fromIterable(items.take(index))
-                        .doOnNext { showEpisodeLoading(it, true) }
-                        .toList()
-                )
-                .flatMap { loadEpisodes() }
-                .subscribe(this::setData, this::processErrors)
-                .addToDisposables()
+        items.take(index).forEach { onEpisodeStatusChanged(it, true) }
     }
 
     private fun syncRate(changes: MutableList<EpisodeChanges>): Single<List<EpisodeViewModel>> =
