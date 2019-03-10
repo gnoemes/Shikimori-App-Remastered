@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.transition.AutoTransition
+import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
@@ -62,7 +62,7 @@ class FilterFragment : BaseBottomSheetInjectionDialogFragment<FilterPresenter, F
         else {
             hintContainer.onClick {
                 putSetting(HINT_KEY, true)
-                TransitionManager.beginDelayedTransition(appBarLayout, AutoTransition())
+                TransitionManager.beginDelayedTransition(appBarLayout, ChangeBounds())
                 hintContainer.gone()
             }
         }
