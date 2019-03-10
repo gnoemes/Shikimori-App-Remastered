@@ -1,11 +1,10 @@
 package com.gnoemes.shikimori.presentation.presenter.search.converter
 
 import com.gnoemes.shikimori.entity.common.domain.FilterItem
+import com.gnoemes.shikimori.entity.common.domain.Genre
 import com.gnoemes.shikimori.entity.search.domain.FilterType
-import com.gnoemes.shikimori.entity.search.presentation.FilterCategory
-import com.gnoemes.shikimori.entity.search.presentation.FilterNestedViewModel
-import com.gnoemes.shikimori.entity.search.presentation.FilterViewModel
-import com.gnoemes.shikimori.entity.search.presentation.FilterWithButtonsViewModel
+import com.gnoemes.shikimori.entity.search.presentation.*
+import com.gnoemes.shikimori.utils.exist
 import javax.inject.Inject
 
 class FilterViewModelConverterImpl @Inject constructor() : FilterViewModelConverter {
@@ -37,6 +36,51 @@ class FilterViewModelConverterImpl @Inject constructor() : FilterViewModelConver
     private fun getAppliedStatus(checkItem: FilterItem, applied: MutableList<FilterItem>?): Pair<Boolean, Boolean> {
         val item = applied?.find { checkItem.value?.equals(it.value?.replace("!", ""))!! }
         return Pair(item != null, item != null && item.value!!.contains("!"))
+    }
+
+    override fun convertGenres(category: FilterCategory, appliedFilters: HashMap<String, MutableList<FilterItem>>): List<Any> {
+        val items = mutableListOf<Any>()
+
+        val mainGenres = mutableListOf(
+                Genre.SHOUNEN, Genre.SHOUNEN_AI, Genre.SEINEN,
+                Genre.SHOUJO, Genre.SHOUJO_AI, Genre.JOSEI,
+                Genre.COMEDY, Genre.ROMANCE, Genre.SCHOOL
+        )
+
+        val applied = appliedFilters[category.filterType.value]
+
+        val mainCategoryFilters = category.filters
+                .asSequence()
+                .filter {
+                    mainGenres.exist { genre -> genre.animeId == it.value || genre.mangaId == it.value }
+                }
+                .map {
+                    val statuses = getAppliedStatus(it, applied)
+                    convertFilter(it, statuses.first, statuses.second)
+                }
+                .toMutableList()
+
+        items.add(FilterMainGenreCategory(mainCategoryFilters))
+
+
+        val otherCategoryFilters = category.filters
+                .asSequence()
+                .filter {
+                    !mainGenres.exist { genre -> genre.animeId == it.value || genre.mangaId == it.value }
+                }
+                .sortedBy { it.localizedText }
+                .map {
+                    val statuses = getAppliedStatus(it, applied)
+                    convertFilter(it, statuses.first, statuses.second)
+                }
+                .groupBy { it.text.first().toUpperCase() }
+                .entries
+                .map { FilterGenreItem(it.key.toString(), it.value) }
+                .toMutableList()
+
+        items.add(FilterOtherGenreCategory(otherCategoryFilters))
+
+        return items
     }
 
     private fun convertFilter(item: FilterItem, isApplied: Boolean, isInverted: Boolean): FilterViewModel {

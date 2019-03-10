@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?colorPrimary"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        app:elevation="0dp">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -70,6 +71,12 @@
                 android:textSize="12sp" />
 
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_gravity="bottom"
+            android:background="?attr/colorDivider" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

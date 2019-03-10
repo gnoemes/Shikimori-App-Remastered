@@ -17,11 +17,12 @@ import com.gnoemes.shikimori.presentation.presenter.search.FilterPresenter
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseBottomSheetInjectionDialogFragment
 import com.gnoemes.shikimori.presentation.view.common.widget.spinner.MaterialSpinnerAdapter
 import com.gnoemes.shikimori.presentation.view.search.filter.adapter.FilterAdapter
+import com.gnoemes.shikimori.presentation.view.search.filter.genres.FilterGenresFragment
 import com.gnoemes.shikimori.utils.*
 import kotlinx.android.synthetic.main.fragment_filter.*
 import kotlinx.android.synthetic.main.layout_filter_bottom.*
 
-class FilterFragment : BaseBottomSheetInjectionDialogFragment<FilterPresenter, FilterView>(), FilterView {
+class FilterFragment : BaseBottomSheetInjectionDialogFragment<FilterPresenter, FilterView>(), FilterView, FilterCallback {
 
     @InjectPresenter
     lateinit var filterPresenter: FilterPresenter
@@ -84,6 +85,10 @@ class FilterFragment : BaseBottomSheetInjectionDialogFragment<FilterPresenter, F
         }
     }
 
+    override fun onFiltersSelected(appliedFilters: HashMap<String, MutableList<FilterItem>>) {
+        presenter.onNestedFilterCallback(appliedFilters)
+    }
+
     ///////////////////////////////////////////////////////////////////////////
     // GETTERS
     ///////////////////////////////////////////////////////////////////////////
@@ -99,6 +104,16 @@ class FilterFragment : BaseBottomSheetInjectionDialogFragment<FilterPresenter, F
 
     override fun showData(items: List<Any>) {
         adapter.bindItems(items)
+    }
+
+    override fun showGenresDialog(type: Type, filters: HashMap<String, MutableList<FilterItem>>) {
+        val tag = "genresFilterDialog"
+        val fragment = fragmentManager?.findFragmentByTag(tag)
+        if (fragment == null) {
+            val filter = FilterGenresFragment.newInstance(type, filters)
+            filter.setTargetFragment(this, 43)
+            postViewAction { filter.show(fragmentManager!!, tag) }
+        }
     }
 
     override fun setResetEnabled(show: Boolean) {

@@ -43,6 +43,7 @@ class FilterNestedAdapterDelegate(
                 countBtn.text = "${item.appliedCount}"
                 categoryName.text = item.categoryLocalised
 
+                countBtn.isSelected = item.appliedCount > 0
                 clearBtn.visibleIf { item.appliedCount > 0 }
             }
         }

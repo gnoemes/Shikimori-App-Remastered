@@ -7,4 +7,6 @@ interface FilterViewModelConverter  {
 
     fun convert(filters : List<FilterCategory>, appliedFilters : HashMap<String, MutableList<FilterItem>>) : List<Any>
 
+    fun convertGenres(category: FilterCategory, appliedFilters: HashMap<String, MutableList<FilterItem>>): List<Any>
+
 }

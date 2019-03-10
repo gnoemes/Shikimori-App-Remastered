@@ -70,6 +70,13 @@ open class FilterPresenter @Inject constructor(
             is FilterAction.Clear -> clearSection(type.value)
             is FilterAction.Invert -> invertSection(type.value)
             is FilterAction.SelectAll -> selectSection(type.value)
+            is FilterAction.ShowNested -> showNested(type)
+        }
+    }
+
+    private fun showNested(type: FilterType) {
+        when(type) {
+            FilterType.GENRE -> viewState.showGenresDialog(super.type, appliedFilters)
         }
     }
 
@@ -110,6 +117,11 @@ open class FilterPresenter @Inject constructor(
                 ?.filter { it.state != FilterViewModel.STATE.DEFAULT }
                 ?.map { FilterItem(key, it.value.invertValue(), it.text) }
                 ?.toMutableList() ?: mutableListOf()
+        onFiltersChanged()
+    }
+
+    fun onNestedFilterCallback(newAppliedFilters: HashMap<String, MutableList<FilterItem>>) {
+        appliedFilters.putAll(newAppliedFilters)
         onFiltersChanged()
     }
 }

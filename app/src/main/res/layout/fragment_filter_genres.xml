@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/backdrop"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="-16dp"
+    app:cardBackgroundColor="?attr/colorSurface"
+    app:cardCornerRadius="16dp"
+    app:cardPreventCornerOverlap="false">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorSurface">
+
+        <include layout="@layout/layout_filter_genres_toolbar" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="40dp"
+            android:background="?attr/colorSurface"
+            app:layout_behavior="@string/appBarFixScrollingFooterBehavior" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</com.google.android.material.card.MaterialCardView>

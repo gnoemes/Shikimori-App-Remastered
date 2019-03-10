@@ -208,6 +208,9 @@
     <string name="filters">Фильтры</string>
     <string name="filters_latest">Недавно вышедшие</string>
     <string name="filters_hint">Долгое нажатие на элемент фильтра исключает его.</string>
+    <string name="filters_genres">Жанры</string>
+    <string name="filter_genres_main">Главные</string>
+    <string name="filter_genres_other">Список</string>
 
     <string name="more_authorized_hint">Перейти в профиль</string>
     <string name="more_guest_hint">Авторизоваться</string>
