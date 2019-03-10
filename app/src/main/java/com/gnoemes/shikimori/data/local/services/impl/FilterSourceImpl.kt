@@ -41,6 +41,16 @@ class FilterSourceImpl @Inject constructor(
             FilterCategory(FilterType.RATE, getRateStatusString(), getFilters(FilterType.RATE))
     )
 
+    override fun getAnimeSortFilters(): List<FilterItem> =
+            getList(R.array.anime_search_sort)
+                    .zip(getList(R.array.anime_search_sort_values))
+                    .map { (name, value) -> FilterItem(SearchConstants.ORDER, value, name) }
+
+    override fun getMangaSortFilters(): List<FilterItem> =
+            getList(R.array.manga_search_sort)
+                    .zip(getList(R.array.manga_search_sort_values))
+                    .map { (name, value) -> FilterItem(SearchConstants.ORDER, value, name) }
+
     private fun getFilters(type: FilterType, isAnime: Boolean = false): MutableList<FilterItem> {
         return when (type) {
             FilterType.GENRE -> getGenres(isAnime)

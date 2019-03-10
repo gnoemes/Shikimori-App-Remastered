@@ -181,7 +181,7 @@
 
     <string name="sort_id">По порядку</string>
     <string name="sort_type">По типу</string>
-    <string name="sort_date">По дате</string>
+    <string name="sort_date">По дате выхода</string>
     <string name="sort_status">По статусу</string>
     <string name="sort_episodes">По кол-ву эпизодов</string>
     <string name="sort_chapters">По кол-ву глав</string>
@@ -191,7 +191,7 @@
     <string name="sort_score">По оценке</string>
     <string name="sort_random">Рандом</string>
     <string name="sort_popularity">По популярности</string>
-    <string name="sort_name">По имени</string>
+    <string name="sort_name">По алфавиту</string>
     <string name="sort_rating">По рейтингу</string>
     <string name="rate_drawer_open">rate_drawer_open</string>
     <string name="rate_drawer_close">rate_drawer_close</string>
@@ -502,27 +502,35 @@
     </string-array>
 
     <string-array name="anime_search_sort">
-        <item>@string/sort_name</item>
-        <item>@string/sort_date</item>
-        <item>@string/sort_type</item>
-        <item>@string/sort_id</item>
-        <item>@string/sort_status</item>
-        <item>@string/sort_random</item>
-        <item>@string/sort_episodes</item>
-        <item>@string/sort_score</item>
         <item>@string/sort_popularity</item>
+        <item>@string/sort_score</item>
+        <item>@string/sort_episodes</item>
+        <item>@string/sort_date</item>
+        <item>@string/sort_name</item>
+    </string-array>
+
+    <string-array name="anime_search_sort_values">
+        <item>popularity</item>
+        <item>ranked</item>
+        <item>episodes</item>
+        <item>aired_on</item>
+        <item>name</item>
     </string-array>
 
     <string-array name="manga_search_sort">
-        <item>@string/sort_name</item>
-        <item>@string/sort_date</item>
-        <item>@string/sort_id</item>
-        <item>@string/sort_status</item>
-        <item>@string/sort_random</item>
-        <item>@string/sort_volumes</item>
-        <item>@string/sort_chapters</item>
-        <item>@string/sort_score</item>
         <item>@string/sort_popularity</item>
+        <item>@string/sort_score</item>
+        <item>@string/sort_chapters</item>
+        <item>@string/sort_date</item>
+        <item>@string/sort_name</item>
+    </string-array>
+
+    <string-array name="manga_search_sort_values">
+        <item>popularity</item>
+        <item>ranked</item>
+        <item>chapters</item>
+        <item>aired_on</item>
+        <item>name</item>
     </string-array>
 
     <string-array name="statuses">

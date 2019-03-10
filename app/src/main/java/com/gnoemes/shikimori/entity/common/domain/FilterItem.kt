@@ -10,6 +10,10 @@ data class FilterItem(
         val localizedText: String?
 ) : Parcelable {
 
+    override fun toString(): String {
+        return localizedText ?: ""
+    }
+
     override fun equals(other: Any?): Boolean {
         if (other is FilterItem) {
             val (action1, value1, localizedText1) = other

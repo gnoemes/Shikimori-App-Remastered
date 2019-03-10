@@ -3,6 +3,7 @@ package com.gnoemes.shikimori.presentation.presenter.search
 import com.arellomobile.mvp.InjectViewState
 import com.gnoemes.shikimori.domain.search.filter.FilterInteractor
 import com.gnoemes.shikimori.entity.common.domain.FilterItem
+import com.gnoemes.shikimori.entity.common.domain.SearchConstants
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.search.domain.FilterType
 import com.gnoemes.shikimori.entity.search.presentation.FilterAction
@@ -25,9 +26,21 @@ class FilterPresenter @Inject constructor(
 
     private val items = mutableListOf<Any>()
 
+    private val sortItems = mutableListOf<FilterItem>()
+
     override fun initData() {
+        loadSortFilters()
         onFiltersChanged()
-//        loadData()
+    }
+
+    private fun loadSortFilters() {
+        (when (type) {
+            Type.MANGA -> interactor.getMangaSortFilters()
+            else -> interactor.getAnimeSortFilters()
+        })
+                .doOnSuccess { sortItems.clearAndAddAll(it) }
+                .subscribe(this::setSortFilters, this::processErrors)
+                .addToDisposables()
     }
 
     private fun loadData() {
@@ -46,9 +59,23 @@ class FilterPresenter @Inject constructor(
         viewState.showData(it)
     }
 
+    private fun setSortFilters(it: List<FilterItem>) {
+        val selectedPos = it.indexOfFirst { it.value == appliedFilters[SearchConstants.ORDER]?.firstOrNull()?.value }
+        viewState.setSortFilters(it, if (selectedPos == -1) 1 else selectedPos)
+    }
+
     private fun onFiltersChanged() {
         viewState.setResetEnabled(appliedFilters.size > 0)
         loadData()
+    }
+
+    fun onSortChanged(newSort: FilterItem) {
+        clearAndAddToSelected(SearchConstants.ORDER, newSort)
+    }
+
+    private fun clearAndAddToSelected(key: String, filterItem: FilterItem) {
+        clear(key)
+        addToSelected(key, filterItem)
     }
 
     fun onFilterAction(type: FilterType, action: FilterAction) {
@@ -78,6 +105,7 @@ class FilterPresenter @Inject constructor(
     fun onResetClicked() {
         appliedFilters.clear()
         onFiltersChanged()
+        loadSortFilters()
     }
 
     fun onAcceptClicked() {

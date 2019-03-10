@@ -13,4 +13,6 @@ interface FilterView : BaseFragmentView {
 
     @StateStrategyType(SkipStrategy::class)
     fun onFiltersAccepted(appliedFilters: HashMap<String, MutableList<FilterItem>>)
+
+    fun setSortFilters(items: List<FilterItem>, selected : Int)
 }

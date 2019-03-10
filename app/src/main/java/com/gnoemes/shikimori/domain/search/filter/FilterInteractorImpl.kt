@@ -1,6 +1,7 @@
 package com.gnoemes.shikimori.domain.search.filter
 
 import com.gnoemes.shikimori.data.repository.search.FilterRepository
+import com.gnoemes.shikimori.entity.common.domain.FilterItem
 import com.gnoemes.shikimori.entity.search.presentation.FilterCategory
 import com.gnoemes.shikimori.utils.applyErrorHandlerAndSchedulers
 import io.reactivex.Single
@@ -11,8 +12,9 @@ class FilterInteractorImpl @Inject constructor(
 ) : FilterInteractor {
 
     override fun getAnimeFilters(): Single<List<FilterCategory>> = repository.getAnimeFilters().applyErrorHandlerAndSchedulers()
-
     override fun getMangaFilters(): Single<List<FilterCategory>> = repository.getMangaFilters().applyErrorHandlerAndSchedulers()
-
     override fun getRanobeFilters(): Single<List<FilterCategory>> = repository.getRanobeFilters().applyErrorHandlerAndSchedulers()
+
+    override fun getAnimeSortFilters(): Single<List<FilterItem>> = repository.getAnimeSortFilters().applyErrorHandlerAndSchedulers()
+    override fun getMangaSortFilters(): Single<List<FilterItem>> = repository.getMangaSortFilters().applyErrorHandlerAndSchedulers()
 }
