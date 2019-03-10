@@ -132,7 +132,7 @@ class TranslationsPresenter @Inject constructor(
 
     //TODO quality chooser
     private fun getVideoAndExecute(payload: TranslationVideo, onSubscribe: (Video) -> Unit) {
-        interactor.getVideo(payload, navigationData.isAlternative)
+        interactor.getVideo(payload, payload.videoHosting == VideoHosting.SMOTRET_ANIME)
                 .appendLoadingLogic(viewState)
                 .subscribe(onSubscribe::invoke, this::processErrors)
                 .addToDisposables()
