@@ -9,9 +9,11 @@ import com.gnoemes.shikimori.entity.main.BottomScreens
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.rates.presentation.RateNavigationData
 import com.gnoemes.shikimori.entity.user.domain.UserDetails
+import com.gnoemes.shikimori.entity.user.domain.UserStatus
 import com.gnoemes.shikimori.entity.user.presentation.UserContentType
 import com.gnoemes.shikimori.entity.user.presentation.UserProfileAction
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
+import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResourceProvider
 import com.gnoemes.shikimori.presentation.presenter.user.converter.UserDetailsViewModelConverter
 import com.gnoemes.shikimori.presentation.view.user.UserView
 import com.gnoemes.shikimori.utils.appendHostIfNeed
@@ -24,7 +26,8 @@ import javax.inject.Inject
 @InjectViewState
 class UserPresenter @Inject constructor(
         private val interactor: UserInteractor,
-        private val converter: UserDetailsViewModelConverter
+        private val converter: UserDetailsViewModelConverter,
+        private val resourceProvider: CommonResourceProvider
 ) : BaseNetworkPresenter<UserView>() {
 
     var id: Long = Constants.NO_ID
@@ -92,12 +95,19 @@ class UserPresenter @Inject constructor(
     }
 
     private fun onFriendshipStatusChanged(newStatus: Boolean) {
+        if (checkUserStatus()) {
+            router.showSystemMessage(resourceProvider.needAuth)
+            return
+        }
+
         (if (newStatus) interactor.addToFriends(id)
         else interactor.removeFriend(id))
                 .updateUserData()
     }
 
     private fun onIgnoreStatusChanged(newStatus: Boolean) {
+        if (checkUserStatus()) return
+
         (if (newStatus) interactor.ignore(id)
         else interactor.unignore(id))
                 .updateUserData()
@@ -112,6 +122,7 @@ class UserPresenter @Inject constructor(
     }
 
     private fun onMessageClicked() {
+        if (checkUserStatus()) return
         //TODO
     }
 
@@ -136,4 +147,13 @@ class UserPresenter @Inject constructor(
     fun onRefresh() {
         loadData()
     }
+
+    private fun checkUserStatus(): Boolean {
+        return if (isGuest()) {
+            router.showSystemMessage(resourceProvider.needAuth)
+            true
+        } else false
+    }
+
+    private fun isGuest(): Boolean = interactor.getUserStatus() == UserStatus.GUEST
 }
