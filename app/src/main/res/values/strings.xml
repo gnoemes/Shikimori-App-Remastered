@@ -211,6 +211,9 @@
     <string name="filters_genres">Жанры</string>
     <string name="filter_genres_main">Главные</string>
     <string name="filter_genres_other">Список</string>
+    <string name="filter_custom">Кастомный фильтр</string>
+    <string name="filter_custom_input_hint">Нажмите сюда, чтобы начать ввод</string>
+    <string name="filter_seasons">Сезоны</string>
 
     <string name="more_authorized_hint">Перейти в профиль</string>
     <string name="more_guest_hint">Авторизоваться</string>

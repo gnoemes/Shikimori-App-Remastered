@@ -136,6 +136,17 @@
         <item name="android:outlineAmbientShadowColor" tools:targetApi="p">?attr/colorSecondaryTransparent</item>
     </style>
 
+    <style name="EntryChipStyle" parent="Widget.MaterialComponents.Chip.Entry">
+        <item name="android:textColor">?attr/colorSecondary</item>
+        <item name="chipBackgroundColor">?attr/colorSecondaryTransparent</item>
+        <item name="chipStrokeColor">?attr/colorSecondaryTransparent</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="chipIconTint">?attr/colorSecondary</item>
+        <item name="rippleColor">?attr/colorPrimary</item>
+        <item name="closeIconTint">?attr/colorSecondary</item>
+        <item name="android:outlineAmbientShadowColor" tools:targetApi="p">?attr/colorSecondaryTransparent</item>
+    </style>
+
     <style name="ActionUnelevatedButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:textColor">@drawable/selector_action_button_text_color</item>
         <item name="backgroundTint">@drawable/selector_action_button_background_color</item>

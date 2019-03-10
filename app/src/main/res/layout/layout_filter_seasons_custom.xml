@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="27dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/filter_custom"
+        android:textColor="?attr/colorOnSurface"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/helpBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@android:color/transparent"
+        android:foreground="?attr/selectableItemBackground"
+        android:tint="?attr/colorOnSurface"
+        app:layout_constraintBottom_toBottomOf="@+id/label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/label"
+        app:srcCompat="@drawable/ic_info"
+        tools:ignore="UnusedAttribute" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/customInputRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/label" />
+
+    <!--<com.google.android.flexbox.FlexboxLayout-->
+    <!--android:id="@+id/customContainer"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginStart="16dp"-->
+    <!--android:layout_marginLeft="16dp"-->
+    <!--android:layout_marginTop="24dp"-->
+    <!--android:layout_marginEnd="16dp"-->
+    <!--android:layout_marginRight="16dp"-->
+    <!--android:layout_marginBottom="24dp"-->
+    <!--app:flexDirection="row"-->
+    <!--app:flexWrap="wrap"-->
+    <!--app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintHorizontal_bias="0.0"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/label"-->
+    <!--app:layout_constraintVertical_bias="1.0">-->
+
+
+    <!--<com.google.android.material.chip.Chip-->
+    <!--style="@style/Widget.MaterialComponents.Chip.Entry"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="kek" />-->
+
+    <!--<com.google.android.material.chip.Chip-->
+    <!--style="@style/Widget.MaterialComponents.Chip.Entry"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="kek" />-->
+
+    <!--<com.google.android.material.chip.Chip-->
+    <!--style="@style/Widget.MaterialComponents.Chip.Entry"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="kek" />-->
+
+    <!--<com.google.android.material.chip.Chip-->
+    <!--style="@style/Widget.MaterialComponents.Chip.Entry"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="kek" />-->
+
+    <!--<com.google.android.material.chip.Chip-->
+    <!--style="@style/Widget.MaterialComponents.Chip.Entry"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="kek" />-->
+
+    <!--<com.google.android.material.chip.Chip-->
+    <!--style="@style/Widget.MaterialComponents.Chip.Entry"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="kek" />-->
+
+    <!--<com.google.android.material.chip.Chip-->
+    <!--style="@style/Widget.MaterialComponents.Chip.Entry"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="kek" />-->
+
+    <!--<com.google.android.material.textfield.TextInputEditText-->
+    <!--android:id="@+id/customInputView"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="@android:color/transparent"-->
+    <!--android:hint="@string/filter_custom_input_hint" />-->
+
+    <!--</com.google.android.flexbox.FlexboxLayout>-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

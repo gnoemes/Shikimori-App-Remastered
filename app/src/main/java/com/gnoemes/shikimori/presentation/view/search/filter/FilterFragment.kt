@@ -18,6 +18,7 @@ import com.gnoemes.shikimori.presentation.view.base.fragment.BaseBottomSheetInje
 import com.gnoemes.shikimori.presentation.view.common.widget.spinner.MaterialSpinnerAdapter
 import com.gnoemes.shikimori.presentation.view.search.filter.adapter.FilterAdapter
 import com.gnoemes.shikimori.presentation.view.search.filter.genres.FilterGenresFragment
+import com.gnoemes.shikimori.presentation.view.search.filter.seasons.FilterSeasonsFragment
 import com.gnoemes.shikimori.utils.*
 import kotlinx.android.synthetic.main.fragment_filter.*
 import kotlinx.android.synthetic.main.layout_filter_bottom.*
@@ -112,6 +113,16 @@ class FilterFragment : BaseBottomSheetInjectionDialogFragment<FilterPresenter, F
         if (fragment == null) {
             val filter = FilterGenresFragment.newInstance(type, filters)
             filter.setTargetFragment(this, 43)
+            postViewAction { filter.show(fragmentManager!!, tag) }
+        }
+    }
+
+    override fun showSeasonsDialog(type: Type, filters: HashMap<String, MutableList<FilterItem>>) {
+        val tag = "seasonsFilterDialog"
+        val fragment = fragmentManager?.findFragmentByTag(tag)
+        if (fragment == null) {
+            val filter = FilterSeasonsFragment.newInstance(type, filters)
+            filter.setTargetFragment(this, 44)
             postViewAction { filter.show(fragmentManager!!, tag) }
         }
     }

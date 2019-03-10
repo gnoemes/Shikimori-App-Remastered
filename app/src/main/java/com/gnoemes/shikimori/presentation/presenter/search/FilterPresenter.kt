@@ -77,6 +77,8 @@ open class FilterPresenter @Inject constructor(
     private fun showNested(type: FilterType) {
         when(type) {
             FilterType.GENRE -> viewState.showGenresDialog(super.type, appliedFilters)
+            FilterType.SEASON -> viewState.showSeasonsDialog(super.type, appliedFilters)
+            else -> Unit
         }
     }
 

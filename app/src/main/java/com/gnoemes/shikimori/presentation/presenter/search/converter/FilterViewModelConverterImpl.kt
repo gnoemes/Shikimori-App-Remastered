@@ -33,11 +33,6 @@ class FilterViewModelConverterImpl @Inject constructor() : FilterViewModelConver
         }
     }
 
-    private fun getAppliedStatus(checkItem: FilterItem, applied: MutableList<FilterItem>?): Pair<Boolean, Boolean> {
-        val item = applied?.find { checkItem.value?.equals(it.value?.replace("!", ""))!! }
-        return Pair(item != null, item != null && item.value!!.contains("!"))
-    }
-
     override fun convertGenres(category: FilterCategory, appliedFilters: HashMap<String, MutableList<FilterItem>>): List<Any> {
         val items = mutableListOf<Any>()
 
@@ -81,6 +76,21 @@ class FilterViewModelConverterImpl @Inject constructor() : FilterViewModelConver
         items.add(FilterOtherGenreCategory(otherCategoryFilters))
 
         return items
+    }
+
+    override fun convertSeasons(category: FilterCategory, appliedFilters: HashMap<String, MutableList<FilterItem>>): List<FilterViewModel> {
+        val applied = appliedFilters[category.filterType.value]
+
+     return category.filters
+                .map {
+                    val statuses = getAppliedStatus(it, applied)
+                    convertFilter(it, statuses.first, statuses.second)
+                }
+    }
+
+    private fun getAppliedStatus(checkItem: FilterItem, applied: MutableList<FilterItem>?): Pair<Boolean, Boolean> {
+        val item = applied?.find { checkItem.value?.equals(it.value?.replace("!", ""))!! }
+        return Pair(item != null, item != null && item.value!!.contains("!"))
     }
 
     private fun convertFilter(item: FilterItem, isApplied: Boolean, isInverted: Boolean): FilterViewModel {

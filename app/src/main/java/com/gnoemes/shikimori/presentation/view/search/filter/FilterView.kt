@@ -12,4 +12,7 @@ interface FilterView : BaseFilterView {
 
     @StateStrategyType(SkipStrategy::class)
     fun showGenresDialog(type: Type, filters: HashMap<String, MutableList<FilterItem>>)
+
+    @StateStrategyType(SkipStrategy::class)
+    fun showSeasonsDialog(type: Type, filters: HashMap<String, MutableList<FilterItem>>)
 }

@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         android:background="?attr/colorSurface">
 
-        <include layout="@layout/layout_filter_genres_toolbar" />
+        <include layout="@layout/layout_filter_nested_toolbar" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
