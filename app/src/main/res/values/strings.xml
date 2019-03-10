@@ -212,6 +212,7 @@
     <string name="filter_genres_main">Главные</string>
     <string name="filter_genres_other">Список</string>
     <string name="filter_custom">Кастомный фильтр</string>
+    <string name="filter_custom_seasons">Кастомный фильтр сезонов</string>
     <string name="filter_custom_input_hint">Нажмите сюда, чтобы начать ввод</string>
     <string name="filter_seasons">Сезоны</string>
 

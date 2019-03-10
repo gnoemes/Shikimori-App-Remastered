@@ -159,6 +159,18 @@
         <item name="cornerRadius">4dp</item>
     </style>
 
+    <style name="BackDropCardStyle" parent="Widget.MaterialComponents.CardView">
+        <item name="shapeAppearance">@style/BackDropShapeStyle</item>
+        <item name="cardPreventCornerOverlap">true</item>
+    </style>
+
+    <style name="BackDropShapeStyle" parent="ShapeAppearance.MaterialComponents">
+        <item name="cornerSize">16sp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerFamily">rounded</item>
+    </style>
+
     <style name="DrawerIconStyle" parent="Widget.AppCompat.DrawerArrowToggle">
         <item name="color">?attr/colorOnPrimary</item>
     </style>
