@@ -39,8 +39,8 @@ class FilterWithButtonsAdapterDelegate(
 
         private lateinit var item: FilterWithButtonsViewModel
 
-        private val bigMargin by lazy { itemView.context.dp(22) }
-        private val defaultMargin by lazy { itemView.context.dp(12) }
+        private val bigMargin by lazy { itemView.context.dp(26) }
+        private val defaultMargin by lazy { itemView.context.dp(16) }
 
         init {
             with(itemView) {
