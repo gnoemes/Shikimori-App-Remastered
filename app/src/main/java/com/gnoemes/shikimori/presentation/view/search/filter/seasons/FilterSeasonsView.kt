@@ -6,4 +6,6 @@ import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFilterView
 interface FilterSeasonsView : BaseFilterView {
 
     fun showSimpleData(items : List<FilterViewModel>)
+
+    fun showCustomData(items: List<Any>)
 }

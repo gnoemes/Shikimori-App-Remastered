@@ -122,8 +122,9 @@ open class FilterPresenter @Inject constructor(
         onFiltersChanged()
     }
 
-    fun onNestedFilterCallback(newAppliedFilters: HashMap<String, MutableList<FilterItem>>) {
-        appliedFilters.putAll(newAppliedFilters)
+    fun onNestedFilterCallback(key: String?, newAppliedFilters: HashMap<String, MutableList<FilterItem>>) {
+        if (newAppliedFilters.isEmpty()) clearSection(key!!)
+        else appliedFilters.putAll(newAppliedFilters)
         onFiltersChanged()
     }
 }

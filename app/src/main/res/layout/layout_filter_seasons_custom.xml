@@ -44,81 +44,11 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="24dp"
+        android:descendantFocusability="beforeDescendants"
+        android:focusableInTouchMode="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label" />
-
-    <!--<com.google.android.flexbox.FlexboxLayout-->
-    <!--android:id="@+id/customContainer"-->
-    <!--android:layout_width="0dp"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginStart="16dp"-->
-    <!--android:layout_marginLeft="16dp"-->
-    <!--android:layout_marginTop="24dp"-->
-    <!--android:layout_marginEnd="16dp"-->
-    <!--android:layout_marginRight="16dp"-->
-    <!--android:layout_marginBottom="24dp"-->
-    <!--app:flexDirection="row"-->
-    <!--app:flexWrap="wrap"-->
-    <!--app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--app:layout_constraintEnd_toEndOf="parent"-->
-    <!--app:layout_constraintHorizontal_bias="0.0"-->
-    <!--app:layout_constraintStart_toStartOf="parent"-->
-    <!--app:layout_constraintTop_toBottomOf="@+id/label"-->
-    <!--app:layout_constraintVertical_bias="1.0">-->
-
-
-    <!--<com.google.android.material.chip.Chip-->
-    <!--style="@style/Widget.MaterialComponents.Chip.Entry"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:text="kek" />-->
-
-    <!--<com.google.android.material.chip.Chip-->
-    <!--style="@style/Widget.MaterialComponents.Chip.Entry"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:text="kek" />-->
-
-    <!--<com.google.android.material.chip.Chip-->
-    <!--style="@style/Widget.MaterialComponents.Chip.Entry"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:text="kek" />-->
-
-    <!--<com.google.android.material.chip.Chip-->
-    <!--style="@style/Widget.MaterialComponents.Chip.Entry"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:text="kek" />-->
-
-    <!--<com.google.android.material.chip.Chip-->
-    <!--style="@style/Widget.MaterialComponents.Chip.Entry"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:text="kek" />-->
-
-    <!--<com.google.android.material.chip.Chip-->
-    <!--style="@style/Widget.MaterialComponents.Chip.Entry"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:text="kek" />-->
-
-    <!--<com.google.android.material.chip.Chip-->
-    <!--style="@style/Widget.MaterialComponents.Chip.Entry"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:text="kek" />-->
-
-    <!--<com.google.android.material.textfield.TextInputEditText-->
-    <!--android:id="@+id/customInputView"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:background="@android:color/transparent"-->
-    <!--android:hint="@string/filter_custom_input_hint" />-->
-
-    <!--</com.google.android.flexbox.FlexboxLayout>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

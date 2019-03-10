@@ -93,7 +93,7 @@ class FilterGenresFragment : BaseBottomSheetInjectionDialogFragment<FilterGenres
     override fun setResetEnabled(show: Boolean) = clearBtn.visibleIf { show }
 
     override fun onFiltersAccepted(appliedFilters: HashMap<String, MutableList<FilterItem>>) {
-        (targetFragment as? FilterCallback)?.onFiltersSelected(appliedFilters)
+        (targetFragment as? FilterCallback)?.onFiltersSelected(tag, appliedFilters)
         onBackPressed()
     }
 

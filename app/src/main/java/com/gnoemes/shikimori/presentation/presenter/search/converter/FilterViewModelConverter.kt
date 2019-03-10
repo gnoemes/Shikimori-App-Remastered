@@ -12,4 +12,6 @@ interface FilterViewModelConverter  {
 
     fun convertSeasons(category: FilterCategory, appliedFilters: HashMap<String, MutableList<FilterItem>>): List<FilterViewModel>
 
+    fun convertCustomSeasons(appliedFilters: HashMap<String, MutableList<FilterItem>>): List<Any>
+
 }

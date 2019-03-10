@@ -81,11 +81,22 @@ class FilterViewModelConverterImpl @Inject constructor() : FilterViewModelConver
     override fun convertSeasons(category: FilterCategory, appliedFilters: HashMap<String, MutableList<FilterItem>>): List<FilterViewModel> {
         val applied = appliedFilters[category.filterType.value]
 
-     return category.filters
+        return category.filters
                 .map {
                     val statuses = getAppliedStatus(it, applied)
                     convertFilter(it, statuses.first, statuses.second)
                 }
+    }
+
+    override fun convertCustomSeasons(appliedFilters: HashMap<String, MutableList<FilterItem>>): List<Any> {
+        return (appliedFilters[FilterType.SEASON.value]
+                ?.asSequence()
+                ?.filter { it.localizedText.isNullOrBlank() }
+                ?.map { FilterEntryViewModel(it.value!!) }
+                ?.map { it as Any }
+                ?.toMutableList()
+                ?: mutableListOf())
+                .apply { add(FilterEntryInput(size == 0)) }
     }
 
     private fun getAppliedStatus(checkItem: FilterItem, applied: MutableList<FilterItem>?): Pair<Boolean, Boolean> {

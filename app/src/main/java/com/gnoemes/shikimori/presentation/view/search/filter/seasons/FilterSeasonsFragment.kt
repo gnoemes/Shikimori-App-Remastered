@@ -17,10 +17,14 @@ import com.gnoemes.shikimori.presentation.presenter.search.FilterSeasonsPresente
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseBottomSheetInjectionDialogFragment
 import com.gnoemes.shikimori.presentation.view.search.filter.FilterCallback
 import com.gnoemes.shikimori.presentation.view.search.filter.adapter.FilterChipAdapter
+import com.gnoemes.shikimori.presentation.view.search.filter.seasons.adapter.FilterSeasonsAdapter
 import com.gnoemes.shikimori.utils.*
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import kotlinx.android.synthetic.main.fragment_filter_seasons.*
 import kotlinx.android.synthetic.main.layout_filter_nested_toolbar.*
+import kotlinx.android.synthetic.main.layout_filter_seasons_custom.*
 
 class FilterSeasonsFragment : BaseBottomSheetInjectionDialogFragment<FilterSeasonsPresenter, FilterSeasonsView>(), FilterSeasonsView {
 
@@ -45,6 +49,7 @@ class FilterSeasonsFragment : BaseBottomSheetInjectionDialogFragment<FilterSeaso
     }
 
     private val simpleAdapter by lazy { FilterChipAdapter(FilterType.SEASON, presenter::onFilterInverted, presenter::onFilterSelected) }
+    private val customAdapter by lazy { FilterSeasonsAdapter(presenter::onNewCustomFilter, presenter::onRemoveCustomFilter) }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -69,6 +74,12 @@ class FilterSeasonsFragment : BaseBottomSheetInjectionDialogFragment<FilterSeaso
             itemAnimator = null
         }
 
+        with(customInputRecyclerView) {
+            adapter = customAdapter
+            layoutManager = FlexboxLayoutManager(context).apply { flexWrap = FlexWrap.WRAP; flexDirection = FlexDirection.ROW }
+            itemAnimator = null
+        }
+
         clearBtn.onClick { presenter.onResetClicked() }
         acceptBtn.onClick { presenter.onAcceptClicked() }
     }
@@ -90,10 +101,14 @@ class FilterSeasonsFragment : BaseBottomSheetInjectionDialogFragment<FilterSeaso
         simpleAdapter.bind(items)
     }
 
+    override fun showCustomData(items: List<Any>) {
+        customAdapter.bindItems(items)
+    }
+
     override fun setResetEnabled(show: Boolean) = clearBtn.visibleIf { show }
 
     override fun onFiltersAccepted(appliedFilters: HashMap<String, MutableList<FilterItem>>) {
-        (targetFragment as? FilterCallback)?.onFiltersSelected(appliedFilters)
+        (targetFragment as? FilterCallback)?.onFiltersSelected(tag, appliedFilters)
         onBackPressed()
     }
 

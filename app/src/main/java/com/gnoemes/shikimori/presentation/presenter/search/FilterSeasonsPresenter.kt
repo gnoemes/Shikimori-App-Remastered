@@ -2,8 +2,10 @@ package com.gnoemes.shikimori.presentation.presenter.search
 
 import com.arellomobile.mvp.InjectViewState
 import com.gnoemes.shikimori.domain.search.filter.FilterInteractor
+import com.gnoemes.shikimori.entity.common.domain.FilterItem
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.search.domain.FilterType
+import com.gnoemes.shikimori.entity.search.presentation.FilterEntryViewModel
 import com.gnoemes.shikimori.entity.search.presentation.FilterViewModel
 import com.gnoemes.shikimori.presentation.presenter.base.BaseFilterPresenter
 import com.gnoemes.shikimori.presentation.presenter.search.converter.FilterViewModelConverter
@@ -24,10 +26,26 @@ class FilterSeasonsPresenter @Inject constructor(
             })
                     .map { list -> list.first { it.filterType == FilterType.SEASON } }
                     .map { converter.convertSeasons(it, appliedFilters) }
+                    .doOnSuccess { loadCustomFilters() }
                     .subscribe(this::setData, this::processErrors)
                     .addToDisposables()
 
+    private fun loadCustomFilters() {
+        val items = converter.convertCustomSeasons(appliedFilters)
+        viewState.showCustomData(items)
+    }
+
     private fun setData(it : List<FilterViewModel>) {
         viewState.showSimpleData(it)
+    }
+
+    fun onRemoveCustomFilter(item : FilterEntryViewModel) {
+        removeFromSelected(FilterType.SEASON.value, FilterItem(FilterType.SEASON.value, item.value, ""))
+        onFiltersChanged()
+    }
+
+    fun onNewCustomFilter(value : String) {
+        addToSelected(FilterType.SEASON.value, FilterItem(FilterType.SEASON.value, value, ""))
+        onFiltersChanged()
     }
 }

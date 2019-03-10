@@ -49,7 +49,10 @@ abstract class BasePaginationPresenter<Items : Any, View : BasePaginationView> :
     }
 
     override fun showData(show: Boolean, data: List<Items>) {
-        if (show) viewState.showData(data)
+        if (show) {
+            viewState.showData(data)
+            viewState.hideNetworkView()
+        }
         viewState.showContent(show)
     }
 

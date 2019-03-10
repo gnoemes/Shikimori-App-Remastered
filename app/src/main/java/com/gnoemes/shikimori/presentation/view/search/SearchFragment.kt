@@ -167,7 +167,7 @@ class SearchFragment : BasePaginationFragment<SearchItem, SearchPresenter, Searc
     // CALLBACKS
     ///////////////////////////////////////////////////////////////////////////
 
-    override fun onFiltersSelected(appliedFilters: HashMap<String, MutableList<FilterItem>>) {
+    override fun onFiltersSelected(tag : String?, appliedFilters: HashMap<String, MutableList<FilterItem>>) {
         getPresenter().onFilterSelected(appliedFilters)
     }
 

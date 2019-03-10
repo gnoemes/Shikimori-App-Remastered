@@ -13,6 +13,7 @@ import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.common.domain.FilterItem
 import com.gnoemes.shikimori.entity.common.domain.Type
+import com.gnoemes.shikimori.entity.search.domain.FilterType
 import com.gnoemes.shikimori.presentation.presenter.search.FilterPresenter
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseBottomSheetInjectionDialogFragment
 import com.gnoemes.shikimori.presentation.view.common.widget.spinner.MaterialSpinnerAdapter
@@ -39,6 +40,8 @@ class FilterFragment : BaseBottomSheetInjectionDialogFragment<FilterPresenter, F
         private const val FILTERS_KEY = "FILTERS_KEY"
         private const val TYPE_KEY = "TYPE_KEY"
         private const val HINT_KEY = "HINT_KEY"
+        private const val GENRES_TAG = "genresFilterDialog"
+        private const val SEASONS_TAG = "seasonsFilterDialog"
         fun newInstance(type: Type, filters: HashMap<String, MutableList<FilterItem>>?) = FilterFragment()
                 .withArgs {
                     putSerializable(TYPE_KEY, type)
@@ -86,8 +89,15 @@ class FilterFragment : BaseBottomSheetInjectionDialogFragment<FilterPresenter, F
         }
     }
 
-    override fun onFiltersSelected(appliedFilters: HashMap<String, MutableList<FilterItem>>) {
-        presenter.onNestedFilterCallback(appliedFilters)
+    override fun onFiltersSelected(tag: String?, appliedFilters: HashMap<String, MutableList<FilterItem>>) {
+        val key = when (tag) {
+            GENRES_TAG -> FilterType.GENRE.value
+            SEASONS_TAG -> FilterType.SEASON.value
+            else -> null
+        }
+
+        presenter.onNestedFilterCallback(key, appliedFilters)
+
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -108,22 +118,20 @@ class FilterFragment : BaseBottomSheetInjectionDialogFragment<FilterPresenter, F
     }
 
     override fun showGenresDialog(type: Type, filters: HashMap<String, MutableList<FilterItem>>) {
-        val tag = "genresFilterDialog"
-        val fragment = fragmentManager?.findFragmentByTag(tag)
+        val fragment = fragmentManager?.findFragmentByTag(GENRES_TAG)
         if (fragment == null) {
             val filter = FilterGenresFragment.newInstance(type, filters)
             filter.setTargetFragment(this, 43)
-            postViewAction { filter.show(fragmentManager!!, tag) }
+            postViewAction { filter.show(fragmentManager!!, GENRES_TAG) }
         }
     }
 
     override fun showSeasonsDialog(type: Type, filters: HashMap<String, MutableList<FilterItem>>) {
-        val tag = "seasonsFilterDialog"
-        val fragment = fragmentManager?.findFragmentByTag(tag)
+        val fragment = fragmentManager?.findFragmentByTag(SEASONS_TAG)
         if (fragment == null) {
             val filter = FilterSeasonsFragment.newInstance(type, filters)
             filter.setTargetFragment(this, 44)
-            postViewAction { filter.show(fragmentManager!!, tag) }
+            postViewAction { filter.show(fragmentManager!!, SEASONS_TAG) }
         }
     }
 
@@ -131,7 +139,7 @@ class FilterFragment : BaseBottomSheetInjectionDialogFragment<FilterPresenter, F
         resetBtn.isEnabled = show
     }
 
-    override fun setSortFilters(items: List<FilterItem>, selected : Int) {
+    override fun setSortFilters(items: List<FilterItem>, selected: Int) {
         sortSpinner.setAdapter(MaterialSpinnerAdapter(context, items))
         sortSpinner.selectedIndex = selected
     }
@@ -141,7 +149,7 @@ class FilterFragment : BaseBottomSheetInjectionDialogFragment<FilterPresenter, F
     }
 
     override fun onFiltersAccepted(appliedFilters: HashMap<String, MutableList<FilterItem>>) {
-        (targetFragment as? FilterCallback)?.onFiltersSelected(appliedFilters)
+        (targetFragment as? FilterCallback)?.onFiltersSelected(tag, appliedFilters)
         onBackPressed()
     }
 
