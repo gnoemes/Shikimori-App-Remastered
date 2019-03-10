@@ -3,9 +3,11 @@ package com.gnoemes.shikimori.presentation.view.search.filter.seasons
 import android.content.Context
 import android.graphics.Point
 import android.os.Bundle
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.afollestad.materialdialogs.MaterialDialog
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
@@ -82,6 +84,13 @@ class FilterSeasonsFragment : BaseBottomSheetInjectionDialogFragment<FilterSeaso
 
         clearBtn.onClick { presenter.onResetClicked() }
         acceptBtn.onClick { presenter.onAcceptClicked() }
+        helpBtn.onClick {
+            MaterialDialog(context!!).show {
+                title(R.string.filter_custom)
+                message(text = Html.fromHtml(getString(R.string.filter_custom_seasons_hint)))
+                positiveButton(R.string.common_understand)
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////////////

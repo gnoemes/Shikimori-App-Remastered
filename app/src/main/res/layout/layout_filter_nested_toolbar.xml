@@ -5,7 +5,7 @@
     android:id="@+id/appBarLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?colorPrimary"
+    android:background="?attr/colorSurface"
     android:fitsSystemWindows="true"
     app:elevation="0dp">
 
