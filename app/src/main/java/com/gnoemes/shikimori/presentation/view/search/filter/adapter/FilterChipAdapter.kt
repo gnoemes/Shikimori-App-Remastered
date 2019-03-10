@@ -45,7 +45,7 @@ class FilterChipAdapter(
         fun bind(item: FilterViewModel) {
             this.item = item
             with(itemView) {
-                chip.text = formatForChip(item.text)
+                chip.text = item.text
                 chip.isChipIconVisible = item.state == FilterViewModel.STATE.INVERTED
 
                 when (item.state) {
@@ -57,19 +57,5 @@ class FilterChipAdapter(
 
             }
         }
-
-        private fun formatForChip(text: String): String {
-            return if (text.length >= 5) text
-            else {
-                val arr = text.toCharArray().toMutableList()
-                var first = true
-                while (arr.size < 5) {
-                    if (first) arr.add(0, ' ') else arr.add(' ')
-                    first = !first
-                }
-                String(arr.toCharArray())
-            }
-        }
-
     }
 }

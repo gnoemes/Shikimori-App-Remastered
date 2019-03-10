@@ -9,5 +9,6 @@
     android:layout_marginStart="@dimen/margin_small"
     android:layout_marginEnd="@dimen/margin_small"
     app:checkedIconEnabled="false"
+    android:textAlignment="center"
     app:iconStartPadding="8dp"
     tools:text="Смотрю" />
