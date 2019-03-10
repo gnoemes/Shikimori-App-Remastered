@@ -24,7 +24,6 @@ import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.Router
 import ru.terrakok.cicerone.commands.Command
-import ru.terrakok.cicerone.commands.Forward
 import ru.terrakok.cicerone.commands.Replace
 import javax.inject.Inject
 
@@ -103,9 +102,8 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView, RouterPr
         override fun createActivityIntent(context: Context?, screenKey: String?, data: Any?): Intent? = null
 
         override fun unknownScreen(command: Command?) {
-            val message = "SCREEN ${(command as? Forward)?.screenKey} NOT FOUND"
+            val message = getString(R.string.error_not_realized)
             Log.e("ERR", message)
-            //TODO remove
             showSystemMessage(message)
         }
 

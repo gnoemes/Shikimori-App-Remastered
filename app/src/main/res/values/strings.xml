@@ -143,6 +143,7 @@
     <string name="type_pattern_manga">%s, %s т. %s гл.</string>
     <string name="type_pattern_without_duration">%s (%s эп.)</string>
     <string name="error_no_data">Нет данных</string>
+    <string name="error_not_realized">Не реализовано</string>
     <string name="details_type">Тип:</string>
     <string name="details_season">Сезон:</string>
     <string name="details_status">Статус:</string>
