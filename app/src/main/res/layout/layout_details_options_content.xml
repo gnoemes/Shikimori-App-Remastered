@@ -41,6 +41,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:background="?attr/selectableItemBackground"
         android:drawableTop="@drawable/ic_animation_play"
         android:fontFamily="sans-serif-medium"
         android:gravity="center"
@@ -51,8 +53,7 @@
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintHorizontal_weight="0.3"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/linksView"
-        android:layout_marginLeft="8dp" />
+        app:layout_constraintTop_toTopOf="@+id/linksView" />
 
     <TextView
         android:id="@+id/linksView"
@@ -60,6 +61,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
+        android:background="?attr/selectableItemBackground"
         android:drawableTop="@drawable/ic_attachment"
         android:fontFamily="sans-serif-medium"
         android:gravity="center"
@@ -77,6 +79,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
+        android:background="?attr/selectableItemBackground"
         android:drawableTop="@drawable/ic_forum"
         android:fontFamily="sans-serif-medium"
         android:gravity="center"
