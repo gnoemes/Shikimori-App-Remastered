@@ -12,4 +12,5 @@
     android:textAlignment="center"
     app:checkedIconEnabled="false"
     app:ensureMinTouchTargetSize="false"
+    app:textEndPadding="2dp"
     tools:text="!2019" />
