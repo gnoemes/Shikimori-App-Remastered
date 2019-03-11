@@ -7,6 +7,7 @@ import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.search.domain.FilterType
 import com.gnoemes.shikimori.entity.search.presentation.FilterViewModel
 import com.gnoemes.shikimori.utils.clearAndAddAll
+import com.gnoemes.shikimori.utils.dimen
 import com.gnoemes.shikimori.utils.inflate
 import com.gnoemes.shikimori.utils.onClick
 import kotlinx.android.synthetic.main.item_chip_filter.view.*
@@ -37,6 +38,9 @@ class FilterChipAdapter(
 
         private lateinit var item: FilterViewModel
 
+        private val smallPadding by lazy { itemView.context.dimen(R.dimen.margin_small) }
+        private val normalPadding by lazy { itemView.context.dimen(R.dimen.margin_normal) }
+
         init {
             itemView.chip.onClick { selectCallback.invoke(type, item) }
             itemView.chip.setOnLongClickListener { invertCallback.invoke(type, item); true }
@@ -49,9 +53,9 @@ class FilterChipAdapter(
                 chip.isChipIconVisible = item.state == FilterViewModel.STATE.INVERTED
 
                 when (item.state) {
-                    FilterViewModel.STATE.DEFAULT -> chip.apply { isSelected = false; isChecked = false }
-                    FilterViewModel.STATE.INVERTED -> chip.apply { isSelected = false; isChecked = true }
-                    FilterViewModel.STATE.SELECTED -> chip.apply { isSelected = true; isChecked = false }
+                    FilterViewModel.STATE.DEFAULT -> chip.apply { isSelected = false; isChecked = false; textStartPadding = normalPadding }
+                    FilterViewModel.STATE.INVERTED -> chip.apply { isSelected = false; isChecked = true; textStartPadding = smallPadding }
+                    FilterViewModel.STATE.SELECTED -> chip.apply { isSelected = true; isChecked = false; textStartPadding = normalPadding }
                 }
 
 
