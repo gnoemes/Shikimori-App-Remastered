@@ -60,6 +60,7 @@
 
         <activity
             android:name=".presentation.view.player.embedded.EmbeddedPlayerActivity"
+            android:theme="@style/ShikimoriAppTheme.Player"
             android:configChanges="orientation|keyboardHidden|screenLayout|smallestScreenSize|screenSize"
             android:hardwareAccelerated="true"
             android:launchMode="singleTask"
