@@ -2,6 +2,7 @@ package com.gnoemes.shikimori.presentation.presenter.user
 
 import com.arellomobile.mvp.InjectViewState
 import com.gnoemes.shikimori.domain.user.UserInteractor
+import com.gnoemes.shikimori.entity.app.domain.AnalyticEvent
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.common.domain.Screens
 import com.gnoemes.shikimori.entity.common.domain.Type
@@ -115,9 +116,18 @@ class UserPresenter @Inject constructor(
 
     private fun onMoreClicked(type: UserContentType) {
         when (type) {
-            UserContentType.FRIENDS -> router.navigateTo(Screens.USER_FRIENDS, id)
-            UserContentType.CLUBS -> router.navigateTo(Screens.USER_CLUBS, id)
-            UserContentType.FAVORITES -> router.navigateTo(Screens.USER_FAVORITES, id)
+            UserContentType.FRIENDS -> {
+                router.navigateTo(Screens.USER_FRIENDS, id)
+                logEvent(AnalyticEvent.NAVIGATION_USER_FRIENDS)
+            }
+            UserContentType.CLUBS -> {
+                router.navigateTo(Screens.USER_CLUBS, id)
+                logEvent(AnalyticEvent.NAVIGATION_USER_CLUBS)
+            }
+            UserContentType.FAVORITES -> {
+                router.navigateTo(Screens.USER_FAVORITES, id)
+                logEvent(AnalyticEvent.NAVIGATION_USER_FAVORITES)
+            }
         }
     }
 
@@ -132,10 +142,12 @@ class UserPresenter @Inject constructor(
 
     private fun onBansClicked() {
         router.navigateTo(Screens.USER_BANS, id)
+        logEvent(AnalyticEvent.NAVIGATION_USER_BANS)
     }
 
     private fun onHistoryClicked() {
         router.navigateTo(Screens.USER_HISTORY, id)
+        logEvent(AnalyticEvent.NAVIGATION_USER_HISTORY)
     }
 
     private fun Completable.updateUserData() {

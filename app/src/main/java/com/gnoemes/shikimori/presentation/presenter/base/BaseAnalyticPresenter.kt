@@ -10,5 +10,5 @@ abstract class BaseAnalyticPresenter<View : BaseView> : BasePresenter<View>() {
     @Inject
     protected lateinit var analyticInteractor: AnalyticInteractor
 
-    protected open fun logEvent(event : AnalyticEvent) = analyticInteractor.logEvent(event)
+    open fun logEvent(event : AnalyticEvent) = analyticInteractor.logEvent(event)
 }

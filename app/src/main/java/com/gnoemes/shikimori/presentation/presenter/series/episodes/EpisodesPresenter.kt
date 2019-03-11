@@ -5,6 +5,7 @@ import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.domain.rates.RatesInteractor
 import com.gnoemes.shikimori.domain.series.SeriesInteractor
 import com.gnoemes.shikimori.domain.user.UserInteractor
+import com.gnoemes.shikimori.entity.app.domain.AnalyticEvent
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.app.domain.HttpStatusCode
 import com.gnoemes.shikimori.entity.app.domain.exceptions.BaseException
@@ -114,6 +115,7 @@ class EpisodesPresenter @Inject constructor(
     fun onEpisodeClicked(item: EpisodeViewModel) {
         val data = TranslationsNavigationData(navigationData.animeId, navigationData.image, navigationData.name, item.id, item.index, rateId, item.isFromAlternative)
         router.navigateTo(Screens.TRANSLATIONS, data)
+        logEvent(AnalyticEvent.NAVIGATION_ANIME_TRANSLATIONS)
     }
 
     fun onEpisodeLongClick(item: EpisodeViewModel) {

@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentTransaction
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.entity.app.domain.AnalyticEvent
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.main.BottomScreens
 import com.gnoemes.shikimori.presentation.presenter.main.MainPresenter
@@ -55,6 +56,7 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView, RouterPr
     private fun initBottomNav() {
         bottomNav.setOnNavigationItemSelectedListener { item ->
             val tab = tabs.find { it.id == item.itemId }!!
+            analyzeNavigation(tab.screenKey)
             presenter.onTabItemSelected(tab.screenKey)
             true
         }
@@ -87,6 +89,17 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView, RouterPr
         }
     }
 
+    private fun analyzeNavigation(screenKey: String) {
+        presenter.apply {
+            when (screenKey) {
+                BottomScreens.RATES -> logEvent(AnalyticEvent.NAVIGATION_BOTTOM_RATES)
+                BottomScreens.CALENDAR -> logEvent(AnalyticEvent.NAVIGATION_BOTTOM_CALENDAR)
+                BottomScreens.SEARCH -> logEvent(AnalyticEvent.NAVIGATION_BOTTOM_SEARCH)
+                BottomScreens.MAIN -> logEvent(AnalyticEvent.NAVIGATION_BOTTOM_MAIN)
+                BottomScreens.MORE -> logEvent(AnalyticEvent.NAVIGATION_BOTTOM_MORE)
+            }
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////////////
     // GETTERS

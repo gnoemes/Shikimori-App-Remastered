@@ -6,6 +6,7 @@ import com.gnoemes.shikimori.domain.rates.RatesInteractor
 import com.gnoemes.shikimori.domain.related.RelatedInteractor
 import com.gnoemes.shikimori.domain.user.UserInteractor
 import com.gnoemes.shikimori.entity.anime.domain.AnimeDetails
+import com.gnoemes.shikimori.entity.app.domain.AnalyticEvent
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.common.domain.*
 import com.gnoemes.shikimori.entity.common.presentation.DetailsContentType
@@ -98,6 +99,7 @@ class AnimePresenter @Inject constructor(
         val data = EpisodesNavigationData(id, currentAnime.image, currentAnime.nameRu
                 ?: currentAnime.name, currentAnime.userRate?.id)
         router.navigateTo(Screens.EPISODES, data)
+        logEvent(AnalyticEvent.NAVIGATION_ANIME_EPISODES)
     }
 
     override fun onEditRate() {
