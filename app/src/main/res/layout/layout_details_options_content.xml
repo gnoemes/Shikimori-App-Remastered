@@ -20,18 +20,15 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/watchOnlineBtn"
-        style="@style/Widget.MaterialComponents.Button"
+        style="@style/ActionUnelevatedButtonStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="2dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:fontFamily="sans-serif-medium"
         android:text="@string/details_watch_online"
-        android:textColor="?attr/colorOnSecondary"
-        android:textStyle="bold"
-        app:backgroundTint="?attr/colorSecondary"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rateSpinnerView" />
