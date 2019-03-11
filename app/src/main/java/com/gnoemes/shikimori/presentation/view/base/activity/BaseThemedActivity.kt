@@ -11,8 +11,10 @@ import com.gnoemes.shikimori.utils.getThemeSharedPreferences
 
 abstract class BaseThemedActivity : MvpActivity() {
 
+    protected open var applyTheme : Boolean = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(getCurrentTheme)
+        if (applyTheme) setTheme(getCurrentTheme)
         super.onCreate(savedInstanceState)
         getThemeSharedPreferences().registerOnSharedPreferenceChangeListener(themeChangeListener)
     }
