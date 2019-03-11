@@ -40,7 +40,8 @@ class FilterNestedAdapterDelegate(
         fun bind(item: FilterNestedViewModel) {
             this.item = item
             with(itemView) {
-                countBtn.text = "${item.appliedCount}"
+                val countText = if (item.appliedCount > 0) "${item.appliedCount}" else "+"
+                countBtn.text = countText
                 categoryName.text = item.categoryLocalised
 
                 countBtn.isSelected = item.appliedCount > 0
