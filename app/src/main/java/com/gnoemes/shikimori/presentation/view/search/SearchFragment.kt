@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.entity.app.domain.AnalyticEvent
 import com.gnoemes.shikimori.entity.app.domain.AppExtras
 import com.gnoemes.shikimori.entity.common.domain.FilterItem
 import com.gnoemes.shikimori.entity.common.domain.Type
@@ -133,6 +134,7 @@ class SearchFragment : BasePaginationFragment<SearchItem, SearchPresenter, Searc
 
     private val searchViewOpenListener = object : com.lapism.searchview.SearchView.OnOpenCloseListener {
         override fun onOpen(): Boolean {
+            getPresenter().logEvent(AnalyticEvent.SEARCH_SEARCH_OPENED)
             spinner?.gone()
             toolbar?.menu?.getItem(0)?.isVisible = false
             return false
@@ -167,7 +169,7 @@ class SearchFragment : BasePaginationFragment<SearchItem, SearchPresenter, Searc
     // CALLBACKS
     ///////////////////////////////////////////////////////////////////////////
 
-    override fun onFiltersSelected(tag : String?, appliedFilters: HashMap<String, MutableList<FilterItem>>) {
+    override fun onFiltersSelected(tag: String?, appliedFilters: HashMap<String, MutableList<FilterItem>>) {
         getPresenter().onFilterSelected(appliedFilters)
     }
 
@@ -191,6 +193,10 @@ class SearchFragment : BasePaginationFragment<SearchItem, SearchPresenter, Searc
 
     override fun addBackButton() {
         toolbar?.addBackButton { getPresenter().onBackPressed() }
+    }
+
+    override fun updateFilterIcon(empty: Boolean) {
+        fab.setImageResource(if (empty) R.drawable.ic_filter else R.drawable.ic_filter_edit)
     }
 
     override fun showFilterButton() = fab.show()

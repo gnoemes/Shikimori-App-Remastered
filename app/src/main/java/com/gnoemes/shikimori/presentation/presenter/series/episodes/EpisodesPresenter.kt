@@ -128,6 +128,8 @@ class EpisodesPresenter @Inject constructor(
             return
         }
 
+        logEvent(AnalyticEvent.ANIME_EPISODES_CHECKED_MANUALLY)
+
         (if (rateId == Constants.NO_ID) createRateIfNotExist(rateId).ignoreElement()
         else Completable.complete())
                 .andThen(interactor.sendEpisodeChanges(EpisodeChanges(item.animeId, item.index, newStatus)))
@@ -150,6 +152,7 @@ class EpisodesPresenter @Inject constructor(
 
     fun onSearchClicked() {
         viewState.showSearchView()
+        logEvent(AnalyticEvent.ANIME_EPISODES_SEARCH_OPENED)
     }
 
     fun onSearchClosed() {
@@ -163,6 +166,8 @@ class EpisodesPresenter @Inject constructor(
         items.clear()
         viewState.showAlternativeLabel(isAlternativeSource)
         onRefresh()
+
+        if (isAlternativeSource) logEvent(AnalyticEvent.ANIME_EPISODES_ALTERNATIVE)
     }
 
     fun onQueryChanged(newText: String?) {

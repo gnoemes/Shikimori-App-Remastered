@@ -2,6 +2,7 @@ package com.gnoemes.shikimori.presentation.presenter.rates
 
 import com.arellomobile.mvp.InjectViewState
 import com.gnoemes.shikimori.domain.rates.RatesInteractor
+import com.gnoemes.shikimori.entity.app.domain.AnalyticEvent
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.common.presentation.DetailsAction
@@ -86,7 +87,7 @@ class RatePresenter @Inject constructor(
     }
 
     override fun showEmptyProgress(show: Boolean) {
-       showRefreshProgress(show)
+        showRefreshProgress(show)
     }
 
     fun onRefresh() {
@@ -118,11 +119,15 @@ class RatePresenter @Inject constructor(
         )
 
         viewState.showRateDialog(userRate)
+        logEvent(AnalyticEvent.RATE_DIALOG)
     }
 
-    private fun onChangeRateStatus(id: Long, newStatus: RateStatus) =
-            ratesInteractor.changeRateStatus(id, newStatus)
-                    .subscribeAndRefresh()
+    private fun onChangeRateStatus(id: Long, newStatus: RateStatus) {
+        ratesInteractor.changeRateStatus(id, newStatus)
+                .subscribeAndRefresh()
+        logEvent(AnalyticEvent.RATE_DROP_MENU)
+    }
+
 
     fun onDeleteRate(id: Long) =
             ratesInteractor.deleteRate(id)
@@ -154,7 +159,8 @@ class RatePresenter @Inject constructor(
             is RateSort.Random -> sortAndShow { it.randomSort() }
         }
     }
-//TODO optimization?
+
+    //TODO optimization?
     private fun MutableList<Any>.addSortItem(): MutableList<Any> {
         val sorts = if (isAnime) sortResourceProvider.getAnimeRateSorts() else sortResourceProvider.getMangaRateSorts()
         add(0, SortItem(sort, sorts, isDescendingSort))

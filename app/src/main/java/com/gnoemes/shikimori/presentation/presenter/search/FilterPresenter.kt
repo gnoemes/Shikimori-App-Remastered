@@ -2,6 +2,7 @@ package com.gnoemes.shikimori.presentation.presenter.search
 
 import com.arellomobile.mvp.InjectViewState
 import com.gnoemes.shikimori.domain.search.filter.FilterInteractor
+import com.gnoemes.shikimori.entity.app.domain.AnalyticEvent
 import com.gnoemes.shikimori.entity.common.domain.FilterItem
 import com.gnoemes.shikimori.entity.common.domain.SearchConstants
 import com.gnoemes.shikimori.entity.common.domain.Type
@@ -76,8 +77,14 @@ open class FilterPresenter @Inject constructor(
 
     private fun showNested(type: FilterType) {
         when(type) {
-            FilterType.GENRE -> viewState.showGenresDialog(super.type, appliedFilters)
-            FilterType.SEASON -> viewState.showSeasonsDialog(super.type, appliedFilters)
+            FilterType.GENRE -> {
+                viewState.showGenresDialog(super.type, appliedFilters)
+                logEvent(AnalyticEvent.FILTER_GENRES_OPENED)
+            }
+            FilterType.SEASON -> {
+                viewState.showSeasonsDialog(super.type, appliedFilters)
+                logEvent(AnalyticEvent.FILTER_SEASONS_OPENED)
+            }
             else -> Unit
         }
     }

@@ -22,4 +22,6 @@ interface SearchView : BasePaginationView {
     fun hideFilterButton()
 
     fun addBackButton()
+
+    fun updateFilterIcon(empty: Boolean)
 }

@@ -147,8 +147,8 @@ abstract class BaseDetailsPresenter<View : BaseDetailsView>(
 
     open fun onAction(action: DetailsAction) {
         when (action) {
-            is DetailsAction.Links -> loadLinks()
-            is DetailsAction.Chronology -> loadChronology()
+            is DetailsAction.Links -> onLinks()
+            is DetailsAction.Chronology -> onChronology()
             is DetailsAction.WatchOnline -> onWatchOnline()
             is DetailsAction.EditRate -> onEditRate()
             is DetailsAction.OpenInBrowser -> onOpenInBrowser()
@@ -160,6 +160,14 @@ abstract class BaseDetailsPresenter<View : BaseDetailsView>(
             is DetailsAction.Discussion -> onOpenDiscussion()
             is DetailsAction.StudioClicked -> onStudioClicked(action.id)
         }
+    }
+
+    protected open fun onChronology() {
+        loadChronology()
+    }
+
+    protected open fun onLinks() {
+        loadLinks()
     }
 
     protected open fun onStudioClicked(id: Long) {
