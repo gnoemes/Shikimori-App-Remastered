@@ -233,11 +233,13 @@
 
     <string name="dialog_auth_message">Войдите или зарегистрируйтесь для доступа ко всем возможностям приложения</string>
 
-    <string name="settings_general">Общие</string>
+    <string name="settings_general">Приложение</string>
+    <string name="settings_general_summary">Контент, статусные списки</string>
     <string name="settings_notifications">Уведомления</string>
     <string name="settings_player">Плеер</string>
     <string name="settings_theme">Тема</string>
     <string name="settings_about">О приложении</string>
+    <string name="settings_about_summary">Обновления, обратная связь</string>
 
     <string name="settings_content">Контент</string>
     <string name="settings_content_naming_title">Русские названия</string>
@@ -261,6 +263,7 @@
     <string name="settings_statuses_auto_status_summary_off">Управлять статусом аниме и манги в ручную</string>
 
     <string name="settings_anime">Аниме</string>
+    <string name="settings_anime_summary">Плеер, тип перевода</string>
     <string name="settings_anime_my_ongoings_title">Приоритет \"Мои онгоинги\"</string>
     <string name="settings_anime_my_ongoings_key" translatable="false">IS_MY_ONGOINGS_PRIORITY</string>
     <string name="settings_anime_my_ongoings_summary_on">При переходе на \"Календарь\" будет открыта вкладка \"Мои онгоинги\"</string>
