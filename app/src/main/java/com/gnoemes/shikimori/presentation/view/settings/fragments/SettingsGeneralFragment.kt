@@ -38,6 +38,7 @@ class SettingsGeneralFragment : BaseSettingsFragment() {
         }
 
         preference(R.string.settings_content_download_folder_key)?.apply {
+            updateFolderSummary()
             setOnPreferenceClickListener { checkStoragePermissions();true }
         }
 
@@ -84,6 +85,14 @@ class SettingsGeneralFragment : BaseSettingsFragment() {
         }
     }
 
+    private fun updateFolderSummary() {
+        val folder = prefs().getString(SettingsExtras.DOWNLOAD_FOLDER, "")
+        val summary =
+                if (!folder.isNullOrEmpty()) folder
+                else context!!.getString(R.string.settings_content_download_folder_summary)
+        preference(SettingsExtras.DOWNLOAD_FOLDER)?.summary = summary
+    }
+
     private fun showFolderChooserDialog() {
         val path = prefs().getString(SettingsExtras.DOWNLOAD_FOLDER, "")!!
         val initialDirectory = try {
@@ -100,6 +109,7 @@ class SettingsGeneralFragment : BaseSettingsFragment() {
                     folderCreationLabel = R.string.download_new_folder)
             { dialog, file ->
                 prefs().putString(SettingsExtras.DOWNLOAD_FOLDER, file.absolutePath)
+                updateFolderSummary()
             }
         }
     }

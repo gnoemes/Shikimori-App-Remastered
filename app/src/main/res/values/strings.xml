@@ -246,7 +246,7 @@
     <string name="settings_content_naming_summary_off">Названия аниме и манги на ромадзи</string>
 
     <string name="settings_content_download_folder_title">Папка загрузки</string>
-    <string name="settings_content_download_folder_key" translatable="false">DOWNLOAD_LOCATION</string>
+    <string name="settings_content_download_folder_key" translatable="false">DOWNLOAD_FOLDER</string>
     <string name="settings_content_download_folder_summary">По указанному пути будут созданы папки отдельно для аниме и манги</string>
 
     <string name="settings_statuses">Управление статусами</string>
