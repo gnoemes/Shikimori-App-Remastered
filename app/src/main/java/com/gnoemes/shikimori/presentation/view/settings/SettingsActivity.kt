@@ -43,7 +43,7 @@ class SettingsActivity : MvpActivity(), PreferenceFragmentCompat.OnPreferenceSta
                 pref.extras)
                 .apply { setTargetFragment(caller, 0) }
 
-        toolbar?.title = "$pref"
+        toolbar?.title = pref.title
         replaceFragment(fragment)
 
         return true
