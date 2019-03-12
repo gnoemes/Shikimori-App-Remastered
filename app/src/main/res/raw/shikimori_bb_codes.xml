@@ -96,7 +96,7 @@
         <coderef name="manga"/>
         <coderef name="character"/>
         <coderef name="person"/>
-        <!--<coderef name="spoiler"/>-->
+        <coderef name="spoiler"/>
         <coderef name="comment"/>
         <coderef name="reply"/>
 
@@ -122,9 +122,14 @@
         <template>${"contentType": "link", "type": "Person", "id":<var name="id"/>, "text":"<var name="text"/>"}$</template>
     </code>
 
+    <code name="spoiler">
+        <pattern ignoreCase="true">[spoiler=<var inherit="true" name="name"/>]<var inherit="true" name="text"/>[/spoiler]</pattern>
+        <template>$</template>
+    </code>
+
     <!--<code name="spoiler">-->
-        <!--<pattern ignoreCase="true">[spoiler=<var inherit="true" name="name"/>]<var inherit="true" name="text"/>[/spoiler]</pattern>-->
-        <!--<template>${"type": "spoiler", "payload":"<var name="text"/>", "text":"<var name="name"/>"}$</template>-->
+    <!--<pattern ignoreCase="true">[spoiler=<var inherit="true" name="name"/>]<var inherit="true" name="text"/>[/spoiler]</pattern>-->
+    <!--<template>${"contentType": "spoiler", "payload":"<var name="text"/>", "text":"<var name="name"/>"}$</template>-->
     <!--</code>-->
 
     <code name="comment">
