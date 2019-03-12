@@ -34,24 +34,40 @@ class SettingsAnimeFragment : BaseSettingsFragment() {
         }
 
         preference(SettingsExtras.PLAYER_FORWARD_REWIND_OFFSET)?.apply {
-            val value = prefs().getLong(key, 10000) / 1000
-            summary = String.format(context?.getString(R.string.settings_player_gestures_offset_small_summary_format)!!, value)
             onPreferenceClickListener = smallOffsetClickListener
         }
 
         preference(SettingsExtras.PLAYER_FORWARD_REWIND_OFFSET_BIG)?.apply {
-            val value = prefs().getLong(key, 90000) / 1000
-            summary = String.format(context?.getString(R.string.settings_player_gestures_offset_big_summary_format)!!, value)
             onPreferenceClickListener = bigOffsetClickListener
         }
 
         preference(SettingsExtras.PLAYER_IS_FORWARD_REWIND_SLIDE)?.apply {
             onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
                 if (newValue as Boolean) putSetting(SettingsExtras.PLAYER_IS_VOLUME_BRIGHTNESS_GESTURES_ENABLED, false)
-                notifyDependencyChange(true)
+                updateForwardRewindSummary(newValue)
                 return@OnPreferenceChangeListener true
             }
         }
+
+        updateForwardRewindSummary(prefs().getBoolean(SettingsExtras.PLAYER_IS_FORWARD_REWIND_SLIDE, false))
+    }
+
+    private fun updateForwardRewindSummary(newValue: Boolean) {
+        preference(SettingsExtras.PLAYER_FORWARD_REWIND_OFFSET_BIG)?.apply {
+            isEnabled = !newValue
+
+            summary =
+                    if (isEnabled) (prefs().getLong(key, 90000) / 1000).let { String.format(context?.getString(R.string.settings_player_gestures_offset_big_summary_format)!!, it) }
+                    else context?.getString(R.string.settings_player_gestures_offset_small_big_summary_off)
+        }
+        preference(SettingsExtras.PLAYER_FORWARD_REWIND_OFFSET)?.apply {
+            isEnabled = !newValue
+
+            summary =
+                    if (isEnabled) (prefs().getLong(key, 10000) / 1000).let { String.format(context?.getString(R.string.settings_player_gestures_offset_small_summary_format)!!, it) }
+                    else context?.getString(R.string.settings_player_gestures_offset_small_big_summary_off)
+        }
+
     }
 
     private val translationClickListener = Preference.OnPreferenceClickListener { preference ->

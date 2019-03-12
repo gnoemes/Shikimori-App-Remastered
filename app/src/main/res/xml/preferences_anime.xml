@@ -100,14 +100,12 @@
             app:iconSpaceReserved="false" />
 
         <Preference
-            android:dependency="@string/settings_player_gestures_offset_key"
             android:key="@string/settings_player_gestures_offset_small_key"
             android:summary="@string/settings_player_gestures_offset_small_summary_default"
             android:title="@string/settings_player_gestures_offset_small_title"
             app:iconSpaceReserved="false" />
 
         <Preference
-            android:dependency="@string/settings_player_gestures_offset_key"
             android:key="@string/settings_player_gestures_offset_big_key"
             android:summary="@string/settings_player_gestures_offset_big_summary_default"
             android:title="@string/settings_player_gestures_offset_big_title"
