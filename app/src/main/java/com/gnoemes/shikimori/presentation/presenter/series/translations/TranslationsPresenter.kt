@@ -102,7 +102,7 @@ class TranslationsPresenter @Inject constructor(
     fun onHostingClicked(hosting: TranslationVideo) {
         this.selectedHosting = hosting
         if (!Utils.isHostingSupports(hosting.videoHosting)) openVideo(hosting, PlayerType.WEB)
-        else if (settingsSource.isRememberPlayer) openVideo(hosting, settingsSource.playerType)
+        else if (!settingsSource.isAskForPlayer) openVideo(hosting, settingsSource.playerType)
         else viewState.showPlayerDialog()
     }
 

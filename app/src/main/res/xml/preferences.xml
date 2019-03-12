@@ -14,7 +14,7 @@
         android:key="anime_fragment"
         android:summary="@string/settings_anime_summary"
         android:title="@string/settings_anime"
-        app:fragment="com.gnoemes.shikimori.presentation.view.settings.fragments.SettingsPlayerFragment" />
+        app:fragment="com.gnoemes.shikimori.presentation.view.settings.fragments.SettingsAnimeFragment" />
 
     <Preference
         android:icon="@drawable/icon_theme_setting"

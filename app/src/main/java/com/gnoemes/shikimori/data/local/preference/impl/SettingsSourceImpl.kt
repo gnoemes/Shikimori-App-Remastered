@@ -26,8 +26,8 @@ class SettingsSourceImpl @Inject constructor(
         get() = prefs.getBoolean(SettingsExtras.IS_ROMADZI_NAMING, true)
         set(value) = prefs.putBoolean(SettingsExtras.IS_ROMADZI_NAMING, value)
 
-    override var isRememberPlayer: Boolean
-        get() = prefs.getBoolean(SettingsExtras.IS_REMEMBER_PLAYER, false)
+    override var isAskForPlayer: Boolean
+        get() = prefs.getBoolean(SettingsExtras.IS_REMEMBER_PLAYER, true)
         set(value) = prefs.putBoolean(SettingsExtras.IS_REMEMBER_PLAYER, value)
 
     override var isNotificationsEnabled: Boolean

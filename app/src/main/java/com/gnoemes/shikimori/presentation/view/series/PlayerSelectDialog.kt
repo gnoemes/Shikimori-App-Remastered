@@ -29,7 +29,7 @@ class PlayerSelectDialog : MvpDialogFragment() {
                 callback?.onPlayerSelected(player)
             }
             checkBoxPrompt(res = R.string.common_remember_choice) {
-                putSetting(SettingsExtras.IS_REMEMBER_PLAYER, it)
+                putSetting(SettingsExtras.IS_REMEMBER_PLAYER, !it)
             }
         }
     }
