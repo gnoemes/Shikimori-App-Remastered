@@ -520,32 +520,32 @@
     </string-array>
 
     <string-array name="anime_search_sort">
-        <item>@string/sort_popularity</item>
         <item>@string/sort_score</item>
+        <item>@string/sort_popularity</item>
         <item>@string/sort_episodes</item>
         <item>@string/sort_date</item>
         <item>@string/sort_name</item>
     </string-array>
 
     <string-array name="anime_search_sort_values">
-        <item>popularity</item>
         <item>ranked</item>
+        <item>popularity</item>
         <item>episodes</item>
         <item>aired_on</item>
         <item>name</item>
     </string-array>
 
     <string-array name="manga_search_sort">
-        <item>@string/sort_popularity</item>
         <item>@string/sort_score</item>
+        <item>@string/sort_popularity</item>
         <item>@string/sort_chapters</item>
         <item>@string/sort_date</item>
         <item>@string/sort_name</item>
     </string-array>
 
     <string-array name="manga_search_sort_values">
-        <item>popularity</item>
         <item>ranked</item>
+        <item>popularity</item>
         <item>chapters</item>
         <item>aired_on</item>
         <item>name</item>

@@ -57,13 +57,19 @@ open class FilterPresenter @Inject constructor(
         viewState.showData(it)
     }
 
+    fun onSortClicked() {
+        viewState.showSortFilters(sortItems)
+    }
+
     private fun setSortFilters(it: List<FilterItem>) {
-        val selectedPos = it.indexOfFirst { it.value == appliedFilters[SearchConstants.ORDER]?.firstOrNull()?.value }
-        viewState.setSortFilters(it, if (selectedPos == -1) 1 else selectedPos)
+        val selectedItem = it.find { it.value == appliedFilters[SearchConstants.ORDER]?.firstOrNull()?.value } ?: it.first()
+        viewState.setSortFilterText(selectedItem.localizedText!!)
     }
 
     fun onSortChanged(newSort: FilterItem) {
         clearAndAddToSelected(SearchConstants.ORDER, newSort)
+        viewState.setSortFilterText(newSort.localizedText!!)
+        viewState.setResetEnabled(newSort != sortItems.first())
     }
 
     fun onFilterAction(type: FilterType, action: FilterAction) {
@@ -134,4 +140,5 @@ open class FilterPresenter @Inject constructor(
         else appliedFilters.putAll(newAppliedFilters)
         onFiltersChanged()
     }
+
 }

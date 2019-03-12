@@ -16,15 +16,16 @@ import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.search.domain.FilterType
 import com.gnoemes.shikimori.presentation.presenter.search.FilterPresenter
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseBottomSheetInjectionDialogFragment
-import com.gnoemes.shikimori.presentation.view.common.widget.spinner.MaterialSpinnerAdapter
+import com.gnoemes.shikimori.presentation.view.common.fragment.ListDialogFragment
 import com.gnoemes.shikimori.presentation.view.search.filter.adapter.FilterAdapter
 import com.gnoemes.shikimori.presentation.view.search.filter.genres.FilterGenresFragment
 import com.gnoemes.shikimori.presentation.view.search.filter.seasons.FilterSeasonsFragment
 import com.gnoemes.shikimori.utils.*
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_filter.*
 import kotlinx.android.synthetic.main.layout_filter_bottom.*
 
-class FilterFragment : BaseBottomSheetInjectionDialogFragment<FilterPresenter, FilterView>(), FilterView, FilterCallback {
+class FilterFragment : BaseBottomSheetInjectionDialogFragment<FilterPresenter, FilterView>(), FilterView, FilterCallback, ListDialogFragment.DialogCallback {
 
     @InjectPresenter
     lateinit var filterPresenter: FilterPresenter
@@ -74,12 +75,7 @@ class FilterFragment : BaseBottomSheetInjectionDialogFragment<FilterPresenter, F
 
         resetBtn.onClick { presenter.onResetClicked() }
         acceptBtn.onClick { presenter.onAcceptClicked() }
-
-        sortSpinner.apply {
-            popupWindow.setBackgroundDrawable(context.drawableAttr(R.attr.dialogCustomBackground))
-            setCompoundDrawablesWithIntrinsicBounds(null, null, context.themeDrawable(R.drawable.ic_sort, R.attr.colorOnPrimary), null)
-            setOnItemSelectedListener { _, _, _, item -> presenter.onSortChanged(item as FilterItem) }
-        }
+        sortBtn.onClick { presenter.onSortClicked() }
 
         with(list) {
             adapter = this@FilterFragment.adapter
@@ -97,7 +93,10 @@ class FilterFragment : BaseBottomSheetInjectionDialogFragment<FilterPresenter, F
         }
 
         presenter.onNestedFilterCallback(key, appliedFilters)
+    }
 
+    override fun dialogItemCallback(tag: String?, url: String) {
+        presenter.onSortChanged(Gson().fromJson(url, FilterItem::class.java))
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -139,9 +138,16 @@ class FilterFragment : BaseBottomSheetInjectionDialogFragment<FilterPresenter, F
         resetBtn.isEnabled = show
     }
 
-    override fun setSortFilters(items: List<FilterItem>, selected: Int) {
-        sortSpinner.setAdapter(MaterialSpinnerAdapter(context, items))
-        sortSpinner.selectedIndex = selected
+    override fun showSortFilters(items: List<FilterItem>) {
+        val gson = Gson()
+        val dialog = ListDialogFragment.newInstance()
+        dialog.apply {
+            setItems(items.map { Pair(it.localizedText!!, gson.toJson(it)) })
+        }.show(childFragmentManager, "SortsTag")
+    }
+
+    override fun setSortFilterText(text: String) {
+        sortBtn.text = text
     }
 
     override fun onBackPressed() {

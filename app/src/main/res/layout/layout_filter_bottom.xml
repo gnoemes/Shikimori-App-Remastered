@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="64dp"
     android:layout_gravity="bottom"
@@ -29,8 +30,9 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <com.gnoemes.shikimori.presentation.view.common.widget.spinner.MaterialSpinner
-                android:id="@+id/sortSpinner"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/sortBtn"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -39,7 +41,18 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_weight="1"
-                android:text="@string/sort_episodes" />
+                android:fontFamily="sans-serif"
+                android:layoutDirection="rtl"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:textAllCaps="false"
+                android:textColor="?attr/colorOnPrimary"
+                android:textSize="14sp"
+                app:icon="@drawable/ic_sort"
+                app:iconTint="?attr/colorOnPrimary"
+                app:strokeColor="?attr/colorDivider"
+                app:strokeWidth="1dp"
+                tools:text="@string/sort_episodes" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/acceptBtn"
