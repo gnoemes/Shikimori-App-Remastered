@@ -20,6 +20,7 @@ import com.gnoemes.shikimori.presentation.view.details.BaseDetailsFragment
 import com.gnoemes.shikimori.utils.gone
 import com.gnoemes.shikimori.utils.withArgs
 import kotlinx.android.synthetic.main.fragment_details.*
+import kotlinx.android.synthetic.main.layout_details_options_content.*
 
 class MangaFragment : BaseDetailsFragment<MangaPresenter, MangaView>(), MangaView{
 
@@ -53,6 +54,8 @@ class MangaFragment : BaseDetailsFragment<MangaPresenter, MangaView>(), MangaVie
             put(DetailsContentType.SIMILAR, DetailsContentViewHolder(similarLayout, similarAdapter))
             put(DetailsContentType.RELATED, DetailsContentViewHolder(relatedLayout, relatedAdapter))
         }
+
+        watchOnlineBtn.isEnabled = false
     }
 
     override fun dialogItemIdCallback(tag: String?, id: Long) {

@@ -20,6 +20,16 @@
         <item name="android:windowBackground">@drawable/launch_screen</item>
     </style>
 
+    <style name="ShikimoriAppTheme.Player" parent="ShikimoriAppTheme.Base">
+        <item name="colorPrimary">@color/default_colorPrimary</item>
+        <item name="colorPrimaryDark">@color/default_colorPrimaryVariant</item>
+        <item name="colorSecondary">@color/default_colorSecondary</item>
+        <item name="colorSecondaryTransparent">@color/default_colorSecondaryTransparent</item>
+
+        <item name="colorOnPrimary">@color/default_colorPrimary</item>
+        <item name="colorControlHighlight">@color/dark_colorRipple</item>
+    </style>
+
     <style name="ShikimoriAppTheme.Default" parent="ShikimoriAppTheme.Base">
         <item name="colorPrimary">@color/default_colorPrimary</item>
         <item name="colorPrimaryVariant">@color/default_colorPrimaryVariant</item>

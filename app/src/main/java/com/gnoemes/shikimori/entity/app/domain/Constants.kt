@@ -24,4 +24,6 @@ object Constants {
     const val DEFAULT_DEBOUNCE_INTERVAL = 300L
 
     const val BIG_DEBOUNCE_INTERVAL = 750L
+
+    const val FOUR_PDA_THEME_URL = "https://4pda.ru/forum/index.php?showtopic=903970"
 }

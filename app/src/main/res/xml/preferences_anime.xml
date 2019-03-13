@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+        android:title="@string/settings_calendar"
+        app:iconSpaceReserved="false">
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="@string/settings_anime_my_ongoings_key"
+            android:summaryOff="@string/settings_anime_my_ongoings_summary_off"
+            android:summaryOn="@string/settings_anime_my_ongoings_summary_on"
+            android:title="@string/settings_anime_my_ongoings_title"
+            app:iconSpaceReserved="false" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/settings_authors"
+        app:iconSpaceReserved="false">
+
+        <Preference
+            android:defaultValue="fandub"
+            android:key="@string/settings_anime_translation_type_key"
+            android:summary="@string/translation_voice"
+            android:title="@string/settings_anime_translation_type_title"
+            app:iconSpaceReserved="false" />
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="@string/settings_anime_remember_translation_settings_key"
+            android:summaryOff="@string/settings_anime_remember_translation_settings_summary_off"
+            android:summaryOn="@string/settings_anime_remember_translation_settings_summary_on"
+            android:title="@string/settings_anime_remember_translation_settings_title"
+            app:iconSpaceReserved="false" />
+
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/settings_player"
+        app:iconSpaceReserved="false">
+
+        <Preference
+            android:key="@string/settings_anime_player_type_key"
+            android:summary="@string/settings_anime_player_type_summary"
+            android:title="@string/settings_anime_player_type_title"
+            app:iconSpaceReserved="false" />
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="@string/settings_anime_player_remember_key"
+            android:summaryOff="@string/settings_anime_player_remember_summary_off"
+            android:summaryOn="@string/settings_anime_player_remember_summary_on"
+            android:title="@string/settings_anime_player_remember_title"
+            app:iconSpaceReserved="false" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/settings_player_embedded"
+        app:iconSpaceReserved="false">
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="@string/settings_player_orientation_key"
+            android:summaryOff="@string/settings_player_orientation_summary_off"
+            android:summaryOn="@string/settings_player_orientation_summary_on"
+            android:title="@string/settings_player_orientation_title"
+            app:iconSpaceReserved="false" />
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="@string/settings_player_gestures_key"
+            android:title="@string/settings_player_gestures_title"
+            app:iconSpaceReserved="false" />
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:dependency="@string/settings_player_gestures_key"
+            android:disableDependentsState="true"
+            android:key="@string/settings_player_gestures_offset_key"
+            android:summaryOff="@string/settings_player_gestures_offset_summary_off"
+            android:summaryOn="@string/settings_player_gestures_offset_summary_on"
+            android:title="@string/settings_player_gestures_offset_title"
+            app:iconSpaceReserved="false" />
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:dependency="@string/settings_player_gestures_offset_key"
+            android:key="@string/settings_player_gestures_controls_key"
+            android:title="@string/settings_player_gestures_controls_title"
+            app:iconSpaceReserved="false" />
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:dependency="@string/settings_player_gestures_controls_key"
+            android:key="@string/settings_player_gestures_controls_inverted_key"
+            android:summaryOff="@string/settings_player_gestures_controls_inverted_summary_off"
+            android:summaryOn="@string/settings_player_gestures_controls_inverted_summary_on"
+            android:title="@string/settings_player_gestures_controls_inverted_title"
+            app:iconSpaceReserved="false" />
+
+        <Preference
+            android:key="@string/settings_player_gestures_offset_small_key"
+            android:summary="@string/settings_player_gestures_offset_small_summary_default"
+            android:title="@string/settings_player_gestures_offset_small_title"
+            app:iconSpaceReserved="false" />
+
+        <Preference
+            android:key="@string/settings_player_gestures_offset_big_key"
+            android:summary="@string/settings_player_gestures_offset_big_summary_default"
+            android:title="@string/settings_player_gestures_offset_big_title"
+            app:iconSpaceReserved="false" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

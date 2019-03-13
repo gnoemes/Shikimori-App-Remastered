@@ -2,6 +2,7 @@ package com.gnoemes.shikimori.presentation.presenter.forum
 
 import com.arellomobile.mvp.InjectViewState
 import com.gnoemes.shikimori.domain.topic.TopicInteractor
+import com.gnoemes.shikimori.entity.app.domain.AnalyticEvent
 import com.gnoemes.shikimori.entity.common.domain.Screens
 import com.gnoemes.shikimori.entity.forum.domain.Forum
 import com.gnoemes.shikimori.entity.forum.domain.ForumType
@@ -33,6 +34,7 @@ class ForumPresenter @Inject constructor(
 
     fun onForumClicked(type: ForumType) {
         router.navigateTo(Screens.TOPICS, type)
+        logEvent(AnalyticEvent.NAVIGATION_TOPIC_LIST)
     }
 
     fun onRefresh() {

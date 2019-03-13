@@ -14,6 +14,9 @@ class CommonResourceProviderImpl @Inject constructor(
     override val needAuth: String
         get() = context.getString(R.string.common_need_auth)
 
+    override val needAuthRates: String
+        get() = context.getString(R.string.rates_need_auth)
+
     override val topicNotFound: String
         get() = context.getString(R.string.common_topic_not_found)
 }

@@ -10,4 +10,5 @@ import dagger.Module;
 public interface SearchRepositoryModule {
     @Binds
     SearchRepository bindSearchRepository(SearchRepositoryImpl searchRepository);
+
 }

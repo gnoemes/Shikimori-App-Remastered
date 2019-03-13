@@ -1,9 +1,12 @@
+import org.moallemi.gradle.internal.VersionCodeType
+
 apply from: '../dependencies.gradle'
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'org.moallemi.advanced-build-version'
 
 android {
     compileSdkVersion versions.compileSdk
@@ -12,12 +15,33 @@ android {
     kapt { generateStubs = true }
     androidExtensions { experimental = true }
 
+    advancedVersioning {
+        nameOptions {
+            versionMajor 0
+            versionMinor 8
+            versionPatch 0
+            versionBuild 0
+        }
+        codeOptions {
+            versionCodeType VersionCodeType.AUTO_INCREMENT_ONE_STEP
+            dependsOnTasks 'release'
+        }
+
+        outputOptions {
+            renameOutput true
+            nameFormat 'ShikimoriApp-v' + versionName + '-${buildType}'
+        }
+    }
+
+    def appVersionName = advancedVersioning.versionName
+    def appVersionCode = advancedVersioning.versionCode
+
+    println "config code: ${appVersionName}, name: ${appVersionCode}"
+
     defaultConfig {
         applicationId "com.gnoemes.shikimori"
         minSdkVersion versions.minSdk
         targetSdkVersion versions.compileSdk
-        versionCode 1
-        versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }

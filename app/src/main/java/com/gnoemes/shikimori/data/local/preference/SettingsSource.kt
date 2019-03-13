@@ -11,7 +11,7 @@ interface SettingsSource {
 
     var isRussianNaming: Boolean
 
-    var isRememberPlayer : Boolean
+    var isAskForPlayer : Boolean
 
     var isNotificationsEnabled : Boolean
 

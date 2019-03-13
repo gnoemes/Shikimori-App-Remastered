@@ -52,8 +52,11 @@ class TranslationAdapterDelegate(
         }
 
         init {
-            val snapHelper = StartSnapHelper(snapOffset)
-            snapHelper.attachToRecyclerView(itemView.hostingRecyclerView)
+            if (itemView.hostingRecyclerView.onFlingListener == null) {
+                val snapHelper = StartSnapHelper(snapOffset)
+                snapHelper.attachToRecyclerView(itemView.hostingRecyclerView)
+            }
+
             itemView.hostingRecyclerView.apply {
                 layoutManager = this@ViewHolder.layoutManager
                 adapter = this@ViewHolder.adapter

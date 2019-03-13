@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentTransaction
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.entity.app.domain.AnalyticEvent
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.main.BottomScreens
 import com.gnoemes.shikimori.presentation.presenter.main.MainPresenter
@@ -24,7 +25,6 @@ import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.Router
 import ru.terrakok.cicerone.commands.Command
-import ru.terrakok.cicerone.commands.Forward
 import ru.terrakok.cicerone.commands.Replace
 import javax.inject.Inject
 
@@ -56,6 +56,7 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView, RouterPr
     private fun initBottomNav() {
         bottomNav.setOnNavigationItemSelectedListener { item ->
             val tab = tabs.find { it.id == item.itemId }!!
+            analyzeNavigation(tab.screenKey)
             presenter.onTabItemSelected(tab.screenKey)
             true
         }
@@ -88,6 +89,17 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView, RouterPr
         }
     }
 
+    private fun analyzeNavigation(screenKey: String) {
+        presenter.apply {
+            when (screenKey) {
+                BottomScreens.RATES -> logEvent(AnalyticEvent.NAVIGATION_BOTTOM_RATES)
+                BottomScreens.CALENDAR -> logEvent(AnalyticEvent.NAVIGATION_BOTTOM_CALENDAR)
+                BottomScreens.SEARCH -> logEvent(AnalyticEvent.NAVIGATION_BOTTOM_SEARCH)
+                BottomScreens.MAIN -> logEvent(AnalyticEvent.NAVIGATION_BOTTOM_MAIN)
+                BottomScreens.MORE -> logEvent(AnalyticEvent.NAVIGATION_BOTTOM_MORE)
+            }
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////////////
     // GETTERS
@@ -103,9 +115,8 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView, RouterPr
         override fun createActivityIntent(context: Context?, screenKey: String?, data: Any?): Intent? = null
 
         override fun unknownScreen(command: Command?) {
-            val message = "SCREEN ${(command as? Forward)?.screenKey} NOT FOUND"
+            val message = getString(R.string.error_not_realized)
             Log.e("ERR", message)
-            //TODO remove
             showSystemMessage(message)
         }
 

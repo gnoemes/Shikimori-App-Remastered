@@ -3,28 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <Preference
+        android:icon="@drawable/icon_app_setting"
         android:key="general_fragment"
+        android:summary="@string/settings_general_summary"
         android:title="@string/settings_general"
-        app:fragment="com.gnoemes.shikimori.presentation.view.settings.fragments.SettingsGeneralFragment"
-        app:iconSpaceReserved="false" />
+        app:fragment="com.gnoemes.shikimori.presentation.view.settings.fragments.SettingsGeneralFragment" />
 
     <Preference
-        android:key="player_fragment"
-        android:title="@string/settings_player"
-        app:fragment="com.gnoemes.shikimori.presentation.view.settings.fragments.SettingsPlayerFragment"
-        app:iconSpaceReserved="false" />
+        android:icon="@drawable/icon_anime_setting"
+        android:key="anime_fragment"
+        android:summary="@string/settings_anime_summary"
+        android:title="@string/settings_anime"
+        app:fragment="com.gnoemes.shikimori.presentation.view.settings.fragments.SettingsAnimeFragment" />
 
     <Preference
+        android:icon="@drawable/icon_theme_setting"
         android:key="theme_fragment"
         android:title="@string/settings_theme"
-        app:fragment="com.gnoemes.shikimori.presentation.view.settings.fragments.SettingsThemeFragment"
-        app:iconSpaceReserved="false" />
+        app:fragment="com.gnoemes.shikimori.presentation.view.settings.fragments.SettingsThemeFragment" />
 
     <Preference
+        android:icon="@drawable/icon_about_setting"
         android:key="about_fragment"
+        android:summary="@string/settings_about_summary"
         android:title="@string/settings_about"
-        app:fragment="com.gnoemes.shikimori.presentation.view.settings.fragments.SettingsAboutFragment"
-        app:iconSpaceReserved="false" />
-
+        app:fragment="com.gnoemes.shikimori.presentation.view.settings.fragments.SettingsAboutFragment" />
 
 </PreferenceScreen>

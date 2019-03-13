@@ -11,4 +11,5 @@ public interface SearchInteractorModule {
 
     @Binds
     SearchInteractor bindSearchInteractor(SearchInteractorImpl interactor);
+
 }

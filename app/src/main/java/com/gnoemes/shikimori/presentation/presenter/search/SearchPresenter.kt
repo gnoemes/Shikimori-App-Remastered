@@ -2,6 +2,7 @@ package com.gnoemes.shikimori.presentation.presenter.search
 
 import com.arellomobile.mvp.InjectViewState
 import com.gnoemes.shikimori.domain.search.SearchInteractor
+import com.gnoemes.shikimori.entity.app.domain.AnalyticEvent
 import com.gnoemes.shikimori.entity.common.domain.FilterItem
 import com.gnoemes.shikimori.entity.common.domain.Genre
 import com.gnoemes.shikimori.entity.common.domain.SearchConstants
@@ -61,6 +62,7 @@ class SearchPresenter @Inject constructor(
 
     fun onFilterClicked() {
         viewState.showFilter(type, filters)
+        logEvent(AnalyticEvent.SEARCH_FILTER_OPENED)
     }
 
     override fun loadNextPage() {
@@ -117,6 +119,7 @@ class SearchPresenter @Inject constructor(
     fun onFilterSelected(appliedFilters: HashMap<String, MutableList<FilterItem>>) {
         filters = appliedFilters
         onRefresh()
+        viewState.updateFilterIcon(appliedFilters.isEmpty())
     }
 
     private fun onPayloadSearch() {

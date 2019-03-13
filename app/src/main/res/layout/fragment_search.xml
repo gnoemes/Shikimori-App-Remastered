@@ -12,6 +12,6 @@
         android:layout_margin="16dp"
         app:fabSize="normal"
         app:layout_behavior="@string/fab_transformation_sheet_behavior"
-        app:srcCompat="@drawable/ic_filter"/>
+        app:srcCompat="@drawable/ic_filter" />
 
 </merge>

@@ -79,18 +79,23 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         const val FORWARD_REWIND_HIDE_DELAY = 750L
     }
 
+    override var applyTheme: Boolean
+        get() = false
+        set(value) {}
+
     private val controller by lazy { PlayerController(settingsSource) }
 
     private val smallOffsetText by lazy { "${settingsSource.forwardRewindOffset / 1000} ${getString(R.string.player_seconds_short)}" }
     private val bigOffsetText by lazy { "${settingsSource.forwardRewindOffsetBig / 1000} ${getString(R.string.player_seconds_short)}" }
     private val brightnessIcon by lazy { drawable(R.drawable.ic_brightness) }
     private val volumeIcon by lazy { drawable(R.drawable.ic_volume) }
-    private val offsetColor by lazy { color(R.color.player_unlock_background)!! }
+    private val offsetColor by lazy { color(R.color.player_unlock_background) }
 
     private var currentVolume: Int = 0
     private var currentBrightness: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.ShikimoriAppTheme_Player)
         super.onCreate(savedInstanceState)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
 

@@ -5,6 +5,7 @@ import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.domain.rates.RatesInteractor
 import com.gnoemes.shikimori.domain.series.SeriesInteractor
 import com.gnoemes.shikimori.domain.user.UserInteractor
+import com.gnoemes.shikimori.entity.app.domain.AnalyticEvent
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.app.domain.HttpStatusCode
 import com.gnoemes.shikimori.entity.app.domain.exceptions.BaseException
@@ -17,7 +18,9 @@ import com.gnoemes.shikimori.entity.series.domain.EpisodeChanges
 import com.gnoemes.shikimori.entity.series.presentation.EpisodeViewModel
 import com.gnoemes.shikimori.entity.series.presentation.EpisodesNavigationData
 import com.gnoemes.shikimori.entity.series.presentation.TranslationsNavigationData
+import com.gnoemes.shikimori.entity.user.domain.UserStatus
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
+import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResourceProvider
 import com.gnoemes.shikimori.presentation.presenter.series.episodes.converter.EpisodeViewModelConverter
 import com.gnoemes.shikimori.presentation.view.series.episodes.EpisodesView
 import com.gnoemes.shikimori.utils.clearAndAddAll
@@ -33,7 +36,8 @@ class EpisodesPresenter @Inject constructor(
         private val ratesInteractor: RatesInteractor,
         private val userInteractor: UserInteractor,
         private val converter: EpisodeViewModelConverter,
-        private val settingsSource: SettingsSource
+        private val settingsSource: SettingsSource,
+        private val resourceProvider: CommonResourceProvider
 ) : BaseNetworkPresenter<EpisodesView>() {
 
     lateinit var navigationData: EpisodesNavigationData
@@ -111,6 +115,7 @@ class EpisodesPresenter @Inject constructor(
     fun onEpisodeClicked(item: EpisodeViewModel) {
         val data = TranslationsNavigationData(navigationData.animeId, navigationData.image, navigationData.name, item.id, item.index, rateId, item.isFromAlternative)
         router.navigateTo(Screens.TRANSLATIONS, data)
+        logEvent(AnalyticEvent.NAVIGATION_ANIME_TRANSLATIONS)
     }
 
     fun onEpisodeLongClick(item: EpisodeViewModel) {
@@ -118,6 +123,13 @@ class EpisodesPresenter @Inject constructor(
     }
 
     fun onEpisodeStatusChanged(item: EpisodeViewModel, newStatus: Boolean) {
+        if (userInteractor.getUserStatus() == UserStatus.GUEST) {
+            router.showSystemMessage(resourceProvider.needAuthRates)
+            return
+        }
+
+        logEvent(AnalyticEvent.ANIME_EPISODES_CHECKED_MANUALLY)
+
         (if (rateId == Constants.NO_ID) createRateIfNotExist(rateId).ignoreElement()
         else Completable.complete())
                 .andThen(interactor.sendEpisodeChanges(EpisodeChanges(item.animeId, item.index, newStatus)))
@@ -140,6 +152,7 @@ class EpisodesPresenter @Inject constructor(
 
     fun onSearchClicked() {
         viewState.showSearchView()
+        logEvent(AnalyticEvent.ANIME_EPISODES_SEARCH_OPENED)
     }
 
     fun onSearchClosed() {
@@ -153,6 +166,8 @@ class EpisodesPresenter @Inject constructor(
         items.clear()
         viewState.showAlternativeLabel(isAlternativeSource)
         onRefresh()
+
+        if (isAlternativeSource) logEvent(AnalyticEvent.ANIME_EPISODES_ALTERNATIVE)
     }
 
     fun onQueryChanged(newText: String?) {
@@ -194,21 +209,7 @@ class EpisodesPresenter @Inject constructor(
     }
 
     fun onCheckAllPrevious(index: Int) {
-        //TODO refactor?
-        Single.just(rateId)
-                .flatMap { createRateIfNotExist(it) }
-                .flatMap { userInteractor.getMyUserBrief() }
-                .map { it.id }
-                .map { UserRate(rateId, it, navigationData.animeId, Type.ANIME, episodes = index) }
-                .flatMapCompletable { ratesInteractor.updateRate(it) }
-                .andThen(Observable
-                        .fromIterable(items.take(index))
-                        .doOnNext { showEpisodeLoading(it, true) }
-                        .toList()
-                )
-                .flatMap { loadEpisodes() }
-                .subscribe(this::setData, this::processErrors)
-                .addToDisposables()
+        items.take(index).forEach { onEpisodeStatusChanged(it, true) }
     }
 
     private fun syncRate(changes: MutableList<EpisodeChanges>): Single<List<EpisodeViewModel>> =

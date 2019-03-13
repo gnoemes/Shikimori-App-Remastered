@@ -18,9 +18,11 @@ class DetailsContentViewHolder(
 ) {
 
     init {
-        val snapOffset = view.resources.getDimension(R.dimen.margin_normal).toInt()
-        val snapHelper = StartSnapHelper(snapOffset)
-        snapHelper.attachToRecyclerView(view.contentRecyclerView)
+        if (view.contentRecyclerView.onFlingListener == null) {
+            val snapOffset = view.resources.getDimension(R.dimen.margin_normal).toInt()
+            val snapHelper = StartSnapHelper(snapOffset)
+            snapHelper.attachToRecyclerView(view.contentRecyclerView)
+        }
 
         view.contentRecyclerView.apply {
             adapter = this@DetailsContentViewHolder.adapter.apply { if (!hasObservers()) setHasStableIds(true) }

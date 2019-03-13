@@ -6,10 +6,12 @@ import com.gnoemes.shikimori.domain.rates.RatesInteractor
 import com.gnoemes.shikimori.domain.related.RelatedInteractor
 import com.gnoemes.shikimori.domain.user.UserInteractor
 import com.gnoemes.shikimori.entity.anime.domain.AnimeDetails
+import com.gnoemes.shikimori.entity.app.domain.AnalyticEvent
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.common.domain.*
 import com.gnoemes.shikimori.entity.common.presentation.DetailsContentType
 import com.gnoemes.shikimori.entity.common.presentation.DetailsHeadItem
+import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.roles.domain.Character
 import com.gnoemes.shikimori.entity.series.presentation.EpisodesNavigationData
 import com.gnoemes.shikimori.presentation.presenter.anime.converter.AnimeDetailsViewModelConverter
@@ -90,6 +92,32 @@ class AnimePresenter @Inject constructor(
     override fun onOpenDiscussion() {
         currentAnime.topicId?.let { onTopicClicked(it) }
                 ?: router.showSystemMessage(resourceProvider.topicNotFound)
+        logEvent(AnalyticEvent.ANIME_DETAILS_DISCUSSION)
+    }
+
+    override fun onChangeRateStatus(newStatus: RateStatus) {
+        super.onChangeRateStatus(newStatus)
+        logEvent(AnalyticEvent.RATE_DROP_MENU)
+    }
+
+    override fun onStudioClicked(id: Long) {
+        super.onStudioClicked(id)
+        logEvent(AnalyticEvent.ANIME_DETAILS_STUDIO)
+    }
+
+    override fun onGenreClicked(genre: Genre) {
+        super.onGenreClicked(genre)
+        logEvent(AnalyticEvent.ANIME_DETAILS_GENRE)
+    }
+
+    override fun onChronology() {
+        super.onChronology()
+        logEvent(AnalyticEvent.ANIME_DETAILS_CHRONOLOGY)
+    }
+
+    override fun onLinks() {
+        super.onLinks()
+        logEvent(AnalyticEvent.ANIME_DETAILS_LINKS)
     }
 
     override fun onOpenInBrowser() = onOpenWeb(currentAnime.url)
@@ -98,10 +126,12 @@ class AnimePresenter @Inject constructor(
         val data = EpisodesNavigationData(id, currentAnime.image, currentAnime.nameRu
                 ?: currentAnime.name, currentAnime.userRate?.id)
         router.navigateTo(Screens.EPISODES, data)
+        logEvent(AnalyticEvent.NAVIGATION_ANIME_EPISODES)
     }
 
     override fun onEditRate() {
         viewState.showRateDialog(currentAnime.userRate)
+        logEvent(AnalyticEvent.RATE_DIALOG)
     }
 
     override fun onScreenshotsClicked() {

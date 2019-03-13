@@ -13,8 +13,7 @@ class AuthDialog : MvpDialogFragment() {
                 .show {
                     message(R.string.dialog_auth_message)
                     positiveButton(res = R.string.common_sign_in) { target?.onSignIn() }
-                    neutralButton(res = R.string.common_sign_up) { target?.onSignUp() }
-                    negativeButton(res = R.string.common_cancel)
+                    negativeButton(res = R.string.common_sign_up) { target?.onSignUp() }
                 }
     }
 

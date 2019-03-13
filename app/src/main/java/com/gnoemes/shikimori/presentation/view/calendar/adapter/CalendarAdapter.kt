@@ -94,8 +94,11 @@ class CalendarAdapter(
         }
 
         init {
-            val snapHelper = StartSnapHelper(snapOffset)
-            snapHelper.attachToRecyclerView(itemView.recyclerView)
+            if (itemView.recyclerView.onFlingListener == null) {
+                val snapHelper = StartSnapHelper(snapOffset)
+                snapHelper.attachToRecyclerView(itemView.recyclerView)
+            }
+
             itemView.recyclerView.apply {
                 setHasFixedSize(true)
                 setRecycledViewPool(sharedPool)

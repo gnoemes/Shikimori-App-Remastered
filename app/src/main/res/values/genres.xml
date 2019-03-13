@@ -39,6 +39,7 @@
     <string name="cars">Машины</string>
     <string name="martial_arts">Боевые искусства</string>
     <string name="dementia">Безумие</string>
+    <string name="josei">Дзёсей</string>
 
     <!--   NONONONONO 18+ :)  -->
     <string name="hentai">Хентай</string>
@@ -47,19 +48,26 @@
 
 
     <string-array name="genres">
+        <item>@string/shounen</item>
+        <item>@string/shounen_ai</item>
+        <item>@string/seinen</item>
+        <item>@string/shoujo</item>
+        <item>@string/shoujo_ai</item>
+        <item>@string/josei</item>
+        <item>@string/comedy</item>
+        <item>@string/romance</item>
+        <item>@string/school</item>
+
         <item>@string/action</item>
         <item>@string/adventure</item>
-        <item>@string/comedy</item>
         <item>@string/parody</item>
         <item>@string/drama</item>
-        <item>@string/romance</item>
         <item>@string/game</item>
         <item>@string/fantasy</item>
         <item>@string/magic</item>
         <item>@string/ecchi</item>
         <item>@string/demons</item>
         <item>@string/super_power</item>
-        <item>@string/school</item>
         <item>@string/harem</item>
         <item>@string/mecha</item>
         <item>@string/sports</item>
@@ -73,34 +81,36 @@
         <item>@string/police</item>
         <item>@string/music</item>
         <item>@string/samurai</item>
-        <item>@string/shoujo</item>
-        <item>@string/shounen</item>
-        <item>@string/shounen_ai</item>
         <item>@string/vampire</item>
         <item>@string/slice_of_life</item>
         <item>@string/psychological</item>
-        <item>@string/seinen</item>
         <item>@string/supernatural</item>
         <item>@string/thriller</item>
-        <item>@string/shoujo_ai</item>
         <item>@string/kids</item>
         <item>@string/cars</item>
     </string-array>
 
     <string-array name="genres_names">
+        <item>shounen</item>
+        <item>shounen_ai</item>
+        <item>seinen</item>
+        <item>shoujo</item>
+        <item>shoujo_ai</item>
+        <item>josei</item>
+        <item>comedy</item>
+        <item>romance</item>
+        <item>school</item>
+
         <item>action</item>
         <item>adventure</item>
-        <item>comedy</item>
         <item>parody</item>
         <item>drama</item>
-        <item>romance</item>
         <item>game</item>
         <item>fantasy</item>
         <item>magic</item>
         <item>ecchi</item>
         <item>demons</item>
         <item>super_power</item>
-        <item>school</item>
         <item>harem</item>
         <item>mecha</item>
         <item>sports</item>
@@ -114,16 +124,11 @@
         <item>police</item>
         <item>music</item>
         <item>samurai</item>
-        <item>shoujo</item>
-        <item>shounen</item>
-        <item>shounen_ai</item>
         <item>vampire</item>
         <item>slice_of_life</item>
         <item>psychological</item>
-        <item>seinen</item>
         <item>supernatural</item>
         <item>thriller</item>
-        <item>shoujo_ai</item>
         <item>kids</item>
         <item>cars</item>
     </string-array>

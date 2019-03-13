@@ -19,9 +19,11 @@ class UserContentViewHolder(
 ) {
 
     init {
-        val snapOffset = view.resources.getDimension(R.dimen.margin_normal).toInt()
-        val snapHelper = StartSnapHelper(snapOffset)
-        snapHelper.attachToRecyclerView(view.contentRecyclerView)
+        if (view.contentRecyclerView.onFlingListener == null) {
+            val snapOffset = view.resources.getDimension(R.dimen.margin_normal).toInt()
+            val snapHelper = StartSnapHelper(snapOffset)
+            snapHelper.attachToRecyclerView(view.contentRecyclerView)
+        }
 
         view.contentRecyclerView.apply {
             adapter = this@UserContentViewHolder.adapter.apply { if (!hasObservers()) setHasStableIds(true) }
@@ -45,7 +47,7 @@ class UserContentViewHolder(
         if (item.needShowMore) items.add(UserContentMoreItem(item.type, item.moreSize))
         adapter.bindItems(items)
 
-        val stringRes = when(item.type) {
+        val stringRes = when (item.type) {
             UserContentType.FAVORITES -> R.string.common_favorite
             UserContentType.CLUBS -> R.string.common_clubs
             UserContentType.FRIENDS -> R.string.common_friends

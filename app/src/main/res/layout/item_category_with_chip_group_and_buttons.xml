@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/colorSurface"
+    >
+
+    <TextView
+        android:id="@+id/categoryNameView"
+        style="@style/TextHeadlineStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Список" />
+
+    <ImageButton
+        android:id="@+id/clearBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:tint="?attr/colorOnPrimary"
+        app:layout_constraintBottom_toBottomOf="@+id/categoryNameView"
+        app:layout_constraintEnd_toStartOf="@+id/invertBtn"
+        app:layout_constraintTop_toTopOf="@+id/categoryNameView"
+        app:srcCompat="@drawable/ic_delete" />
+
+    <ImageButton
+        android:id="@+id/invertBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:tint="?attr/colorOnPrimary"
+        app:layout_constraintBottom_toBottomOf="@+id/categoryNameView"
+        app:layout_constraintEnd_toStartOf="@+id/checkAllBtn"
+        app:layout_constraintTop_toTopOf="@+id/categoryNameView"
+        app:srcCompat="@drawable/ic_invert" />
+
+    <ImageButton
+        android:id="@+id/checkAllBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:tint="?attr/colorOnPrimary"
+        app:layout_constraintBottom_toBottomOf="@+id/categoryNameView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/categoryNameView"
+        app:srcCompat="@drawable/ic_done_all" />
+
+    <View
+        android:id="@+id/dynamicSpace"
+        android:layout_width="0dp"
+        android:layout_height="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/categoryNameView" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chipList"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginBottom="24dp"
+        tools:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
+        tools:listitem="@layout/item_chip_filter"
+        tools:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dynamicSpace" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

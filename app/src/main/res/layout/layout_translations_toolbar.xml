@@ -50,7 +50,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:src="@drawable/ic_voice" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/voiceBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -58,6 +58,8 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="16dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/translation_voice"
                 android:padding="4dp"
                 android:tint="?attr/colorOnPrimary"
                 android:visibility="gone"
@@ -66,7 +68,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_voice" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/subtitlesBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -74,6 +76,8 @@
                 android:layout_marginEnd="24dp"
                 android:layout_marginRight="24dp"
                 android:layout_marginBottom="16dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/translation_subtitles"
                 android:padding="4dp"
                 android:tint="?attr/colorOnPrimary"
                 android:visibility="gone"
@@ -82,7 +86,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_subs" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/originalBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -90,6 +94,8 @@
                 android:layout_marginEnd="24dp"
                 android:layout_marginRight="24dp"
                 android:layout_marginBottom="16dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/translation_original"
                 android:padding="4dp"
                 android:tint="?attr/colorOnPrimary"
                 android:visibility="gone"

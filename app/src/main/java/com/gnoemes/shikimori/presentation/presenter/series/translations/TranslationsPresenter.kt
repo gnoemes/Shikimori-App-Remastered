@@ -4,6 +4,7 @@ import com.arellomobile.mvp.InjectViewState
 import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.domain.download.DownloadInteractor
 import com.gnoemes.shikimori.domain.series.SeriesInteractor
+import com.gnoemes.shikimori.entity.app.domain.AnalyticEvent
 import com.gnoemes.shikimori.entity.download.DownloadVideoData
 import com.gnoemes.shikimori.entity.series.domain.*
 import com.gnoemes.shikimori.entity.series.presentation.EmbeddedPlayerNavigationData
@@ -50,6 +51,7 @@ class TranslationsPresenter @Inject constructor(
         viewState.setBackground(navigationData.image)
 
         loadData()
+        analyzeType(type)
     }
 
     private fun loadData() {
@@ -100,7 +102,7 @@ class TranslationsPresenter @Inject constructor(
     fun onHostingClicked(hosting: TranslationVideo) {
         this.selectedHosting = hosting
         if (!Utils.isHostingSupports(hosting.videoHosting)) openVideo(hosting, PlayerType.WEB)
-        else if (settingsSource.isRememberPlayer) openVideo(hosting, settingsSource.playerType)
+        else if (!settingsSource.isAskForPlayer) openVideo(hosting, settingsSource.playerType)
         else viewState.showPlayerDialog()
     }
 
@@ -141,8 +143,13 @@ class TranslationsPresenter @Inject constructor(
     fun onMenuClicked(category: TranslationMenu) {
         when (category) {
             is TranslationMenu.Download -> showDownloadDialog(category.videos)
-            is TranslationMenu.Author -> viewState.showAuthorDialog(category.author)
+            is TranslationMenu.Author -> showAuthorDialog(category.author)
         }
+    }
+
+    private fun showAuthorDialog(author: String) {
+        logEvent(AnalyticEvent.ANIME_TRANSLATIONS_AUTHORS)
+        viewState.showAuthorDialog(author)
     }
 
     private fun showDownloadDialog(videos: List<TranslationVideo>) {
@@ -162,6 +169,7 @@ class TranslationsPresenter @Inject constructor(
     }
 
     private fun downloadVideo(url: String?, video: Video?) {
+        logEvent(AnalyticEvent.ANIME_TRANSLATIONS_DOWNLOAD)
         val data = DownloadVideoData(navigationData.animeId, navigationData.name, navigationData.episodeIndex, url, Utils.getRequestHeadersForHosting(video))
         downloadInteractor.downloadVideo(data)
                 .subscribe({}, this::processDownloadErrors)
@@ -182,6 +190,7 @@ class TranslationsPresenter @Inject constructor(
     }
 
     fun onDiscussionClicked() {
+        logEvent(AnalyticEvent.ANIME_TRANSLATIONS_DISCUSSION)
         interactor.getTopic(navigationData.animeId, navigationData.episodeIndex)
                 .subscribe(this::onTopicClicked, this::onDiscussionNotExist)
                 .addToDisposables()
@@ -194,10 +203,12 @@ class TranslationsPresenter @Inject constructor(
     fun onTypeChanged(newType: TranslationType) {
         this.type = newType
         loadData()
+        analyzeType(newType)
     }
 
     fun onSearchClicked() {
         viewState.showSearchView()
+        logEvent(AnalyticEvent.ANIME_TRANSLATIONS_SEARCH_OPENED)
     }
 
     fun onQueryChanged(newText: String?) {
@@ -224,5 +235,12 @@ class TranslationsPresenter @Inject constructor(
     }
 
     private fun processDownloadErrors(throwable: Throwable) {
+    }
+
+    private fun analyzeType(type: TranslationType) = when (type) {
+        TranslationType.VOICE_RU -> logEvent(AnalyticEvent.ANIME_TRANSLATIONS_TYPE_VOICE_RU)
+        TranslationType.SUB_RU -> logEvent(AnalyticEvent.ANIME_TRANSLATIONS_TYPE_SUB_RU)
+        TranslationType.RAW -> logEvent(AnalyticEvent.ANIME_TRANSLATIONS_TYPE_ORIGINAL)
+        else -> Unit
     }
 }

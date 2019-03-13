@@ -69,8 +69,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/lockView"
         app:layout_constraintStart_toStartOf="parent"
-        app:played_color="?attr/colorAccent"
-        app:scrubber_color="?attr/colorAccent"
+        app:played_color="?attr/colorSecondary"
+        app:scrubber_color="?attr/colorSecondary"
         app:unplayed_color="@color/player_controls"
         tools:ignore="RtlHardcoded" />
 
@@ -81,7 +81,7 @@
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
         android:layout_marginBottom="16dp"
-        android:background="@android:color/transparent"
+        android:background="?attr/selectableItemBackgroundBorderless"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/pipView"
         app:srcCompat="@drawable/ic_lock" />
@@ -92,7 +92,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
-        android:background="@android:color/transparent"
+        android:background="?attr/selectableItemBackgroundBorderless"
         app:layout_constraintBottom_toBottomOf="@+id/lockView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/rotationView"
@@ -104,7 +104,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:background="@android:color/transparent"
+        android:background="?attr/selectableItemBackgroundBorderless"
         app:layout_constraintBottom_toBottomOf="@+id/lockView"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_screen_rotation" />
