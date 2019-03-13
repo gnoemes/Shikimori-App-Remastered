@@ -4,13 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <Preference
-        android:key="@string/settings_about_feedback_key"
-        android:title="@string/settings_about_feedback_title"
-        app:iconSpaceReserved="false" />
-
-    <Preference
-        android:key="@string/settings_about_updates_key"
-        android:title="@string/settings_about_updates_title"
+        android:key="@string/settings_about_send_key"
+        android:title="@string/settings_about_send_title"
         app:iconSpaceReserved="false" />
 
     <Preference
