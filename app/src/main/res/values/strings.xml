@@ -254,10 +254,10 @@
     <string name="settings_statuses">Статусные списки</string>
     <string name="settings_statuses_auto_increment_title">Автоматический подсчет</string>
     <string name="settings_statuses_auto_increment_key" translatable="false">IS_AUTO_INCREMENT</string>
-    <string name="settings_statuses_auto_increment_summary_on">Прогресс редактируется вручную</string>
-    <string name="settings_statuses_auto_increment_summary_off">Прогресс отмечается автоматически</string>
+    <string name="settings_statuses_auto_increment_summary_off">Прогресс редактируется вручную</string>
+    <string name="settings_statuses_auto_increment_summary_on">Прогресс отмечается автоматически</string>
 
-    <string name="settings_statuses_auto_status_title">Автоматическое добавление в список</string>
+    <string name="settings_statuses_auto_status_title">Автоматическое добавление</string>
     <string name="settings_statuses_auto_status_key" translatable="false">IS_AUTO_STATUS</string>
     <string name="settings_statuses_auto_status_summary_on">Когда у тайтлов без статуса появился прогресс, они попадают в список</string>
     <string name="settings_statuses_auto_status_summary_off">Добавление тайтлов в список происходит вручную</string>
