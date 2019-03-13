@@ -42,6 +42,8 @@ android {
         applicationId "com.gnoemes.shikimori"
         minSdkVersion versions.minSdk
         targetSdkVersion versions.compileSdk
+        versionName appVersionName
+        versionCode appVersionCode
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
