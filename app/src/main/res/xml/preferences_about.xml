@@ -9,6 +9,11 @@
         app:iconSpaceReserved="false" />
 
     <Preference
+        android:key="@string/settings_about_forum_key"
+        android:title="@string/settings_about_forum_title"
+        app:iconSpaceReserved="false" />
+
+    <Preference
         android:icon="@mipmap/ic_launcher_round"
         android:key="@string/settings_about_version_key"
         android:title="@string/app_name"

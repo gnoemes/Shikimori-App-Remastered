@@ -311,10 +311,10 @@
     <string name="settings_player_gestures_controls_summary_on">Включить управление яркостью и громкостью жестами</string>
     <string name="settings_player_gestures_controls_summary_off">Жесты изменения громкости и яркости отключены</string>
 
-    <string name="settings_player_gestures_controls_inverted_title">Поменять местами яркость и громкость</string>
+    <string name="settings_player_gestures_controls_inverted_title">Инвертировать области</string>
     <string name="settings_player_gestures_controls_inverted_key" translatable="false">PLAYER_IS_VOLUME_AND_BRIGHTNESS_INVERTED</string>
-    <string name="settings_player_gestures_controls_inverted_summary_on">Управление яркостью в левой части экрана, а управление громкостью в правой части экрана</string>
-    <string name="settings_player_gestures_controls_inverted_summary_off">Управление яркостью в правой части экрана, а громкостью в левой части экрана</string>
+    <string name="settings_player_gestures_controls_inverted_summary_on">Управление яркостью в левой части экрана, а громкостью в правой</string>
+    <string name="settings_player_gestures_controls_inverted_summary_off">Управление яркостью в правой части экрана, а громкостью в левой</string>
 
     <string name="settings_player_gestures_offset_small_title">Перемотка двойным нажатием</string>
     <string name="settings_player_gestures_offset_small_key" translatable="false">PLAYER_FORWARD_REWIND_OFFSET</string>
@@ -346,6 +346,9 @@
 
     <string name="settings_about_send_key" translatable="false">SEND_MAIL_KEY</string>
     <string name="settings_about_send_title">Написать разработчику</string>
+
+    <string name="settings_about_forum_key" translatable="false">OPEN_FORUM_KEY</string>
+    <string name="settings_about_forum_title">Открыть форум</string>
 
     <string name="topic_news">Новости</string>
     <string name="topic_my_feed">Моя лента</string>
