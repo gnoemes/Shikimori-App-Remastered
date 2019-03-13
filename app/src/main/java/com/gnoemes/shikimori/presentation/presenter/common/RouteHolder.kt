@@ -37,6 +37,7 @@ import com.gnoemes.shikimori.presentation.view.topic.details.TopicFragment
 import com.gnoemes.shikimori.presentation.view.topic.list.TopicListFragment
 import com.gnoemes.shikimori.presentation.view.user.UserFragment
 import com.gnoemes.shikimori.presentation.view.userhistory.UserHistoryFragment
+import com.gnoemes.shikimori.utils.toUri
 
 object RouteHolder {
 
@@ -72,6 +73,7 @@ object RouteHolder {
             Screens.SETTINGS -> Intent(context, SettingsActivity::class.java)
             Screens.WEB_PLAYER -> Intent(context, WebPlayerActivity::class.java).apply { putExtra(AppExtras.ARGUMENT_URL, data as String) }
             Screens.EMBEDDED_PLAYER -> Intent(context, EmbeddedPlayerActivity::class.java).apply { putExtra(AppExtras.ARGUMENT_PLAYER_DATA, data as EmbeddedPlayerNavigationData) }
+            Screens.EXTERNAL_PLAYER -> Intent(Intent.ACTION_VIEW, data?.toString()?.toUri()).apply { setDataAndType(data?.toString()?.toUri(), "video/mp4") }
             else -> null
         }
     }
