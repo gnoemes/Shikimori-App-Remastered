@@ -20,7 +20,7 @@ android {
             versionMajor 0
             versionMinor 8
             versionPatch 0
-            versionBuild 0
+            versionBuild 1
         }
         codeOptions {
             versionCodeType VersionCodeType.AUTO_INCREMENT_ONE_STEP
@@ -42,6 +42,8 @@ android {
         applicationId "com.gnoemes.shikimori"
         minSdkVersion versions.minSdk
         targetSdkVersion versions.compileSdk
+        versionName appVersionName
+        versionCode appVersionCode
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -64,10 +66,6 @@ android {
         it.buildConfigField 'String', 'ShikimoriBaseUrl', ShikimoriBaseUrl
         it.buildConfigField 'String', 'VideoBaseUrl', VideoBaseUrl
         it.buildConfigField 'String', 'VkRandomToken', VkRandomToken
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
     }
 
     compileOptions {

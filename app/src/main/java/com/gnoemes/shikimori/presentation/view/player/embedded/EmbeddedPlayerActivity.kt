@@ -538,7 +538,6 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         override fun onPlayerError(error: ExoPlaybackException?) {
             error?.printStackTrace()
             showMessage(getString(R.string.player_error))
-            super.onPlayerError(error)
         }
 
         override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
