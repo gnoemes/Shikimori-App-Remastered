@@ -5,8 +5,8 @@ import android.graphics.drawable.ColorDrawable
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.SpinnerAdapter
 import android.widget.TextView
-import androidx.appcompat.widget.ThemedSpinnerAdapter
 import com.gnoemes.shikimori.utils.color
 
 
@@ -16,7 +16,7 @@ class SpinnerArrayAdapter(
         context: Context,
         private val itemRes: Int,
         private val items: List<String>
-) : ArrayAdapter<Any>(context, itemRes, items), ThemedSpinnerAdapter {
+) : ArrayAdapter<Any>(context, itemRes, items), SpinnerAdapter {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val view = super.getView(position, convertView, parent) as TextView
