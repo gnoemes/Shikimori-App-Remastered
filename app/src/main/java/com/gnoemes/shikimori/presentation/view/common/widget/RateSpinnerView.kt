@@ -54,7 +54,7 @@ class RateSpinnerView @JvmOverloads constructor(context: Context,
         ta.recycle()
 
         items = mutableListOf(
-                ViewModel(R.drawable.ic_plus, R.color.rate_default, R.color.rate_default_dark, RateStatus.WATCHING, 0),
+                ViewModel(R.drawable.ic_play_rate, R.color.rate_default, R.color.rate_default_dark, RateStatus.WATCHING, 0),
                 ViewModel(R.drawable.ic_plus, R.color.rate_default, R.color.rate_default_dark, RateStatus.PLANNED, 1),
                 ViewModel(R.drawable.ic_replay, R.color.rate_default, R.color.rate_default_dark, RateStatus.REWATCHING, 2),
                 ViewModel(R.drawable.ic_check, R.color.rate_watched, R.color.rate_watched_dark, RateStatus.COMPLETED, 3),
