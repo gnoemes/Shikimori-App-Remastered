@@ -1,6 +1,7 @@
 package com.gnoemes.shikimori.presentation.presenter.rates
 
 import com.arellomobile.mvp.InjectViewState
+import com.gnoemes.shikimori.domain.rates.RateChangesInteractor
 import com.gnoemes.shikimori.domain.user.UserInteractor
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.app.domain.exceptions.BaseException
@@ -12,18 +13,19 @@ import com.gnoemes.shikimori.entity.rates.presentation.RateCategory
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
 import com.gnoemes.shikimori.presentation.presenter.rates.converter.RateCountConverter
 import com.gnoemes.shikimori.presentation.view.rates.RatesContainerView
-import com.gnoemes.shikimori.utils.appendLightLoadingLogic
 import javax.inject.Inject
 
 @InjectViewState
 class RatesContainerPresenter @Inject constructor(
         private val interactor: UserInteractor,
-        private val converter: RateCountConverter
+        private val converter: RateCountConverter,
+        private val changesInteractor: RateChangesInteractor
 ) : BaseNetworkPresenter<RatesContainerView>() {
 
     var type: Type = Type.ANIME
     var userId: Long = Constants.NO_ID
-    var priorityStatus : RateStatus? = null
+    var rateStatus: RateStatus? = null
+    var priorityStatus: RateStatus? = null
 
     private val isAnime: Boolean
         get() = type == Type.ANIME
@@ -34,12 +36,13 @@ class RatesContainerPresenter @Inject constructor(
         if (userId != Constants.NO_ID) viewState.selectType(type)
 
         loadData()
+        subscribeToChanges()
     }
 
     override fun onViewReattached() {
         super.onViewReattached()
 
-        if (userId == Constants.NO_ID) loadMyUser()
+        loadData()
     }
 
     private fun loadData() {
@@ -55,7 +58,6 @@ class RatesContainerPresenter @Inject constructor(
 
     private fun loadRateCategories() =
             interactor.getDetails(userId)
-                    .appendLightLoadingLogic(viewState)
                     .map {
                         if (isAnime) converter.countAnimeRates(it)
                         else converter.countMangaRates(it)
@@ -66,7 +68,7 @@ class RatesContainerPresenter @Inject constructor(
     private fun setData(items: List<RateCategory>) {
         viewState.setNavigationItems(items)
         if (items.isNotEmpty()) {
-            onChangeStatus(priorityStatus ?: items.first().status)
+            if (rateStatus == null) onChangeStatus(priorityStatus ?: items.first().status)
             viewState.hideEmptyView()
             viewState.hideNetworkView()
             viewState.showContainer()
@@ -98,11 +100,18 @@ class RatesContainerPresenter @Inject constructor(
     }
 
     fun onChangeType(type: Type) {
+        rateStatus = null
         this.type = type
         loadRateCategories()
     }
 
     fun onChangeStatus(rateStatus: RateStatus) {
+        this.rateStatus = rateStatus
         viewState.showStatusFragment(userId, type, rateStatus)
+        loadRateCategories()
     }
+
+    private fun subscribeToChanges() = changesInteractor
+            .getRateChanges()
+            .subscribe({ loadRateCategories() }, this::processErrors)
 }

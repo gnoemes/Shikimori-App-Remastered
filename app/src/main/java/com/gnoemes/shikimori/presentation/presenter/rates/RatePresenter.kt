@@ -1,6 +1,7 @@
 package com.gnoemes.shikimori.presentation.presenter.rates
 
 import com.arellomobile.mvp.InjectViewState
+import com.gnoemes.shikimori.domain.rates.RateChangesInteractor
 import com.gnoemes.shikimori.domain.rates.RatesInteractor
 import com.gnoemes.shikimori.entity.app.domain.AnalyticEvent
 import com.gnoemes.shikimori.entity.app.domain.Constants
@@ -25,7 +26,8 @@ import javax.inject.Inject
 @InjectViewState
 class RatePresenter @Inject constructor(
         private val ratesInteractor: RatesInteractor,
-        private val sortResourceProvider: SortResourceProvider
+        private val sortResourceProvider: SortResourceProvider,
+        private val changesInteractor: RateChangesInteractor
 ) : BaseNetworkPresenter<RateView>(), ViewController<Rate> {
 
     var userId: Long = Constants.NO_ID
@@ -124,24 +126,23 @@ class RatePresenter @Inject constructor(
 
     private fun onChangeRateStatus(id: Long, newStatus: RateStatus) {
         ratesInteractor.changeRateStatus(id, newStatus)
-                .subscribeAndRefresh()
+                .subscribeAndRefresh(id)
         logEvent(AnalyticEvent.RATE_DROP_MENU)
     }
 
 
     fun onDeleteRate(id: Long) =
             ratesInteractor.deleteRate(id)
-                    .subscribeAndRefresh()
-
+                    .subscribeAndRefresh(id)
 
     fun onUpdateRate(rate: UserRate) =
             ratesInteractor.updateRate(rate)
-                    .subscribeAndRefresh()
+                    .subscribeAndRefresh(rate.id!!)
 
-    private fun Completable.subscribeAndRefresh() {
-        this.subscribe(this@RatePresenter::onRefresh, this@RatePresenter::processErrors)
+    private fun Completable.subscribeAndRefresh(id: Long) {
+        this.andThen(changesInteractor.sendRateChanges(id))
+                .subscribe(this@RatePresenter::onRefresh, this@RatePresenter::processErrors)
                 .addToDisposables()
-
     }
 
     fun onSortChanged(sort: RateSort, desc: Boolean) {

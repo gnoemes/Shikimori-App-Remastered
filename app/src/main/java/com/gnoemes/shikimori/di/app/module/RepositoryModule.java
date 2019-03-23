@@ -12,6 +12,8 @@ import com.gnoemes.shikimori.data.repository.app.impl.TokenRepositoryImpl;
 import com.gnoemes.shikimori.data.repository.app.impl.TokenSourceImpl;
 import com.gnoemes.shikimori.data.repository.download.DownloadRepository;
 import com.gnoemes.shikimori.data.repository.download.DownloadRepositoryImpl;
+import com.gnoemes.shikimori.data.repository.rates.RateChangesRepository;
+import com.gnoemes.shikimori.data.repository.rates.RateChangesRepositoryImpl;
 import com.gnoemes.shikimori.data.repository.rates.RatesRepository;
 import com.gnoemes.shikimori.data.repository.rates.RatesRepositoryImpl;
 import com.gnoemes.shikimori.data.repository.series.shikimori.EpisodeChangesRepository;
@@ -63,5 +65,9 @@ public interface RepositoryModule {
     @Binds
     @Singleton
     AnalyticRepository bindAnalyticRepository(FirebaseAnalyticRepositoryImpl repository);
+
+    @Binds
+    @Singleton
+    RateChangesRepository bindRateChangesRepository(RateChangesRepositoryImpl repository);
 
 }
