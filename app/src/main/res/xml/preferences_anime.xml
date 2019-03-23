@@ -119,6 +119,15 @@
             android:title="@string/settings_player_gestures_offset_big_title"
             app:iconSpaceReserved="false" />
 
+        <SwitchPreference
+            android:defaultValue="true"
+            android:dependency="@string/settings_player_gestures_key"
+            android:key="@string/settings_player_gestures_zoom_type_key"
+            android:summaryOff="@string/settings_player_gestures_zoom_type_off"
+            android:summaryOn="@string/settings_player_gestures_zoom_type_on"
+            android:title="@string/settings_player_gestures_zoom_type_title"
+            app:iconSpaceReserved="false" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>

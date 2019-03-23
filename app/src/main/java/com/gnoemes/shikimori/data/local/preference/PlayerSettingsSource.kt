@@ -6,6 +6,7 @@ interface PlayerSettingsSource {
     var isVolumeAndBrightnessInverted : Boolean
     var isForwardRewindSlide : Boolean
     var isOpenLandscape : Boolean
+    var isZoomProportional : Boolean
 
     var forwardRewindOffset : Long
     var forwardRewindOffsetBig : Long
