@@ -15,6 +15,7 @@ import com.gnoemes.shikimori.entity.rates.domain.UserRate
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
 import com.gnoemes.shikimori.presentation.presenter.common.paginator.PageOffsetPaginator
 import com.gnoemes.shikimori.presentation.presenter.common.paginator.ViewController
+import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResourceProvider
 import com.gnoemes.shikimori.presentation.presenter.common.provider.SortResourceProvider
 import com.gnoemes.shikimori.presentation.view.rates.RateView
 import io.reactivex.Completable
@@ -23,11 +24,13 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
+//TODO rewrite to basePagination
 @InjectViewState
 class RatePresenter @Inject constructor(
         private val ratesInteractor: RatesInteractor,
         private val sortResourceProvider: SortResourceProvider,
-        private val changesInteractor: RateChangesInteractor
+        private val changesInteractor: RateChangesInteractor,
+        private val resourceProvider: CommonResourceProvider
 ) : BaseNetworkPresenter<RateView>(), ViewController<Rate> {
 
     var userId: Long = Constants.NO_ID
@@ -105,6 +108,14 @@ class RatePresenter @Inject constructor(
             is DetailsAction.ChangeRateStatus -> onChangeRateStatus(it.id, it.newStatus)
             is DetailsAction.EditRate -> onEditRate(it.rate)
         }
+    }
+
+    fun onOpenRandom() {
+        val item = items.shuffled().firstOrNull { it is Rate } as? Rate
+        if (item != null) {
+            if (item.anime != null) onAnimeClicked(item.anime.id)
+            else if (item.manga != null) onMangaClicked(item.manga.id)
+        } else router.showSystemMessage(resourceProvider.emptyMessage)
     }
 
     private fun onEditRate(rate: Rate?) {

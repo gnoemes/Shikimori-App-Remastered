@@ -30,7 +30,7 @@ import kotlinx.android.synthetic.main.layout_progress.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import javax.inject.Inject
 
-class RateFragment : BaseFragment<RatePresenter, RateView>(), RateView, RateDialogFragment.RateDialogCallback {
+class RateFragment : BaseFragment<RatePresenter, RateView>(), RateView, RateDialogFragment.RateDialogCallback, RandomRateListener {
 
     @Inject
     lateinit var imageLoader: ImageLoader
@@ -103,6 +103,10 @@ class RateFragment : BaseFragment<RatePresenter, RateView>(), RateView, RateDial
     override fun onDestroyView() {
         recyclerView.adapter = null
         super.onDestroyView()
+    }
+
+    override fun showRandomRate() {
+        getPresenter().onOpenRandom()
     }
 
     ///////////////////////////////////////////////////////////////////////////

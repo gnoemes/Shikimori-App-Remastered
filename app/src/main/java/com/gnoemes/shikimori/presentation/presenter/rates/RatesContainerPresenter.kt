@@ -114,4 +114,10 @@ class RatesContainerPresenter @Inject constructor(
     private fun subscribeToChanges() = changesInteractor
             .getRateChanges()
             .subscribe({ loadRateCategories() }, this::processErrors)
+
+    fun onRandomClicked() {
+        rateStatus?.let {
+            viewState.showRandomRate(type, it)
+        }
+    }
 }
