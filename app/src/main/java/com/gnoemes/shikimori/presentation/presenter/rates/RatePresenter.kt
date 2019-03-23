@@ -1,6 +1,7 @@
 package com.gnoemes.shikimori.presentation.presenter.rates
 
 import com.arellomobile.mvp.InjectViewState
+import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.domain.rates.RateChangesInteractor
 import com.gnoemes.shikimori.domain.rates.RatesInteractor
 import com.gnoemes.shikimori.entity.app.domain.AnalyticEvent
@@ -30,7 +31,8 @@ class RatePresenter @Inject constructor(
         private val ratesInteractor: RatesInteractor,
         private val sortResourceProvider: SortResourceProvider,
         private val changesInteractor: RateChangesInteractor,
-        private val resourceProvider: CommonResourceProvider
+        private val resourceProvider: CommonResourceProvider,
+        private val settingsSource: SettingsSource
 ) : BaseNetworkPresenter<RateView>(), ViewController<Rate> {
 
     var userId: Long = Constants.NO_ID
@@ -43,7 +45,6 @@ class RatePresenter @Inject constructor(
     private var isDescendingSort: Boolean = false
     private var items = mutableListOf<Any>()
     private var sort: RateSort = RateSort.Id
-
 
     override fun initData() {
         paginator = PageOffsetPaginator({ loadRate(it) }, this)
@@ -168,7 +169,7 @@ class RatePresenter @Inject constructor(
             is RateSort.Type -> sortAndShow { it.typeSort() }
             is RateSort.Status -> sortAndShow { it.statusSort() }
             is RateSort.Score -> sortAndShow { it.scoreSort() }
-            is RateSort.Random -> sortAndShow { it.randomSort() }
+            is RateSort.Name -> sortAndShow { it.nameSort() }
         }
     }
 
@@ -245,11 +246,14 @@ class RatePresenter @Inject constructor(
                 else it.manga?.status?.ordinal!!
             }
 
-    private fun MutableList<Any>.randomSort(): MutableList<Any> =
-            this.filter { it is Rate }
-                    .shuffled()
-                    .toMutableList()
-                    .addSortItem()
+    private fun MutableList<Any>.nameSort(): MutableList<Any> =
+            this.sortRateBySelectorAndAddItem {
+                if (it.type == Type.ANIME) if (isRussianNaming) it.anime?.nameRu else it.anime?.name
+                else if (isRussianNaming) it.manga?.nameRu else it.manga?.name
+            }
+
+    private val isRussianNaming : Boolean
+        get() = settingsSource.isRussianNaming
 }
 
 

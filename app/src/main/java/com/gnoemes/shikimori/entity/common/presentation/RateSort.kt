@@ -9,5 +9,5 @@ sealed class RateSort {
     object Episodes : RateSort()
     object EpisodesWatched : RateSort()
     object Score : RateSort()
-    object Random : RateSort()
+    object Name : RateSort()
 }

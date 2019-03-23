@@ -194,7 +194,7 @@
     <string name="sort_score">По оценке</string>
     <string name="sort_random">Рандом</string>
     <string name="sort_popularity">По популярности</string>
-    <string name="sort_name">По алфавиту</string>
+    <string name="sort_name">По имени</string>
     <string name="sort_rating">По рейтингу</string>
     <string name="rate_drawer_open">rate_drawer_open</string>
     <string name="rate_drawer_close">rate_drawer_close</string>
