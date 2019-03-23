@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_general">Приложение</string>
+    <string name="settings_general_summary">Контент, статусные списки</string>
+    <string name="settings_notifications">Уведомления</string>
+    <string name="settings_player">Плеер</string>
+    <string name="settings_theme">Тема</string>
+    <string name="settings_about">О приложении</string>
+    <string name="settings_about_summary">Обновления, обратная связь</string>
+
+    <string name="settings_content">Контент</string>
+    <string name="settings_content_naming_title">Русские названия</string>
+    <string name="settings_content_naming_key" translatable="false">IS_ROMADZI_NAMING</string>
+    <string name="settings_content_naming_summary_on">Сейчас названия и имена на русском</string>
+    <string name="settings_content_naming_summary_off">Сейчас названия и имена на ромадзи</string>
+
+    <string name="settings_content_download_folder_title">Папка загрузки</string>
+    <string name="settings_content_download_folder_key" translatable="false">DOWNLOAD_FOLDER</string>
+    <string name="settings_content_download_folder_summary">Укажите путь для скачивания аниме и манги</string>
+
+    <string name="settings_statuses">Статусные списки</string>
+    <string name="settings_statuses_auto_increment_title">Автоматический подсчет</string>
+    <string name="settings_statuses_auto_increment_key" translatable="false">IS_AUTO_INCREMENT</string>
+    <string name="settings_statuses_auto_increment_summary_off">Прогресс редактируется вручную</string>
+    <string name="settings_statuses_auto_increment_summary_on">Прогресс отмечается автоматически</string>
+
+    <string name="settings_statuses_auto_status_title">Автоматическое добавление</string>
+    <string name="settings_statuses_auto_status_key" translatable="false">IS_AUTO_STATUS</string>
+    <string name="settings_statuses_auto_status_summary_on">Когда у тайтлов без статуса появился прогресс, они попадают в список</string>
+    <string name="settings_statuses_auto_status_summary_off">Добавление тайтлов в список происходит вручную</string>
+
+    <string name="settings_anime">Аниме</string>
+    <string name="settings_authors">Список авторов</string>
+    <string name="settings_anime_summary">Плеер, тип перевода</string>
+    <string name="settings_anime_my_ongoings_title">Главный раздел \"Мои онгоинги\"</string>
+    <string name="settings_anime_my_ongoings_key" translatable="false">IS_MY_ONGOINGS_PRIORITY</string>
+    <string name="settings_anime_my_ongoings_summary_on">При переходе на календарь открывается раздел ваших онгоингов</string>
+    <string name="settings_anime_my_ongoings_summary_off">При переходе на календарь открывается раздел всех онгоингов</string>
+
+    <string name="settings_calendar">Календарь</string>
+
+    <string name="settings_anime_translation_type_title">Предпочитаемый тип перевода</string>
+    <string name="settings_anime_translation_type_key" translatable="false">TRANSLATION_TYPE</string>
+
+    <string name="settings_anime_player_type_title">Плеер по умолчанию</string>
+    <string name="settings_anime_player_type_summary">Не выбрано</string>
+    <string name="settings_anime_player_type_key" translatable="false">PLAYER_TYPE</string>
+
+    <string name="settings_anime_player_remember_title">Выбор плеера перед просмотром</string>
+    <string name="settings_anime_player_remember_summary_on">Перед переходом к просмотру будет предложено выбрать плеер</string>
+    <string name="settings_anime_player_remember_summary_off">Если возможно, то будет открыт плеер по умолчанию</string>
+    <string name="settings_anime_player_remember_key" translatable="false">IS_REMEMBER_PLAYER</string>
+
+    <string name="settings_anime_player_external_quality_title">Открывать в лучшем качестве</string>
+    <string name="settings_anime_player_external_quality_summary_on">Видео будет открываться в лучшем качестве из доступного</string>
+    <string name="settings_anime_player_external_quality_summary_off">Для внешнего плеера будет предложено выбрать качество</string>
+    <string name="settings_anime_player_external_quality_key" translatable="false">IS_BEST_EXTERNAL_QUALITY</string>
+
+    <string name="settings_anime_remember_translation_settings_title">Локальные настройки просмотра</string>
+    <string name="settings_anime_remember_translation_settings_summary_on">Для каждого аниме сохраняется свой тип перевода и автор</string>
+    <string name="settings_anime_remember_translation_settings_summary_off">Не сохранять тип перевода и автора для разных аниме</string>
+    <string name="settings_anime_remember_translation_settings_key" translatable="false">IS_USE_LOCAL_TRANSLATION_SETTINGS</string>
+
+    <string name="settings_player_orientation_title">Альбомная ориентация</string>
+    <string name="settings_player_orientation_summary_on">Плеер открывается в альбомной ориентации</string>
+    <string name="settings_player_orientation_summary_off">Плеер открывается в ориентации системы</string>
+    <string name="settings_player_orientation_key" translatable="false">PLAYER_IS_OPEN_LANDSCAPE</string>
+
+    <string name="settings_player_gestures">Жесты</string>
+    <string name="settings_player_embedded">Встроенный плеер</string>
+    <string name="settings_player_gestures_title">Управление жестами</string>
+    <string name="settings_player_gestures_key" translatable="false">PLAYER_IS_GESTURES_ENABLED</string>
+    <string name="settings_player_gestures_summary_on">Жесты включены</string>
+    <string name="settings_player_gestures_summary_off">Жесты отключены</string>
+
+    <string name="settings_player_gestures_offset_title">Перемотка слайдом</string>
+    <string name="settings_player_gestures_offset_key" translatable="false">PLAYER_IS_FORWARD_REWIND_SLIDE</string>
+    <string name="settings_player_gestures_offset_summary_on">Перемотка происходит с помощью горизонтального скольжения по экрану</string>
+    <string name="settings_player_gestures_offset_summary_off">Перемотка происходит двойным или долгим нажатием</string>
+
+    <string name="settings_player_gestures_controls_title">Изменение яркости и громкости</string>
+    <string name="settings_player_gestures_controls_key" translatable="false">PLAYER_IS_VOLUME_BRIGHTNESS_GESTURES_ENABLED</string>
+    <string name="settings_player_gestures_controls_summary_on">Включить управление яркостью и громкостью жестами</string>
+    <string name="settings_player_gestures_controls_summary_off">Жесты изменения громкости и яркости отключены</string>
+
+    <string name="settings_player_gestures_controls_inverted_title">Инвертировать области</string>
+    <string name="settings_player_gestures_controls_inverted_key" translatable="false">PLAYER_IS_VOLUME_AND_BRIGHTNESS_INVERTED</string>
+    <string name="settings_player_gestures_controls_inverted_summary_on">Управление яркостью в левой части экрана, а громкостью в правой</string>
+    <string name="settings_player_gestures_controls_inverted_summary_off">Управление яркостью в правой части экрана, а громкостью в левой</string>
+
+    <string name="settings_player_gestures_offset_small_title">Перемотка двойным нажатием</string>
+    <string name="settings_player_gestures_offset_small_key" translatable="false">PLAYER_FORWARD_REWIND_OFFSET</string>
+    <string name="settings_player_gestures_offset_small_summary_default">Пропускает 10 сек. видео</string>
+    <string name="settings_player_gestures_offset_small_summary_format">Пропускает %d сек. видео</string>
+    <string name="settings_player_gestures_offset_small_validation_error">Введите число от 5 до 30</string>
+
+    <string name="settings_player_gestures_offset_big_title">Перемотка долгим нажатием</string>
+    <string name="settings_player_gestures_offset_big_key" translatable="false">PLAYER_FORWARD_REWIND_OFFSET_BIG</string>
+    <string name="settings_player_gestures_offset_big_summary_default">Пропускает 90 сек. видео</string>
+    <string name="settings_player_gestures_offset_small_big_summary_off">При перемотке слайдом настройка недоступна</string>
+    <string name="settings_player_gestures_offset_big_summary_format">Пропускает %d сек. видео</string>
+    <string name="settings_player_gestures_offset_big_validation_error">Введите число от 80 до 180</string>
+
+    <string name="settings_theme_title">Выбор темы</string>
+    <string name="settings_theme_key" translatable="false">THEME_KEY</string>
+    <string name="settings_theme_summary_default">Стандартная тема</string>
+
+    <string name="settings_theme_custom_title">Создать свою</string>
+    <string name="settings_theme_custom_key" translatable="false">CUSTOM_THEME_KEY</string>
+
+    <string name="settings_about_feedback_title">Оставить отзыв</string>
+    <string name="settings_about_feedback_key" translatable="false">FEEDBACK_KEY</string>
+
+    <string name="settings_about_updates_title">Проверить обновления</string>
+    <string name="settings_about_updates_key" translatable="false">UPDATES_KEY</string>
+
+    <string name="settings_about_version_key" translatable="false">VERSION_KEY</string>
+
+    <string name="settings_about_send_key" translatable="false">SEND_MAIL_KEY</string>
+    <string name="settings_about_send_title">Написать разработчику</string>
+
+    <string name="settings_about_forum_key" translatable="false">OPEN_FORUM_KEY</string>
+    <string name="settings_about_forum_title">Открыть форум</string>
+</resources>
