@@ -284,6 +284,11 @@
     <string name="settings_anime_player_remember_summary_off">Если возможно, то будет открыт плеер по умолчанию</string>
     <string name="settings_anime_player_remember_key" translatable="false">IS_REMEMBER_PLAYER</string>
 
+    <string name="settings_anime_player_external_quality_title">Открывать в лучшем качестве</string>
+    <string name="settings_anime_player_external_quality_summary_on">Видео будет открываться в лучшем качестве из доступного</string>
+    <string name="settings_anime_player_external_quality_summary_off">Для внешнего плеера будет предложено выбрать качество</string>
+    <string name="settings_anime_player_external_quality_key" translatable="false">IS_BEST_EXTERNAL_QUALITY</string>
+
     <string name="settings_anime_remember_translation_settings_title">Локальные настройки просмотра</string>
     <string name="settings_anime_remember_translation_settings_summary_on">Для каждого аниме сохраняется свой тип перевода и автор</string>
     <string name="settings_anime_remember_translation_settings_summary_off">Не сохранять тип перевода и автора для разных аниме</string>

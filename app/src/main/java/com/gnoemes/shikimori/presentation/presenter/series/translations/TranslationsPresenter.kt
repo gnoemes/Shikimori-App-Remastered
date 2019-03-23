@@ -119,7 +119,7 @@ class TranslationsPresenter @Inject constructor(
     }
 
     private fun showQualityChooser(tracks: List<Track>) {
-        if (tracks.size == 1) openPlayer(selectedPlayer!!, tracks.firstOrNull()?.url)
+        if (tracks.size == 1 || settingsSource.isExternalBestQuality) openPlayer(selectedPlayer!!, tracks.firstOrNull()?.url)
         else viewState.showQualityChooser(tracks.map { Pair(it.quality, it.url) })
     }
 

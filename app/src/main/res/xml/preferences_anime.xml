@@ -53,6 +53,14 @@
             android:title="@string/settings_anime_player_remember_title"
             app:iconSpaceReserved="false" />
 
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="@string/settings_anime_player_external_quality_key"
+            android:summaryOff="@string/settings_anime_player_external_quality_summary_off"
+            android:summaryOn="@string/settings_anime_player_external_quality_summary_on"
+            android:title="@string/settings_anime_player_external_quality_title"
+            app:iconSpaceReserved="false" />
+
     </PreferenceCategory>
 
     <PreferenceCategory

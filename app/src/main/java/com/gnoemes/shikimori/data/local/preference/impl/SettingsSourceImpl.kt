@@ -59,4 +59,8 @@ class SettingsSourceImpl @Inject constructor(
     override var downloadFolder: String
         get() = prefs.getString(SettingsExtras.DOWNLOAD_FOLDER, "")!!
         set(value) = prefs.putString(SettingsExtras.DOWNLOAD_FOLDER, value)
+
+    override var isExternalBestQuality: Boolean
+        get() = prefs.getBoolean(SettingsExtras.IS_BEST_EXTERNAL_QUALITY, false)
+        set(value) = prefs.putBoolean(SettingsExtras.IS_BEST_EXTERNAL_QUALITY, value)
 }
