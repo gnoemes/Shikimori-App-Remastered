@@ -43,6 +43,7 @@ class TranslationsPresenter @Inject constructor(
     private lateinit var selectedHosting: TranslationVideo
     private var selectedDownloadUrl: String? = null
     private var selectedDownloadVideo: Video? = null
+    private var selectedPlayer: PlayerType? = null
 
     override fun initData() {
         super.initData()
@@ -114,7 +115,16 @@ class TranslationsPresenter @Inject constructor(
     //Others o uses urls
     private fun openVideo(payload: TranslationVideo, playerType: PlayerType) {
         if (playerType == PlayerType.EMBEDDED) openPlayer(playerType, EmbeddedPlayerNavigationData(navigationData.name, navigationData.rateId, items.firstOrNull()!!.episodesSize, payload))
-        else getVideoAndExecute(payload) { openPlayer(playerType, it.tracks.firstOrNull()?.url) }
+        else getVideoAndExecute(payload) { selectedPlayer = playerType; showQualityChooser(it.tracks) }
+    }
+
+    private fun showQualityChooser(tracks: List<Track>) {
+        if (tracks.size == 1) openPlayer(selectedPlayer!!, tracks.firstOrNull()?.url)
+        else viewState.showQualityChooser(tracks.map { Pair(it.quality, it.url) })
+    }
+
+    fun onQualityChoosed(url: String?) {
+        openPlayer(selectedPlayer!!, url)
     }
 
     override fun openPlayer(playerType: PlayerType, payload: Any?) {
@@ -132,7 +142,6 @@ class TranslationsPresenter @Inject constructor(
                 .addToDisposables()
     }
 
-    //TODO quality chooser
     private fun getVideoAndExecute(payload: TranslationVideo, onSubscribe: (Video) -> Unit) {
         interactor.getVideo(payload, navigationData.isAlternative)
                 .appendLoadingLogic(viewState)

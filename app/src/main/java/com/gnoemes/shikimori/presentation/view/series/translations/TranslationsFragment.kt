@@ -189,11 +189,15 @@ class TranslationsFragment : BaseSeriesFragment<TranslationsPresenter, Translati
     }
 
     override fun dialogItemCallback(tag: String?, action: String) {
-        val actions = action.split("$")
-        if (actions.size == 2) {
-            val url = actions[0]
-            val video = Gson().fromJson<Video>(actions[1], Video::class.java)
-            getPresenter().onTrackForDownloadSelected(url, video)
+        if (tag == "DownloadDialog") {
+            val actions = action.split("$")
+            if (actions.size == 2) {
+                val url = actions[0]
+                val video = Gson().fromJson<Video>(actions[1], Video::class.java)
+                getPresenter().onTrackForDownloadSelected(url, video)
+            }
+        } else if (tag == "QualityDialog") {
+            getPresenter().onQualityChoosed(action)
         }
     }
 
@@ -290,6 +294,13 @@ class TranslationsFragment : BaseSeriesFragment<TranslationsPresenter, Translati
         val positiveText = context?.getString(R.string.common_understand)
         DescriptionDialogFragment.newInstance(titleRes = R.string.translation_authors, text = author, positiveText = positiveText)
                 .show(childFragmentManager, "AuthorsDialog")
+    }
+
+    override fun showQualityChooser(items: List<Pair<String, String>>) {
+        val dialog = ListDialogFragment.newInstance()
+        dialog.apply {
+            setItems(items)
+        }.show(childFragmentManager, "QualityDialog")
     }
 
     override fun checkPermissions() {
