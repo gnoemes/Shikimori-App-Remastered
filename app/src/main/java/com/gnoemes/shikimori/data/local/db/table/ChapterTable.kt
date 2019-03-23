@@ -3,7 +3,7 @@ package com.gnoemes.shikimori.data.local.db.table
 import com.pushtorefresh.storio3.sqlite.queries.Query
 
 object ChapterTable {
-    const val TABLE = "episodes"
+    const val TABLE = "chapters"
 
     const val COLUMN_MANGA_ID = "_manga_id"
 
