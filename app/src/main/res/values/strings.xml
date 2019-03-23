@@ -481,11 +481,11 @@
 
     <string-array name="anime_types_name">
         <item>tv</item>
+        <item>movie</item>
+        <item>special</item>
+        <item>music</item>
         <item>ova</item>
         <item>ona</item>
-        <item>special</item>
-        <item>movie</item>
-        <item>music</item>
         <item>tv_13</item>
         <item>tv_24</item>
         <item>tv_48</item>
