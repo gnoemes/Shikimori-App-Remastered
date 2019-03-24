@@ -279,6 +279,8 @@
     <string name="episode_search_empty_desc">Неверный запрос или его еще не выложили</string>
     <string name="translation_authors">Авторы</string>
     <string name="translation_downloadable">Можно скачать</string>
+    <string name="translation_sources">Источники</string>
+    <string name="translation_last_author">Последний автор</string>
     <string name="translation_blue_ray">Blue-ray</string>
     <string name="translation_voice">Озвучка</string>
     <string name="translation_subtitles">Субтитры</string>

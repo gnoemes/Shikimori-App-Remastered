@@ -44,18 +44,25 @@ class TranslationsViewModelConverterImpl @Inject constructor(
         val canBeDownloaded = it.value.find { Utils.isHostingSupports(it.hosting) } != null
 
 
-        if (isSameAuthor) builder.append(" ")
+        if (isSameAuthor) {
+            builder.append("  ")
+            if (!hasBd) {
+                val lastAuthor = context.getString(R.string.translation_last_author)
+                builder.append(lastAuthor)
+            }
+        }
         if (hasBd) {
             if (builder.isNotEmpty()) {
-                builder.replace(0, 1, "")
+                builder.replace(0, 2, "")
                 appendDot(true)
             }
             val blueRay = context.getString(R.string.translation_blue_ray)
             builder.append(blueRay)
         }
-        if (canBeDownloaded) {
+
+        if (!hasBd && !isSameAuthor) {
             if (builder.isNotEmpty()) appendDot(true)
-            val text = context.getString(R.string.translation_downloadable)
+            val text = context.getString(R.string.translation_sources)
             builder.append(text)
         }
 
