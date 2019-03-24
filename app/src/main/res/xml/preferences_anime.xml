@@ -53,6 +53,14 @@
             android:title="@string/settings_anime_player_remember_title"
             app:iconSpaceReserved="false" />
 
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="@string/settings_anime_player_external_quality_key"
+            android:summaryOff="@string/settings_anime_player_external_quality_summary_off"
+            android:summaryOn="@string/settings_anime_player_external_quality_summary_on"
+            android:title="@string/settings_anime_player_external_quality_title"
+            app:iconSpaceReserved="false" />
+
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -109,6 +117,15 @@
             android:key="@string/settings_player_gestures_offset_big_key"
             android:summary="@string/settings_player_gestures_offset_big_summary_default"
             android:title="@string/settings_player_gestures_offset_big_title"
+            app:iconSpaceReserved="false" />
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:dependency="@string/settings_player_gestures_key"
+            android:key="@string/settings_player_gestures_zoom_type_key"
+            android:summaryOff="@string/settings_player_gestures_zoom_type_off"
+            android:summaryOn="@string/settings_player_gestures_zoom_type_on"
+            android:title="@string/settings_player_gestures_zoom_type_title"
             app:iconSpaceReserved="false" />
 
     </PreferenceCategory>

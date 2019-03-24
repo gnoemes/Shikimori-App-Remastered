@@ -3,6 +3,8 @@ package com.gnoemes.shikimori.di.app.module.local;
 import android.content.Context;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.gnoemes.shikimori.entity.chapters.ChapterDao;
+import com.gnoemes.shikimori.entity.chapters.ChapterDaoSQLiteTypeMapping;
 import com.gnoemes.shikimori.entity.rates.data.AnimeRateSyncDao;
 import com.gnoemes.shikimori.entity.rates.data.AnimeRateSyncDaoSQLiteTypeMapping;
 import com.gnoemes.shikimori.entity.rates.data.MangaRateSyncDao;
@@ -33,6 +35,7 @@ public interface DbModule {
                 .addTypeMapping(EpisodeDao.class, new EpisodeDaoSQLiteTypeMapping())
                 .addTypeMapping(MangaRateSyncDao.class, new MangaRateSyncDaoSQLiteTypeMapping())
                 .addTypeMapping(TranslationSettingDao.class, new TranslationSettingDaoSQLiteTypeMapping())
+                .addTypeMapping(ChapterDao.class, new ChapterDaoSQLiteTypeMapping())
                 .build();
     }
 

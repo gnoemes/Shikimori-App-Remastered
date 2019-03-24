@@ -19,6 +19,7 @@ object SettingsExtras {
     const val PLAYER_TYPE = "PLAYER_TYPE"
     const val IS_REMEMBER_PLAYER = "IS_REMEMBER_PLAYER"
     const val IS_USE_LOCAL_TRANSLATION_SETTINGS = "IS_USE_LOCAL_TRANSLATION_SETTINGS"
+    const val IS_BEST_EXTERNAL_QUALITY = "IS_BEST_EXTERNAL_QUALITY"
 
     ////////////////////////////////////////////////////////////////////////
     // NOTIFICATIONS
@@ -35,4 +36,6 @@ object SettingsExtras {
     const val PLAYER_IS_OPEN_LANDSCAPE = "PLAYER_IS_OPEN_LANDSCAPE"
     const val PLAYER_FORWARD_REWIND_OFFSET = "PLAYER_FORWARD_REWIND_OFFSET"
     const val PLAYER_FORWARD_REWIND_OFFSET_BIG = "PLAYER_FORWARD_REWIND_OFFSET_BIG"
+    const val PLAYER_IS_ZOOM_PROPORTIONAL = "PLAYER_ZOOM_TYPE"
+
 }

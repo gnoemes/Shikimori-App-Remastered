@@ -17,7 +17,7 @@
         android:id="@+id/backgroundBlur"
         android:layout_width="match_parent"
         android:layout_height="420dp"
-        android:background="@color/background_transparent" />
+        android:background="?attr/colorTransparentBackground" />
 
     <include layout="@layout/layout_toolbar_transparent" />
 
@@ -26,11 +26,11 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         app:iconifiedByDefault="false"
-        app:search_background_color="?attr/colorPrimary"
         app:queryBackground="?attr/colorPrimary"
+        app:search_background_color="?attr/colorPrimary"
         app:search_hint="@string/episode_number_hint"
-        app:search_shadow="true"
         app:search_icon_color="?attr/colorOnPrimary"
+        app:search_shadow="true"
         app:search_text_color="?attr/colorOnPrimary"
         app:search_version="menu_item"
         app:search_version_margins="menu_item"
@@ -51,7 +51,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
-            android:textColor="@color/background_transparent_text"
+            android:textColor="?attr/colorOnTransparentBackground"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

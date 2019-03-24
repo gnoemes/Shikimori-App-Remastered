@@ -1,6 +1,8 @@
 package com.gnoemes.shikimori.di.rate;
 
 import com.arellomobile.mvp.MvpPresenter;
+import com.gnoemes.shikimori.data.local.preference.RateSortSource;
+import com.gnoemes.shikimori.data.local.preference.impl.RateSortSourceImpl;
 import com.gnoemes.shikimori.di.base.modules.BaseChildFragmentModule;
 import com.gnoemes.shikimori.di.base.scopes.BottomChildScope;
 import com.gnoemes.shikimori.di.series.SeriesInteractorModule;
@@ -38,6 +40,10 @@ public interface RateContainerModule {
     @Binds
     @Reusable
     RateCountConverter bindRateCountConverter(RateCountConverterImpl converter);
+
+    @Binds
+    @Reusable
+    RateSortSource bindRateSortSource(RateSortSourceImpl source);
 
     @Binds
     MvpPresenter bindMvpPresenter(RatesContainerPresenter presenter);

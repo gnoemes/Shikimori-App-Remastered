@@ -27,23 +27,25 @@
         android:id="@+id/descriptionView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="6dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
+        android:includeFontPadding="false"
         android:textColor="?attr/colorOnPrimarySecondary"
+        android:textSize="12sp"
         app:layout_constraintEnd_toStartOf="@+id/guideLine"
         app:layout_constraintStart_toEndOf="@+id/sameAuthorView"
         app:layout_constraintTop_toBottomOf="@+id/authorView"
-        tools:text="*  * Blue-ray * Можно скачать" />
+        tools:text="  *  Blue-ray" />
 
     <ImageView
         android:id="@+id/sameAuthorView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_marginTop="8dp"
         android:tint="?attr/colorAccent"
-        app:layout_constraintBottom_toBottomOf="@+id/descriptionView"
         app:layout_constraintStart_toStartOf="@+id/authorView"
-        app:layout_constraintTop_toTopOf="@+id/descriptionView"
+        app:layout_constraintTop_toBottomOf="@+id/authorView"
         app:srcCompat="@drawable/ic_translation_watched" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -53,35 +55,37 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.84444445" />
 
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="sameAuthorView,descriptionView" />
+
     <ImageButton
         android:id="@+id/menuView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:tint="?attr/colorOnPrimary"
-        app:layout_constraintBottom_toBottomOf="@+id/descriptionView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideLine"
         app:layout_constraintTop_toTopOf="@+id/authorView"
-        app:srcCompat="@drawable/ic_three_dots" />
+        app:srcCompat="@drawable/ic_download" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/hostingRecyclerView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="4dp"
         android:layout_marginBottom="8dp"
         android:paddingBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/descriptionView"
+        app:layout_constraintTop_toBottomOf="@+id/barrier"
         tools:itemCount="5"
         tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_chip"

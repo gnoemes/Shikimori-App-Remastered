@@ -97,6 +97,13 @@ class RatesContainerFragment : BaseFragment<RatesContainerPresenter, RatesContai
             title = null
             addView(spinner)
             setNavigationOnClickListener { toggleDrawer() }
+            inflateMenu(R.menu.menu_rates)
+            setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.item_random -> getPresenter().onRandomClicked()
+                }
+                true
+            }
         }
 
         drawer.apply {
@@ -212,5 +219,10 @@ class RatesContainerFragment : BaseFragment<RatesContainerPresenter, RatesContai
         if (type == Type.ANIME || type == Type.MANGA) {
             spinner?.setSelection(type.ordinal, false)
         }
+    }
+
+    override fun showRandomRate(type: Type, status: RateStatus) {
+        val fragment = childFragmentManager.findFragmentByTag(type.name.plus(status.status))
+        (fragment as? RandomRateListener)?.showRandomRate()
     }
 }

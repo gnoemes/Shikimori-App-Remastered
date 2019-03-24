@@ -36,6 +36,9 @@ interface TranslationsView : BaseSeriesView {
     @StateStrategyType(SkipStrategy::class)
     fun showFolderChooserDialog()
 
+    @StateStrategyType(SkipStrategy::class)
+    fun showQualityChooser(items: List<Pair<String, String>>)
+
     fun hideFab()
 
 }

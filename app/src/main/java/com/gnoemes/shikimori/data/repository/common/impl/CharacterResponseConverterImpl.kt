@@ -16,18 +16,21 @@ class CharacterResponseConverterImpl @Inject constructor(
             list.map { convertResponse(it)!! }
 
     override fun convertRoles(roles: List<RolesResponse?>): List<Character> =
-            roles.asSequence().filter { it?.character != null }.map { convertResponse(it?.character)!! }.toList()
+            roles.asSequence()
+                    .filter { it?.character != null }
+                    .sortedBy { it?.character?.nameRu }
+                    .sortedByDescending { it?.roles?.contains("Main") }
+                    .map { convertResponse(it?.character)!! }.toList()
 
     override fun convertResponse(it: CharacterResponse?): Character? {
         if (it == null) {
             return null
         }
 
-
         return Character(
                 it.id,
-                it.name,
-                it.nameRu,
+                it.name.trim(),
+                it.nameRu?.trim(),
                 imageConverter.convertResponse(it.image),
                 it.url.appendHostIfNeed()
         )

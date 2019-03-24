@@ -1,6 +1,7 @@
 package com.gnoemes.shikimori.presentation.view.rates
 
 import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy
+import com.arellomobile.mvp.viewstate.strategy.SkipStrategy
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
@@ -19,5 +20,8 @@ interface RatesContainerView : BaseFragmentView {
     fun hideContainer()
 
     fun selectType(type: Type)
+
+    @StateStrategyType(SkipStrategy::class)
+    fun showRandomRate(type: Type, status: RateStatus)
 
 }

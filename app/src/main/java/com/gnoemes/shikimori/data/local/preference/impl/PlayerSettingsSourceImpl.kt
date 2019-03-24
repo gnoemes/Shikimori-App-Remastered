@@ -32,6 +32,10 @@ class PlayerSettingsSourceImpl @Inject constructor(
         get() = prefs.getBoolean(SettingsExtras.PLAYER_IS_OPEN_LANDSCAPE, true)
         set(value) = prefs.putBoolean(SettingsExtras.PLAYER_IS_OPEN_LANDSCAPE, value)
 
+    override var isZoomProportional: Boolean
+        get() = prefs.getBoolean(SettingsExtras.PLAYER_IS_ZOOM_PROPORTIONAL, true)
+        set(value) = prefs.putBoolean(SettingsExtras.PLAYER_IS_ZOOM_PROPORTIONAL, value)
+
     override var forwardRewindOffset: Long
         get() = prefs.getLong(SettingsExtras.PLAYER_FORWARD_REWIND_OFFSET, 10000)
         set(value) = prefs.putLong(SettingsExtras.PLAYER_FORWARD_REWIND_OFFSET, value)

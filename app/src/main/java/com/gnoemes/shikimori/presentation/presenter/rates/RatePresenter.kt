@@ -1,6 +1,9 @@
 package com.gnoemes.shikimori.presentation.presenter.rates
 
 import com.arellomobile.mvp.InjectViewState
+import com.gnoemes.shikimori.data.local.preference.RateSortSource
+import com.gnoemes.shikimori.data.local.preference.SettingsSource
+import com.gnoemes.shikimori.domain.rates.RateChangesInteractor
 import com.gnoemes.shikimori.domain.rates.RatesInteractor
 import com.gnoemes.shikimori.entity.app.domain.AnalyticEvent
 import com.gnoemes.shikimori.entity.app.domain.Constants
@@ -14,6 +17,7 @@ import com.gnoemes.shikimori.entity.rates.domain.UserRate
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
 import com.gnoemes.shikimori.presentation.presenter.common.paginator.PageOffsetPaginator
 import com.gnoemes.shikimori.presentation.presenter.common.paginator.ViewController
+import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResourceProvider
 import com.gnoemes.shikimori.presentation.presenter.common.provider.SortResourceProvider
 import com.gnoemes.shikimori.presentation.view.rates.RateView
 import io.reactivex.Completable
@@ -22,10 +26,15 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
+//TODO rewrite to basePagination
 @InjectViewState
 class RatePresenter @Inject constructor(
         private val ratesInteractor: RatesInteractor,
-        private val sortResourceProvider: SortResourceProvider
+        private val sortResourceProvider: SortResourceProvider,
+        private val changesInteractor: RateChangesInteractor,
+        private val resourceProvider: CommonResourceProvider,
+        private val settingsSource: SettingsSource,
+        private val sortSource: RateSortSource
 ) : BaseNetworkPresenter<RateView>(), ViewController<Rate> {
 
     var userId: Long = Constants.NO_ID
@@ -39,10 +48,11 @@ class RatePresenter @Inject constructor(
     private var items = mutableListOf<Any>()
     private var sort: RateSort = RateSort.Id
 
-
     override fun initData() {
         paginator = PageOffsetPaginator({ loadRate(it) }, this)
         paginator.refresh()
+
+        sort = sortSource.getSort(type)
     }
 
     //TODO don't trigger onViewReattached on orientation change
@@ -105,6 +115,14 @@ class RatePresenter @Inject constructor(
         }
     }
 
+    fun onOpenRandom() {
+        val item = items.shuffled().firstOrNull { it is Rate } as? Rate
+        if (item != null) {
+            if (item.anime != null) onAnimeClicked(item.anime.id)
+            else if (item.manga != null) onMangaClicked(item.manga.id)
+        } else router.showSystemMessage(resourceProvider.emptyMessage)
+    }
+
     private fun onEditRate(rate: Rate?) {
         val userRate = UserRate(
                 id = rate?.id,
@@ -124,29 +142,29 @@ class RatePresenter @Inject constructor(
 
     private fun onChangeRateStatus(id: Long, newStatus: RateStatus) {
         ratesInteractor.changeRateStatus(id, newStatus)
-                .subscribeAndRefresh()
+                .subscribeAndRefresh(id)
         logEvent(AnalyticEvent.RATE_DROP_MENU)
     }
 
 
     fun onDeleteRate(id: Long) =
             ratesInteractor.deleteRate(id)
-                    .subscribeAndRefresh()
-
+                    .subscribeAndRefresh(id)
 
     fun onUpdateRate(rate: UserRate) =
             ratesInteractor.updateRate(rate)
-                    .subscribeAndRefresh()
+                    .subscribeAndRefresh(rate.id!!)
 
-    private fun Completable.subscribeAndRefresh() {
-        this.subscribe(this@RatePresenter::onRefresh, this@RatePresenter::processErrors)
+    private fun Completable.subscribeAndRefresh(id: Long) {
+        this.andThen(changesInteractor.sendRateChanges(id))
+                .subscribe(this@RatePresenter::onRefresh, this@RatePresenter::processErrors)
                 .addToDisposables()
-
     }
 
     fun onSortChanged(sort: RateSort, desc: Boolean) {
         isDescendingSort = desc
         this.sort = sort
+        sortSource.saveSort(type, sort)
 
         when (sort) {
             is RateSort.Id -> sortAndShow { it.idSort() }
@@ -156,7 +174,7 @@ class RatePresenter @Inject constructor(
             is RateSort.Type -> sortAndShow { it.typeSort() }
             is RateSort.Status -> sortAndShow { it.statusSort() }
             is RateSort.Score -> sortAndShow { it.scoreSort() }
-            is RateSort.Random -> sortAndShow { it.randomSort() }
+            is RateSort.Name -> sortAndShow { it.nameSort() }
         }
     }
 
@@ -233,11 +251,14 @@ class RatePresenter @Inject constructor(
                 else it.manga?.status?.ordinal!!
             }
 
-    private fun MutableList<Any>.randomSort(): MutableList<Any> =
-            this.filter { it is Rate }
-                    .shuffled()
-                    .toMutableList()
-                    .addSortItem()
+    private fun MutableList<Any>.nameSort(): MutableList<Any> =
+            this.sortRateBySelectorAndAddItem {
+                if (it.type == Type.ANIME) if (isRussianNaming) it.anime?.nameRu else it.anime?.name
+                else if (isRussianNaming) it.manga?.nameRu else it.manga?.name
+            }
+
+    private val isRussianNaming : Boolean
+        get() = settingsSource.isRussianNaming
 }
 
 

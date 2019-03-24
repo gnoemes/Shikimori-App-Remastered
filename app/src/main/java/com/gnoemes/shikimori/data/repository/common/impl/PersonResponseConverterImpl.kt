@@ -19,8 +19,8 @@ class PersonResponseConverterImpl @Inject constructor(
         }
 
         return Person(it.id,
-                it.name,
-                it.nameRu,
+                it.name.trim(),
+                it.nameRu?.trim(),
                 imageConverter.convertResponse(it.image),
                 it.url.appendHostIfNeed()
         )

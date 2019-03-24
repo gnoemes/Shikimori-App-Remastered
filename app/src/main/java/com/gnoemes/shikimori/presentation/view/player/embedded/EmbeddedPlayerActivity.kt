@@ -10,10 +10,8 @@ import android.graphics.drawable.Drawable
 import android.media.AudioManager
 import android.os.Build
 import android.os.Bundle
-import android.os.ResultReceiver
 import android.provider.Settings
 import android.support.v4.media.session.MediaSessionCompat
-import android.support.v4.media.session.PlaybackStateCompat
 import android.text.SpannableStringBuilder
 import android.util.Log
 import android.view.*
@@ -360,6 +358,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         private val isVolumeAndBrightnessGesturesEnabled by lazy { settingsSource.isVolumeAndBrightnessGesturesEnabled }
         private val isVolumeAndBrightnessInverted by lazy { settingsSource.isVolumeAndBrightnessInverted }
         private val isSlideControl by lazy { settingsSource.isForwardRewindSlide }
+        private val isZoomProportional by lazy { settingsSource.isZoomProportional }
 
         private val speedRates = listOf(0.25f, 0.5f, 1f, 1.5f, 2f)
         private var controlsInAction: Boolean = false
@@ -693,7 +692,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
 
                 scaleFactor = Math.max(0.1f, Math.min(scaleFactor, 1.0f))
 
-                if (scaleFactor > 0.5f) playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
+                if (scaleFactor > 0.5f) playerView.resizeMode = if (isZoomProportional) AspectRatioFrameLayout.RESIZE_MODE_ZOOM else AspectRatioFrameLayout.RESIZE_MODE_FILL
                 else playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
 
                 return true
@@ -724,45 +723,6 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
                 if (isVolumeAndBrightnessInverted) changeVolume(if (increasing) stepVolume else -stepVolume)
                 else changeBrightness(if (increasing) stepBrightness else -stepBrightness)
                 return true
-            }
-        }
-
-        private inner class PlaybackController : MediaSessionConnector.PlaybackController {
-            override fun onRewind(player: Player?) {
-            }
-
-            override fun onSeekTo(player: Player?, position: Long) {
-            }
-
-            override fun onCommand(player: Player?, command: String?, extras: Bundle?, cb: ResultReceiver?) {
-            }
-
-            override fun onPause(player: Player?) {
-            }
-
-            override fun onFastForward(player: Player?) {
-            }
-
-            override fun onPlay(player: Player?) {
-            }
-
-            override fun onStop(player: Player?) {
-            }
-
-            override fun onSetShuffleMode(player: Player?, shuffleMode: Int) {
-            }
-
-            override fun getSupportedPlaybackActions(player: Player?): Long =
-                    PlaybackStateCompat.ACTION_PLAY_PAUSE or
-                            PlaybackStateCompat.ACTION_PLAY or
-                            PlaybackStateCompat.ACTION_PAUSE or
-                            PlaybackStateCompat.ACTION_STOP
-
-            override fun getCommands(): Array<String> {
-                return emptyArray()
-            }
-
-            override fun onSetRepeatMode(player: Player?, repeatMode: Int) {
             }
         }
     }

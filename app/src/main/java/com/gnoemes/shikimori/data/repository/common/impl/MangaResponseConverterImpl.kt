@@ -19,8 +19,8 @@ class MangaResponseConverterImpl @Inject constructor(
 
         return Manga(
                 it.id,
-                it.name,
-                it.nameRu,
+                it.name.trim(),
+                it.nameRu?.trim(),
                 imageConverter.convertResponse(it.image),
                 it.url.appendHostIfNeed(),
                 it.type,

@@ -3,10 +3,7 @@ package com.gnoemes.shikimori.utils.db
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import com.gnoemes.shikimori.data.local.db.table.AnimeRateSyncTable
-import com.gnoemes.shikimori.data.local.db.table.EpisodeTable
-import com.gnoemes.shikimori.data.local.db.table.MangaRateSyncTable
-import com.gnoemes.shikimori.data.local.db.table.TranslationSettingTable
+import com.gnoemes.shikimori.data.local.db.table.*
 import javax.inject.Inject
 
 class DbOpenHelper @Inject constructor(
@@ -15,7 +12,7 @@ class DbOpenHelper @Inject constructor(
 
     companion object {
         const val DATABASE = "shikimori_database"
-        const val VERSION = 1
+        const val VERSION = 2
     }
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -24,10 +21,14 @@ class DbOpenHelper @Inject constructor(
             execSQL(EpisodeTable.CREATE_QUERY)
             execSQL(MangaRateSyncTable.CREATE_QUERY)
             execSQL(TranslationSettingTable.CREATE_QUERY)
+            execSQL(ChapterTable.CREATE_QUERY)
         }
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, old: Int, new: Int) {
+        if (old < 2) {
+            db?.execSQL(ChapterTable.CREATE_QUERY)
+        }
     }
 
 

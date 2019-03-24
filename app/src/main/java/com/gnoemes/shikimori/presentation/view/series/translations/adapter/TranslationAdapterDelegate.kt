@@ -2,8 +2,6 @@ package com.gnoemes.shikimori.presentation.view.series.translations.adapter
 
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.view.ContextThemeWrapper
-import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gnoemes.shikimori.R
@@ -41,15 +39,6 @@ class TranslationAdapterDelegate(
 
         private val videoHostingCallback = { videoData: TranslationVideo -> callback.invoke(videoData) }
         private val adapter by lazy { HostingAdapter(videoHostingCallback) }
-        private val menuItemClickListener = { item: TranslationViewModel ->
-            PopupMenu.OnMenuItemClickListener { menuItem ->
-                when (menuItem?.itemId) {
-                    R.id.item_download -> menuListener.invoke(TranslationMenu.Download(item.videos))
-                    R.id.item_authors -> menuListener.invoke(TranslationMenu.Author(item.authors))
-                }
-                true
-            }
-        }
 
         init {
             if (itemView.hostingRecyclerView.onFlingListener == null) {
@@ -62,7 +51,11 @@ class TranslationAdapterDelegate(
                 adapter = this@ViewHolder.adapter
                 addItemDecoration(HorizontalSpaceItemDecorator(resources.getDimension(R.dimen.margin_normal).toInt(), snapOffset))
             }
-            itemView.menuView.onClick { showPopup(item) }
+
+            itemView.apply {
+                authorView.onClick { menuListener.invoke(TranslationMenu.Author(item.authors)) }
+                menuView.onClick { menuListener.invoke(TranslationMenu.Download(item.videos)) }
+            }
         }
 
         fun bind(item: TranslationViewModel) {
@@ -72,18 +65,9 @@ class TranslationAdapterDelegate(
                 descriptionView.text = item.description
                 descriptionView.visibleIf { !item.description.isNullOrBlank() }
                 sameAuthorView.visibleIf { item.isSameAuthor }
+                menuView.visibleIf { item.canBeDownloaded }
                 adapter.bindItems(item.videos)
             }
-        }
-
-        private fun showPopup(item: TranslationViewModel) {
-            val wrapper = ContextThemeWrapper(itemView.context, R.style.PopupMenuTheme)
-            val menu = PopupMenu(wrapper, itemView.menuView)
-                    .apply {
-                        inflate(if (item.canBeDownloaded) R.menu.menu_translation_downloadable else R.menu.menu_translation)
-                        setOnMenuItemClickListener(menuItemClickListener.invoke(item))
-                    }
-            itemView.post(menu::show)
         }
     }
 

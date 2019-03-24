@@ -45,6 +45,8 @@
         <item name="colorOnSurface">@color/default_colorOnSurface</item>
         <item name="colorOnBackground">@color/default_colorOnBackground</item>
         <item name="colorDivider">@color/default_colorDivider</item>
+        <item name="colorTransparentBackground">@color/default_colorTransparentBackground</item>
+        <item name="colorOnTransparentBackground">@color/default_colorOnTransparentBackground</item>
 
         <item name="android:textColor">@color/default_colorOnSurface</item>
         <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
@@ -74,6 +76,8 @@
         <item name="colorOnSurface">@color/dark_colorOnSurface</item>
         <item name="colorOnBackground">@color/dark_colorOnBackground</item>
         <item name="colorDivider">@color/dark_colorDivider</item>
+        <item name="colorTransparentBackground">@color/dark_colorTransparentBackground</item>
+        <item name="colorOnTransparentBackground">@color/dark_colorOnTransparentBackground</item>
 
         <item name="android:textColor">@color/dark_colorOnSurface</item>
         <item name="android:textColorPrimary">?attr/colorOnPrimary</item>

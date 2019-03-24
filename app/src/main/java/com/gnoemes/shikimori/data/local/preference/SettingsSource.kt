@@ -24,4 +24,6 @@ interface SettingsSource {
     var isMyOngoingPriority : Boolean
 
     var downloadFolder : String
+
+    var isExternalBestQuality : Boolean
 }

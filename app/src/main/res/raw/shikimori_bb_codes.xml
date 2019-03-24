@@ -97,6 +97,7 @@
         <coderef name="character"/>
         <coderef name="person"/>
         <coderef name="spoiler"/>
+        <coderef name="spoiler1"/>
         <coderef name="comment"/>
         <coderef name="reply"/>
 
@@ -124,6 +125,11 @@
 
     <code name="spoiler">
         <pattern ignoreCase="true">[spoiler=<var inherit="true" name="name"/>]<var inherit="true" name="text"/>[/spoiler]</pattern>
+        <template>$</template>
+    </code>
+
+    <code name="spoiler1">
+        <pattern ignoreCase="true">[spoiler]<var inherit="true" name="text"/>[/spoiler]</pattern>
         <template>$</template>
     </code>
 
