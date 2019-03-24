@@ -3,6 +3,8 @@
     <attr name="colorSecondaryTransparent" format="color" />
     <attr name="colorOnPrimarySecondary" format="color"/>
     <attr name="colorDivider" format="color"/>
+    <attr name="colorTransparentBackground" format="color"/>
+    <attr name="colorOnTransparentBackground" format="color"/>
 
     <attr name="dialogCustomBackground" format="reference"/>
 

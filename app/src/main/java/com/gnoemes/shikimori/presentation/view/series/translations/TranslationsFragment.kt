@@ -1,7 +1,6 @@
 package com.gnoemes.shikimori.presentation.view.series.translations
 
 import android.Manifest
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
@@ -80,8 +79,6 @@ class TranslationsFragment : BaseSeriesFragment<TranslationsPresenter, Translati
                     R.id.item_search -> getPresenter().onSearchClicked()
                 }; true
             }
-            var i = menu.size()
-            while (--i != 0) menu.getItem(i).icon = menu.getItem(i).icon.apply { tint(Color.BLACK) }
         }
 
         with(recyclerView) {

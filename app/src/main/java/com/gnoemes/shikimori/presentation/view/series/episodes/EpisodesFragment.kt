@@ -1,6 +1,5 @@
 package com.gnoemes.shikimori.presentation.view.series.episodes
 
-import android.graphics.Color
 import android.os.Bundle
 import android.text.InputType
 import android.view.View
@@ -66,8 +65,6 @@ class EpisodesFragment : BaseSeriesFragment<EpisodesPresenter, EpisodesView>(), 
                 }
                 true
             }
-            var i = menu.size()
-            while (i-- != 0) menu.getItem(i).icon = menu.getItem(i).icon.apply { tint(Color.BLACK) }
         }
 
         with(recyclerView) {

@@ -15,6 +15,8 @@
     <color name="default_colorSecondaryTransparent">#1ffe5722</color>
     <color name="default_colorDivider">#0F000000</color>
     <color name="default_colorRipple">#0f000000</color>
+    <color name="default_colorTransparentBackground">#80ffffff</color>
+    <color name="default_colorOnTransparentBackground">#99000000</color>
 
     <color name="dark_colorPrimary">#2a2a2a</color>
     <color name="dark_colorPrimaryVariant">#99ffffff</color>
@@ -31,6 +33,8 @@
     <color name="dark_colorSecondaryTransparent">#1ffe5722</color>
     <color name="dark_colorDivider">#0FFFFFFF</color>
     <color name="dark_colorRipple">#0FFFFFFF</color>
+    <color name="dark_colorTransparentBackground">#80000000</color>
+    <color name="dark_colorOnTransparentBackground">#99ffffff</color>
 
     <color name="colorTextProtector">#96000000</color>
     <color name="colorOnProtector">#DEffffff</color>
@@ -59,8 +63,6 @@
     <color name="comment_offtopic">#f477ad</color>
 
     <color name="ic_launcher_background">#FFFFFF</color>
-    <color name="background_transparent">#80ffffff</color>
-    <color name="background_transparent_text">#99000000</color>
 
     <color name="player_controls">#deffffff</color>
     <color name="player_surface">#80000000</color>
