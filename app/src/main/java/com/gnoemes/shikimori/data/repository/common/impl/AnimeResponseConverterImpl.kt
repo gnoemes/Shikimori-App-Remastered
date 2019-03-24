@@ -19,8 +19,8 @@ class AnimeResponseConverterImpl @Inject constructor(
 
         return Anime(
                 response.id,
-                response.name,
-                response.nameRu,
+                response.name.trim(),
+                response.nameRu?.trim(),
                 imageConverter.convertResponse(response.image),
                 response.url.appendHostIfNeed(),
                 response.type,

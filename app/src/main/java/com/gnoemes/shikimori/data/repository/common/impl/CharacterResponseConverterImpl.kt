@@ -29,8 +29,8 @@ class CharacterResponseConverterImpl @Inject constructor(
 
         return Character(
                 it.id,
-                it.name,
-                it.nameRu,
+                it.name.trim(),
+                it.nameRu?.trim(),
                 imageConverter.convertResponse(it.image),
                 it.url.appendHostIfNeed()
         )
