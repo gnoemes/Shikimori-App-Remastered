@@ -1,6 +1,7 @@
 package com.gnoemes.shikimori.presentation.presenter.rates
 
 import com.arellomobile.mvp.InjectViewState
+import com.gnoemes.shikimori.data.local.preference.RateSortSource
 import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.domain.rates.RateChangesInteractor
 import com.gnoemes.shikimori.domain.rates.RatesInteractor
@@ -32,7 +33,8 @@ class RatePresenter @Inject constructor(
         private val sortResourceProvider: SortResourceProvider,
         private val changesInteractor: RateChangesInteractor,
         private val resourceProvider: CommonResourceProvider,
-        private val settingsSource: SettingsSource
+        private val settingsSource: SettingsSource,
+        private val sortSource: RateSortSource
 ) : BaseNetworkPresenter<RateView>(), ViewController<Rate> {
 
     var userId: Long = Constants.NO_ID
@@ -49,6 +51,8 @@ class RatePresenter @Inject constructor(
     override fun initData() {
         paginator = PageOffsetPaginator({ loadRate(it) }, this)
         paginator.refresh()
+
+        sort = sortSource.getSort(type)
     }
 
     //TODO don't trigger onViewReattached on orientation change
@@ -160,6 +164,7 @@ class RatePresenter @Inject constructor(
     fun onSortChanged(sort: RateSort, desc: Boolean) {
         isDescendingSort = desc
         this.sort = sort
+        sortSource.saveSort(type, sort)
 
         when (sort) {
             is RateSort.Id -> sortAndShow { it.idSort() }
