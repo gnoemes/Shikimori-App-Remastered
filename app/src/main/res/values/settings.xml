@@ -127,4 +127,9 @@
     <string name="settings_player_gestures_zoom_type_key" translatable="false">PLAYER_ZOOM_TYPE</string>
     <string name="settings_player_gestures_zoom_type_on">Видео обрезается по краям, заполняя экран с помощью жеста пинч</string>
     <string name="settings_player_gestures_zoom_type_off">Видео теряет пропорции, заполняя экран с помощью жеста пинч</string>
+
+    <string name="settings_player_pip_title">Переход в Picture In Picture</string>
+    <string name="settings_player_pip_key" translatable="false">PLAYER_AUTO_PIP</string>
+    <string name="settings_player_pip_summary_on">При сворачивании плеера видео отобразится в плавающем окне</string>
+    <string name="settings_player_pip_summary_off">Плеер свернется вместе с приложением</string>
 </resources>

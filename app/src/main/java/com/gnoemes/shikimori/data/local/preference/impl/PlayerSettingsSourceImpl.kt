@@ -36,6 +36,10 @@ class PlayerSettingsSourceImpl @Inject constructor(
         get() = prefs.getBoolean(SettingsExtras.PLAYER_IS_ZOOM_PROPORTIONAL, true)
         set(value) = prefs.putBoolean(SettingsExtras.PLAYER_IS_ZOOM_PROPORTIONAL, value)
 
+    override var isAutoPip: Boolean
+        get() = prefs.getBoolean(SettingsExtras.PLAYER_IS_AUTO_PIP, true)
+        set(value) = prefs.putBoolean(SettingsExtras.PLAYER_IS_AUTO_PIP, value)
+
     override var forwardRewindOffset: Long
         get() = prefs.getLong(SettingsExtras.PLAYER_FORWARD_REWIND_OFFSET, 10000)
         set(value) = prefs.putLong(SettingsExtras.PLAYER_FORWARD_REWIND_OFFSET, value)

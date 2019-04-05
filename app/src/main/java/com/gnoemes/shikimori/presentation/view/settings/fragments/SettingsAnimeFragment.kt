@@ -1,5 +1,6 @@
 package com.gnoemes.shikimori.presentation.view.settings.fragments
 
+import android.os.Build
 import android.os.Bundle
 import android.text.InputType
 import androidx.preference.Preference
@@ -57,6 +58,10 @@ class SettingsAnimeFragment : BaseSettingsFragment() {
         }
 
         updateForwardRewindSummary(isGesturesEnabled, prefs().getBoolean(SettingsExtras.PLAYER_IS_FORWARD_REWIND_SLIDE, false))
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            preference(SettingsExtras.PLAYER_IS_AUTO_PIP)?.isVisible = false
+        }
     }
 
     private fun updateForwardRewindSummary(isGesturesEnabled: Boolean, isSlideEnabled: Boolean) {

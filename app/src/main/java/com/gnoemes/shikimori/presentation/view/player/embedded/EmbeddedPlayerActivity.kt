@@ -139,7 +139,8 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
 
     override fun onUserLeaveHint() {
         super.onUserLeaveHint()
-        enterPip()
+        if (settingsSource.isAutoPip)
+            enterPip()
     }
 
     override fun onStart() {
