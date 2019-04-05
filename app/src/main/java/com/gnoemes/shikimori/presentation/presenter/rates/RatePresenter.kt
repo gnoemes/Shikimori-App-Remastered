@@ -53,6 +53,7 @@ class RatePresenter @Inject constructor(
         paginator.refresh()
 
         sort = sortSource.getSort(type)
+        isDescendingSort = sortSource.getOrder(type)
     }
 
     //TODO don't trigger onViewReattached on orientation change
@@ -165,6 +166,7 @@ class RatePresenter @Inject constructor(
         isDescendingSort = desc
         this.sort = sort
         sortSource.saveSort(type, sort)
+        sortSource.saveOrder(type, desc)
 
         when (sort) {
             is RateSort.Id -> sortAndShow { it.idSort() }

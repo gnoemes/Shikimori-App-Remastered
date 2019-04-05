@@ -8,4 +8,8 @@ interface RateSortSource {
     fun getSort(type: Type): RateSort
 
     fun saveSort(type: Type, sort: RateSort)
+
+    fun getOrder(type: Type) : Boolean
+
+    fun saveOrder(type: Type, desc: Boolean)
 }
