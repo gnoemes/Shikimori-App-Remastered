@@ -122,8 +122,8 @@
     <string name="settings_about_forum_key" translatable="false">OPEN_FORUM_KEY</string>
     <string name="settings_about_forum_title">Открыть форум</string>
 
-    <string name="settings_player_gestures_zoom_type_title">Увеличивать видео пропорционально</string>
+    <string name="settings_player_gestures_zoom_type_title">Пропорциональный ресайз видео</string>
     <string name="settings_player_gestures_zoom_type_key" translatable="false">PLAYER_ZOOM_TYPE</string>
-    <string name="settings_player_gestures_zoom_type_on">С помощью разведения двух пальцев на видео, оно заполняет экран, но обрезается по краям</string>
-    <string name="settings_player_gestures_zoom_type_off">С помощью разведения двух пальцев на видео, оно заполняет экран, но теряет пропорции</string>
+    <string name="settings_player_gestures_zoom_type_on">Видео обрезается по краям, заполняя экран с помощью жеста пинч</string>
+    <string name="settings_player_gestures_zoom_type_off">Видео теряет пропорции, заполняя экран с помощью жеста пинч</string>
 </resources>
