@@ -44,28 +44,39 @@ class SettingsAnimeFragment : BaseSettingsFragment() {
         preference(SettingsExtras.PLAYER_IS_FORWARD_REWIND_SLIDE)?.apply {
             onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
                 if (newValue as Boolean) putSetting(SettingsExtras.PLAYER_IS_VOLUME_BRIGHTNESS_GESTURES_ENABLED, false)
-                updateForwardRewindSummary(newValue)
+                updateForwardRewindSummary(isGesturesEnabled, newValue)
                 return@OnPreferenceChangeListener true
             }
         }
 
-        updateForwardRewindSummary(prefs().getBoolean(SettingsExtras.PLAYER_IS_FORWARD_REWIND_SLIDE, false))
+        preference(SettingsExtras.PLAYER_IS_GESTURES_ENABLED)?.apply {
+            onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+                updateForwardRewindSummary(newValue as Boolean, prefs().getBoolean(SettingsExtras.PLAYER_IS_FORWARD_REWIND_SLIDE, false))
+                return@OnPreferenceChangeListener true
+            }
+        }
+
+        updateForwardRewindSummary(isGesturesEnabled, prefs().getBoolean(SettingsExtras.PLAYER_IS_FORWARD_REWIND_SLIDE, false))
     }
 
-    private fun updateForwardRewindSummary(newValue: Boolean) {
+    private fun updateForwardRewindSummary(isGesturesEnabled: Boolean, isSlideEnabled: Boolean) {
         preference(SettingsExtras.PLAYER_FORWARD_REWIND_OFFSET_BIG)?.apply {
-            isEnabled = !newValue
+            isEnabled = isGesturesEnabled && !isSlideEnabled
 
-            summary =
-                    if (isEnabled) (prefs().getLong(key, 90000) / 1000).let { String.format(context?.getString(R.string.settings_player_gestures_offset_big_summary_format)!!, it) }
-                    else context?.getString(R.string.settings_player_gestures_offset_small_big_summary_off)
+            summary = when {
+                isEnabled -> (prefs().getLong(key, 90000) / 1000).let { String.format(context?.getString(R.string.settings_player_gestures_offset_big_summary_format)!!, it) }
+                !isGesturesEnabled -> context?.getString(R.string.settings_player_gestures_offset_off)
+                else -> context?.getString(R.string.settings_player_gestures_offset_small_big_summary_off)
+            }
         }
         preference(SettingsExtras.PLAYER_FORWARD_REWIND_OFFSET)?.apply {
-            isEnabled = !newValue
+            isEnabled = isGesturesEnabled && !isSlideEnabled
 
-            summary =
-                    if (isEnabled) (prefs().getLong(key, 10000) / 1000).let { String.format(context?.getString(R.string.settings_player_gestures_offset_small_summary_format)!!, it) }
-                    else context?.getString(R.string.settings_player_gestures_offset_small_big_summary_off)
+            summary = when {
+                isEnabled -> (prefs().getLong(key, 10000) / 1000).let { String.format(context?.getString(R.string.settings_player_gestures_offset_small_summary_format)!!, it) }
+                !isGesturesEnabled -> context?.getString(R.string.settings_player_gestures_offset_off)
+                else -> context?.getString(R.string.settings_player_gestures_offset_small_big_summary_off)
+            }
         }
 
     }
@@ -150,6 +161,9 @@ class SettingsAnimeFragment : BaseSettingsFragment() {
         }
         return true
     }
+
+    private val isGesturesEnabled: Boolean
+        get() = prefs().getBoolean(SettingsExtras.PLAYER_IS_GESTURES_ENABLED, true)
 
     override val preferenceScreen: Int
         get() = R.xml.preferences_anime

@@ -98,6 +98,7 @@
     <string name="settings_player_gestures_offset_big_key" translatable="false">PLAYER_FORWARD_REWIND_OFFSET_BIG</string>
     <string name="settings_player_gestures_offset_big_summary_default">Пропускает 90 сек. видео</string>
     <string name="settings_player_gestures_offset_small_big_summary_off">При перемотке слайдом настройка недоступна</string>
+    <string name="settings_player_gestures_offset_off">Недоступно при отключенных жестах</string>
     <string name="settings_player_gestures_offset_big_summary_format">Пропускает %d сек. видео</string>
     <string name="settings_player_gestures_offset_big_validation_error">Введите число от 80 до 180</string>
 
