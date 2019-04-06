@@ -10,7 +10,6 @@
         <item name="drawerArrowStyle">@style/DrawerIconStyle</item>
         <item name="toolbarNavigationButtonStyle">@style/Toolbar.Button.Navigation.Tinted</item>
         <item name="actionOverflowButtonStyle">@style/Toolbar.Button.Overflow.Tinted</item>
-        <item name="android:listDivider">@drawable/list_divider</item>
     </style>
 
     <style name="ShikimoriAppTheme.Launch" parent="ShikimoriAppTheme.Base">
@@ -57,11 +56,11 @@
         <item name="md_color_content">@color/default_colorOnPrimarySecondary</item>
 
         <item name="colorPrimaryDark">@color/default_colorPrimaryVariant</item>
-        <item name="android:statusBarColor">@color/default_colorPrimary</item>
-
         <item name="colorControlHighlight">@color/default_colorRipple</item>
 
         <item name="dialogCustomBackground">@drawable/dialog_surface</item>
+
+        <item name="android:listDivider">@drawable/list_divider_default</item>
     </style>
 
     <style name="ShikimoriAppTheme.Dark" parent="ShikimoriAppTheme.Base">
@@ -91,10 +90,11 @@
         <item name="md_color_content">@color/dark_colorOnPrimarySecondary</item>
 
         <item name="colorPrimaryDark">@color/dark_colorPrimaryVariant</item>
-        <item name="android:statusBarColor">@color/dark_colorPrimary</item>
         <item name="colorControlHighlight">@color/dark_colorRipple</item>
 
         <item name="dialogCustomBackground">@drawable/dialog_surface_dark</item>
+
+        <item name="android:listDivider">@drawable/list_divider_dark</item>
     </style>
 
     <style name="ShikimoriAppTheme.Amoled" parent="ShikimoriAppTheme.Base">
@@ -124,10 +124,11 @@
         <item name="md_color_content">@color/amoled_colorOnPrimarySecondary</item>
 
         <item name="colorPrimaryDark">@color/amoled_colorPrimaryVariant</item>
-        <item name="android:statusBarColor">@color/amoled_colorPrimary</item>
         <item name="colorControlHighlight">@color/amoled_colorRipple</item>
 
         <item name="dialogCustomBackground">@drawable/dialog_surface_black</item>
+
+        <item name="android:listDivider">@drawable/list_divider_amoled</item>
     </style>
 
 </resources>

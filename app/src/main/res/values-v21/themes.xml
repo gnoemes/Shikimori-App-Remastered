@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
+    <style name="ShikimoriAppTheme.Base" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="textAppearanceHeadline6">@style/ToolbarTextAppearance</item>
+
+        <item name="md_corner_radius">8dp</item>
+        <item name="android:popupMenuStyle">@style/PopupMenuTheme</item>
+        <item name="popupMenuStyle">@style/PopupMenuTheme</item>
+        <item name="drawerArrowStyle">@style/DrawerIconStyle</item>
+        <item name="toolbarNavigationButtonStyle">@style/Toolbar.Button.Navigation.Tinted</item>
+        <item name="actionOverflowButtonStyle">@style/Toolbar.Button.Overflow.Tinted</item>
+        <item name="android:listDivider">@drawable/list_divider</item>
+    </style>
+
     <style name="ShikimoriAppTheme.Default" parent="ShikimoriAppTheme.Base">
         <item name="colorPrimary">@color/default_colorPrimary</item>
         <item name="colorPrimaryVariant">@color/default_colorPrimaryVariant</item>
