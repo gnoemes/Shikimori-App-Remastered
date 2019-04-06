@@ -33,8 +33,9 @@
                 app:layout_constraintTop_toTopOf="@+id/translationBtn"
                 tools:text="Озвучка" />
 
-            <ImageView
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/translationBtn"
+                style="@style/CircleButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -42,13 +43,15 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="16dp"
-                android:background="@drawable/translations_circle_transparent"
+                android:minWidth="32dp"
+                android:minHeight="32dp"
                 android:padding="4dp"
-                android:tint="?attr/colorAccent"
+                app:iconTint="?attr/colorSecondary"
+                app:backgroundTint="?attr/colorSecondaryTransparent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/ic_voice" />
+                tools:icon="@drawable/ic_voice" />
 
             <ImageButton
                 android:id="@+id/voiceBtn"
