@@ -6,7 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="16dp"
+    android:layout_marginLeft="16dp"
     android:layout_marginEnd="16dp"
+    android:layout_marginRight="16dp"
     app:cardBackgroundColor="?attr/colorSurface"
     app:cardCornerRadius="4dp"
     app:cardElevation="0dp"
@@ -20,7 +22,9 @@
         android:foreground="?attr/selectableItemBackgroundBorderless"
         android:orientation="horizontal"
         android:paddingStart="16dp"
-        android:paddingEnd="16dp">
+        android:paddingLeft="16dp"
+        android:paddingEnd="16dp"
+        android:paddingRight="16dp">
 
         <TextView
             android:id="@+id/episodeNameView"
