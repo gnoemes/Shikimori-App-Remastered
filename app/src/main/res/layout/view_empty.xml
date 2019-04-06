@@ -21,6 +21,7 @@
         android:layout_marginTop="@dimen/margin_normal"
         android:textAlignment="center"
         android:textColor="#808080"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
