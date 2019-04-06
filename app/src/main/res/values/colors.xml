@@ -17,6 +17,7 @@
     <color name="default_colorRipple">#0f000000</color>
     <color name="default_colorTransparentBackground">#80ffffff</color>
     <color name="default_colorOnTransparentBackground">#99000000</color>
+    <color name="default_colorDialogSurface">#FFFFFF</color>
 
     <color name="dark_colorPrimary">#2a2a2a</color>
     <color name="dark_colorPrimaryVariant">#99ffffff</color>
@@ -35,6 +36,7 @@
     <color name="dark_colorRipple">#0FFFFFFF</color>
     <color name="dark_colorTransparentBackground">#80000000</color>
     <color name="dark_colorOnTransparentBackground">#99ffffff</color>
+    <color name="dark_colorDialogSurface">#424242</color>
 
     <color name="colorTextProtector">#96000000</color>
     <color name="colorOnProtector">#DEffffff</color>
