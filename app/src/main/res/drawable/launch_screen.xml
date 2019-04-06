@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
-    android:opacity="opaque">
-
-    <item android:drawable="?attr/colorPrimary" />
-
-    <item
-        android:drawable="@drawable/ic_launch_screen_logo"
-        android:gravity="center"
-        />
-
-</layer-list>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/default_colorPrimary" />
+</shape>
