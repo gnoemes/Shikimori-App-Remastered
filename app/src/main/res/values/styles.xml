@@ -3,7 +3,7 @@
     <style name="PopupMenuTheme" parent="Widget.AppCompat.ListPopupWindow">
         <item name="android:textColor">?attr/colorOnPrimary</item>
         <item name="android:popupBackground">?attr/dialogCustomBackground</item>
-        <item name="android:colorBackground">?attr/colorPrimary</item>
+        <item name="android:colorBackground">?attr/colorDialogSurface</item>
     </style>
 
     <style name="ToolbarStyle" parent="Widget.MaterialComponents.Toolbar.Primary">

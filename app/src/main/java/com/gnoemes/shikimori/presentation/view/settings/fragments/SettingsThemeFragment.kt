@@ -26,6 +26,7 @@ class SettingsThemeFragment : BaseSettingsFragment() {
             when (index) {
                 0 -> prefs().putInt(ThemeExtras.THEME_KEY, R.style.ShikimoriAppTheme_Default)
                 1 -> prefs().putInt(ThemeExtras.THEME_KEY, R.style.ShikimoriAppTheme_Dark)
+                2 -> prefs().putInt(ThemeExtras.THEME_KEY, R.style.ShikimoriAppTheme_Amoled)
             }
             preference.summary = text
         }
@@ -33,6 +34,7 @@ class SettingsThemeFragment : BaseSettingsFragment() {
 
     private fun getLocalizedTheme(style: Int): String = when (style) {
         R.style.ShikimoriAppTheme_Dark -> getString(R.string.theme_dark)
+        R.style.ShikimoriAppTheme_Amoled -> context!!.getString(R.string.theme_amoled)
         else -> getString(R.string.theme_default)
     }
 

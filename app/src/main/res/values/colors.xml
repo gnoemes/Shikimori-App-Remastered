@@ -38,6 +38,25 @@
     <color name="dark_colorOnTransparentBackground">#99ffffff</color>
     <color name="dark_colorDialogSurface">#424242</color>
 
+    <color name="amoled_colorPrimary">#000000</color>
+    <color name="amoled_colorPrimaryVariant">#99FFFFFF</color>
+    <color name="amoled_colorSecondary">#ff7043</color>
+    <color name="amoled_colorSecondaryVariant">#c41c00</color>
+    <color name="amoled_colorSurface">#000000</color>
+    <color name="amoled_colorOnSecondary">#000000</color>
+    <color name="amoled_colorBackground">#000000</color>
+    <color name="amoled_colorOnSurface">#deffffff</color>
+    <color name="amoled_colorOnPrimary">#ffffff</color>
+    <color name="amoled_colorOnPrimarySecondary">#99ffffff</color>
+    <color name="amoled_colorOnPrimaryDisabled">#0FFFFFFF</color>
+    <color name="amoled_colorOnBackground">#61ffffff</color>
+    <color name="amoled_colorSecondaryTransparent">#1ffe5722</color>
+    <color name="amoled_colorDivider">#0FFFFFFF</color>
+    <color name="amoled_colorRipple">#0FFFFFFF</color>
+    <color name="amoled_colorTransparentBackground">#99000000</color>
+    <color name="amoled_colorOnTransparentBackground">#99ffffff</color>
+    <color name="amoled_colorDialogSurface">#212121</color>
+
     <color name="colorTextProtector">#96000000</color>
     <color name="colorOnProtector">#DEffffff</color>
     <color name="colorShimmer">#8b8a8a</color>

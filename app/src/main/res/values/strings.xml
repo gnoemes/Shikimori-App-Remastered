@@ -327,6 +327,7 @@
 
     <string name="theme_default">Стандартная тема</string>
     <string name="theme_dark">Темная тема</string>
+    <string name="theme_amoled">Amoled тема</string>
 
     <string-array name="rate_types">
         <item>@string/common_anime</item>
@@ -569,6 +570,7 @@
     <string-array name="themes">
         <item>@string/theme_default</item>
         <item>@string/theme_dark</item>
+        <item>@string/theme_amoled</item>
     </string-array>
 
 </resources>
