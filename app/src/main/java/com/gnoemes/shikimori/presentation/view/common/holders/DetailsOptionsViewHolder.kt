@@ -20,6 +20,14 @@ class DetailsOptionsViewHolder(
 
     private val placeholder by lazy { DetailsPlaceholderViewHolder(view.optionsContent, view.optionsPlaceholder as ShimmerFrameLayout) }
 
+    init {
+        with(view){
+            chronologyView.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_animation_play, 0, 0)
+            linksView.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_attachment, 0, 0)
+            discussionView.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_forum, 0, 0)
+        }
+    }
+
     fun bind(item: DetailsOptionsItem) {
         placeholder.showContent()
 

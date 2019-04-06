@@ -3,16 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/container"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/gradient"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:tint="?attr/colorSurface"
+        app:layout_constraintTop_toTopOf="@+id/expandView"
+        app:layout_constraintBottom_toBottomOf="@+id/expandView"
+        app:layout_constraintEnd_toEndOf="@+id/expandView"
+        app:layout_constraintStart_toStartOf="@+id/expandView"
+        app:srcCompat="@drawable/details_head_background_gradient" />
 
     <ImageView
         android:id="@+id/expandView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@drawable/details_head_background_gradient"
-        android:foreground="?selectableItemBackgroundBorderless"
+        android:background="?selectableItemBackgroundBorderless"
         android:padding="4dp"
         android:tint="?attr/colorOnSurface"
         app:layout_constraintBottom_toBottomOf="parent"

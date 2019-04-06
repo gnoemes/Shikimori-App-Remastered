@@ -13,9 +13,7 @@
         android:id="@+id/optionsContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
-        android:paddingStart="24dp"
-        android:paddingEnd="24dp">
+        >
 
         <View
             android:id="@+id/rateSpinnerViewMock"

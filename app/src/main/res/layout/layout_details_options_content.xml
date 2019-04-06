@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/optionsContainer"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp">
+    android:layout_height="wrap_content">
 
     <com.gnoemes.shikimori.presentation.view.common.widget.RateSpinnerView
         android:id="@+id/rateSpinnerView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -23,10 +19,7 @@
         style="@style/ActionUnelevatedButtonStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="2dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:text="@string/details_watch_online"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,7 +33,6 @@
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:background="?attr/selectableItemBackground"
-        android:drawableTop="@drawable/ic_animation_play"
         android:fontFamily="sans-serif-medium"
         android:gravity="center"
         android:text="@string/common_chronology"
@@ -50,7 +42,8 @@
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintHorizontal_weight="0.3"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/linksView" />
+        app:layout_constraintTop_toTopOf="@+id/linksView"
+        tools:drawableTop="@drawable/ic_animation_play" />
 
     <TextView
         android:id="@+id/linksView"
@@ -59,7 +52,6 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:background="?attr/selectableItemBackground"
-        android:drawableTop="@drawable/ic_attachment"
         android:fontFamily="sans-serif-medium"
         android:gravity="center"
         android:text="@string/common_links"
@@ -68,7 +60,8 @@
         app:layout_constraintEnd_toStartOf="@+id/discussionView"
         app:layout_constraintHorizontal_weight="0.3"
         app:layout_constraintStart_toEndOf="@+id/chronologyView"
-        app:layout_constraintTop_toBottomOf="@+id/watchOnlineBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/watchOnlineBtn"
+        tools:drawableTop="@drawable/ic_attachment" />
 
     <TextView
         android:id="@+id/discussionView"
@@ -77,7 +70,6 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:background="?attr/selectableItemBackground"
-        android:drawableTop="@drawable/ic_forum"
         android:fontFamily="sans-serif-medium"
         android:gravity="center"
         android:text="@string/common_discussion"
@@ -86,7 +78,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="0.3"
         app:layout_constraintStart_toEndOf="@+id/linksView"
-        app:layout_constraintTop_toTopOf="@+id/linksView" />
+        app:layout_constraintTop_toTopOf="@+id/linksView"
+        tools:drawableTop="@drawable/ic_forum" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
