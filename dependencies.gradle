@@ -1,5 +1,5 @@
 ext.versions = [
-    minSdk            : 21,
+    minSdk            : 16,
     compileSdk        : 28,
     buildTools        : '28.0.3',
 
@@ -39,7 +39,7 @@ ext.versions = [
     circleImageView   : '2.2.0',
     kotlinPermissions : '1.0.3',
 
-    exoplayer         : '2.9.4',
+    exoplayer         : '2.9.6',
 
     kefirBB           : '1.5',
     firebase          : '16.0.6',
