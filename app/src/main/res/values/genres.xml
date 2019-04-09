@@ -40,6 +40,7 @@
     <string name="martial_arts">Боевые искусства</string>
     <string name="dementia">Безумие</string>
     <string name="josei">Дзёсей</string>
+    <string name="mystery">Детектив</string>
 
     <!--   NONONONONO 18+ :)  -->
     <string name="hentai">Хентай</string>
@@ -88,6 +89,7 @@
         <item>@string/thriller</item>
         <item>@string/kids</item>
         <item>@string/cars</item>
+        <item>@string/mystery</item>
     </string-array>
 
     <string-array name="genres_names">
@@ -131,6 +133,7 @@
         <item>thriller</item>
         <item>kids</item>
         <item>cars</item>
+        <item>mystery</item>
     </string-array>
 
 </resources>
