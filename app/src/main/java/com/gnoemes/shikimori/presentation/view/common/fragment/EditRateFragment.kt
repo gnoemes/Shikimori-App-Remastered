@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.ColorRes
+import androidx.core.widget.NestedScrollView
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.common.domain.SpinnerAction
@@ -135,6 +136,11 @@ class EditRateFragment : BaseBottomSheetDialogFragment() {
 
         rewatchesView.setText(rate?.rewatches?.toString() ?: "0")
 
+        nestedScroll.setOnScrollChangeListener(nestedScrollListener)
+    }
+
+    private val nestedScrollListener = NestedScrollView.OnScrollChangeListener{ _: NestedScrollView?, _: Int, scrollY: Int, _: Int, _: Int ->
+        toolbarDivider.visibleIf { scrollY != 0 }
     }
 
     private fun updateDeleteButton(@ColorRes firstColor: Int, @ColorRes secondColor: Int) {

@@ -27,9 +27,9 @@
                 android:layout_height="?attr/actionBarSize"
                 android:fitsSystemWindows="true"
                 app:layout_scrollFlags="snap"
-                app:titleTextAppearance="@style/ToolbarSmallTextAppearance"
                 app:popupTheme="@style/PopupMenuTheme"
-                app:title="@string/app_name">
+                app:title="@string/app_name"
+                app:titleTextAppearance="@style/ToolbarSmallTextAppearance">
 
                 <ImageButton
                     android:id="@+id/acceptBtn"
@@ -49,6 +49,7 @@
             </androidx.appcompat.widget.Toolbar>
 
             <View
+                android:id="@+id/toolbarDivider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_gravity="bottom"
@@ -61,6 +62,7 @@
             android:id="@+id/nestedScroll"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fillViewport="true"
             app:layout_behavior="@string/appBarFixScrollingFooterBehavior">
 
             <include layout="@layout/layout_edit_rate_content" />
