@@ -19,6 +19,12 @@
         <item name="android:textSize">20sp</item>
     </style>
 
+    <style name="ToolbarSmallTextAppearance">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="titleTextColor">?attr/colorOnPrimary</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
     <style name="Toolbar.Button.Navigation.Tinted" parent="Widget.AppCompat.Toolbar.Button.Navigation">
         <item name="tint">?attr/colorOnPrimary</item>
     </style>

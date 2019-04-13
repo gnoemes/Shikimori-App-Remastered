@@ -27,6 +27,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:fitsSystemWindows="true"
                 app:layout_scrollFlags="snap"
+                app:titleTextAppearance="@style/ToolbarSmallTextAppearance"
                 app:popupTheme="@style/PopupMenuTheme"
                 app:title="@string/app_name">
 
