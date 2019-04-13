@@ -111,6 +111,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
             android:textColor="?attr/colorOnPrimarySecondary"
             android:textSize="12sp"
             tools:text="Пересмотр" />
