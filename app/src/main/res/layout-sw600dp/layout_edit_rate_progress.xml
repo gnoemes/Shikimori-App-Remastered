@@ -87,9 +87,7 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
+        android:layout_gravity="center"
         android:layout_weight="1"
         android:orientation="vertical">
 
@@ -97,6 +95,7 @@
             android:id="@+id/rewatchesView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:background="@null"
             android:fontFamily="sans-serif-medium"
             android:inputType="number"
@@ -110,6 +109,8 @@
             android:id="@+id/rewatchesLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="8dp"
             android:textColor="?attr/colorOnPrimarySecondary"
             android:textSize="12sp"
             tools:text="Пересмотр" />
