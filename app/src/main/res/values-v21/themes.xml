@@ -11,6 +11,8 @@
         <item name="toolbarNavigationButtonStyle">@style/Toolbar.Button.Navigation.Tinted</item>
         <item name="actionOverflowButtonStyle">@style/Toolbar.Button.Overflow.Tinted</item>
         <item name="android:listDivider">@drawable/list_divider</item>
+
+        <item name="rateStyleStrokeWidth">0dp</item>
     </style>
 
     <style name="ShikimoriAppTheme.Default" parent="ShikimoriAppTheme.Base">
@@ -84,6 +86,8 @@
 
         <item name="dialogCustomBackground">@drawable/dialog_surface_dark</item>
         <item name="android:navigationBarColor">@color/dark_colorPrimary</item>
+
+        <item name="rateStyleStrokeWidth">1dp</item>
     </style>
 
     <style name="ShikimoriAppTheme.Amoled" parent="ShikimoriAppTheme.Base">
@@ -120,6 +124,8 @@
 
         <item name="dialogCustomBackground">@drawable/dialog_surface_black</item>
         <item name="android:navigationBarColor">@color/amoled_colorPrimary</item>
+
+        <item name="rateStyleStrokeWidth">1dp</item>
     </style>
 
 </resources>

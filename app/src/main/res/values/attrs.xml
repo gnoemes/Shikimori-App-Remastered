@@ -9,6 +9,8 @@
 
     <attr name="dialogCustomBackground" format="reference"/>
 
+    <attr name="rateStyleStrokeWidth" format="dimension"/>
+
     <declare-styleable name="RateSpinnerView">
         <attr name="anime" format="boolean" />
         <attr name="showEdit" format="boolean" />

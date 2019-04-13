@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="4dp"
+    app:cardPreventCornerOverlap="false"
+    app:strokeColor="@color/rate_default_dark"
+    app:strokeWidth="?attr/rateStyleStrokeWidth"
+    tools:cardBackgroundColor="@color/rate_default">
+
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minWidth="246dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/rateImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_weight="0"
+            android:tint="@color/rate_default_dark"
+            app:srcCompat="@drawable/ic_play_rate" />
+
+        <com.gnoemes.shikimori.presentation.view.common.widget.spinner.MaterialSpinner
+            android:id="@+id/spinnerView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="5"
+            android:textSize="16sp"
+            app:fontFamily="sans-serif-medium"
+            app:ms_padding_bottom="12dp"
+            app:ms_padding_left="16dp"
+            app:ms_padding_top="12dp"
+            app:ms_text_color="@color/rate_default_dark"
+            tools:ms_arrow_tint="@color/rate_default_dark"
+            tools:text="Смотрю" />
+
+        <ImageButton
+            android:id="@+id/editBtn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:srcCompat="@drawable/ic_edit_outline" />
+
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>
