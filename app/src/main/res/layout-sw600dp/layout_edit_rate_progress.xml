@@ -7,11 +7,10 @@
     android:orientation="horizontal"
     tools:background="?attr/colorSurface">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="5"
+        android:layout_weight="1"
         android:focusableInTouchMode="true">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -79,6 +78,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+
     <View
         android:layout_width="1dp"
         android:layout_height="match_parent"
@@ -90,7 +90,7 @@
         android:layout_gravity="center_vertical"
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
-        android:layout_weight="1.5"
+        android:layout_weight="1"
         android:orientation="vertical">
 
         <com.google.android.material.textfield.TextInputEditText
