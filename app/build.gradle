@@ -135,6 +135,8 @@ dependencies {
         transitive = true
     }
 
+    implementation 'com.github.ome450901:SimpleRatingBar:' + versions.ratingBar
+
     implementation project(":storio-common")
     implementation project(":storio-sqlite")
     implementation project(':storio-sqlite-annotations')

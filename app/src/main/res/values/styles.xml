@@ -171,6 +171,20 @@
         <item name="cornerFamily">rounded</item>
     </style>
 
+    <style name="RightRoundShapeStyle" parent="ShapeAppearance.MaterialComponents">
+        <item name="cornerSize">4dp</item>
+        <item name="cornerSizeTopLeft">0dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerFamily">rounded</item>
+    </style>
+
+    <style name="LeftRoundShapeStyle" parent="ShapeAppearance.MaterialComponents">
+        <item name="cornerSize">4dp</item>
+        <item name="cornerSizeTopRight">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerFamily">rounded</item>
+    </style>
+
     <style name="DrawerIconStyle" parent="Widget.AppCompat.DrawerArrowToggle">
         <item name="color">?attr/colorOnPrimary</item>
     </style>

@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="4dp"
+    app:cardElevation="0dp"
     app:cardPreventCornerOverlap="false"
     app:strokeColor="@color/rate_default_dark"
     app:strokeWidth="?attr/rateStyleStrokeWidth"
@@ -13,7 +14,7 @@
 
     <LinearLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:minWidth="246dp"
         android:orientation="horizontal">
 

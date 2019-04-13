@@ -51,7 +51,7 @@
     <color name="amoled_colorOnPrimaryDisabled">#0FFFFFFF</color>
     <color name="amoled_colorOnBackground">#61ffffff</color>
     <color name="amoled_colorSecondaryTransparent">#1ffe5722</color>
-    <color name="amoled_colorDivider">#0FFFFFFF</color>
+    <color name="amoled_colorDivider">#1fffffff</color>
     <color name="amoled_colorRipple">#0FFFFFFF</color>
     <color name="amoled_colorTransparentBackground">#99000000</color>
     <color name="amoled_colorOnTransparentBackground">#99ffffff</color>

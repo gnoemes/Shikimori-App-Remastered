@@ -13,8 +13,8 @@ import com.gnoemes.shikimori.presentation.presenter.common.provider.RatingResour
 import com.gnoemes.shikimori.presentation.presenter.details.BaseDetailsPresenter
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragment
 import com.gnoemes.shikimori.presentation.view.common.adapter.GenreAdapter
+import com.gnoemes.shikimori.presentation.view.common.fragment.EditRateFragment
 import com.gnoemes.shikimori.presentation.view.common.fragment.ListDialogFragment
-import com.gnoemes.shikimori.presentation.view.common.fragment.RateDialogFragment
 import com.gnoemes.shikimori.presentation.view.common.holders.DetailsContentViewHolder
 import com.gnoemes.shikimori.presentation.view.common.holders.DetailsDescriptionViewHolder
 import com.gnoemes.shikimori.presentation.view.common.holders.DetailsHeadViewHolder
@@ -29,7 +29,7 @@ import kotlinx.android.synthetic.main.layout_collapsing_toolbar.*
 import javax.inject.Inject
 
 abstract class BaseDetailsFragment<Presenter : BaseDetailsPresenter<View>, View : BaseDetailsView> : BaseFragment<Presenter, View>(),
-        BaseDetailsView, ListDialogFragment.DialogCallback, ListDialogFragment.DialogIdCallback, RateDialogFragment.RateDialogCallback {
+        BaseDetailsView, ListDialogFragment.DialogCallback, ListDialogFragment.DialogIdCallback, EditRateFragment.RateDialogCallback {
 
     @Inject
     lateinit var imageLoader: ImageLoader

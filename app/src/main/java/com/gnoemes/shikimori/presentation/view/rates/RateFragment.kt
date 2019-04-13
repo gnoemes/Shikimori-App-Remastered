@@ -17,7 +17,7 @@ import com.gnoemes.shikimori.presentation.presenter.common.provider.RatingResour
 import com.gnoemes.shikimori.presentation.presenter.rates.RatePresenter
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragment
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
-import com.gnoemes.shikimori.presentation.view.common.fragment.RateDialogFragment
+import com.gnoemes.shikimori.presentation.view.common.fragment.EditRateFragment
 import com.gnoemes.shikimori.presentation.view.rates.adapter.RateAdapter
 import com.gnoemes.shikimori.utils.gone
 import com.gnoemes.shikimori.utils.ifNotNull
@@ -30,7 +30,7 @@ import kotlinx.android.synthetic.main.layout_progress.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import javax.inject.Inject
 
-class RateFragment : BaseFragment<RatePresenter, RateView>(), RateView, RateDialogFragment.RateDialogCallback, RandomRateListener {
+class RateFragment : BaseFragment<RatePresenter, RateView>(), RateView, EditRateFragment.RateDialogCallback, RandomRateListener {
 
     @Inject
     lateinit var imageLoader: ImageLoader
@@ -130,7 +130,7 @@ class RateFragment : BaseFragment<RatePresenter, RateView>(), RateView, RateDial
     }
 
     override fun showRateDialog(userRate: UserRate) {
-        val dialog = RateDialogFragment.newInstance(rate = userRate, isAnime = userRate.targetType == Type.ANIME)
+        val dialog = EditRateFragment.newInstance(rate = userRate, isAnime = userRate.targetType == Type.ANIME)
         dialog.show(childFragmentManager, "RateTag")
     }
 

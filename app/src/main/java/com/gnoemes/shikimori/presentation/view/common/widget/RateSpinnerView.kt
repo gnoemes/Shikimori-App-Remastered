@@ -61,9 +61,11 @@ class RateSpinnerView @JvmOverloads constructor(context: Context,
                 ViewModel(R.drawable.ic_close, R.color.rate_dropped, R.color.rate_dropped_dark, RateStatus.DROPPED, 5)
         )
 
+        val defaultPadding = context.dp(16)
+
         when (itemSize) {
-            SMALL_SIZE -> spinnerView.apply { textSize = 12f; setPadding(context.dp(16), context.dp(8), context.dp(16), context.dp(8)); adapterTextSize = 14f }
-            else -> spinnerView.apply { textSize = 16f; setPadding(context.dp(16), context.dp(12), context.dp(16), context.dp(12)); adapterTextSize = 14f }
+            SMALL_SIZE -> spinnerView.apply { textSize = 12f; setPadding(defaultPadding, context.dp(8), defaultPadding, context.dp(8)); adapterTextSize = 14f }
+            else -> spinnerView.apply { textSize = 16f; setPadding(defaultPadding, context.dp(12), defaultPadding, context.dp(12)); adapterTextSize = 14f }
         }
 
         rateImage.visibleIf { hasIcon }
@@ -113,21 +115,6 @@ class RateSpinnerView @JvmOverloads constructor(context: Context,
                 }
             }
         }
-
-//        spinnerView.adapter = SpinnerArrayAdapter(colorRes, colorDarkRes, context, spinnerItemLayout, context.resources.getStringArray(arrayRes).toMutableList())
-//        val selection = items.firstOrNull { it.status == status }?.pos ?: 0
-//        spinnerView.setSelection(selection, false)
-//        spinnerView.itemClickListener = AdapterView.OnItemClickListener { _, _, pos, _ ->
-//
-//            val position = if (arrayRes == R.array.anime_rate_stasuses_empty || arrayRes == R.array.manga_rate_stasuses_empty) pos - 1 else pos
-//            status = items.firstOrNull { it.pos == position }?.status
-//
-//            updateColor()
-//
-//            if (::callback.isInitialized && status != null) {
-//                callback.invoke(SpinnerAction.RATE_CHANGE, status!!)
-//            }
-//        }
     }
 
     fun setRateStatus(status: RateStatus?) {
@@ -152,11 +139,6 @@ class RateSpinnerView @JvmOverloads constructor(context: Context,
         spinnerView.setTextColor(context.color(colorDarkRes))
         spinnerView.setArrowColor(context.color(colorDarkRes))
 
-
-//        val background = spinnerView.background
-//        spinnerView.background = background.apply { tint(context.color(colorDarkRes)); mutate() }
-//        spinnerView.postInvalidate()
-
         editBtn.visibleIf { hasEdit && item != null }
     }
 
@@ -178,6 +160,12 @@ class RateSpinnerView @JvmOverloads constructor(context: Context,
             else -> super.onRestoreInstanceState(state)
         }
     }
+
+    val primaryColor: Int
+        get() = if (isDarkTheme) android.R.color.transparent else colorRes
+
+    val onPrimaryColor: Int
+        get() = colorDarkRes
 
     private data class ViewModel(
             val iconRes: Int,
