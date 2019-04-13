@@ -7,17 +7,18 @@
     android:layout_gravity="bottom"
     android:fitsSystemWindows="true"
     app:backgroundTint="?attr/colorPrimary"
-    app:menu="@menu/menu_bottom"
+    app:elevation="0dp"
     app:itemBackground="?attr/selectableItemBackgroundBorderless"
     app:itemIconTint="@drawable/bottom_nav_item_color"
     app:itemTextColor="@drawable/bottom_nav_item_color"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior" >
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    app:menu="@menu/menu_bottom">
 
     <View
+        android:id="@+id/navbarDivider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_gravity="bottom"
-        android:background="?attr/colorDivider"
-        />
+        android:background="?attr/colorDivider" />
 </com.google.android.material.bottomnavigation.BottomNavigationView>
 

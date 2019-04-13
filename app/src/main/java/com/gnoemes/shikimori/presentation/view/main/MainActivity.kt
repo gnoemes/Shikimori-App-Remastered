@@ -18,8 +18,10 @@ import com.gnoemes.shikimori.presentation.presenter.main.MainPresenter
 import com.gnoemes.shikimori.presentation.view.base.activity.BaseActivity
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
 import com.gnoemes.shikimori.presentation.view.bottom.BottomTabContainer
+import com.gnoemes.shikimori.utils.getCurrentTheme
 import com.gnoemes.shikimori.utils.ifNotNull
 import com.gnoemes.shikimori.utils.navigation.SupportAppNavigator
+import com.gnoemes.shikimori.utils.visibleIf
 import kotlinx.android.synthetic.main.layout_bottom_bar.*
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder
@@ -64,6 +66,8 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView, RouterPr
             val tab = tabs.find { it.id == item.itemId }!!
             presenter.onTabItemReselected(tab.screenKey)
         }
+
+        navbarDivider.visibleIf { getCurrentTheme != R.style.ShikimoriAppTheme_Amoled }
     }
 
     private fun initContainer() {
