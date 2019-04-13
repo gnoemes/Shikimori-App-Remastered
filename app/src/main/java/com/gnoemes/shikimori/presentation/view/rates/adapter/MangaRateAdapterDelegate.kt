@@ -45,7 +45,7 @@ class MangaRateAdapterDelegate(
                 watchView.onClick { callback.invoke(DetailsAction.WatchOnline(item.manga?.id)) }
                 container.onClick { navigationCallback.invoke(item.type, item.manga?.id!!) }
                 rateSpinnerView.callback = { action, status ->
-                    if (action == SpinnerAction.RATE_CHANGE) callback.invoke(DetailsAction.ChangeRateStatus(status, item.id))
+                    if (action == SpinnerAction.RATE_CHANGE) callback.invoke(DetailsAction.ChangeRateStatus(status!!, item.id))
                     else callback.invoke(DetailsAction.EditRate(item))
                 }
             }

@@ -29,7 +29,7 @@ class RateSpinnerView @JvmOverloads constructor(context: Context,
     var hasIcon: Boolean = true
     var itemSize: Int = NORMAL_SIZE
 
-    lateinit var callback: (SpinnerAction, RateStatus) -> Unit
+    lateinit var callback: (SpinnerAction, RateStatus?) -> Unit
     private var status: RateStatus? = null
     private lateinit var items: MutableList<ViewModel>
 
@@ -77,9 +77,8 @@ class RateSpinnerView @JvmOverloads constructor(context: Context,
         }
 
         editBtn.setOnClickListener {
-            if (::callback.isInitialized && status != null) {
-                callback.invoke(SpinnerAction.RATE_EDIT, status!!)
-
+            if (::callback.isInitialized) {
+                callback.invoke(SpinnerAction.RATE_EDIT, status)
             }
         }
     }
@@ -139,7 +138,7 @@ class RateSpinnerView @JvmOverloads constructor(context: Context,
         spinnerView.setTextColor(context.color(colorDarkRes))
         spinnerView.setArrowColor(context.color(colorDarkRes))
 
-        editBtn.visibleIf { hasEdit && item != null }
+        editBtn.visibleIf { hasEdit }
     }
 
 

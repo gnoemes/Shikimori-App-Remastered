@@ -10,6 +10,7 @@ import androidx.core.widget.NestedScrollView
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.common.domain.SpinnerAction
+import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.rates.domain.UserRate
 import com.gnoemes.shikimori.presentation.presenter.common.provider.RatingResourceProvider
 import com.gnoemes.shikimori.presentation.presenter.common.provider.RatingResourceProviderImpl
@@ -63,10 +64,13 @@ class EditRateFragment : BaseBottomSheetDialogFragment() {
         }
         callback = parentFragment as? RateDialogCallback
 
+        deleteBtn.isEnabled = rate != null
+        deleteBtn.onClick { callback?.onDeleteRate(rate?.id ?: Constants.NO_ID); dismiss() }
+
         with(rateSpinnerView) {
             isAnime = this@EditRateFragment.isAnime
             hasEdit = false
-            setRateStatus(rate?.status)
+            setRateStatus(rate?.status ?: RateStatus.WATCHING)
             callback = { action, status ->
                 if (action == SpinnerAction.RATE_CHANGE) {
                     rate = rate?.copy(status = status)
@@ -83,9 +87,6 @@ class EditRateFragment : BaseBottomSheetDialogFragment() {
 
         //TODO remove
         if (rateSpinnerView.primaryColor == android.R.color.transparent) deleteBtn.minHeight = context!!.dp(50)
-
-        deleteBtn.visibleIf { rate != null }
-        deleteBtn.onClick { callback?.onDeleteRate(rate?.id ?: Constants.NO_ID); dismiss() }
 
         val rating = rate?.score?.roundToInt() ?: 0
         ratingBar.rating = rating.div(2f)
@@ -125,29 +126,33 @@ class EditRateFragment : BaseBottomSheetDialogFragment() {
             progressView.setText(rate?.episodes?.toString() ?: "0")
 
             rewatchesLabel.text = context!!.getString(R.string.profile_rate_rewatched)
-            toolbar.setTitle(R.string.rates_title_anime)
+
+            toolbar.setTitle(if (rate == null) R.string.rates_title_anime_add else R.string.rates_title_anime)
         } else {
             progressLabelView.text = context!!.getString(R.string.profile_rate_readed)
             progressView.setText(rate?.chapters?.toString() ?: "0")
 
             rewatchesLabel.text = context!!.getString(R.string.profile_rate_reread)
-            toolbar.setTitle(R.string.rates_title_manga)
+            toolbar.setTitle(if (rate == null) R.string.rates_title_manga_add else R.string.rates_title_manga)
         }
 
         rewatchesView.setText(rate?.rewatches?.toString() ?: "0")
 
         nestedScroll.setOnScrollChangeListener(nestedScrollListener)
+
+        if (rate == null) rate = createRate()
     }
 
-    private val nestedScrollListener = NestedScrollView.OnScrollChangeListener{ _: NestedScrollView?, _: Int, scrollY: Int, _: Int, _: Int ->
+    private val nestedScrollListener = NestedScrollView.OnScrollChangeListener { _: NestedScrollView?, _: Int, scrollY: Int, _: Int, _: Int ->
         toolbarDivider.visibleIf { scrollY != 0 }
     }
 
     private fun updateDeleteButton(@ColorRes firstColor: Int, @ColorRes secondColor: Int) {
         deleteBtn.apply {
             setStrokeColorResource(secondColor)
-            setIconTintResource(secondColor)
             setBackgroundColor(context.color(firstColor))
+            if (isEnabled) setIconTintResource(secondColor)
+            else setIconTintResource(context.theme.attr(R.attr.colorDivider).resourceId)
         }
     }
 
@@ -155,7 +160,7 @@ class EditRateFragment : BaseBottomSheetDialogFragment() {
             UserRate(
                     id = rate?.id ?: Constants.NO_ID,
                     score = Math.round(ratingBar.rating * 2).toDouble(),
-                    status = rate?.status,
+                    status = rate?.status ?: RateStatus.WATCHING,
                     rewatches = rewatchesView?.text?.toString()?.toIntOrNull(),
                     episodes = if (isAnime) progressView.text?.toString()?.toIntOrNull() else null,
                     chapters = if (isAnime) null else progressView.text?.toString()?.toIntOrNull(),

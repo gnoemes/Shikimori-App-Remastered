@@ -36,7 +36,7 @@ class DetailsOptionsViewHolder(
             rateSpinnerView.setRateStatus(item.rateStatus)
             rateSpinnerView.callback = { spinnerAction, rateStatus ->
                 when (spinnerAction) {
-                    SpinnerAction.RATE_CHANGE -> callback.invoke(DetailsAction.ChangeRateStatus(rateStatus))
+                    SpinnerAction.RATE_CHANGE -> callback.invoke(DetailsAction.ChangeRateStatus(rateStatus!!))
                     SpinnerAction.RATE_EDIT -> callback.invoke(DetailsAction.EditRate())
                 }
             }

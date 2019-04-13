@@ -106,6 +106,8 @@
     <string name="rates_need_auth">Для измения статуса необходимо авторизоваться в приложении</string>
     <string name="rates_title_anime">Редактирование аниме</string>
     <string name="rates_title_manga">Редактирование манги</string>
+    <string name="rates_title_anime_add">Добавление аниме</string>
+    <string name="rates_title_manga_add">Добавление Манги</string>
 
 
     <string name="rating_empty">Нет оценки</string>
