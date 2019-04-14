@@ -429,7 +429,7 @@
     <string-array name="anime_search_sort">
         <item>@string/sort_score</item>
         <item>@string/sort_popularity</item>
-        <item>@string/sort_episodes</item>
+        <item>@string/sort_episodes_watched</item>
         <item>@string/sort_date</item>
         <item>@string/sort_name</item>
     </string-array>
@@ -445,7 +445,7 @@
     <string-array name="manga_search_sort">
         <item>@string/sort_score</item>
         <item>@string/sort_popularity</item>
-        <item>@string/sort_chapters</item>
+        <item>@string/sort_chapters_readed</item>
         <item>@string/sort_date</item>
         <item>@string/sort_name</item>
     </string-array>
