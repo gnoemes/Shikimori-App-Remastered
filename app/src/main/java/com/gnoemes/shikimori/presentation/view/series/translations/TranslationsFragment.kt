@@ -233,7 +233,7 @@ class TranslationsFragment : BaseSeriesFragment<TranslationsPresenter, Translati
 
         textAndIcon?.let {
             translationTypeLabel.setText(it.first)
-            translationBtn.setImageResource(it.second)
+            translationBtn.setIconResource(it.second)
         }
     }
 

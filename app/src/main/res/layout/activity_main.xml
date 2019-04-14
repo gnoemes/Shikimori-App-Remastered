@@ -12,6 +12,12 @@
         android:layout_height="match_parent"
         android:layout_weight="1" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_gravity="bottom"
+        android:background="?attr/colorDivider" />
+
     <include
         layout="@layout/layout_bottom_bar"
         android:layout_width="match_parent"

@@ -19,7 +19,7 @@ android {
         nameOptions {
             versionMajor 0
             versionMinor 8
-            versionPatch 1
+            versionPatch 2
             versionBuild 0
         }
         codeOptions {
@@ -134,6 +134,8 @@ dependencies {
     implementation('com.crashlytics.sdk.android:crashlytics:' + versions.crashlytics) {
         transitive = true
     }
+
+    implementation 'com.github.ome450901:SimpleRatingBar:' + versions.ratingBar
 
     implementation project(":storio-common")
     implementation project(":storio-sqlite")

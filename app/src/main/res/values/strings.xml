@@ -90,7 +90,7 @@
     <string name="rate_on_hold">Отложено</string>
     <string name="rate_dropped">Брошено</string>
     <string name="rate_rating">Оценка</string>
-    <string name="rate_comment_hint">Оставьте ваши впечатления здесь</string>
+    <string name="rate_comment_hint">Добавить комментарий к списку</string>
     <string name="rate_watching_with_count">Смотрю (%s)</string>
     <string name="rate_reading_with_count">Читаю (%s)</string>
     <string name="rate_rereading_with_count">Перечитываю (%s)</string>
@@ -104,6 +104,10 @@
     <string name="rate_comment">Комментарий</string>
     <string name="rate_status">Статус просмотра</string>
     <string name="rates_need_auth">Для измения статуса необходимо авторизоваться в приложении</string>
+    <string name="rates_title_anime">Редактирование аниме</string>
+    <string name="rates_title_manga">Редактирование манги</string>
+    <string name="rates_title_anime_add">Добавление аниме</string>
+    <string name="rates_title_manga_add">Добавление Манги</string>
 
 
     <string name="rating_empty">Нет оценки</string>
@@ -312,6 +316,9 @@
     <string name="profile_rate_reading">Читаю/Планирую</string>
     <string name="profile_rate_dropped">Брошено</string>
 
+    <string name="profile_rate_rewatched">Пересмотр</string>
+    <string name="profile_rate_reread">Перечитано</string>
+
     <string name="club_free">Свободное обсуждение и вступление</string>
     <string name="club_free_join">Свободное вступление</string>
     <string name="club_free_discussion">Свободное обсуждение</string>
@@ -327,6 +334,7 @@
 
     <string name="theme_default">Стандартная тема</string>
     <string name="theme_dark">Темная тема</string>
+    <string name="theme_amoled">Amoled тема</string>
 
     <string-array name="rate_types">
         <item>@string/common_anime</item>
@@ -421,7 +429,7 @@
     <string-array name="anime_search_sort">
         <item>@string/sort_score</item>
         <item>@string/sort_popularity</item>
-        <item>@string/sort_episodes</item>
+        <item>@string/sort_episodes_watched</item>
         <item>@string/sort_date</item>
         <item>@string/sort_name</item>
     </string-array>
@@ -437,7 +445,7 @@
     <string-array name="manga_search_sort">
         <item>@string/sort_score</item>
         <item>@string/sort_popularity</item>
-        <item>@string/sort_chapters</item>
+        <item>@string/sort_chapters_readed</item>
         <item>@string/sort_date</item>
         <item>@string/sort_name</item>
     </string-array>
@@ -569,6 +577,7 @@
     <string-array name="themes">
         <item>@string/theme_default</item>
         <item>@string/theme_dark</item>
+        <item>@string/theme_amoled</item>
     </string-array>
 
 </resources>

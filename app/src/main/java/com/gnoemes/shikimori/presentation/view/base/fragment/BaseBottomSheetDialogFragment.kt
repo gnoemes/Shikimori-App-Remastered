@@ -18,7 +18,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 abstract class BaseBottomSheetDialogFragment : MvpDialogFragment() {
 
     protected lateinit var bottomSheet: FrameLayout
-    var autoExpand = true
+    open var autoExpand = true
 
     var peekHeight = -1
 
@@ -35,6 +35,8 @@ abstract class BaseBottomSheetDialogFragment : MvpDialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return BottomSheetDialog(ContextThemeWrapper(context!!, R.style.Theme_MaterialComponents_BottomSheetDialog), context!!.getCurrentTheme)
                 .apply {
+                    isCancelable = true
+                    setCanceledOnTouchOutside(true)
                     setOnShowListener {
                         bottomSheet = (it as BottomSheetDialog).findViewById(R.id.design_bottom_sheet)!!
                         bottomSheet.background = ColorDrawable(Color.TRANSPARENT)

@@ -5,8 +5,11 @@
     <attr name="colorDivider" format="color"/>
     <attr name="colorTransparentBackground" format="color"/>
     <attr name="colorOnTransparentBackground" format="color"/>
+    <attr name="colorDialogSurface" format="color"/>
 
     <attr name="dialogCustomBackground" format="reference"/>
+
+    <attr name="rateStyleStrokeWidth" format="dimension"/>
 
     <declare-styleable name="RateSpinnerView">
         <attr name="anime" format="boolean" />

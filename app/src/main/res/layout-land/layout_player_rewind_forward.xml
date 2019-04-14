@@ -13,7 +13,6 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:background="@android:color/transparent"
-        android:drawableTop="@drawable/ic_rewind"
         android:minWidth="32dp"
         android:minHeight="32dp"
         android:textColor="@color/player_controls"
@@ -24,6 +23,7 @@
         app:layout_constraintStart_toStartOf="@+id/rewindArea"
         app:layout_constraintTop_toTopOf="@+id/rewindArea"
         app:layout_constraintVertical_bias="0.515"
+        tools:drawableTop="@drawable/ic_rewind"
         tools:ignore="ContentDescription"
         tools:text="-10 сек" />
 
@@ -36,7 +36,6 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:background="@android:color/transparent"
-        android:drawableTop="@drawable/ic_forward"
         android:minWidth="32dp"
         android:minHeight="32dp"
         android:textColor="@color/player_controls"
@@ -47,6 +46,7 @@
         app:layout_constraintStart_toStartOf="@+id/forwardArea"
         app:layout_constraintTop_toTopOf="@+id/forwardArea"
         app:layout_constraintVertical_bias="0.515"
+        tools:drawableTop="@drawable/ic_forward"
         tools:ignore="ContentDescription"
         tools:text="10 сек" />
 

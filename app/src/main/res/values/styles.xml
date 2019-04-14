@@ -3,7 +3,7 @@
     <style name="PopupMenuTheme" parent="Widget.AppCompat.ListPopupWindow">
         <item name="android:textColor">?attr/colorOnPrimary</item>
         <item name="android:popupBackground">?attr/dialogCustomBackground</item>
-        <item name="android:colorBackground">?attr/colorPrimary</item>
+        <item name="android:colorBackground">?attr/colorDialogSurface</item>
     </style>
 
     <style name="ToolbarStyle" parent="Widget.MaterialComponents.Toolbar.Primary">
@@ -17,6 +17,12 @@
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="titleTextColor">?attr/colorOnPrimary</item>
         <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="ToolbarSmallTextAppearance">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="titleTextColor">?attr/colorOnPrimary</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="Toolbar.Button.Navigation.Tinted" parent="Widget.AppCompat.Toolbar.Button.Navigation">
@@ -168,6 +174,20 @@
         <item name="cornerSize">16sp</item>
         <item name="cornerSizeBottomRight">0dp</item>
         <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerFamily">rounded</item>
+    </style>
+
+    <style name="RightRoundShapeStyle" parent="ShapeAppearance.MaterialComponents">
+        <item name="cornerSize">4dp</item>
+        <item name="cornerSizeTopLeft">0dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerFamily">rounded</item>
+    </style>
+
+    <style name="LeftRoundShapeStyle" parent="ShapeAppearance.MaterialComponents">
+        <item name="cornerSize">4dp</item>
+        <item name="cornerSizeTopRight">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
         <item name="cornerFamily">rounded</item>
     </style>
 

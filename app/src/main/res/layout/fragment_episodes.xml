@@ -65,6 +65,7 @@
             android:id="@+id/gradient"
             android:layout_width="0dp"
             android:layout_height="32dp"
+            android:tint="?attr/colorSurface"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/recyclerView"

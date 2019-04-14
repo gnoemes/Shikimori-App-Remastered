@@ -38,6 +38,7 @@ public abstract class MaterialSpinnerBaseAdapter<T> extends BaseAdapter {
   private final Context context;
   private int selectedIndex;
   private int textColor;
+  private float textSize;
   private int backgroundSelector;
   private int popupPaddingTop;
   private int popupPaddingLeft;
@@ -56,6 +57,7 @@ public abstract class MaterialSpinnerBaseAdapter<T> extends BaseAdapter {
       convertView = inflater.inflate(R.layout.ms__list_item, parent, false);
       textView = (TextView) convertView.findViewById(R.id.tv_tinted_spinner);
       textView.setTextColor(textColor);
+      textView.setTextSize(textSize);
 
       textView.setPadding(popupPaddingLeft, popupPaddingTop, popupPaddingRight, popupPaddingBottom);
 //
@@ -156,6 +158,11 @@ public abstract class MaterialSpinnerBaseAdapter<T> extends BaseAdapter {
     this.popupPaddingTop = top;
     this.popupPaddingRight = right;
     this.popupPaddingBottom = bottom;
+    return this;
+  }
+
+  public MaterialSpinnerBaseAdapter<T> setTextSize(float size) {
+    textSize = size;
     return this;
   }
 

@@ -11,8 +11,8 @@ import com.gnoemes.shikimori.entity.rates.domain.UserRate
 import com.gnoemes.shikimori.presentation.presenter.anime.AnimePresenter
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
 import com.gnoemes.shikimori.presentation.view.common.adapter.content.ContentAdapter
+import com.gnoemes.shikimori.presentation.view.common.fragment.EditRateFragment
 import com.gnoemes.shikimori.presentation.view.common.fragment.ListDialogFragment
-import com.gnoemes.shikimori.presentation.view.common.fragment.RateDialogFragment
 import com.gnoemes.shikimori.presentation.view.common.holders.DetailsContentViewHolder
 import com.gnoemes.shikimori.presentation.view.details.BaseDetailsFragment
 import com.gnoemes.shikimori.utils.withArgs
@@ -68,7 +68,7 @@ class AnimeFragment : BaseDetailsFragment<AnimePresenter, AnimeView>(), AnimeVie
     ///////////////////////////////////////////////////////////////////////////
 
     override fun showRateDialog(userRate: UserRate?) {
-        val dialog = RateDialogFragment.newInstance(rate = userRate)
+        val dialog = EditRateFragment.newInstance(rate = userRate)
         dialog.show(childFragmentManager, "RateTag")
     }
 

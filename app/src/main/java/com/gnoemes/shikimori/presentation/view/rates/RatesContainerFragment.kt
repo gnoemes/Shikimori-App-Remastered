@@ -114,6 +114,7 @@ class RatesContainerFragment : BaseFragment<RatesContainerPresenter, RatesContai
             setViewScale(Gravity.START, 0.9f)
             setRadius(Gravity.START, 35f)
             setViewElevation(Gravity.START, 20f)
+            if (context.getCurrentTheme == R.style.ShikimoriAppTheme_Amoled) setViewScrimColor(Gravity.START, context.colorAttr(R.attr.colorDivider))
             toggle.syncState()
         }
 

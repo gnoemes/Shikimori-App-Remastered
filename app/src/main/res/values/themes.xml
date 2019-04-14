@@ -10,7 +10,8 @@
         <item name="drawerArrowStyle">@style/DrawerIconStyle</item>
         <item name="toolbarNavigationButtonStyle">@style/Toolbar.Button.Navigation.Tinted</item>
         <item name="actionOverflowButtonStyle">@style/Toolbar.Button.Overflow.Tinted</item>
-        <item name="android:listDivider">@drawable/list_divider</item>
+
+        <item name="rateStyleStrokeWidth">0dp</item>
     </style>
 
     <style name="ShikimoriAppTheme.Launch" parent="ShikimoriAppTheme.Base">
@@ -47,18 +48,22 @@
         <item name="colorDivider">@color/default_colorDivider</item>
         <item name="colorTransparentBackground">@color/default_colorTransparentBackground</item>
         <item name="colorOnTransparentBackground">@color/default_colorOnTransparentBackground</item>
+        <item name="colorDialogSurface">@color/default_colorDialogSurface</item>
 
         <item name="android:textColor">@color/default_colorOnSurface</item>
         <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
         <item name="android:textColorSecondary">?attr/colorOnPrimarySecondary</item>
         <item name="android:windowBackground">@color/default_colorBackground</item>
 
-        <item name="colorPrimaryDark">@color/default_colorPrimaryVariant</item>
-        <item name="md_background_color">@color/default_colorBackground</item>
+        <item name="md_background_color">@color/default_colorDialogSurface</item>
         <item name="md_color_content">@color/default_colorOnPrimarySecondary</item>
 
-        <item name="dialogCustomBackground">@drawable/dialog_surface</item>
+        <item name="colorPrimaryDark">@color/default_colorPrimaryVariant</item>
         <item name="colorControlHighlight">@color/default_colorRipple</item>
+
+        <item name="dialogCustomBackground">@drawable/dialog_surface</item>
+
+        <item name="android:listDivider">@drawable/list_divider_default</item>
     </style>
 
     <style name="ShikimoriAppTheme.Dark" parent="ShikimoriAppTheme.Base">
@@ -78,18 +83,61 @@
         <item name="colorDivider">@color/dark_colorDivider</item>
         <item name="colorTransparentBackground">@color/dark_colorTransparentBackground</item>
         <item name="colorOnTransparentBackground">@color/dark_colorOnTransparentBackground</item>
+        <item name="colorDialogSurface">@color/dark_colorDialogSurface</item>
 
         <item name="android:textColor">@color/dark_colorOnSurface</item>
         <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
         <item name="android:textColorSecondary">?attr/colorOnPrimarySecondary</item>
         <item name="android:windowBackground">@color/dark_colorBackground</item>
 
-        <item name="colorPrimaryDark">@color/dark_colorPrimaryVariant</item>
-        <item name="md_background_color">@color/dark_colorBackground</item>
+        <item name="md_background_color">@color/dark_colorDialogSurface</item>
         <item name="md_color_content">@color/dark_colorOnPrimarySecondary</item>
 
-        <item name="dialogCustomBackground">@drawable/dialog_surface_dark</item>
+        <item name="colorPrimaryDark">@color/dark_colorPrimaryVariant</item>
         <item name="colorControlHighlight">@color/dark_colorRipple</item>
+
+        <item name="dialogCustomBackground">@drawable/dialog_surface_dark</item>
+
+        <item name="android:listDivider">@drawable/list_divider_dark</item>
+
+        <item name="rateStyleStrokeWidth">1dp</item>
+    </style>
+
+    <style name="ShikimoriAppTheme.Amoled" parent="ShikimoriAppTheme.Base">
+        <item name="colorPrimary">@color/amoled_colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/amoled_colorPrimaryVariant</item>
+        <item name="colorSecondary">@color/amoled_colorSecondary</item>
+        <item name="colorSurface">@color/amoled_colorSurface</item>
+        <item name="android:colorBackground">@color/amoled_colorBackground</item>
+        <item name="colorSecondaryTransparent">@color/amoled_colorSecondaryTransparent</item>
+
+        <item name="colorOnPrimary">@color/amoled_colorOnPrimary</item>
+        <item name="colorOnPrimarySecondary">@color/amoled_colorOnPrimarySecondary</item>
+        <item name="colorOnPrimaryDisabled">@color/amoled_colorOnPrimaryDisabled</item>
+        <item name="colorOnSecondary">@color/amoled_colorOnSecondary</item>
+        <item name="colorOnSurface">@color/amoled_colorOnSurface</item>
+        <item name="colorOnBackground">@color/amoled_colorOnBackground</item>
+        <item name="colorDivider">@color/amoled_colorDivider</item>
+        <item name="colorTransparentBackground">@color/amoled_colorTransparentBackground</item>
+        <item name="colorOnTransparentBackground">@color/amoled_colorOnTransparentBackground</item>
+        <item name="colorDialogSurface">@color/amoled_colorDialogSurface</item>
+
+        <item name="android:textColor">@color/amoled_colorOnSurface</item>
+        <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
+        <item name="android:textColorSecondary">?attr/colorOnPrimarySecondary</item>
+        <item name="android:windowBackground">@color/amoled_colorBackground</item>
+
+        <item name="md_background_color">@color/amoled_colorDialogSurface</item>
+        <item name="md_color_content">@color/amoled_colorOnPrimarySecondary</item>
+
+        <item name="colorPrimaryDark">@color/amoled_colorPrimaryVariant</item>
+        <item name="colorControlHighlight">@color/amoled_colorRipple</item>
+
+        <item name="dialogCustomBackground">@drawable/dialog_surface_black</item>
+
+        <item name="android:listDivider">@drawable/list_divider_amoled</item>
+
+        <item name="rateStyleStrokeWidth">1dp</item>
     </style>
 
 </resources>

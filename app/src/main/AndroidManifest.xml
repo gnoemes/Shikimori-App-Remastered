@@ -60,16 +60,22 @@
 
         <activity
             android:name=".presentation.view.player.embedded.EmbeddedPlayerActivity"
-            android:theme="@style/ShikimoriAppTheme.Player"
             android:configChanges="orientation|keyboardHidden|screenLayout|smallestScreenSize|screenSize"
             android:hardwareAccelerated="true"
             android:launchMode="singleTask"
             android:resizeableActivity="true"
-            android:supportsPictureInPicture="true" />
+            android:supportsPictureInPicture="true"
+            android:theme="@style/ShikimoriAppTheme.Player" />
 
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="49adb365d3d365dabad78f3110d69bd84e717eea" />
+
+        <receiver android:name="androidx.media.session.MediaButtonReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+            </intent-filter>
+        </receiver>
 
     </application>
 

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:showIn="@layout/fragment_edit_rate">
+
+    <include
+        android:id="@+id/rateInclude"
+        layout="@layout/layout_edit_rate_status" />
+
+    <com.willy.ratingbar.ScaleRatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="26dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        app:layout_constraintEnd_toStartOf="@+id/ratingDescriptionView"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rateInclude"
+        app:srb_drawableEmpty="@drawable/ic_big_star_empty"
+        app:srb_drawableFilled="@drawable/ic_big_star_filled"
+        app:srb_numStars="5"
+        app:srb_starPadding="2dp"
+        app:srb_stepSize="0.5" />
+
+    <TextView
+        android:id="@+id/ratingValueView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/ratingDescriptionView"
+        app:layout_constraintEnd_toEndOf="@+id/ratingDescriptionView"
+        app:layout_constraintStart_toStartOf="@+id/ratingDescriptionView"
+        tools:text="5" />
+
+    <TextView
+        android:id="@+id/ratingDescriptionView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        android:gravity="center"
+        android:textColor="?attr/colorOnTransparentBackground"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/ratingBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@+id/ratingBar"
+        tools:text="Более-менее" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/ratingGroup"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/ratingDescriptionView"
+        app:layout_constraintEnd_toEndOf="@+id/ratingDescriptionView"
+        app:layout_constraintStart_toStartOf="@+id/ratingDescriptionView"
+        app:layout_constraintTop_toTopOf="@+id/ratingValueView" />
+
+    <View
+        android:id="@+id/progressDividerTop"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="24dp"
+        android:background="?attr/colorDivider"
+        app:layout_constraintBottom_toTopOf="@+id/progressInclude"
+        app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
+
+    <include
+        android:id="@+id/progressInclude"
+        layout="@layout/layout_edit_rate_progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progressDividerTop" />
+
+    <View
+        android:id="@+id/progressDividerBottom"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?attr/colorDivider"
+        app:layout_constraintTop_toBottomOf="@+id/progressInclude" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/commentView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="24dp"
+        android:background="@android:color/transparent"
+        android:gravity="start"
+        android:hint="@string/rate_comment_hint"
+        android:inputType="textNoSuggestions|textVisiblePassword|textMultiLine"
+        android:minHeight="96dp"
+        android:textColor="?attr/colorOnSurface"
+        android:textColorHint="?attr/colorOnPrimarySecondary"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progressInclude"
+        app:layout_constraintVertical_bias="0" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

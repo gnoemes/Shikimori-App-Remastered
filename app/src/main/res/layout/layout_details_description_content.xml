@@ -13,7 +13,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:paddingStart="24dp"
+        android:paddingLeft="24dp"
         android:paddingEnd="24dp"
+        android:paddingRight="24dp"
         android:text="@string/common_description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,11 +26,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        app:content_margin_left="24dp"
+        app:content_margin_right="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/descriptionLabelView"
-        app:content_margin_left="24dp"
-        app:content_margin_right="24dp"
         tools:shikimori_content="История о повседневной жизни двух сестёр-близняшек, которых зовут Алисами (в миру известных как Риса и Айри), и об их безымянном брате, который страдает «комплексом сестры». Каждый их день полон новых приключений и романтических моментов. Но, как не трудно предположить, невозможно обойтись без небольших драк и ссор между близняшками за любимого братика, а также колких саркастических фраз, иногда проскальзывающих в диалогах между героями. За этой нескучной жизнью двух Алис и одного брата-сисконщика мы и понаблюдаем." />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

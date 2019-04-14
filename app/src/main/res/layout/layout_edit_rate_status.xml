@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:showIn="@layout/layout_edit_rate_content">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/deleteBtn"
+        style="@style/Widget.MaterialComponents.Button.UnelevatedButton.Icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="-2dp"
+        android:layout_marginLeft="-2dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:minHeight="48dp"
+        android:paddingStart="16dp"
+        android:paddingTop="12dp"
+        android:paddingEnd="16dp"
+        android:minWidth="56dp"
+        android:paddingBottom="12dp"
+        app:icon="@drawable/ic_delete"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearance="@style/RightRoundShapeStyle"
+        app:strokeWidth="?attr/rateStyleStrokeWidth" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="-4dp"
+        android:layout_marginRight="-4dp"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardElevation="0dp"
+        app:cardPreventCornerOverlap="false"
+        app:shapeAppearance="@style/LeftRoundShapeStyle">
+
+        <com.gnoemes.shikimori.presentation.view.common.widget.RateSpinnerView
+            android:id="@+id/rateSpinnerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:itemSize="normal"
+            app:showEdit="false" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>
