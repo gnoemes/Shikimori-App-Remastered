@@ -28,7 +28,7 @@ enum class VideoHosting(
     YOUTUBE("youtube", "youtube.com"),
     @SerializedName("gidfilm.ru", alternate = ["gidfilm"])
     GIDFILM("gidfilm", "gidfilm.ru"),
-    @SerializedName("")
+    @SerializedName("unknown")
     UNKNOWN("unknown", "unknown");
 
     fun isEqualType(otherType: String): Boolean {

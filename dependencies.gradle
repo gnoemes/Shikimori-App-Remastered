@@ -48,5 +48,6 @@ ext.versions = [
         crashlytics       : '2.9.9@aar',
         advancedVersioning: '1.6.0',
 
-        ratingBar         : '1.4.2'
+        ratingBar         : '1.4.2',
+        jsoup             : '1.10.2'
 ]

@@ -4,6 +4,7 @@ import com.gnoemes.shikimori.BuildConfig
 import com.gnoemes.shikimori.data.local.db.AnimeRateSyncDbSource
 import com.gnoemes.shikimori.data.local.db.EpisodeDbSource
 import com.gnoemes.shikimori.data.local.db.TranslationSettingDbSource
+import com.gnoemes.shikimori.data.network.AnimeSource
 import com.gnoemes.shikimori.data.network.VideoApi
 import com.gnoemes.shikimori.data.repository.series.shikimori.converter.EpisodeResponseConverter
 import com.gnoemes.shikimori.data.repository.series.shikimori.converter.TranslationResponseConverter
@@ -20,6 +21,7 @@ import javax.inject.Inject
 
 class SeriesRepositoryImpl @Inject constructor(
         private val api: VideoApi,
+        private val source: AnimeSource,
         private val converter: EpisodeResponseConverter,
         private val translationConverter: TranslationResponseConverter,
         private val videoConverter: VideoResponseConverter,
@@ -30,7 +32,7 @@ class SeriesRepositoryImpl @Inject constructor(
 ) : SeriesRepository {
 
     override fun getEpisodes(id: Long, alternative: Boolean): Single<List<Episode>> =
-            (if (alternative) api.getEpisodesAlternative(id) else api.getEpisodes(id))
+            (if (alternative) source.getEpisodesAlternative(id) else source.getEpisodes(id))
                     .map { episodes -> episodes.filter { it.index > 0 }.sortedBy { it.index } }
                     .flatMap {
                         Observable.fromIterable(it)
@@ -46,12 +48,12 @@ class SeriesRepositoryImpl @Inject constructor(
                     }
 
     override fun getTranslations(type: TranslationType, animeId: Long, episodeId: Long, alternative: Boolean): Single<List<Translation>> =
-            (if (alternative) api.getTranslationsAlternative(animeId, episodeId, type.type!!) else api.getTranslations(animeId, episodeId, type.type!!))
+            (if (alternative) source.getTranslationsAlternative(animeId, episodeId, type.type!!) else source.getTranslations(animeId, episodeId, type.type!!))
                     .map(translationConverter)
 
     override fun getVideo(payload: TranslationVideo, alternative: Boolean): Single<Video> =
-            (if (alternative) api.getVideoAlternative(payload.videoId)
-            else api.getVideo(
+            (if (alternative) source.getVideoAlternative(payload.videoId)
+            else source.getVideo(
                     payload.animeId,
                     payload.episodeIndex,
                     if (payload.videoId == Constants.NO_ID) "" else payload.videoId.toString(),

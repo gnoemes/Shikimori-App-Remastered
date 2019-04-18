@@ -30,10 +30,14 @@ interface SeriesUtilModule {
 
     @Binds
     @Reusable
-    fun bindVideoResponseConverter(converter : VideoResponseConverterImpl) : VideoResponseConverter
+    fun bindVideoResponseConverter(converter: VideoResponseConverterImpl): VideoResponseConverter
 
     @Binds
     @Reusable
-    fun bindvkConverter(converter : VkVideoConverterImpl) : VkVideoConverter
+    fun bindvkConverter(converter: VkVideoConverterImpl): VkVideoConverter
+
+    @Binds
+    @Reusable
+    fun bindParsingConverter(converter: DocumentParsingConverterImpl): DocumentParsingConverter
 
 }

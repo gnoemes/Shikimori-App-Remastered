@@ -2,9 +2,7 @@ package com.gnoemes.shikimori.data.network
 
 import com.gnoemes.shikimori.entity.series.data.*
 import io.reactivex.Single
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface VideoApi {
 
@@ -35,6 +33,9 @@ interface VideoApi {
                  @Query("author") author: String,
                  @Query("hosting") hosting: String
     ): Single<VideoResponse>
+
+    @POST("/api/anime/player")
+    fun getVideo(@Body request : VideoRequest) : Single<VideoResponse>
 
     @GET("https://api.vk.com/method/video.get?v=5.92&count=1&extended=0")
     fun getVkVideoFiles(@Query("access_token") token: String,
