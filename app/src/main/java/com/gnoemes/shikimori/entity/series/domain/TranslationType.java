@@ -14,18 +14,16 @@ public enum TranslationType {
     @SerializedName("all")
     ALL("all", "не выбрано");
 
-    @Nullable
     private final String type;
     private final String localizedType;
 
-    TranslationType(@Nullable String type, String localizedType) {
+    TranslationType(String type, String localizedType) {
         this.type = type;
         this.localizedType = localizedType;
     }
 
     public boolean isEqualType(@Nullable String otherType) {
-        return (type != null && type.equals(otherType))
-                || (otherType == null && type == null);
+        return type.equals(otherType) || localizedType.equals(otherType);
     }
 
     @Nullable

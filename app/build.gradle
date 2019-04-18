@@ -136,6 +136,7 @@ dependencies {
     }
 
     implementation 'com.github.ome450901:SimpleRatingBar:' + versions.ratingBar
+    implementation 'org.jsoup:jsoup:' + versions.jsoup
 
     implementation project(":storio-common")
     implementation project(":storio-sqlite")
