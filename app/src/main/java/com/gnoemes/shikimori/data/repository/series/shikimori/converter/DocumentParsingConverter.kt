@@ -8,5 +8,5 @@ interface DocumentParsingConverter {
 
     fun convertEpisodes(it : Document, animeId : Long) : List<EpisodeResponse>
 
-    fun convertTranslations(it : Document) : List<TranslationResponse>
+    fun convertTranslations(it: Document, animeId: Long, episodeId : Long, type: String) : List<TranslationResponse>
 }

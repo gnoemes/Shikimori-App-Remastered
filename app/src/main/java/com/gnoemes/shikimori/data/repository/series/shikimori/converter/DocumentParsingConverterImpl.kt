@@ -4,6 +4,7 @@ import com.gnoemes.shikimori.entity.app.domain.HttpStatusCode
 import com.gnoemes.shikimori.entity.app.domain.exceptions.ServiceCodeException
 import com.gnoemes.shikimori.entity.series.data.EpisodeResponse
 import com.gnoemes.shikimori.entity.series.data.TranslationResponse
+import com.gnoemes.shikimori.entity.series.domain.TranslationQuality
 import com.gnoemes.shikimori.entity.series.domain.TranslationType
 import com.gnoemes.shikimori.entity.series.domain.VideoHosting
 import com.google.gson.Gson
@@ -22,6 +23,14 @@ class DocumentParsingConverterImpl @Inject constructor(
         const val EPISODE_ID_QUERY = "data-episode"
         const val EPISODE_TRANSLATIONS_QUERY = "episode-kinds"
         const val EPISODE_HOSTINGS_QUERY = "episode-hostings"
+
+        const val TRANSLATIONS_QUERY = "div.b-video_variant[data-video_id]"
+        const val TRANSLATIONS_ALL_QUERY = "div.video-variant-group[data-kind=%s]"
+        const val VIDEO_ID_QUERY = "data-video_id"
+        const val VIDEO_QUALITY_QUERY = "video-quality"
+        const val VIDEO_TYPE_QUERY = "video-kind"
+        const val VIDEO_HOSTING_QUERY = "video-hosting"
+        const val VIDEO_AUTHOR_QUERY = "video-author"
     }
 
     data class InfoObject(
@@ -51,8 +60,34 @@ class DocumentParsingConverterImpl @Inject constructor(
         }
     }
 
-    override fun convertTranslations(it: Document): List<TranslationResponse> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun convertTranslations(it: Document, animeId: Long, episodeId: Long, type: String): List<TranslationResponse> {
+        val episodesSize = convertEpisodes(it, animeId).size
+        return it.select(String.format(TRANSLATIONS_ALL_QUERY, type))
+                .first()
+                .select(TRANSLATIONS_QUERY)
+                .map { convertTranslation(it, animeId, episodeId, episodesSize) }
+    }
+
+    private fun convertTranslation(e: Element, animeId: Long, episodeId: Long, episodesSize: Int): TranslationResponse {
+        val videoId = e.attr(VIDEO_ID_QUERY).toLong()
+        val rawQuality = e.getElementsByClass(VIDEO_QUALITY_QUERY).attr("class").split(" ").getOrNull(1)
+        val quality = TranslationQuality.values().find { it.equalQuality(rawQuality) }
+                ?: TranslationQuality.TV
+        val type = e.getElementsByClass(VIDEO_TYPE_QUERY).text().trim().toLowerCase().let { strType -> TranslationType.values().find { it.isEqualType(strType) } }
+                ?: TranslationType.VOICE_RU
+        val hosting = e.getElementsByClass(VIDEO_HOSTING_QUERY).text().trim().let { rawHosting -> VideoHosting.values().find { it.isEqualType(rawHosting) } }
+        val author = e.getElementsByClass(VIDEO_AUTHOR_QUERY).text().trim()
+
+        return TranslationResponse(
+                videoId,
+                animeId,
+                episodeId.toInt(),
+                type,
+                quality,
+                hosting,
+                author,
+                episodesSize
+        )
     }
 
     private fun convertEpisode(animeId: Long, e: Element): EpisodeResponse {

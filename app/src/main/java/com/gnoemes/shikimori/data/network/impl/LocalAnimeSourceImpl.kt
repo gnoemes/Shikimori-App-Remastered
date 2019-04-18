@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 class LocalAnimeSourceImpl @Inject constructor(
         private val api: VideoApi,
-        private val parseApi : DocumentVideoApi,
+        private val parseApi: DocumentVideoApi,
         private val converter: DocumentParsingConverter,
         private val agentRepository: DynamicAgentRepository
 ) : AnimeSource {
@@ -23,7 +23,8 @@ class LocalAnimeSourceImpl @Inject constructor(
                     .map { converter.convertEpisodes(it, id) }
 
     override fun getTranslations(animeId: Long, episodeId: Long, type: String): Single<List<TranslationResponse>> =
-            api.getTranslations(animeId, episodeId, agentRepository.getAgent())
+            parseApi.getTranslations(animeId, episodeId, agentRepository.getAgent())
+                    .map { converter.convertTranslations(it, animeId, episodeId, type) }
 
     override fun getVideo(animeId: Long, episodeId: Int, videoId: String, language: String, type: String, author: String, hosting: String): Single<VideoResponse> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

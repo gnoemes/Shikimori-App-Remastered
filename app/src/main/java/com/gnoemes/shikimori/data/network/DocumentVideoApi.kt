@@ -15,7 +15,7 @@ interface DocumentVideoApi {
 
     @GET("/animes/a{animeId}/video_online/{episode}")
     fun getTranslations(@Path("animeId") animeId: Long,
-                        @Path("episode") episode: Int,
+                        @Path("episode") episode: Long,
                         @Header("User-Agent") agent: String
     ): Single<Document>
 
