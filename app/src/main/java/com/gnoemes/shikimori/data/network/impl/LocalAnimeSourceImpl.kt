@@ -26,9 +26,10 @@ class LocalAnimeSourceImpl @Inject constructor(
             parseApi.getTranslations(animeId, episodeId, agentRepository.getAgent())
                     .map { converter.convertTranslations(it, animeId, episodeId, type) }
 
-    override fun getVideo(animeId: Long, episodeId: Int, videoId: String, language: String, type: String, author: String, hosting: String): Single<VideoResponse> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun getVideo(animeId: Long, episodeId: Int, videoId: String, language: String, type: String, author: String, hosting: String): Single<VideoResponse> =
+            parseApi.getVideo(animeId, episodeId, videoId, agentRepository.getAgent(), converter.convertCookie(language, type, author, hosting))
+                    .map { converter.convertVideoRequest(it, animeId, episodeId) }
+                    .flatMap { api.getVideo(it) }
 
     override fun getEpisodesAlternative(id: Long): Single<List<EpisodeResponse>> = api.getEpisodesAlternative(id)
 

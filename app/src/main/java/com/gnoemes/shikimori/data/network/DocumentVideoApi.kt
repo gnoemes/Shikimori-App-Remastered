@@ -22,7 +22,8 @@ interface DocumentVideoApi {
     @GET("/animes/a{animeId}/video_online/{episode}/{videoId}")
     fun getVideo(@Path("animeId") animeId: Long,
                  @Path("episode") episode: Int,
-                 @Path("videoId") videoId: Long,
-                 @Header("User-Agent") agent: String
+                 @Path("videoId") videoId: String,
+                 @Header("User-Agent") agent: String,
+                 @Header("Cookie") cookie: String
     ): Single<Document>
 }

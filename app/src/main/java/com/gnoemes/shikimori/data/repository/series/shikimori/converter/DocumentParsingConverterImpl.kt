@@ -4,6 +4,7 @@ import com.gnoemes.shikimori.entity.app.domain.HttpStatusCode
 import com.gnoemes.shikimori.entity.app.domain.exceptions.ServiceCodeException
 import com.gnoemes.shikimori.entity.series.data.EpisodeResponse
 import com.gnoemes.shikimori.entity.series.data.TranslationResponse
+import com.gnoemes.shikimori.entity.series.data.VideoRequest
 import com.gnoemes.shikimori.entity.series.domain.TranslationQuality
 import com.gnoemes.shikimori.entity.series.domain.TranslationType
 import com.gnoemes.shikimori.entity.series.domain.VideoHosting
@@ -31,6 +32,8 @@ class DocumentParsingConverterImpl @Inject constructor(
         const val VIDEO_TYPE_QUERY = "video-kind"
         const val VIDEO_HOSTING_QUERY = "video-hosting"
         const val VIDEO_AUTHOR_QUERY = "video-author"
+
+        const val VIDEO_URL_QUERY = "div.video-link a"
     }
 
     data class InfoObject(
@@ -67,6 +70,14 @@ class DocumentParsingConverterImpl @Inject constructor(
                 .select(TRANSLATIONS_QUERY)
                 .map { convertTranslation(it, animeId, episodeId, episodesSize) }
     }
+
+    override fun convertVideoRequest(it: Document, animeId: Long, episodeId: Int): VideoRequest {
+        val playerUrl = it.select(VIDEO_URL_QUERY).first().attr("href").let { if (it.contains("http")) it else "http:$it" }
+        return VideoRequest(animeId, episodeId.toLong(), playerUrl)
+    }
+
+    override fun convertCookie(language: String, type: String, author: String, hosting: String): String =
+            "anime_video_language=$language; anime_video_kind=$type; anime_video_author=$author; anime_video_hosting=$hosting; path=/; domain=.play.shikimori.org; Expires=Tue, 19 Jan 2038 03:14:07 GMT;"
 
     private fun convertTranslation(e: Element, animeId: Long, episodeId: Long, episodesSize: Int): TranslationResponse {
         val videoId = e.attr(VIDEO_ID_QUERY).toLong()
