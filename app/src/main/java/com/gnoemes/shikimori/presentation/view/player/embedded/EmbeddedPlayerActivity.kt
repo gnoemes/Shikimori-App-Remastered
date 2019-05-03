@@ -153,8 +153,6 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
     override fun onStop() {
         super.onStop()
         controller.onStop()
-
-        if (hasPip && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) finishAndRemoveTask()
     }
 
     override fun onDestroy() {
