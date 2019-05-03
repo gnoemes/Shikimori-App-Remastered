@@ -4,7 +4,8 @@
     <string name="settings_general_summary">Контент, статусные списки</string>
     <string name="settings_notifications">Уведомления</string>
     <string name="settings_player">Плеер</string>
-    <string name="settings_theme">Тема</string>
+    <string name="settings_theme">Оформление</string>
+    <string name="settings_theme_summary">Темы, ночной режим</string>
     <string name="settings_about">О приложении</string>
     <string name="settings_about_summary">Обновления, обратная связь</string>
 

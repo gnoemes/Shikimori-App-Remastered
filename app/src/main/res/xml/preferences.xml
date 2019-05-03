@@ -20,6 +20,7 @@
         android:icon="@drawable/icon_theme_setting"
         android:key="theme_fragment"
         android:title="@string/settings_theme"
+        android:summary="@string/settings_theme_summary"
         app:fragment="com.gnoemes.shikimori.presentation.view.settings.fragments.SettingsThemeFragment" />
 
     <Preference

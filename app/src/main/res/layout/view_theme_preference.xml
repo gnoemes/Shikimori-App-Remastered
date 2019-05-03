@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:orientation="horizontal">
+
+    <com.gnoemes.shikimori.presentation.view.common.widget.preferences.ThemeView
+        android:id="@+id/defaultThemeView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_weight="1"
+        app:appTheme="light" />
+
+    <com.gnoemes.shikimori.presentation.view.common.widget.preferences.ThemeView
+        android:id="@+id/darkThemeView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_weight="1"
+        app:appTheme="dark" />
+
+    <com.gnoemes.shikimori.presentation.view.common.widget.preferences.ThemeView
+        android:id="@+id/amoledThemeView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_weight="1"
+        app:appTheme="amoled" />
+
+</LinearLayout>

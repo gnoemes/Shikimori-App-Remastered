@@ -34,4 +34,12 @@
         <attr name="content_margin_right" format="dimension"/>
         <attr name="content_margin_bottom" format="dimension"/>
     </declare-styleable>
+
+    <declare-styleable name="ThemeView">
+        <attr name="appTheme" format="enum">
+            <enum name="light" value="0" />
+            <enum name="dark" value="1" />
+            <enum name="amoled" value="2" />
+        </attr>
+    </declare-styleable>
 </resources>

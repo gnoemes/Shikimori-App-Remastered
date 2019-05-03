@@ -2,44 +2,44 @@ package com.gnoemes.shikimori.presentation.view.settings.fragments
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.preference.Preference
+import android.view.MenuItem
+import androidx.appcompat.widget.Toolbar
 import androidx.preference.PreferenceFragmentCompat
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.app.domain.ThemeExtras
+import com.gnoemes.shikimori.presentation.view.common.widget.preferences.ThemePreference
+import com.gnoemes.shikimori.presentation.view.settings.ToolbarCallback
 import com.gnoemes.shikimori.utils.getThemeSharedPreferences
 import com.gnoemes.shikimori.utils.preference
 import com.gnoemes.shikimori.utils.putInt
 
-class SettingsThemeFragment : BaseSettingsFragment() {
+class SettingsThemeFragment : BaseSettingsFragment(), Toolbar.OnMenuItemClickListener {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         super.onCreatePreferences(savedInstanceState, rootKey)
-
-        preference(ThemeExtras.THEME_KEY)?.apply {
-            summary = getLocalizedTheme(prefs().getInt(ThemeExtras.THEME_KEY, R.style.ShikimoriAppTheme_Default))
-            onPreferenceClickListener = themeClickListener
-        }
+        (activity as? ToolbarCallback)?.showToolbarMenu()
+        themePreference.setTheme(prefs().getInt(ThemeExtras.THEME_KEY, R.style.ShikimoriAppTheme_Default))
     }
 
-    private val themeClickListener = Preference.OnPreferenceClickListener { preference ->
-        showListDialog(R.array.themes) { _, index, text ->
-            when (index) {
-                0 -> prefs().putInt(ThemeExtras.THEME_KEY, R.style.ShikimoriAppTheme_Default)
-                1 -> prefs().putInt(ThemeExtras.THEME_KEY, R.style.ShikimoriAppTheme_Dark)
-                2 -> prefs().putInt(ThemeExtras.THEME_KEY, R.style.ShikimoriAppTheme_Amoled)
-            }
-            preference.summary = text
-        }
+    override fun onMenuItemClick(item: MenuItem?): Boolean {
+        if (item?.itemId == R.id.item_accept) saveTheme()
+        return true
     }
 
-    private fun getLocalizedTheme(style: Int): String = when (style) {
-        R.style.ShikimoriAppTheme_Dark -> getString(R.string.theme_dark)
-        R.style.ShikimoriAppTheme_Amoled -> context!!.getString(R.string.theme_amoled)
-        else -> getString(R.string.theme_default)
+    private fun saveTheme() {
+        prefs().putInt(ThemeExtras.THEME_KEY, themePreference.getTheme())
+        activity?.onBackPressed()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        (activity as? ToolbarCallback)?.hideToolbarMenu()
     }
 
     private fun PreferenceFragmentCompat.prefs(): SharedPreferences = context!!.getThemeSharedPreferences()
 
+    private val themePreference: ThemePreference
+        get() = preference(ThemeExtras.THEME_KEY) as ThemePreference
 
     override val preferenceScreen: Int
         get() = R.xml.preferences_theme

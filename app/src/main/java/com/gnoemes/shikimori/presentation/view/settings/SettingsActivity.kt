@@ -12,7 +12,7 @@ import com.gnoemes.shikimori.utils.addBackButton
 import com.gnoemes.shikimori.utils.getCurrentTheme
 import kotlinx.android.synthetic.main.layout_toolbar.*
 
-class SettingsActivity : MvpActivity(), PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
+class SettingsActivity : MvpActivity(), PreferenceFragmentCompat.OnPreferenceStartFragmentCallback, ToolbarCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(getCurrentTheme)
@@ -22,8 +22,10 @@ class SettingsActivity : MvpActivity(), PreferenceFragmentCompat.OnPreferenceSta
         toolbar?.apply {
             setDefaultTitle()
             addBackButton { onBackPressed() }
+            inflateMenu(R.menu.menu_setting)
+            menu.getItem(0).isVisible = false
+            setOnMenuItemClickListener { (supportFragmentManager.findFragmentById(R.id.fragment_container) as? Toolbar.OnMenuItemClickListener)?.onMenuItemClick(it) ?: false }
         }
-
 
         replaceFragment(SettingsFragment())
     }
@@ -59,4 +61,6 @@ class SettingsActivity : MvpActivity(), PreferenceFragmentCompat.OnPreferenceSta
                 .commit()
     }
 
+    override fun showToolbarMenu() = run { toolbar.menu.getItem(0).isVisible = true }
+    override fun hideToolbarMenu() = run { toolbar.menu.getItem(0).isVisible = false }
 }

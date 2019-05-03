@@ -2,15 +2,8 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <Preference
+    <com.gnoemes.shikimori.presentation.view.common.widget.preferences.ThemePreference
         android:key="@string/settings_theme_key"
-        android:summary="@string/settings_theme_summary_default"
-        android:title="@string/settings_theme_title"
         app:iconSpaceReserved="false" />
-
-    <!--<Preference-->
-        <!--android:enabled="false"-->
-        <!--android:title="@string/settings_theme_custom_title"-->
-        <!--app:iconSpaceReserved="false" />-->
 
 </PreferenceScreen>
