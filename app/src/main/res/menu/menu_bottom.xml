@@ -3,12 +3,12 @@
 
     <item
         android:id="@+id/tab_rates"
-        android:icon="@drawable/ic_bookmark"
+        android:icon="@drawable/selector_bottom_nav_rate"
         android:title="@string/common_rates" />
 
     <item
         android:id="@+id/tab_calendar"
-        android:icon="@drawable/ic_calendar"
+        android:icon="@drawable/selector_bottom_nav_calendar"
         android:title="@string/common_calendar" />
 
     <item
@@ -18,7 +18,7 @@
 
     <item
         android:id="@+id/tab_main"
-        android:icon="@drawable/ic_group"
+        android:icon="@drawable/selector_bottom_nav_main"
         android:title="@string/common_main" />
 
     <item
