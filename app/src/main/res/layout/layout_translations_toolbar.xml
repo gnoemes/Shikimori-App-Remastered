@@ -46,6 +46,7 @@
                 android:minWidth="32dp"
                 android:minHeight="32dp"
                 android:padding="4dp"
+                app:strokeColor="?attr/colorSecondaryTransparent"
                 app:iconTint="?attr/colorSecondary"
                 app:backgroundTint="?attr/colorSecondaryTransparent"
                 app:layout_constraintBottom_toBottomOf="parent"
