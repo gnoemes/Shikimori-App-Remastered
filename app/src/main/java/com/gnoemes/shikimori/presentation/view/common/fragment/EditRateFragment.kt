@@ -108,6 +108,9 @@ class EditRateFragment : BaseBottomSheetDialogFragment() {
             }
         }
 
+        progressIncrementView.background = progressIncrementView.background.apply { tint(context!!.colorAttr(R.attr.colorPrimary)) }
+        progressDecrementView.background = progressDecrementView.background.apply { tint(context!!.colorAttr(R.attr.colorPrimary)) }
+
         progressIncrementView.setOnClickListener {
             val newValue = progressView.text?.toString()?.toIntOrNull()?.plus(1) ?: 0
             progressView.setText(newValue.toString())
