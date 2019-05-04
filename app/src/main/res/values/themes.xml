@@ -140,4 +140,41 @@
         <item name="rateStyleStrokeWidth">1dp</item>
     </style>
 
+    <style name="AscentStyle" />
+
+    <style name="AscentStyle.Red" parent="AscentStyle">
+        <item name="colorSecondary">@color/colorSecondary_red</item>
+        <item name="colorSecondaryTransparent">@color/colorSecondary_red_transparent</item>
+    </style>
+
+    <style name="AscentStyle.Orange" parent="AscentStyle">
+        <item name="colorSecondary">@color/colorSecondary_orange</item>
+        <item name="colorSecondaryTransparent">@color/colorSecondary_orange_transparent</item>
+    </style>
+
+    <style name="AscentStyle.Yellow" parent="AscentStyle">
+        <item name="colorSecondary">@color/colorSecondary_yellow</item>
+        <item name="colorSecondaryTransparent">@color/colorSecondary_yellow_transparent</item>
+    </style>
+
+    <style name="AscentStyle.Green" parent="AscentStyle">
+        <item name="colorSecondary">@color/colorSecondary_green</item>
+        <item name="colorSecondaryTransparent">@color/colorSecondary_green_transparent</item>
+    </style>
+
+    <style name="AscentStyle.Cyan" parent="AscentStyle">
+        <item name="colorSecondary">@color/colorSecondary_cyan</item>
+        <item name="colorSecondaryTransparent">@color/colorSecondary_cyan_transparent</item>
+    </style>
+
+    <style name="AscentStyle.Blue" parent="AscentStyle">
+        <item name="colorSecondary">@color/colorSecondary_blue</item>
+        <item name="colorSecondaryTransparent">@color/colorSecondary_blue_transparent</item>
+    </style>
+
+    <style name="AscentStyle.Purple" parent="AscentStyle">
+        <item name="colorSecondary">@color/colorSecondary_purple</item>
+        <item name="colorSecondaryTransparent">@color/colorSecondary_purple_transparent</item>
+    </style>
+
 </resources>

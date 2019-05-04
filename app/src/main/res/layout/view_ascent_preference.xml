@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/settings_theme_ascent_title"
+            android:textColor="?attr/colorSecondary"
+            android:textSize="12sp" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="24dp"
+            app:chipSpacing="8dp"
+            app:singleLine="true"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/redView"
+                style="@style/AscentChipStyle"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                app:chipBackgroundColor="@color/colorSecondary_red" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/orangeView"
+                style="@style/AscentChipStyle"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:chipBackgroundColor="@color/colorSecondary_orange" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/yellowView"
+                style="@style/AscentChipStyle"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:chipBackgroundColor="@color/colorSecondary_yellow" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/greenView"
+                style="@style/AscentChipStyle"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:chipBackgroundColor="@color/colorSecondary_green" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/cyanView"
+                style="@style/AscentChipStyle"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:chipBackgroundColor="@color/colorSecondary_cyan" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/blueView"
+                style="@style/AscentChipStyle"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:chipBackgroundColor="@color/colorSecondary_blue" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/purpleView"
+                style="@style/AscentChipStyle"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                app:chipBackgroundColor="@color/colorSecondary_purple" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

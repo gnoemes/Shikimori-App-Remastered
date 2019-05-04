@@ -11,6 +11,7 @@ import android.widget.FrameLayout
 import androidx.annotation.LayoutRes
 import androidx.appcompat.view.ContextThemeWrapper
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.utils.getCurrentAscentTheme
 import com.gnoemes.shikimori.utils.getCurrentTheme
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -33,7 +34,7 @@ abstract class BaseBottomSheetDialogFragment : MvpDialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return BottomSheetDialog(ContextThemeWrapper(context!!, R.style.Theme_MaterialComponents_BottomSheetDialog), context!!.getCurrentTheme)
+        return BottomSheetDialog(ContextThemeWrapper(ContextThemeWrapper(context!!, R.style.Theme_MaterialComponents_BottomSheetDialog), context!!.getCurrentTheme), context!!.getCurrentAscentTheme)
                 .apply {
                     isCancelable = true
                     setCanceledOnTouchOutside(true)

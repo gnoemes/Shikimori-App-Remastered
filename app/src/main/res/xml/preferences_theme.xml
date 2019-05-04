@@ -6,4 +6,8 @@
         android:key="@string/settings_theme_key"
         app:iconSpaceReserved="false" />
 
+    <com.gnoemes.shikimori.presentation.view.common.widget.preferences.AscentPreference
+        android:key="@string/settings_theme_ascent_key"
+        app:iconSpaceReserved="false" />
+
 </PreferenceScreen>

@@ -9,13 +9,13 @@ import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.presentation.view.base.activity.MvpActivity
 import com.gnoemes.shikimori.presentation.view.settings.fragments.SettingsFragment
 import com.gnoemes.shikimori.utils.addBackButton
-import com.gnoemes.shikimori.utils.getCurrentTheme
+import com.gnoemes.shikimori.utils.setTheme
 import kotlinx.android.synthetic.main.layout_toolbar.*
 
 class SettingsActivity : MvpActivity(), PreferenceFragmentCompat.OnPreferenceStartFragmentCallback, ToolbarCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(getCurrentTheme)
+        setTheme()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 

@@ -4,23 +4,22 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import com.gnoemes.shikimori.entity.app.domain.ThemeExtras
-import com.gnoemes.shikimori.utils.getCurrentTheme
 import com.gnoemes.shikimori.utils.getThemeSharedPreferences
-
+import com.gnoemes.shikimori.utils.setTheme
 
 
 abstract class BaseThemedActivity : MvpActivity() {
 
-    protected open var applyTheme : Boolean = true
+    protected open var applyTheme: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (applyTheme) setTheme(getCurrentTheme)
+        if (applyTheme) setTheme()
         super.onCreate(savedInstanceState)
         getThemeSharedPreferences().registerOnSharedPreferenceChangeListener(themeChangeListener)
     }
 
     private val themeChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-        if (key == ThemeExtras.THEME_KEY) {
+        if (key == ThemeExtras.THEME_KEY || key == ThemeExtras.ASCENT_KEY) {
             finish()
             val intent = intent
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
