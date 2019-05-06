@@ -39,7 +39,7 @@ class SettingsThemeFragment : BaseSettingsFragment(), Toolbar.OnMenuItemClickLis
 
     private fun showTimeDialog(initValue: Int, action: (Int) -> Unit) {
         MaterialDialog(context!!).show {
-            timePicker(currentTime = LocalTime(initValue.toLong()).toDateTimeToday().withZone(DateTimeZone.UTC).toGregorianCalendar()) { _, datetime ->
+            timePicker(currentTime = LocalTime(initValue.toLong()).toDateTimeToday().toGregorianCalendar()) { _, datetime ->
                 action.invoke(DateTime(datetime).withZone(DateTimeZone.UTC).millisOfDay)
             }
         }
