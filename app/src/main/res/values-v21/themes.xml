@@ -5,6 +5,7 @@
         <item name="textAppearanceHeadline6">@style/ToolbarTextAppearance</item>
 
         <item name="md_corner_radius">8dp</item>
+        <item name="md_color_button_text">?attr/colorSecondary</item>
         <item name="android:popupMenuStyle">@style/PopupMenuTheme</item>
         <item name="popupMenuStyle">@style/PopupMenuTheme</item>
         <item name="drawerArrowStyle">@style/DrawerIconStyle</item>

@@ -29,6 +29,7 @@
 -dontwarn com.pushtorefresh.storio2.**
 -dontwarn com.squareup.picasso.**
 -dontwarn okhttp3.**
+-dontwarn kotlinx.atomicfu.**
 -dontnote android.net.http.**
 -dontnote org.apache.http.**
 

@@ -19,7 +19,7 @@ abstract class BaseThemedActivity : MvpActivity() {
     }
 
     private val themeChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-        if (key == ThemeExtras.THEME_KEY || key == ThemeExtras.ASCENT_KEY) {
+        if (key == ThemeExtras.THEME_KEY || key == ThemeExtras.ASCENT_KEY || key == ThemeExtras.NIGHT_THEME_KEY || key == ThemeExtras.NIGHT_THEME_START_KEY || key == ThemeExtras.NIGHT_THEME_END_KEY) {
             finish()
             val intent = intent
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

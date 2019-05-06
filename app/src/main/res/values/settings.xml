@@ -108,6 +108,10 @@
     <string name="settings_theme_summary_default">Стандартная тема</string>
     <string name="settings_theme_ascent_title">Акцентный цвет</string>
     <string name="settings_theme_ascent_key">THEME_ASCENT_KEY</string>
+    <string name="settings_theme_night_mode_title">Зажмите тему для активации ночного режима</string>
+    <string name="settings_theme_night_mode_schedule_title">Расписание ночного режима</string>
+    <string name="settings_theme_night_mode_schedule_start_title">Начало</string>
+    <string name="settings_theme_night_mode_schedule_end_title">Конец</string>
 
     <string name="settings_theme_custom_title">Создать свою</string>
     <string name="settings_theme_custom_key" translatable="false">CUSTOM_THEME_KEY</string>

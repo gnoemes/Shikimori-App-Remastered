@@ -7,7 +7,7 @@ ext.versions = [
         jetifier          : '1.0.0-beta02',
         gms               : '4.2.0',
 
-        kotlin            : '1.3.21',
+        kotlin            : '1.3.31',
         constraint        : '2.0.0-alpha3',
         androidx          : '1.0.0',
         androidxFragment  : '1.1.0-alpha03',
@@ -27,7 +27,7 @@ ext.versions = [
         storIO            : '3.0.0',
         jodaDateTime      : '2.9.9.3',
         moxy              : '1.5.5',
-        materialDialogs   : '2.0.3',
+        materialDialogs   : '2.8.1',
         glide             : '4.8.0',
         spinKit           : '1.1.0',
         reSpinner         : '1.0.5',
