@@ -3,11 +3,14 @@ package com.gnoemes.shikimori.utils
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Handler
+import android.util.Log
 import androidx.annotation.StyleRes
 import androidx.appcompat.view.ContextThemeWrapper
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.app.domain.ThemeExtras
+import org.joda.time.Duration
 import org.joda.time.LocalTime
 
 var Context.getCurrentTheme: Int
@@ -43,14 +46,31 @@ fun Context.getThemeSharedPreferences(): SharedPreferences {
     return getSharedPreferences(packageName + "_theme" + "preferences", Context.MODE_PRIVATE)
 }
 
-fun Activity.setTheme() {
+fun Activity.setTheme(recreationRunnable: Runnable? = null) {
     val nightTheme = getCurrentNightTheme
     when {
         nightTheme == Constants.NO_ID.toInt() -> setTheme(getCurrentTheme)
         isNightTime -> setTheme(nightTheme)
-        else -> setTheme(getCurrentTheme)
+        else -> {
+            setTheme(getCurrentTheme)
+            scheduleNightTheme(recreationRunnable)
+        }
     }
     theme.applyStyle(getCurrentAscentTheme, true)
+}
+
+val themeHandler: Handler by lazy { Handler() }
+
+fun Activity.scheduleNightTheme(runnable : Runnable?) {
+    if (runnable == null) return
+    val now = LocalTime.now()
+    val startTime = getNightThemeStartTime
+    val lastDayTime = LocalTime(23, 59, 59, 999)
+    val delayMills =
+            if (startTime.isBefore(lastDayTime)) startTime.millisOfDay - now.millisOfDay
+            else lastDayTime.millisOfDay - startTime.millisOfDay + startTime.millisOfDay
+    Log.i("NIGHT_THEME_KEY", "mills: $delayMills human: ${Duration.millis(delayMills.toLong())}")
+    themeHandler.postDelayed(runnable, delayMills.toLong())
 }
 
 fun Context.wrapTheme(@StyleRes style: Int): ContextThemeWrapper {
