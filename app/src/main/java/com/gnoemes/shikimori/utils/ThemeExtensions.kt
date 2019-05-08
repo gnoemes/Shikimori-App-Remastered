@@ -48,27 +48,35 @@ fun Context.getThemeSharedPreferences(): SharedPreferences {
 
 fun Activity.setTheme(recreationRunnable: Runnable? = null) {
     val nightTheme = getCurrentNightTheme
+    val nightThemeExist = nightTheme != Constants.NO_ID.toInt()
     when {
-        nightTheme == Constants.NO_ID.toInt() -> setTheme(getCurrentTheme)
+        !nightThemeExist -> setTheme(getCurrentTheme)
         isNightTime -> setTheme(nightTheme)
-        else -> {
-            setTheme(getCurrentTheme)
-            scheduleNightTheme(recreationRunnable)
-        }
+        else -> setTheme(getCurrentTheme)
+
     }
+
+    if (nightThemeExist) scheduleNightTheme(recreationRunnable)
+
     theme.applyStyle(getCurrentAscentTheme, true)
 }
 
 val themeHandler: Handler by lazy { Handler() }
 
-fun Activity.scheduleNightTheme(runnable : Runnable?) {
+fun Activity.scheduleNightTheme(runnable: Runnable?) {
     if (runnable == null) return
     val now = LocalTime.now()
     val startTime = getNightThemeStartTime
+    val endTime = getNightThemeEndTime
     val lastDayTime = LocalTime(23, 59, 59, 999)
     val delayMills =
-            if (startTime.isBefore(lastDayTime)) startTime.millisOfDay - now.millisOfDay
-            else lastDayTime.millisOfDay - startTime.millisOfDay + startTime.millisOfDay
+            if (isNightTime) {
+                if (endTime.isBefore(now)) lastDayTime.millisOfDay - now.millisOfDay + endTime.millisOfDay
+                else endTime.millisOfDay - now.millisOfDay
+            } else {
+                if (startTime.isBefore(now)) lastDayTime.millisOfDay - now.millisOfDay + startTime.millisOfDay
+                else startTime.millisOfDay - now.millisOfDay
+            }
     Log.i("NIGHT_THEME_KEY", "mills: $delayMills human: ${Duration.millis(delayMills.toLong())}")
     themeHandler.postDelayed(runnable, delayMills.toLong())
 }
