@@ -4,7 +4,7 @@
     android:id="@+id/backdrop"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:cardBackgroundColor="?attr/colorDialogSurface"
+    app:cardBackgroundColor="?attr/colorRateDialog"
     app:cardCornerRadius="16dp">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -18,7 +18,7 @@
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorDialogSurface"
+            android:background="?attr/colorRateDialog"
             android:fitsSystemWindows="true"
             app:elevation="0dp">
 

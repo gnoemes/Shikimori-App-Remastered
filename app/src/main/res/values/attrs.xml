@@ -7,6 +7,7 @@
     <attr name="colorOnTransparentBackground" format="color"/>
     <attr name="colorDialogSurface" format="color"/>
     <attr name="colorRateMenuBackground" format="reference"/>
+    <attr name="colorRateDialog" format="reference"/>
 
     <attr name="dialogCustomBackground" format="reference"/>
 
