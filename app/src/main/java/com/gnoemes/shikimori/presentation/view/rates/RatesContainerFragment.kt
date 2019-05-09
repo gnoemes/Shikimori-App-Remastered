@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.FrameLayout
+import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
@@ -181,6 +182,15 @@ class RatesContainerFragment : BaseFragment<RatesContainerPresenter, RatesContai
         else -> R.drawable.selector_rate_item_menu_background_default
     }
 
+    private fun getActionTextView(ordinal: Int, count: Int, isSelected: Boolean): TextView {
+        val view = TextView(context!!)
+        view.text = "$count"
+        view.gravity = Gravity.CENTER_VERTICAL
+        view.setTextColor(ContextCompat.getColorStateList(context!!, getRateTextColor(ordinal)))
+        view.isSelected = isSelected
+        return view
+    }
+
     ///////////////////////////////////////////////////////////////////////////
     // GETTERS
     ///////////////////////////////////////////////////////////////////////////
@@ -218,13 +228,18 @@ class RatesContainerFragment : BaseFragment<RatesContainerPresenter, RatesContai
         navView.menu.apply {
             val checkedId = navView.checkedItem?.itemId ?: 0
             clear()
-            items.forEach { add(0, it.status.ordinal, it.status.ordinal, it.localizedCategory) }
+            items.forEach {
+                add(0, it.status.ordinal, it.status.ordinal, it.localizedCategory)
+                findItem(it.status.ordinal)?.actionView = getActionTextView(it.status.ordinal, it.count, checkedId == it.status.ordinal)
+            }
             if (items.isEmpty()) {
                 add(R.string.rate_empty)
             }
-            navView.menu.setGroupCheckable(0, true, true)
+
+            setGroupCheckable(0, true, true)
             navView.setCheckedItem(checkedId)
         }
+
     }
 
     override fun selectRateStatus(rateStatus: RateStatus) {
@@ -232,6 +247,7 @@ class RatesContainerFragment : BaseFragment<RatesContainerPresenter, RatesContai
             setItemBackgroundResource(getRateBackground(rateStatus.ordinal))
             itemTextColor = ContextCompat.getColorStateList(context!!, getRateTextColor(rateStatus.ordinal))
             setCheckedItem(rateStatus.ordinal)
+            (menu.findItem(rateStatus.ordinal)?.actionView as? TextView)?.isSelected = true
         }
     }
 

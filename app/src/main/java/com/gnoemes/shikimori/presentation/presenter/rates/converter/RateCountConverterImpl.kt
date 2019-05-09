@@ -45,7 +45,7 @@ class RateCountConverterImpl @Inject constructor(
                 .zip(formatStrings)
                 .mapIndexedNotNull { index, pair ->
                     val count = counts[index]
-                    if (count > 0) RateCategory(pair.first, format(pair.second, count))
+                    if (count > 0) RateCategory(pair.first, pair.second, count)
                     else null
                 }
     }
@@ -55,6 +55,4 @@ class RateCountConverterImpl @Inject constructor(
                 ?: 0
     }
 
-    private fun format(format: String, count: Int): String =
-            String.format(format, count.toString())
 }

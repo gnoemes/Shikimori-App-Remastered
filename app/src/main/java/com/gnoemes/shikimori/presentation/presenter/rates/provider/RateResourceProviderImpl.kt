@@ -9,8 +9,8 @@ class RateResourceProviderImpl @Inject constructor(
 ) : RateResourceProvider {
 
     override val animeRatesWithCount: List<String>
-        get() = context.resources.getStringArray(R.array.anime_rate_stasuses_with_count).asList()
+        get() = context.resources.getStringArray(R.array.anime_rate_stasuses).asList()
 
     override val mangaRatesWithCount: List<String>
-        get() = context.resources.getStringArray(R.array.manga_rate_stasuses_with_count).asList()
+        get() = context.resources.getStringArray(R.array.manga_rate_stasuses).asList()
 }
