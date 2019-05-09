@@ -9,6 +9,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.FrameLayout
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import com.arellomobile.mvp.presenter.InjectPresenter
@@ -133,6 +134,8 @@ class RatesContainerFragment : BaseFragment<RatesContainerPresenter, RatesContai
         }
         progressBar?.gone()
 
+        navView.setItemBackgroundResource(getRateBackground(RateStatus.WATCHING.ordinal))
+        navView.itemTextColor = ContextCompat.getColorStateList(context!!, getRateTextColor(RateStatus.WATCHING.ordinal))
         navView.setNavigationItemSelectedListener {
             getPresenter().onChangeStatus(RateStatus.values()[it.itemId])
             true
@@ -162,6 +165,20 @@ class RatesContainerFragment : BaseFragment<RatesContainerPresenter, RatesContai
         super.onSaveInstanceState(outState)
         outState.putInt(SPINNER_KEY, spinner?.selectedItemPosition ?: 0)
         outState.putBoolean(DRAWER_KEY, drawer?.isDrawerOpen(GravityCompat.START) ?: false)
+    }
+
+    private fun getRateTextColor(ordinal: Int): Int = when (ordinal) {
+        RateStatus.COMPLETED.ordinal -> R.color.selector_rate_item_menu_text_color_green
+        RateStatus.ON_HOLD.ordinal -> R.color.selector_rate_item_menu_text_color_gray
+        RateStatus.DROPPED.ordinal -> R.color.selector_rate_item_menu_text_color_red
+        else -> R.color.selector_rate_item_menu_text_color_blue
+    }
+
+    private fun getRateBackground(ordinal: Int): Int = when (ordinal) {
+        RateStatus.COMPLETED.ordinal -> R.drawable.selector_rate_item_menu_background_watched
+        RateStatus.ON_HOLD.ordinal -> R.drawable.selector_rate_item_menu_background_on_hold
+        RateStatus.DROPPED.ordinal -> R.drawable.selector_rate_item_menu_background_dropped
+        else -> R.drawable.selector_rate_item_menu_background_default
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -199,11 +216,22 @@ class RatesContainerFragment : BaseFragment<RatesContainerPresenter, RatesContai
 
     override fun setNavigationItems(items: List<RateCategory>) {
         navView.menu.apply {
+            val checkedId = navView.checkedItem?.itemId ?: 0
             clear()
             items.forEach { add(0, it.status.ordinal, it.status.ordinal, it.localizedCategory) }
             if (items.isEmpty()) {
                 add(R.string.rate_empty)
             }
+            navView.menu.setGroupCheckable(0, true, true)
+            navView.setCheckedItem(checkedId)
+        }
+    }
+
+    override fun selectRateStatus(rateStatus: RateStatus) {
+        navView.apply {
+            setItemBackgroundResource(getRateBackground(rateStatus.ordinal))
+            itemTextColor = ContextCompat.getColorStateList(context!!, getRateTextColor(rateStatus.ordinal))
+            setCheckedItem(rateStatus.ordinal)
         }
     }
 

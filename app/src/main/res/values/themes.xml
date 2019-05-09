@@ -67,6 +67,11 @@
         <item name="dialogCustomBackground">@drawable/dialog_surface</item>
 
         <item name="android:listDivider">@drawable/list_divider_default</item>
+
+        <item name="colorRateDefault">@color/rate_default</item>
+        <item name="colorRateWatched">@color/rate_watched</item>
+        <item name="colorRateOnHold">@color/rate_on_hold</item>
+        <item name="colorRateDropped">@color/rate_dropped</item>
     </style>
 
     <style name="ShikimoriAppTheme.Dark" parent="ShikimoriAppTheme.Base">
@@ -106,6 +111,11 @@
         <item name="android:listDivider">@drawable/list_divider_dark</item>
 
         <item name="rateStyleStrokeWidth">1dp</item>
+
+        <item name="colorRateDefault">@color/rate_default_transparent</item>
+        <item name="colorRateWatched">@color/rate_watched_transparent</item>
+        <item name="colorRateOnHold">@color/rate_on_hold_transparent</item>
+        <item name="colorRateDropped">@color/rate_dropped_transparent</item>
     </style>
 
     <style name="ShikimoriAppTheme.Amoled" parent="ShikimoriAppTheme.Base">
@@ -145,6 +155,11 @@
         <item name="android:listDivider">@drawable/list_divider_amoled</item>
 
         <item name="rateStyleStrokeWidth">1dp</item>
+
+        <item name="colorRateDefault">@color/rate_default_transparent</item>
+        <item name="colorRateWatched">@color/rate_watched_transparent</item>
+        <item name="colorRateOnHold">@color/rate_on_hold_transparent</item>
+        <item name="colorRateDropped">@color/rate_dropped_transparent</item>
     </style>
 
     <style name="AscentStyle" />

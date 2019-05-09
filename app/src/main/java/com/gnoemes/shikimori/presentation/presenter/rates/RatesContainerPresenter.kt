@@ -107,6 +107,7 @@ class RatesContainerPresenter @Inject constructor(
 
     fun onChangeStatus(rateStatus: RateStatus) {
         this.rateStatus = rateStatus
+        viewState.selectRateStatus(rateStatus)
         viewState.showStatusFragment(userId, type, rateStatus)
         loadRateCategories()
     }

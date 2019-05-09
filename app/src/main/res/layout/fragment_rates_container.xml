@@ -5,8 +5,8 @@
     android:id="@+id/drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:background="?attr/colorRateMenuBackground"
+    android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -32,9 +32,9 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:itemTextColor="?attr/colorOnPrimary"
-        app:itemIconTint="?attr/colorOnPrimary"
         android:background="@android:color/transparent"
-        android:maxWidth="200dp" />
+        android:maxWidth="200dp"
+        app:itemIconTint="?attr/colorOnPrimary"
+        app:itemTextColor="?attr/colorOnPrimary" />
 
 </com.infideap.drawerbehavior.AdvanceDrawerLayout>
