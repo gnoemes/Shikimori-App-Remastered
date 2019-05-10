@@ -101,7 +101,7 @@ class RateSpinnerView @JvmOverloads constructor(context: Context,
             selectedIndex = selection
 
             popupWindow.setBackgroundDrawable(context.drawable(R.drawable.background_player_spinner)?.apply {
-                tint(if (isDarkTheme) context.color(R.color.dark_colorDialogSurface) else context.color(colorRes))
+                tint(if (isDarkTheme) context.colorAttr(R.attr.colorDialogSurface) else context.color(colorRes))
             })
             setOnItemSelectedListener { _, pos, _, item ->
                 val position = if (arrayRes == R.array.anime_rate_stasuses_empty || arrayRes == R.array.manga_rate_stasuses_empty) pos - 1 else pos

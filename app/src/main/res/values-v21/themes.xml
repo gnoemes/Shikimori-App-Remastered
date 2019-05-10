@@ -5,12 +5,14 @@
         <item name="textAppearanceHeadline6">@style/ToolbarTextAppearance</item>
 
         <item name="md_corner_radius">8dp</item>
+        <item name="md_color_button_text">?attr/colorSecondary</item>
         <item name="android:popupMenuStyle">@style/PopupMenuTheme</item>
         <item name="popupMenuStyle">@style/PopupMenuTheme</item>
         <item name="drawerArrowStyle">@style/DrawerIconStyle</item>
         <item name="toolbarNavigationButtonStyle">@style/Toolbar.Button.Navigation.Tinted</item>
         <item name="actionOverflowButtonStyle">@style/Toolbar.Button.Overflow.Tinted</item>
         <item name="android:listDivider">@drawable/list_divider</item>
+        <item name="android:timePickerStyle">@style/TimePickerStyle</item>
 
         <item name="rateStyleStrokeWidth">0dp</item>
     </style>
@@ -33,6 +35,8 @@
         <item name="colorTransparentBackground">@color/default_colorTransparentBackground</item>
         <item name="colorOnTransparentBackground">@color/default_colorOnTransparentBackground</item>
         <item name="colorDialogSurface">@color/default_colorDialogSurface</item>
+        <item name="colorRateMenuBackground">@color/default_colorRateMenuBackground</item>
+        <item name="colorRateDialog">@color/default_colorRateDialog</item>
 
         <item name="android:textColor">@color/default_colorOnSurface</item>
         <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
@@ -71,6 +75,8 @@
         <item name="colorTransparentBackground">@color/dark_colorTransparentBackground</item>
         <item name="colorOnTransparentBackground">@color/dark_colorOnTransparentBackground</item>
         <item name="colorDialogSurface">@color/dark_colorDialogSurface</item>
+        <item name="colorRateMenuBackground">@color/dark_colorRateMenuBackground</item>
+        <item name="colorRateDialog">@color/dark_colorRateDialog</item>
 
         <item name="android:textColor">@color/dark_colorOnSurface</item>
         <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
@@ -110,6 +116,8 @@
         <item name="colorTransparentBackground">@color/amoled_colorTransparentBackground</item>
         <item name="colorOnTransparentBackground">@color/amoled_colorOnTransparentBackground</item>
         <item name="colorDialogSurface">@color/amoled_colorDialogSurface</item>
+        <item name="colorRateMenuBackground">@color/amoled_colorRateMenuBackground</item>
+        <item name="colorRateDialog">@color/amoled_colorRateDialog</item>
 
         <item name="android:textColor">@color/amoled_colorOnSurface</item>
         <item name="android:textColorPrimary">?attr/colorOnPrimary</item>

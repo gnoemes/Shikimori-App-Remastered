@@ -121,6 +121,15 @@
         <item name="shapeAppearance">@style/CircleShapeAppearance</item>
     </style>
 
+    <style name="AscentChipStyle" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="checkedIcon">@drawable/ic_circle_check</item>
+        <item name="checkedIconVisible">true</item>
+        <item name="android:stateListAnimator" tools:targetApi="lollipop">@null</item>
+        <item name="chipCornerRadius">20dp</item>
+        <item name="chipStartPadding">8dp</item>
+        <item name="ensureMinTouchTargetSize">false</item>
+    </style>
+
     <style name="ActionChipStyle" parent="Widget.MaterialComponents.Chip.Action">
         <item name="android:textColor">?attr/colorSecondary</item>
         <item name="chipBackgroundColor">@drawable/selector_action_chip_background_color</item>

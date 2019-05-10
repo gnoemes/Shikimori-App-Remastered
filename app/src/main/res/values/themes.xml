@@ -5,6 +5,7 @@
         <item name="textAppearanceHeadline6">@style/ToolbarTextAppearance</item>
 
         <item name="md_corner_radius">8dp</item>
+        <item name="md_color_button_text">?attr/colorSecondary</item>
         <item name="android:popupMenuStyle">@style/PopupMenuTheme</item>
         <item name="popupMenuStyle">@style/PopupMenuTheme</item>
         <item name="drawerArrowStyle">@style/DrawerIconStyle</item>
@@ -49,6 +50,8 @@
         <item name="colorTransparentBackground">@color/default_colorTransparentBackground</item>
         <item name="colorOnTransparentBackground">@color/default_colorOnTransparentBackground</item>
         <item name="colorDialogSurface">@color/default_colorDialogSurface</item>
+        <item name="colorRateMenuBackground">@color/default_colorRateMenuBackground</item>
+        <item name="colorRateDialog">@color/default_colorRateDialog</item>
 
         <item name="android:textColor">@color/default_colorOnSurface</item>
         <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
@@ -84,6 +87,8 @@
         <item name="colorTransparentBackground">@color/dark_colorTransparentBackground</item>
         <item name="colorOnTransparentBackground">@color/dark_colorOnTransparentBackground</item>
         <item name="colorDialogSurface">@color/dark_colorDialogSurface</item>
+        <item name="colorRateMenuBackground">@color/dark_colorRateMenuBackground</item>
+        <item name="colorRateDialog">@color/dark_colorRateDialog</item>
 
         <item name="android:textColor">@color/dark_colorOnSurface</item>
         <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
@@ -121,6 +126,8 @@
         <item name="colorTransparentBackground">@color/amoled_colorTransparentBackground</item>
         <item name="colorOnTransparentBackground">@color/amoled_colorOnTransparentBackground</item>
         <item name="colorDialogSurface">@color/amoled_colorDialogSurface</item>
+        <item name="colorRateMenuBackground">@color/amoled_colorRateMenuBackground</item>
+        <item name="colorRateDialog">@color/amoled_colorRateDialog</item>
 
         <item name="android:textColor">@color/amoled_colorOnSurface</item>
         <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
@@ -138,6 +145,43 @@
         <item name="android:listDivider">@drawable/list_divider_amoled</item>
 
         <item name="rateStyleStrokeWidth">1dp</item>
+    </style>
+
+    <style name="AscentStyle" />
+
+    <style name="AscentStyle.Red" parent="AscentStyle">
+        <item name="colorSecondary">@color/colorSecondary_red</item>
+        <item name="colorSecondaryTransparent">@color/colorSecondary_red_transparent</item>
+    </style>
+
+    <style name="AscentStyle.Orange" parent="AscentStyle">
+        <item name="colorSecondary">@color/colorSecondary_orange</item>
+        <item name="colorSecondaryTransparent">@color/colorSecondary_orange_transparent</item>
+    </style>
+
+    <style name="AscentStyle.Yellow" parent="AscentStyle">
+        <item name="colorSecondary">@color/colorSecondary_yellow</item>
+        <item name="colorSecondaryTransparent">@color/colorSecondary_yellow_transparent</item>
+    </style>
+
+    <style name="AscentStyle.Green" parent="AscentStyle">
+        <item name="colorSecondary">@color/colorSecondary_green</item>
+        <item name="colorSecondaryTransparent">@color/colorSecondary_green_transparent</item>
+    </style>
+
+    <style name="AscentStyle.Cyan" parent="AscentStyle">
+        <item name="colorSecondary">@color/colorSecondary_cyan</item>
+        <item name="colorSecondaryTransparent">@color/colorSecondary_cyan_transparent</item>
+    </style>
+
+    <style name="AscentStyle.Blue" parent="AscentStyle">
+        <item name="colorSecondary">@color/colorSecondary_blue</item>
+        <item name="colorSecondaryTransparent">@color/colorSecondary_blue_transparent</item>
+    </style>
+
+    <style name="AscentStyle.Purple" parent="AscentStyle">
+        <item name="colorSecondary">@color/colorSecondary_purple</item>
+        <item name="colorSecondaryTransparent">@color/colorSecondary_purple_transparent</item>
     </style>
 
 </resources>

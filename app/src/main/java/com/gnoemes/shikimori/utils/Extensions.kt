@@ -132,7 +132,7 @@ fun Context.drawable(@DrawableRes drawableResId: Int): Drawable? {
 }
 
 fun Context.drawable(@DrawableRes drawableResId: Int, @ColorRes tintColor: Int = 0): Drawable? {
-    val drawable = ContextCompat.getDrawable(this, drawableResId)
+    val drawable = drawable(drawableResId)
     if (tintColor != 0) drawable?.tint(color(tintColor))
     return drawable
 }
