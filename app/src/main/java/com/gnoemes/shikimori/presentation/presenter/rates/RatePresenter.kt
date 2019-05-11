@@ -19,6 +19,7 @@ import com.gnoemes.shikimori.presentation.presenter.common.paginator.PageOffsetP
 import com.gnoemes.shikimori.presentation.presenter.common.paginator.ViewController
 import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResourceProvider
 import com.gnoemes.shikimori.presentation.presenter.common.provider.SortResourceProvider
+import com.gnoemes.shikimori.presentation.presenter.rates.converter.RateViewModelConverter
 import com.gnoemes.shikimori.presentation.view.rates.RateView
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -34,7 +35,8 @@ class RatePresenter @Inject constructor(
         private val changesInteractor: RateChangesInteractor,
         private val resourceProvider: CommonResourceProvider,
         private val settingsSource: SettingsSource,
-        private val sortSource: RateSortSource
+        private val sortSource: RateSortSource,
+        private val converter: RateViewModelConverter
 ) : BaseNetworkPresenter<RateView>(), ViewController<Rate> {
 
     var userId: Long = Constants.NO_ID
@@ -193,6 +195,7 @@ class RatePresenter @Inject constructor(
                 .observeOn(AndroidSchedulers.mainThread())
                 .map { sortAction.invoke(it) }
                 .map { items = it; items }
+                .map(converter)
                 .subscribe({ viewState.showData(it) }, this::processErrors)
                 .addToDisposables()
     }
@@ -259,7 +262,7 @@ class RatePresenter @Inject constructor(
                 else if (isRussianNaming) it.manga?.nameRu else it.manga?.name
             }
 
-    private val isRussianNaming : Boolean
+    private val isRussianNaming: Boolean
         get() = settingsSource.isRussianNaming
 }
 

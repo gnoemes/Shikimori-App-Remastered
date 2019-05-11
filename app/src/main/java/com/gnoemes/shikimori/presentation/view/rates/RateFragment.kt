@@ -3,27 +3,22 @@ package com.gnoemes.shikimori.presentation.view.rates
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
-import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.entity.app.domain.AppExtras
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.rates.domain.UserRate
-import com.gnoemes.shikimori.presentation.presenter.common.provider.RatingResourceProvider
 import com.gnoemes.shikimori.presentation.presenter.rates.RatePresenter
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragment
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
 import com.gnoemes.shikimori.presentation.view.common.fragment.EditRateFragment
 import com.gnoemes.shikimori.presentation.view.rates.adapter.RateAdapter
-import com.gnoemes.shikimori.utils.gone
-import com.gnoemes.shikimori.utils.ifNotNull
+import com.gnoemes.shikimori.utils.*
 import com.gnoemes.shikimori.utils.images.ImageLoader
-import com.gnoemes.shikimori.utils.visible
-import com.gnoemes.shikimori.utils.withArgs
+import com.gnoemes.shikimori.utils.widgets.VerticalSpaceItemDecorator
 import kotlinx.android.synthetic.main.layout_default_list.*
 import kotlinx.android.synthetic.main.layout_default_placeholders.*
 import kotlinx.android.synthetic.main.layout_progress.*
@@ -34,12 +29,6 @@ class RateFragment : BaseFragment<RatePresenter, RateView>(), RateView, EditRate
 
     @Inject
     lateinit var imageLoader: ImageLoader
-
-    @Inject
-    lateinit var settings: SettingsSource
-
-    @Inject
-    lateinit var resourceProvider: RatingResourceProvider
 
     @InjectPresenter
     lateinit var ratePresenter: RatePresenter
@@ -61,7 +50,7 @@ class RateFragment : BaseFragment<RatePresenter, RateView>(), RateView, EditRate
         return ratePresenter
     }
 
-    private val adapter by lazy { RateAdapter(settings, imageLoader, resourceProvider, getPresenter()::onContentClicked, { getPresenter().onAction(it) }, { sort, des -> getPresenter().onSortChanged(sort, des) }, { getPresenter().loadNewPage() }) }
+    private val adapter by lazy { RateAdapter(imageLoader, getPresenter()::onContentClicked, { getPresenter().onAction(it) }, { sort, des -> getPresenter().onSortChanged(sort, des) }, { getPresenter().loadNewPage() }) }
 
     companion object {
         fun newInstance(userId: Long, type: Type, status: RateStatus) = RateFragment().withArgs {
@@ -82,7 +71,7 @@ class RateFragment : BaseFragment<RatePresenter, RateView>(), RateView, EditRate
                 adapter = this@RateFragment.adapter
                 layoutManager = LinearLayoutManager(context).apply { initialPrefetchItemCount = 5 }
                 itemAnimator = DefaultItemAnimator()
-                addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+                addItemDecoration(VerticalSpaceItemDecorator(context.dp(8)))
                 setHasFixedSize(true)
             }
 

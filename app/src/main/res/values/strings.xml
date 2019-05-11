@@ -142,6 +142,7 @@
     <string name="episodes_format">\n[%s из %s]</string>
     <string name="volumes_format">\n[%s-%s]</string>
     <string name="episode_number">%d эпизод</string>
+    <string name="episode_short">эп.</string>
     <string name="episode_in">через %s</string>
     <string name="type_pattern">%s (%s эп.), %d мин.</string>
     <string name="type_pattern_manga">%s, %s т. %s гл.</string>
@@ -170,6 +171,7 @@
     <string name="person_birthday">Дата рождения:</string>
 
     <string name="type_tv_translatable">TV сериал</string>
+    <string name="type_tv_short_translatable">TV</string>
     <string name="type_movie_translatable">Фильм</string>
     <string name="type_special_translatable">Спешл</string>
     <string name="type_music_translatable">Клип</string>
@@ -180,7 +182,7 @@
     <string name="type_ona" translatable="false">ONA</string>
 
     <string name="type_manga_translatable">Манга</string>
-    <string name="type_novel_translatable">Новела</string>
+    <string name="type_novel_translatable">Ранобэ</string>
     <string name="type_one_shot_translatable">Ваншот</string>
     <string name="type_doujin_translatable">Додзинси</string>
     <string name="type_manhua_translatable">Маньхуа</string>

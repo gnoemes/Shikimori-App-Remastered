@@ -6,8 +6,8 @@
     <dimen name="image_details_height">140dp</dimen>
     <dimen name="image_details_width">105dp</dimen>
 
-    <dimen name="image_rate_height">170dp</dimen>
-    <dimen name="image_rate_width">120dp</dimen>
+    <dimen name="image_rate_height">120dp</dimen>
+    <dimen name="image_rate_width">96dp</dimen>
 
     <dimen name="image_search_height">235dp</dimen>
     <dimen name="image_search_width">175dp</dimen>
