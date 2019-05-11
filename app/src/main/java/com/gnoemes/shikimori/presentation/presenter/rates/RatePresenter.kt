@@ -10,12 +10,12 @@ import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.common.presentation.DetailsAction
 import com.gnoemes.shikimori.entity.common.presentation.RateSort
-import com.gnoemes.shikimori.entity.common.presentation.SortItem
+import com.gnoemes.shikimori.entity.common.presentation.SortAction
 import com.gnoemes.shikimori.entity.rates.domain.Rate
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.rates.domain.UserRate
-import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
-import com.gnoemes.shikimori.presentation.presenter.common.paginator.PageOffsetPaginator
+import com.gnoemes.shikimori.entity.rates.presentation.RateSortViewModel
+import com.gnoemes.shikimori.presentation.presenter.base.BasePaginationPresenter
 import com.gnoemes.shikimori.presentation.presenter.common.paginator.ViewController
 import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResourceProvider
 import com.gnoemes.shikimori.presentation.presenter.common.provider.SortResourceProvider
@@ -27,7 +27,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-//TODO rewrite to basePagination
 @InjectViewState
 class RatePresenter @Inject constructor(
         private val ratesInteractor: RatesInteractor,
@@ -37,12 +36,12 @@ class RatePresenter @Inject constructor(
         private val settingsSource: SettingsSource,
         private val sortSource: RateSortSource,
         private val converter: RateViewModelConverter
-) : BaseNetworkPresenter<RateView>(), ViewController<Rate> {
+) : BasePaginationPresenter<Rate, RateView>(), ViewController<Rate> {
 
     var userId: Long = Constants.NO_ID
     lateinit var type: Type
     lateinit var rateStatus: RateStatus
-    private lateinit var paginator: PageOffsetPaginator<Rate>
+
     private val isAnime: Boolean
         get() = type == Type.ANIME
 
@@ -51,8 +50,7 @@ class RatePresenter @Inject constructor(
     private var sort: RateSort = RateSort.Id
 
     override fun initData() {
-        paginator = PageOffsetPaginator({ loadRate(it) }, this)
-        paginator.refresh()
+        super.initData()
 
         sort = sortSource.getSort(type)
         isDescendingSort = sortSource.getOrder(type)
@@ -60,12 +58,13 @@ class RatePresenter @Inject constructor(
 
     //TODO don't trigger onViewReattached on orientation change
     override fun onViewReattached() {
-        paginator.refresh()
+        onRefresh()
     }
 
-    private fun loadRate(page: Int): Single<List<Rate>> =
-            if (isAnime) ratesInteractor.getAnimeRates(userId, page, Constants.MAX_LIMIT, rateStatus)
-            else ratesInteractor.getMangaRates(userId, page, Constants.MAX_LIMIT, rateStatus)
+    override fun getPaginatorRequestFactory(): (Int) -> Single<List<Rate>> {
+        return if (isAnime) { page: Int -> ratesInteractor.getAnimeRates(userId, page, Constants.MAX_LIMIT, rateStatus) }
+        else { page: Int -> ratesInteractor.getMangaRates(userId, page, Constants.MAX_LIMIT, rateStatus) }
+    }
 
     override fun showEmptyError(show: Boolean, throwable: Throwable?) {
         if (show) processErrors(throwable!!)
@@ -75,40 +74,10 @@ class RatePresenter @Inject constructor(
         }
     }
 
-    override fun showEmptyView(show: Boolean) {
-        if (show) viewState.showEmptyView()
-        else viewState.hideEmptyView()
-    }
-
     override fun showData(show: Boolean, data: List<Rate>) {
         items = data.toMutableList()
         if (show) onSortChanged(sort, isDescendingSort)
-        else viewState.hideList()
-    }
-
-    override fun showRefreshProgress(show: Boolean) {
-        if (show) viewState.showRefresh()
-        else viewState.hideRefresh()
-    }
-
-    override fun showPageProgress(show: Boolean) {
-        viewState.showPageProgress(show)
-    }
-
-    override fun showError(throwable: Throwable) {
-        processErrors(throwable)
-    }
-
-    override fun showEmptyProgress(show: Boolean) {
-        showRefreshProgress(show)
-    }
-
-    fun onRefresh() {
-        paginator.refresh()
-    }
-
-    fun loadNewPage() {
-        paginator.loadNewPage()
+        else viewState.showContent(show)
     }
 
     fun onAction(it: DetailsAction) {
@@ -116,6 +85,17 @@ class RatePresenter @Inject constructor(
             is DetailsAction.ChangeRateStatus -> onChangeRateStatus(it.id, it.newStatus)
             is DetailsAction.EditRate -> onEditRate(it.rate)
         }
+    }
+
+    fun onSortAction(it: SortAction) {
+        when (it) {
+            is SortAction.ChangeOrder -> onSortChanged(sort, it.isDescending)
+            is SortAction.ChangeSort -> onShowSortDialog()
+        }
+    }
+
+    private fun onShowSortDialog() {
+        viewState.showSortDialog()
     }
 
     fun onOpenRandom() {
@@ -185,7 +165,7 @@ class RatePresenter @Inject constructor(
     //TODO optimization?
     private fun MutableList<Any>.addSortItem(): MutableList<Any> {
         val sorts = if (isAnime) sortResourceProvider.getAnimeRateSorts() else sortResourceProvider.getMangaRateSorts()
-        add(0, SortItem(sort, sorts, isDescendingSort))
+        add(0, RateSortViewModel(rateStatus, sort, sorts, isDescendingSort, isAnime))
         return this
     }
 

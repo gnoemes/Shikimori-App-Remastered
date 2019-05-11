@@ -9,10 +9,12 @@ import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.app.domain.AppExtras
 import com.gnoemes.shikimori.entity.common.domain.Type
+import com.gnoemes.shikimori.entity.rates.domain.Rate
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.rates.domain.UserRate
 import com.gnoemes.shikimori.presentation.presenter.rates.RatePresenter
-import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragment
+import com.gnoemes.shikimori.presentation.view.base.adapter.BasePaginationAdapter
+import com.gnoemes.shikimori.presentation.view.base.fragment.BasePaginationFragment
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
 import com.gnoemes.shikimori.presentation.view.common.fragment.EditRateFragment
 import com.gnoemes.shikimori.presentation.view.rates.adapter.RateAdapter
@@ -25,7 +27,7 @@ import kotlinx.android.synthetic.main.layout_progress.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import javax.inject.Inject
 
-class RateFragment : BaseFragment<RatePresenter, RateView>(), RateView, EditRateFragment.RateDialogCallback, RandomRateListener {
+class RateFragment : BasePaginationFragment<Rate, RatePresenter, RateView>(), RateView, EditRateFragment.RateDialogCallback, RandomRateListener {
 
     @Inject
     lateinit var imageLoader: ImageLoader
@@ -50,7 +52,10 @@ class RateFragment : BaseFragment<RatePresenter, RateView>(), RateView, EditRate
         return ratePresenter
     }
 
-    private val adapter by lazy { RateAdapter(imageLoader, getPresenter()::onContentClicked, { getPresenter().onAction(it) }, { sort, des -> getPresenter().onSortChanged(sort, des) }, { getPresenter().loadNewPage() }) }
+    private val _adapter by lazy { RateAdapter(imageLoader, getPresenter()::onContentClicked, { getPresenter().onAction(it) }, { getPresenter().onSortAction(it) }) }
+
+    override val adapter: BasePaginationAdapter
+        get() = _adapter
 
     companion object {
         fun newInstance(userId: Long, type: Type, status: RateStatus) = RateFragment().withArgs {
@@ -62,21 +67,18 @@ class RateFragment : BaseFragment<RatePresenter, RateView>(), RateView, EditRate
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initView()
-    }
 
-    private fun initView() {
         if (recyclerView.layoutManager == null)
             with(recyclerView) {
                 adapter = this@RateFragment.adapter
                 layoutManager = LinearLayoutManager(context).apply { initialPrefetchItemCount = 5 }
                 itemAnimator = DefaultItemAnimator()
                 addItemDecoration(VerticalSpaceItemDecorator(context.dp(8)))
+                addOnScrollListener(nextPageListener)
                 setHasFixedSize(true)
             }
 
         emptyContentView.setText(R.string.rate_empty)
-        refreshLayout.setOnRefreshListener { getPresenter().onRefresh() }
         progressBar?.gone()
         toolbar?.gone()
     }
@@ -113,7 +115,7 @@ class RateFragment : BaseFragment<RatePresenter, RateView>(), RateView, EditRate
     override fun showData(data: List<Any>) {
         //fix auto scroll on sort
         val parcelable = recyclerView.layoutManager?.onSaveInstanceState()
-        adapter.setData(data)
+        adapter.bindItems(data)
         recyclerView.visible()
         recyclerView.layoutManager?.onRestoreInstanceState(parcelable)
     }
@@ -123,21 +125,14 @@ class RateFragment : BaseFragment<RatePresenter, RateView>(), RateView, EditRate
         dialog.show(childFragmentManager, "RateTag")
     }
 
-    override fun hideList() {
-        recyclerView.gone()
+    override fun showSortDialog() {
     }
 
-    override fun showPageProgress(show: Boolean) {
-        postViewAction { adapter.showProgress(show) }
-    }
+    override fun showContent(show: Boolean) = recyclerView.visibleIf { show }
 
-    override fun showRefresh() {
-        refreshLayout.isRefreshing = true
-    }
+    override fun onShowLoading() = refreshLayout.showRefresh()
 
-    override fun hideRefresh() {
-        refreshLayout.isRefreshing = false
-    }
+    override fun onHideLoading() = refreshLayout.hideRefresh()
 
     override fun showNetworkView() {}
 
