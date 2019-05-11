@@ -21,6 +21,6 @@ interface MainView : BaseView {
     fun clearCalendarBackStack()
 
     @StateStrategyType(SkipStrategy::class)
-    fun clearRatesBackStack()
+    fun rateActionOrClearBackStack()
 
 }

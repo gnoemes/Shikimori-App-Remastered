@@ -17,6 +17,7 @@ import com.gnoemes.shikimori.entity.main.BottomScreens
 import com.gnoemes.shikimori.presentation.presenter.main.MainPresenter
 import com.gnoemes.shikimori.presentation.view.base.activity.BaseActivity
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
+import com.gnoemes.shikimori.presentation.view.base.fragment.TabContainer
 import com.gnoemes.shikimori.presentation.view.bottom.BottomTabContainer
 import com.gnoemes.shikimori.utils.getCurrentTheme
 import com.gnoemes.shikimori.utils.ifNotNull
@@ -83,6 +84,15 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView, RouterPr
             }
         }
         ta.commitNow()
+    }
+
+    private fun invokeTabRootActionOrClearBackStack(screenKey: String) {
+        val fm = fragmentManager
+        val fragment: Fragment? = fm.findFragmentByTag(screenKey)
+        fragment.ifNotNull {
+            if (it is TabContainer && it.invokeTabRootAction())
+            else (it as RouterProvider).localRouter.backTo(null)
+        }
     }
 
     private fun clearBackStack(screenKey: String) {
@@ -188,7 +198,7 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView, RouterPr
 
     override fun clearCalendarBackStack() = clearBackStack(BottomScreens.CALENDAR)
 
-    override fun clearRatesBackStack() = clearBackStack(BottomScreens.RATES)
+    override fun rateActionOrClearBackStack() = invokeTabRootActionOrClearBackStack(BottomScreens.RATES)
 
 
     data class Tab(

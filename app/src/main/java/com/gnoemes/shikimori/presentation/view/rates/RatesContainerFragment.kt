@@ -24,6 +24,7 @@ import com.gnoemes.shikimori.entity.rates.presentation.RateNavigationData
 import com.gnoemes.shikimori.presentation.presenter.rates.RatesContainerPresenter
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragment
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
+import com.gnoemes.shikimori.presentation.view.base.fragment.TabRootFragment
 import com.gnoemes.shikimori.utils.*
 import com.google.android.material.internal.NavigationMenuView
 import com.santalu.widget.ReSpinner
@@ -39,7 +40,7 @@ import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
 
-class RatesContainerFragment : BaseFragment<RatesContainerPresenter, RatesContainerView>(), RatesContainerView, RouterProvider, HasSupportFragmentInjector {
+class RatesContainerFragment : BaseFragment<RatesContainerPresenter, RatesContainerView>(), RatesContainerView, RouterProvider, HasSupportFragmentInjector, TabRootFragment {
 
     @Inject
     lateinit var childFragmentInjector: DispatchingAndroidInjector<Fragment>
@@ -166,6 +167,10 @@ class RatesContainerFragment : BaseFragment<RatesContainerPresenter, RatesContai
         super.onSaveInstanceState(outState)
         outState.putInt(SPINNER_KEY, spinner?.selectedItemPosition ?: 0)
         outState.putBoolean(DRAWER_KEY, drawer?.isDrawerOpen(GravityCompat.START) ?: false)
+    }
+
+    override fun onTabRootAction() {
+        getPresenter().onRandomClicked()
     }
 
     private fun getRateTextColor(ordinal: Int): Int = when (ordinal) {

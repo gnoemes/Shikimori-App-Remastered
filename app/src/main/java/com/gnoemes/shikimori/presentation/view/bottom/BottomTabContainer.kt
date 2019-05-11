@@ -13,10 +13,7 @@ import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.di.base.modules.BaseFragmentModule
 import com.gnoemes.shikimori.entity.main.LocalCiceroneHolder
 import com.gnoemes.shikimori.presentation.presenter.common.RouteHolder
-import com.gnoemes.shikimori.presentation.view.base.fragment.BackButtonListener
-import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragmentView
-import com.gnoemes.shikimori.presentation.view.base.fragment.MvpFragment
-import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
+import com.gnoemes.shikimori.presentation.view.base.fragment.*
 import com.gnoemes.shikimori.utils.navigation.SupportAppNavigator
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -29,7 +26,7 @@ import ru.terrakok.cicerone.commands.Command
 import javax.inject.Inject
 import javax.inject.Named
 
-class BottomTabContainer : MvpFragment(), RouterProvider, BackButtonListener, HasSupportFragmentInjector {
+class BottomTabContainer : MvpFragment(), RouterProvider, BackButtonListener, HasSupportFragmentInjector, TabContainer {
 
     @Inject
     lateinit var ciceroneHolder: LocalCiceroneHolder
@@ -76,6 +73,16 @@ class BottomTabContainer : MvpFragment(), RouterProvider, BackButtonListener, Ha
     override fun onPause() {
         getCicerone().navigatorHolder.removeNavigator()
         super.onPause()
+    }
+
+    override fun invokeTabRootAction(): Boolean {
+        val fragment = childFM.findFragmentById(R.id.fragment_container)
+        return fragment?.let {
+            if (it is TabRootFragment) {
+                it.onTabRootAction()
+                true
+            } else false
+        } ?: false
     }
 
     ///////////////////////////////////////////////////////////////////////////

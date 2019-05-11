@@ -21,7 +21,7 @@ class MainPresenter @Inject constructor(
 
     fun onTabItemReselected(screenKey: String) {
         when (screenKey) {
-            BottomScreens.RATES -> viewState.clearRatesBackStack()
+            BottomScreens.RATES -> viewState.rateActionOrClearBackStack()
             BottomScreens.CALENDAR -> viewState.clearCalendarBackStack()
             BottomScreens.SEARCH -> viewState.clearSearchBackStack()
             BottomScreens.MAIN -> viewState.clearMainBackStack()
