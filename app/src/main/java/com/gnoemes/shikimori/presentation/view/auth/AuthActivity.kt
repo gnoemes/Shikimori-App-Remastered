@@ -51,9 +51,9 @@ class AuthActivity : BaseActivity<AuthPresenter, AuthView>(), AuthView {
 
 
     companion object {
-        private const val PATTERN = "https?://(?:www\\.)?shikimori\\.org/oauth/authorize/(?:.*)"
-        private const val SIGN_UP_URL = "https://shikimori.org/users/sign_up"
-        private const val SIGN_IN_URL = "https://shikimori.org/users/sign_in"
+        private const val PATTERN = "https?://(?:www\\.)?shikimori\\.one/oauth/authorize/(?:.*)"
+        private const val SIGN_UP_URL = "https://shikimori.one/users/sign_up"
+        private const val SIGN_IN_URL = "https://shikimori.one/users/sign_in"
         fun newIntent(context: Context?, type: AuthType) = Intent(context, AuthActivity::class.java)
                 .apply { putExtra(AppExtras.ARGUMENT_AUTH_TYPE, type) }
     }
