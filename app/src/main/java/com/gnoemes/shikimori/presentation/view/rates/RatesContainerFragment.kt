@@ -156,11 +156,11 @@ class RatesContainerFragment : BaseFragment<RatesContainerPresenter, RatesContai
     }
 
     private fun openDrawer() {
-        drawer.openDrawer(GravityCompat.START)
+        drawer?.openDrawer(GravityCompat.START)
     }
 
     private fun closeDrawer() {
-        drawer.closeDrawer(GravityCompat.START)
+        drawer?.closeDrawer(GravityCompat.START)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

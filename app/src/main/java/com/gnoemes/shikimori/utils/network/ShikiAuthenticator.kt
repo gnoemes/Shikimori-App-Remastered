@@ -14,7 +14,7 @@ class ShikiAuthenticator @Inject constructor(
         private const val ACCESS_TOKEN_HEADER = "Authorization"
     }
 
-    override fun authenticate(route: Route, response: Response): Request? {
+    override fun authenticate(route: Route?, response: Response): Request? {
         val storedToken = "Bearer ${holder.getToken()?.authToken}"
         val requestToken = response.request().header(ACCESS_TOKEN_HEADER)
 
