@@ -9,7 +9,7 @@ data class TranslationResponse(
         @field:SerializedName("id") val id: Long,
         @field:SerializedName("animeId") val animeId: Long,
         @field:SerializedName("episodeId") val episodeId: Int,
-        @field:SerializedName("type") val type: TranslationType,
+        @field:SerializedName("type") private val _type: TranslationType?,
         @field:SerializedName("quality") val quality: TranslationQuality,
         @field:SerializedName("hosting") val _hosting: VideoHosting?,
         @field:SerializedName("author") val author: String,
@@ -17,4 +17,7 @@ data class TranslationResponse(
 ) {
     val hosting: VideoHosting
         get() = _hosting ?: VideoHosting.UNKNOWN
+
+    val type: TranslationType
+        get() = _type ?: TranslationType.VOICE_RU
 }
