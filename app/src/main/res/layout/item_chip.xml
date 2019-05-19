@@ -6,5 +6,6 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:stateListAnimator="@null"
+    android:maxLines="1"
     style="@style/ActionChipStyle"
     tools:text="smotretanime.ru" />
