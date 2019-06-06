@@ -5,8 +5,10 @@ import com.gnoemes.shikimori.data.local.preference.RateSortSource
 import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.domain.rates.RateChangesInteractor
 import com.gnoemes.shikimori.domain.rates.RatesInteractor
+import com.gnoemes.shikimori.domain.series.SeriesInteractor
 import com.gnoemes.shikimori.entity.app.domain.AnalyticEvent
 import com.gnoemes.shikimori.entity.app.domain.Constants
+import com.gnoemes.shikimori.entity.common.domain.Screens
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.common.presentation.DetailsAction
 import com.gnoemes.shikimori.entity.common.presentation.RateSort
@@ -15,6 +17,8 @@ import com.gnoemes.shikimori.entity.rates.domain.Rate
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.rates.domain.UserRate
 import com.gnoemes.shikimori.entity.rates.presentation.RateSortViewModel
+import com.gnoemes.shikimori.entity.series.domain.TranslationSetting
+import com.gnoemes.shikimori.entity.series.presentation.TranslationsNavigationData
 import com.gnoemes.shikimori.presentation.presenter.base.BasePaginationPresenter
 import com.gnoemes.shikimori.presentation.presenter.common.paginator.ViewController
 import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResourceProvider
@@ -30,6 +34,7 @@ import javax.inject.Inject
 @InjectViewState
 class RatePresenter @Inject constructor(
         private val ratesInteractor: RatesInteractor,
+        private val seriesInteractor: SeriesInteractor,
         private val sortResourceProvider: SortResourceProvider,
         private val changesInteractor: RateChangesInteractor,
         private val resourceProvider: CommonResourceProvider,
@@ -84,6 +89,7 @@ class RatePresenter @Inject constructor(
         when (it) {
             is DetailsAction.ChangeRateStatus -> onChangeRateStatus(it.id, it.newStatus)
             is DetailsAction.EditRate -> onEditRate(it.rate)
+            is DetailsAction.WatchOnline -> onWatchOnline(it.id!!)
         }
     }
 
@@ -123,12 +129,36 @@ class RatePresenter @Inject constructor(
         logEvent(AnalyticEvent.RATE_DIALOG)
     }
 
+    //TODO add manga
+    private fun onWatchOnline(rateId: Long) {
+        val rateItem = items.find { it is Rate && it.id == rateId } as? Rate
+        rateItem?.let { rate ->
+            seriesInteractor.getFirstNotWatchedEpisodeIndex(rate.anime?.id!!)
+                    .subscribe({ checkRateWatchProgress(true, rate, it) }, this::processErrors)
+                    .addToDisposables()
+        }
+    }
+
+    //TODO add manga
+    private fun checkRateWatchProgress(anime: Boolean, rate: Rate, progress: Int) =
+            seriesInteractor.getTranslationSettings(rate.anime?.id!!)
+                    .subscribe({ watchOnlineOrOpenList(rate, it, progress) }, this::processErrors)
+                    .addToDisposables()
+
+    //TODO manga
+    private fun watchOnlineOrOpenList(rate: Rate, settings: TranslationSetting, progress: Int) {
+        val isAuto = settings.lastAuthor != null && settings.lastType != null
+        val name = if (settingsSource.isRussianNaming) rate.anime?.nameRu
+                ?: rate.anime?.name!! else rate.anime?.name!!
+        val navigationData = TranslationsNavigationData(settings.animeId, rate.anime?.image!!, name, progress.toLong(), progress, rate.id, false, isAuto)
+        router.navigateTo(Screens.TRANSLATIONS, navigationData)
+    }
+
     private fun onChangeRateStatus(id: Long, newStatus: RateStatus) {
         ratesInteractor.changeRateStatus(id, newStatus)
                 .subscribeAndRefresh(id)
         logEvent(AnalyticEvent.RATE_DROP_MENU)
     }
-
 
     fun onDeleteRate(id: Long) =
             ratesInteractor.deleteRate(id)

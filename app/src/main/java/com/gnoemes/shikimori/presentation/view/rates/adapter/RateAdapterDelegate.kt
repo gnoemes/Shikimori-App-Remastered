@@ -36,7 +36,7 @@ class RateAdapterDelegate(
 
         init {
             with(itemView) {
-                playBtn.onClick { callback.invoke(DetailsAction.WatchOnline(item.contentId)) }
+                playBtn.onClick { callback.invoke(DetailsAction.WatchOnline(item.id)) }
                 container.onClick { navigationCallback.invoke(item.type, item.contentId) }
                 rateEditBtn.onClick { callback.invoke(DetailsAction.EditRate(item.rawRate)) }
             }

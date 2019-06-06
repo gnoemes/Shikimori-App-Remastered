@@ -5,10 +5,9 @@ import com.gnoemes.shikimori.entity.series.domain.Video
 import com.gnoemes.shikimori.entity.series.domain.VideoHosting
 
 
-
 object Utils {
 
-    fun isHostingSupports(hosting: VideoHosting, includeDownload: Boolean = false) : Boolean{
+    fun isHostingSupports(hosting: VideoHosting, includeDownload: Boolean = false): Boolean {
         val supports = mutableListOf(
                 VideoHosting.SIBNET,
                 VideoHosting.VK,
@@ -21,7 +20,11 @@ object Utils {
         return supports.contains(hosting)
     }
 
-    fun getRequestHeadersForHosting(video : Video?) : Map<String, String> = when {
+    fun getPriorityHosting(hostings: List<VideoHosting>): VideoHosting {
+        return hostings.sortedBy { it.ordinal }.first()
+    }
+
+    fun getRequestHeadersForHosting(video: Video?): Map<String, String> = when {
         video?.hosting == VideoHosting.SOVET_ROMANTICA -> mapOf(Pair("Referer", video.player))
         else -> emptyMap()
     }

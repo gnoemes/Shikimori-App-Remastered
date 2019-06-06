@@ -12,5 +12,6 @@ data class TranslationsNavigationData(
         val episodeId: Long,
         val episodeIndex: Int,
         val rateId: Long,
-        val isAlternative: Boolean
+        val isAlternative: Boolean,
+        val isAutoSelect : Boolean
 ) : BaseSeriesNavigationData(_animeId, _image, _name), Parcelable

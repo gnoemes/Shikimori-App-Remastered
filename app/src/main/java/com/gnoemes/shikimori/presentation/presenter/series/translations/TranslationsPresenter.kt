@@ -98,6 +98,16 @@ class TranslationsPresenter @Inject constructor(
                 viewState.showContent(false)
             } else viewState.showSearchEmpty()
         }
+
+        if (!isSearch && navigationData.isAutoSelect) autoOpenPriorityTranslation(data)
+    }
+
+    private fun autoOpenPriorityTranslation(data: List<TranslationViewModel>) {
+        if (items.find { it.isSameAuthor } != null) {
+            val priorityItem = data[data.indexOfFirst { it.isSameAuthor }]
+            val priorityVideo = priorityItem.videos.find { video -> video.videoHosting == Utils.getPriorityHosting(priorityItem.videos.map { it.videoHosting }) }
+            if (priorityVideo != null) onHostingClicked(priorityVideo)
+        }
     }
 
     fun onHostingClicked(hosting: TranslationVideo) {
@@ -114,7 +124,7 @@ class TranslationsPresenter @Inject constructor(
     //Only embedded player can process object payload
     //Others o uses urls
     private fun openVideo(payload: TranslationVideo, playerType: PlayerType) {
-        if (playerType == PlayerType.EMBEDDED) openPlayer(playerType, EmbeddedPlayerNavigationData(navigationData.name, navigationData.rateId, items.firstOrNull()!!.episodesSize, payload))
+        if (playerType == PlayerType.EMBEDDED) openPlayer(playerType, EmbeddedPlayerNavigationData(navigationData.name, navigationData.rateId, items.firstOrNull()!!.episodesSize, payload, !navigationData.isAutoSelect))
         else getVideoAndExecute(payload) { selectedPlayer = playerType; showQualityChooser(it.tracks) }
     }
 
