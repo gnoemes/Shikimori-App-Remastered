@@ -10,18 +10,20 @@ import io.reactivex.Single
 
 interface SeriesRepository {
 
-    fun getEpisodes(id : Long, alternative : Boolean) : Single<List<Episode>>
+    fun getEpisodes(id: Long, alternative: Boolean): Single<List<Episode>>
 
     fun getTranslations(type: TranslationType, animeId: Long, episodeId: Long, alternative: Boolean): Single<List<Translation>>
 
-    fun getVideo(payload : TranslationVideo, alternative: Boolean) : Single<Video>
+    fun getVideo(payload: TranslationVideo, alternative: Boolean): Single<Video>
 
-    fun setEpisodeStatus(animeId: Long, episodeId: Int, isWatched : Boolean): Completable
+    fun setEpisodeStatus(animeId: Long, episodeId: Int, isWatched: Boolean): Completable
 
     fun isEpisodeWatched(animeId: Long, episodeId: Int): Single<Boolean>
 
-    fun getTopic(animeId: Long, episodeId: Int) : Single<Long>
+    fun getTopic(animeId: Long, episodeId: Int): Single<Long>
 
-    fun getFirstNotWatchedEpisodeIndex(animeId: Long) : Single<Int>
+    fun getFirstNotWatchedEpisodeIndex(animeId: Long): Single<Int>
+
+    fun getWatchedEpisodesCount(animeId: Long): Single<Int>
 
 }

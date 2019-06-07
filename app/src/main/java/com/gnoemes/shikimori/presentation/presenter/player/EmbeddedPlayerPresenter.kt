@@ -83,10 +83,9 @@ class EmbeddedPlayerPresenter @Inject constructor(
 
     private fun setEpisodeWatched() {
         if (!settingsSource.isAutoIncrement) return
-        interactor.let {
-            if (navigationData.rateId != null && !navigationData.delegateRate) it.setEpisodeWatched(animeId, currentEpisode, navigationData.rateId!!, false)
-            else it.sendEpisodeChanges(EpisodeChanges(animeId, currentEpisode, true))
-        }
+        val rateId = navigationData.rateId ?: Constants.NO_ID
+        interactor
+                .sendEpisodeChanges(EpisodeChanges.Changes(rateId, animeId, currentEpisode, true))
                 .subscribe({}, this::processErrors)
                 .addToDisposables()
     }

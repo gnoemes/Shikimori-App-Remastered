@@ -124,7 +124,7 @@ class TranslationsPresenter @Inject constructor(
     //Only embedded player can process object payload
     //Others o uses urls
     private fun openVideo(payload: TranslationVideo, playerType: PlayerType) {
-        if (playerType == PlayerType.EMBEDDED) openPlayer(playerType, EmbeddedPlayerNavigationData(navigationData.name, navigationData.rateId, items.firstOrNull()!!.episodesSize, payload, !navigationData.isAutoSelect))
+        if (playerType == PlayerType.EMBEDDED) openPlayer(playerType, EmbeddedPlayerNavigationData(navigationData.name, navigationData.rateId, items.firstOrNull()!!.episodesSize, payload))
         else getVideoAndExecute(payload) { selectedPlayer = playerType; showQualityChooser(it.tracks) }
     }
 
@@ -140,11 +140,13 @@ class TranslationsPresenter @Inject constructor(
     override fun openPlayer(playerType: PlayerType, payload: Any?) {
         super.openPlayer(playerType, payload)
 
-        setEpisodeWatched(selectedHosting)
+        if (playerType != PlayerType.EMBEDDED) {
+            setEpisodeWatched(selectedHosting)
+        } else onBackPressed()
     }
 
     private fun setEpisodeWatched(payload: TranslationVideo) {
-        (if (settingsSource.isAutoIncrement) interactor.sendEpisodeChanges(EpisodeChanges(payload.animeId, navigationData.episodeIndex, true))
+        (if (settingsSource.isAutoIncrement) interactor.sendEpisodeChanges(EpisodeChanges.Changes(navigationData.rateId, payload.animeId, navigationData.episodeIndex, true))
         else Completable.complete())
                 .andThen(interactor.saveTranslationSettings(TranslationSetting(payload.animeId, payload.author, payload.type)))
                 .doOnSubscribe { onBackPressed() }

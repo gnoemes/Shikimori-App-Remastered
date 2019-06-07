@@ -79,6 +79,8 @@ class SeriesRepositoryImpl @Inject constructor(
 
     override fun getFirstNotWatchedEpisodeIndex(animeId: Long): Single<Int> = episodeSource.getFirstNotWatchedEpisodeIndex(animeId)
 
+    override fun getWatchedEpisodesCount(animeId: Long): Single<Int> = episodeSource.getWatchedEpisodesCount(animeId)
+
     private fun syncEpisodes(id: Long, list: List<Episode>): Single<List<Episode>> {
         return Single.fromCallable { list }
                 .flatMap { episodes ->

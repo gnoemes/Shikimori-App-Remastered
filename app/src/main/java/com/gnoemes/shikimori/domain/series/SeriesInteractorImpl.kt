@@ -74,6 +74,10 @@ class SeriesInteractorImpl @Inject constructor(
             repository.getFirstNotWatchedEpisodeIndex(animeId)
                     .applyErrorHandlerAndSchedulers()
 
+    override fun getWatchedEpisodesCount(animeId: Long): Single<Int> =
+            repository.getWatchedEpisodesCount(animeId)
+                    .applyErrorHandlerAndSchedulers()
+
     private fun updateRate(animeId: Long, episodeId: Int, rateId: Long, isWatched: Boolean, onlyLocal: Boolean): Completable =
             repository.setEpisodeStatus(animeId, episodeId, isWatched)
                     .andThen(

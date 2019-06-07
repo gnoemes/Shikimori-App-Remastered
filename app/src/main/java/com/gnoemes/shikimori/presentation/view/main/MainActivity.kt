@@ -1,9 +1,12 @@
 package com.gnoemes.shikimori.presentation.view.main
 
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.Handler
+import android.os.IBinder
 import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -11,6 +14,7 @@ import androidx.fragment.app.FragmentTransaction
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.domain.series.SeriesSyncService
 import com.gnoemes.shikimori.entity.app.domain.AnalyticEvent
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.main.BottomScreens
@@ -42,6 +46,8 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView, RouterPr
     @Inject
     lateinit var localNavigatorHolder: NavigatorHolder
 
+    private var seriesSyncService: SeriesSyncService? = null
+
     private val tabs = arrayOf(
             Tab(R.id.tab_rates, BottomScreens.RATES),
             Tab(R.id.tab_calendar, BottomScreens.CALENDAR),
@@ -54,6 +60,19 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView, RouterPr
         super.onCreate(savedInstanceState)
         initBottomNav()
         initContainer()
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        bindService(Intent(this, SeriesSyncService::class.java), seriesSyncServiceConnection, Context.BIND_AUTO_CREATE)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        seriesSyncService?.let {
+            unbindService(seriesSyncServiceConnection)
+        }
     }
 
     private fun initBottomNav() {
@@ -112,6 +131,17 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView, RouterPr
                 BottomScreens.MAIN -> logEvent(AnalyticEvent.NAVIGATION_BOTTOM_MAIN)
                 BottomScreens.MORE -> logEvent(AnalyticEvent.NAVIGATION_BOTTOM_MORE)
             }
+        }
+    }
+
+    private val seriesSyncServiceConnection = object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            val binder = service as? SeriesSyncService.LocalBinder
+            seriesSyncService = binder?.getService()
+        }
+
+        override fun onServiceDisconnected(name: ComponentName?) {
+
         }
     }
 

@@ -1,7 +1,6 @@
 package com.gnoemes.shikimori.presentation.presenter.series.episodes
 
 import com.arellomobile.mvp.InjectViewState
-import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.domain.rates.RatesInteractor
 import com.gnoemes.shikimori.domain.series.SeriesInteractor
 import com.gnoemes.shikimori.domain.user.UserInteractor
@@ -13,7 +12,6 @@ import com.gnoemes.shikimori.entity.app.domain.exceptions.ServiceCodeException
 import com.gnoemes.shikimori.entity.common.domain.Screens
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
-import com.gnoemes.shikimori.entity.rates.domain.UserRate
 import com.gnoemes.shikimori.entity.series.domain.EpisodeChanges
 import com.gnoemes.shikimori.entity.series.presentation.EpisodeViewModel
 import com.gnoemes.shikimori.entity.series.presentation.EpisodesNavigationData
@@ -24,10 +22,7 @@ import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResour
 import com.gnoemes.shikimori.presentation.presenter.series.episodes.converter.EpisodeViewModelConverter
 import com.gnoemes.shikimori.presentation.view.series.episodes.EpisodesView
 import com.gnoemes.shikimori.utils.clearAndAddAll
-import io.reactivex.Completable
-import io.reactivex.Observable
 import io.reactivex.Single
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @InjectViewState
@@ -36,7 +31,6 @@ class EpisodesPresenter @Inject constructor(
         private val ratesInteractor: RatesInteractor,
         private val userInteractor: UserInteractor,
         private val converter: EpisodeViewModelConverter,
-        private val settingsSource: SettingsSource,
         private val resourceProvider: CommonResourceProvider
 ) : BaseNetworkPresenter<EpisodesView>() {
 
@@ -130,9 +124,8 @@ class EpisodesPresenter @Inject constructor(
 
         logEvent(AnalyticEvent.ANIME_EPISODES_CHECKED_MANUALLY)
 
-        (if (rateId == Constants.NO_ID) createRateIfNotExist(rateId).ignoreElement()
-        else Completable.complete())
-                .andThen(interactor.sendEpisodeChanges(EpisodeChanges(item.animeId, item.index, newStatus)))
+        createRateIfNotExist(rateId)
+                .flatMapCompletable { interactor.sendEpisodeChanges(EpisodeChanges.Changes(it, item.animeId, item.index, newStatus)) }
                 .doOnSubscribe { showEpisodeLoading(item, newStatus) }
                 .subscribe({}, this::processErrors)
                 .addToDisposables()
@@ -212,30 +205,12 @@ class EpisodesPresenter @Inject constructor(
         items.take(index).forEach { onEpisodeStatusChanged(it, true) }
     }
 
-    private fun syncRate(changes: MutableList<EpisodeChanges>): Single<List<EpisodeViewModel>> =
-            syncEpisodes(changes).andThen(loadEpisodes())
-
-    private fun syncEpisodes(changes: List<EpisodeChanges>): Completable {
-        return if (changes.size == 1) syncIterable(changes)
-        else syncIterable(changes, true).andThen(syncPatch(items))
-    }
-
-    //uses items to get actual watched episodes (not changes)
-    private fun syncPatch(changes: List<EpisodeViewModel>): Completable =
-            Single.just(changes)
-                    .map { UserRate(rateId, targetId = navigationData.animeId, targetType = Type.ANIME, episodes = it.count { episode -> episode.isWatched }) }
-                    .flatMapCompletable { ratesInteractor.updateRate(it) }
-
-    private fun syncIterable(changes: List<EpisodeChanges>, onlyLocal: Boolean = false): Completable =
-            Observable.fromIterable(changes)
-                    .flatMapCompletable { interactor.setEpisodeStatus(it.animeId, it.episodeIndex, rateId, it.isWatched, onlyLocal) }
-
     private fun subscribeToChanges() {
         interactor.getEpisodeChanges()
-                .buffer(interactor.getEpisodeChanges().debounce(Constants.BIG_DEBOUNCE_INTERVAL, TimeUnit.MILLISECONDS))
+                .filter { it is EpisodeChanges.Success || it is EpisodeChanges.Error }
                 .flatMapSingle {
-                    if (rateId == Constants.NO_ID && !settingsSource.isAutoStatus) loadEpisodes()
-                    else syncRate(it)
+                    if (it is EpisodeChanges.Error) Single.error(it.exception)
+                    else loadEpisodes()
                 }
                 .subscribe(this::setData, this::processErrors)
                 .addToDisposables()

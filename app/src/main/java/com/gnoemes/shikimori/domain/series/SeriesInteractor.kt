@@ -32,4 +32,6 @@ interface SeriesInteractor {
     fun getTopic(animeId: Long, episodeId: Int) : Single<Long>
 
     fun getFirstNotWatchedEpisodeIndex(animeId: Long) : Single<Int>
+
+    fun getWatchedEpisodesCount(animeId: Long) : Single<Int>
 }
