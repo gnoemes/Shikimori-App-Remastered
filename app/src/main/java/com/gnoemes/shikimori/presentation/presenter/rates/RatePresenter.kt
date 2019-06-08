@@ -138,7 +138,6 @@ class RatePresenter @Inject constructor(
     fun onChangeStatus(rateStatus: RateStatus) {
         this.rateStatus = rateStatus
         viewState.selectRateStatus(rateStatus)
-        loadRateCategories()
         loadData()
     }
 
@@ -163,6 +162,13 @@ class RatePresenter @Inject constructor(
         items = data.toMutableList()
         if (show) onSortChanged(sort, isDescendingSort)
         else viewState.showContent(show)
+    }
+
+    override fun showEmptyView(show: Boolean) {
+        if (show) {
+            rateStatus = null
+            loadUserOrCategories()
+        }
     }
 
     fun onQueryChanged(newText: String?) {
@@ -255,6 +261,7 @@ class RatePresenter @Inject constructor(
 
     private fun Completable.subscribeAndRefresh(id: Long) {
         this.andThen(changesInteractor.sendRateChanges(id))
+                .doOnComplete { loadUserOrCategories() }
                 .subscribe(this@RatePresenter::onRefresh, this@RatePresenter::processErrors)
                 .addToDisposables()
     }
@@ -308,7 +315,7 @@ class RatePresenter @Inject constructor(
 
     }
 
-    private inline fun sortAndShow( crossinline sortAction: (MutableList<Any>) -> MutableList<Any>) {
+    private inline fun sortAndShow(crossinline sortAction: (MutableList<Any>) -> MutableList<Any>) {
         Single.just(items)
                 .subscribeOn(Schedulers.single())
                 .observeOn(AndroidSchedulers.mainThread())
