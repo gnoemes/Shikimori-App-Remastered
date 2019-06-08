@@ -28,6 +28,7 @@ import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.rates.domain.UserRate
 import com.gnoemes.shikimori.entity.rates.presentation.RateCategory
 import com.gnoemes.shikimori.entity.rates.presentation.RateNavigationData
+import com.gnoemes.shikimori.entity.series.presentation.SeriesPlaceholderItem
 import com.gnoemes.shikimori.presentation.presenter.rates.RatePresenter
 import com.gnoemes.shikimori.presentation.view.base.adapter.BasePaginationAdapter
 import com.gnoemes.shikimori.presentation.view.base.fragment.BasePaginationFragment
@@ -105,11 +106,13 @@ class RateFragment : BasePaginationFragment<Rate, RatePresenter, RateView>(), Ra
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     toolbar.menuVisibleIf { query.isNullOrEmpty() }
+                    hideSoftInput()
                     return true
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
                     toolbar.menuVisibleIf { newText.isNullOrEmpty() }
+                    getPresenter().onQueryChanged(newText)
                     return true
                 }
             })
@@ -326,7 +329,15 @@ class RateFragment : BasePaginationFragment<Rate, RatePresenter, RateView>(), Ra
 
     override fun onHideLoading() = refreshLayout.hideRefresh()
 
-    override fun showNetworkView() {}
+    override fun showEmptySearchView(it: List<Any>) {
+        //TODO create common placeholder
+        val item = SeriesPlaceholderItem(R.string.rate_search_empty_title, R.string.rate_search_empty_message)
+        val items = it.toMutableList()
+        items.add(item)
+        showData(items)
+    }
 
-    override fun hideNetworkView() {}
+    override fun showNetworkView() = networkErrorView.visible()
+
+    override fun hideNetworkView() = networkErrorView.gone()
 }

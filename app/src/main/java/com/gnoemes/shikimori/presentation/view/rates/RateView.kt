@@ -22,4 +22,6 @@ interface RateView : BasePaginationView {
     fun selectType(type: Type)
 
     fun selectRateStatus(rateStatus: RateStatus)
+
+    fun showEmptySearchView(it: List<Any>)
 }

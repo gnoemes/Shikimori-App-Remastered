@@ -8,6 +8,7 @@ import com.gnoemes.shikimori.entity.rates.presentation.RateSortViewModel
 import com.gnoemes.shikimori.entity.rates.presentation.RateViewModel
 import com.gnoemes.shikimori.presentation.view.base.adapter.BasePaginationAdapter
 import com.gnoemes.shikimori.presentation.view.common.adapter.ProgressAdapterDelegate
+import com.gnoemes.shikimori.presentation.view.series.episodes.adapter.SeriesPlaceholderAdapterDelegate
 import com.gnoemes.shikimori.utils.images.ImageLoader
 
 class RateAdapter(
@@ -23,6 +24,7 @@ class RateAdapter(
             addDelegate(RateAdapterDelegate(imageLoader, navigationCallback, callback))
             addDelegate(ProgressAdapterDelegate())
             addDelegate(RateSortAdapterDelegate(sortCallback))
+            addDelegate(SeriesPlaceholderAdapterDelegate())
         }
     }
 

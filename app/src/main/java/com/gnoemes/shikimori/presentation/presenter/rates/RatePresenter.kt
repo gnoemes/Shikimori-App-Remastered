@@ -61,6 +61,7 @@ class RatePresenter @Inject constructor(
     private var isDescendingSort: Boolean = false
     private var items = mutableListOf<Any>()
     private var sort: RateSort = RateSort.Id
+    private var query: String? = null
 
     override fun onViewReattached() {
         loadUserOrCategories()
@@ -162,6 +163,11 @@ class RatePresenter @Inject constructor(
         items = data.toMutableList()
         if (show) onSortChanged(sort, isDescendingSort)
         else viewState.showContent(show)
+    }
+
+    fun onQueryChanged(newText: String?) {
+        query = newText
+        onSortChanged(sort)
     }
 
     fun onAction(it: DetailsAction) {
@@ -282,14 +288,35 @@ class RatePresenter @Inject constructor(
         return this
     }
 
-    private inline fun sortAndShow(crossinline sortAction: (MutableList<Any>) -> MutableList<Any>) {
+    private fun searchItems(it: MutableList<Any>): MutableList<Any> {
+        val sortItem = it.first()
+        return mutableListOf(sortItem)
+                .union(
+                        it.filter { it is Rate }
+                                .map { it as Rate }
+                                .filter {
+                                    if (it.type == Type.ANIME) it.anime?.name?.contains(query!!, ignoreCase = true) ?: false || it.anime?.nameRu?.contains(query!!, ignoreCase = true) ?: false
+                                    else it.manga?.name?.contains(query!!, ignoreCase = true) ?: false || it.manga?.nameRu?.contains(query!!, ignoreCase = true) ?: false
+                                }
+                )
+                .toMutableList()
+    }
+
+    private fun setData(it: List<Any>) {
+        if (!query.isNullOrBlank() && (it.size == 1 && it.first() is RateSortViewModel)) viewState.showEmptySearchView(it)
+        else viewState.showData(it)
+
+    }
+
+    private inline fun sortAndShow( crossinline sortAction: (MutableList<Any>) -> MutableList<Any>) {
         Single.just(items)
                 .subscribeOn(Schedulers.single())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map { sortAction.invoke(it) }
                 .map { items = it; items }
+                .map { if (!query.isNullOrBlank()) searchItems(it) else it }
                 .map(converter)
-                .subscribe({ viewState.showData(it) }, this::processErrors)
+                .subscribe({ setData(it) }, this::processErrors)
                 .addToDisposables()
     }
 

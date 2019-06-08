@@ -110,7 +110,8 @@
     <string name="rates_title_anime_add">Добавление аниме</string>
     <string name="rates_title_manga_add">Добавление манги</string>
     <string name="rate_switch_list">Переключить список</string>
-
+    <string name="rate_search_empty_title">В этом списке ничего не найдено</string>
+    <string name="rate_search_empty_message">Измените запрос или воспользуйтесь разделом поиска.</string>
 
     <string name="rating_empty">Нет оценки</string>
     <string name="rating_bad_ass">Хуже некуда</string>
