@@ -225,6 +225,16 @@ class RatePresenter @Inject constructor(
         val rateItem = items.find { it is Rate && it.id == rateId } as? Rate
         rateItem?.let { rate ->
             seriesInteractor.getFirstNotWatchedEpisodeIndex(rate.anime?.id!!)
+                    .flatMap { episodeIndex ->
+                        if (episodeIndex < rate.episodes!!) seriesInteractor.getWatchedEpisodesCount(rate.anime.id)
+                                .map { watchedCount ->
+                                    if (watchedCount < rate.episodes) {
+                                        if (rate.anime.episodesAired != 0 && (rate.episodes + 1 > rate.anime.episodesAired && rate.episodes + 1 > rate.anime.episodes)) rate.anime.episodes
+                                        else rate.episodes + 1
+                                    } else episodeIndex
+                                }
+                        else Single.just(episodeIndex)
+                    }
                     .subscribe({ checkRateWatchProgress(true, rate, it) }, this::processErrors)
                     .addToDisposables()
         }
