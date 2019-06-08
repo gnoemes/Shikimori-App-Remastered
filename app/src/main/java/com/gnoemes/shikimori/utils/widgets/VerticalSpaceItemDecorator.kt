@@ -6,8 +6,16 @@ import androidx.recyclerview.widget.RecyclerView
 
 class VerticalSpaceItemDecorator(
         private val space: Int,
-        private val firstAndLastDoubleSpacing: Boolean = false
+        private val firstAndLastDoubleOrCustomSpacing: Boolean = false,
+        private val firstCustomSpacing: Int = -1,
+        private val lastCustomSpacing: Int = -1
 ) : RecyclerView.ItemDecoration() {
+
+    private val firstHasCustom: Boolean
+        get() = firstCustomSpacing != -1
+
+    private val lastHasCustom: Boolean
+        get() = lastCustomSpacing != -1
 
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
         val pos = parent.getChildAdapterPosition(view)
@@ -16,10 +24,9 @@ class VerticalSpaceItemDecorator(
         outRect.top = space
         if (pos == lastIndex) outRect.bottom = space
 
-        if (firstAndLastDoubleSpacing && (pos == 0 || pos == lastIndex)) {
-            if (pos == 0) outRect.top = space * 2
-            else outRect.bottom = space * 2
+        if (firstAndLastDoubleOrCustomSpacing && (pos == 0 || pos == lastIndex)) {
+            if (pos == 0) outRect.top = if (!firstHasCustom) space * 2 else firstCustomSpacing
+            else outRect.bottom = if (!lastHasCustom) space * 2 else lastCustomSpacing
         }
-
     }
 }
