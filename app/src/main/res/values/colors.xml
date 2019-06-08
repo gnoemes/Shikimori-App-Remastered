@@ -111,12 +111,12 @@
     <color name="colorSecondary_yellow_transparent">#1ff9a825</color>
     <color name="colorSecondary_green">#43a047</color>
     <color name="colorSecondary_green_transparent">#1f43a047</color>
-    <color name="colorSecondary_cyan">#00acc1</color>
-    <color name="colorSecondary_cyan_transparent">#1f00acc1</color>
+    <color name="colorSecondary_cyan">#00bcd4</color>
+    <color name="colorSecondary_cyan_transparent">#1f00bcd4</color>
     <color name="colorSecondary_blue">#2196f3</color>
     <color name="colorSecondary_blue_transparent">#1f2196f3</color>
-    <color name="colorSecondary_purple">#e040fb</color>
-    <color name="colorSecondary_purple_transparent">#1fe040fb</color>
+    <color name="colorSecondary_purple">#e358fb</color>
+    <color name="colorSecondary_purple_transparent">#1fe358fb</color>
 
     <color name="status_anons">#ca4929</color>
     <color name="status_ongoing">#1d78b7</color>
