@@ -6,8 +6,11 @@ import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.domain.rates.RateChangesInteractor
 import com.gnoemes.shikimori.domain.rates.RatesInteractor
 import com.gnoemes.shikimori.domain.series.SeriesInteractor
+import com.gnoemes.shikimori.domain.user.UserInteractor
 import com.gnoemes.shikimori.entity.app.domain.AnalyticEvent
 import com.gnoemes.shikimori.entity.app.domain.Constants
+import com.gnoemes.shikimori.entity.app.domain.exceptions.BaseException
+import com.gnoemes.shikimori.entity.app.domain.exceptions.ContentException
 import com.gnoemes.shikimori.entity.common.domain.Screens
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.common.presentation.DetailsAction
@@ -16,6 +19,7 @@ import com.gnoemes.shikimori.entity.common.presentation.SortAction
 import com.gnoemes.shikimori.entity.rates.domain.Rate
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.rates.domain.UserRate
+import com.gnoemes.shikimori.entity.rates.presentation.RateCategory
 import com.gnoemes.shikimori.entity.rates.presentation.RateSortViewModel
 import com.gnoemes.shikimori.entity.series.domain.TranslationSetting
 import com.gnoemes.shikimori.entity.series.presentation.TranslationsNavigationData
@@ -23,6 +27,7 @@ import com.gnoemes.shikimori.presentation.presenter.base.BasePaginationPresenter
 import com.gnoemes.shikimori.presentation.presenter.common.paginator.ViewController
 import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResourceProvider
 import com.gnoemes.shikimori.presentation.presenter.common.provider.SortResourceProvider
+import com.gnoemes.shikimori.presentation.presenter.rates.converter.RateCountConverter
 import com.gnoemes.shikimori.presentation.presenter.rates.converter.RateViewModelConverter
 import com.gnoemes.shikimori.presentation.view.rates.RateView
 import io.reactivex.Completable
@@ -33,6 +38,7 @@ import javax.inject.Inject
 
 @InjectViewState
 class RatePresenter @Inject constructor(
+        private val userInteractor: UserInteractor,
         private val ratesInteractor: RatesInteractor,
         private val seriesInteractor: SeriesInteractor,
         private val sortResourceProvider: SortResourceProvider,
@@ -40,12 +46,14 @@ class RatePresenter @Inject constructor(
         private val resourceProvider: CommonResourceProvider,
         private val settingsSource: SettingsSource,
         private val sortSource: RateSortSource,
+        private val rateCountConverter: RateCountConverter,
         private val converter: RateViewModelConverter
 ) : BasePaginationPresenter<Rate, RateView>(), ViewController<Rate> {
 
+    var type: Type = Type.ANIME
     var userId: Long = Constants.NO_ID
-    lateinit var type: Type
-    lateinit var rateStatus: RateStatus
+    var rateStatus: RateStatus? = null
+    var priorityStatus: RateStatus? = null
 
     private val isAnime: Boolean
         get() = type == Type.ANIME
@@ -54,21 +62,92 @@ class RatePresenter @Inject constructor(
     private var items = mutableListOf<Any>()
     private var sort: RateSort = RateSort.Id
 
+    override fun onViewReattached() {
+        loadUserOrCategories()
+        if (rateStatus != null) onRefresh()
+    }
+
     override fun initData() {
-        super.initData()
+        viewState.setNavigationItems(emptyList())
 
         sort = sortSource.getSort(type)
         isDescendingSort = sortSource.getOrder(type)
+
+        viewState.selectType(type)
+        loadUserOrCategories()
     }
 
-    //TODO don't trigger onViewReattached on orientation change
-    override fun onViewReattached() {
-        onRefresh()
+    ///////////////////////////////////////////////////////////////////////////
+    // Rate categories logic
+    ///////////////////////////////////////////////////////////////////////////
+
+    private fun loadUserOrCategories() {
+        if (userId != Constants.NO_ID) loadRateCategories()
+        else loadMyUser()
     }
+
+    private fun loadRateCategories() =
+            userInteractor.getDetails(userId)
+                    .map {
+                        if (isAnime) rateCountConverter.countAnimeRates(it)
+                        else rateCountConverter.countMangaRates(it)
+                    }
+                    .subscribe(this::setRateData, this::processErrors)
+                    .addToDisposables()
+
+
+    private fun loadMyUser() =
+            userInteractor.getMyUserBrief()
+                    .doOnSuccess { userId = it.id }
+                    .doOnSuccess { loadRateCategories() }
+                    .subscribe({ }, this::processUserErrors)
+
+    private fun setRateData(items: List<RateCategory>) {
+        viewState.setNavigationItems(items)
+        if (items.isNotEmpty()) {
+            if (rateStatus == null) onChangeStatus(priorityStatus ?: items.first().status)
+            viewState.hideEmptyView()
+            viewState.hideNetworkView()
+            viewState.showContent(true)
+            priorityStatus = null
+        } else {
+            viewState.showEmptyView()
+            viewState.hideNetworkView()
+            viewState.showContent(false)
+        }
+    }
+
+    private fun processUserErrors(throwable: Throwable) {
+        when ((throwable as? BaseException)?.tag) {
+            ContentException.TAG -> {
+                viewState.showEmptyView()
+                viewState.showContent(false)
+            }
+        }
+    }
+
+    fun onChangeType() {
+        rateStatus = null
+        this.type = if (type == Type.ANIME) Type.MANGA else Type.ANIME
+        viewState.selectType(type)
+        destroyPaginator()
+        loadRateCategories()
+    }
+
+    fun onChangeStatus(rateStatus: RateStatus) {
+        this.rateStatus = rateStatus
+        viewState.selectRateStatus(rateStatus)
+        loadRateCategories()
+        loadData()
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Rate list logic
+    ///////////////////////////////////////////////////////////////////////////
 
     override fun getPaginatorRequestFactory(): (Int) -> Single<List<Rate>> {
-        return if (isAnime) { page: Int -> ratesInteractor.getAnimeRates(userId, page, Constants.MAX_LIMIT, rateStatus) }
-        else { page: Int -> ratesInteractor.getMangaRates(userId, page, Constants.MAX_LIMIT, rateStatus) }
+        return if (isAnime) { page: Int -> ratesInteractor.getAnimeRates(userId, page, Constants.MAX_LIMIT, rateStatus!!) }
+        else { page: Int -> ratesInteractor.getMangaRates(userId, page, Constants.MAX_LIMIT, rateStatus!!) }
     }
 
     override fun showEmptyError(show: Boolean, throwable: Throwable?) {
@@ -174,7 +253,7 @@ class RatePresenter @Inject constructor(
                 .addToDisposables()
     }
 
-    fun onSortChanged(sort : RateSort) {
+    fun onSortChanged(sort: RateSort) {
         onSortChanged(sort, isDescendingSort)
     }
 
@@ -199,7 +278,7 @@ class RatePresenter @Inject constructor(
     //TODO optimization?
     private fun MutableList<Any>.addSortItem(): MutableList<Any> {
         val sorts = if (isAnime) sortResourceProvider.getAnimeRateSorts() else sortResourceProvider.getMangaRateSorts()
-        add(0, RateSortViewModel(rateStatus, sort, sorts, isDescendingSort, isAnime))
+        add(0, RateSortViewModel(rateStatus!!, sort, sorts, isDescendingSort, isAnime))
         return this
     }
 

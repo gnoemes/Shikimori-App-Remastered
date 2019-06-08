@@ -3,6 +3,7 @@ package com.gnoemes.shikimori.presentation.view.base.fragment
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -40,6 +41,10 @@ abstract class BaseBottomSheetDialogFragment : MvpDialogFragment() {
                     setCanceledOnTouchOutside(true)
                     setOnShowListener {
                         bottomSheet = (it as BottomSheetDialog).findViewById(R.id.design_bottom_sheet)!!
+                        if (peekHeight != -1 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            it.window?.statusBarColor = Color.TRANSPARENT
+                        }
+
                         bottomSheet.background = AppCompatResources.getDrawable(context, R.drawable.bg_bottom_sheet_window)
                         if (peekHeight == -1) bottomSheet.layoutParams = bottomSheet.layoutParams.apply { height = ViewGroup.LayoutParams.MATCH_PARENT }
                         else BottomSheetBehavior.from(bottomSheet).peekHeight = peekHeight

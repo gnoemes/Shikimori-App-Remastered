@@ -10,7 +10,7 @@ import com.gnoemes.shikimori.di.friends.FriendsModule;
 import com.gnoemes.shikimori.di.manga.MangaModule;
 import com.gnoemes.shikimori.di.more.MoreModule;
 import com.gnoemes.shikimori.di.person.PersonModule;
-import com.gnoemes.shikimori.di.rate.RateContainerModule;
+import com.gnoemes.shikimori.di.rate.RateModule;
 import com.gnoemes.shikimori.di.search.FilterModule;
 import com.gnoemes.shikimori.di.search.SearchModule;
 import com.gnoemes.shikimori.di.series.EpisodeModule;
@@ -29,7 +29,7 @@ import com.gnoemes.shikimori.presentation.view.friends.FriendsFragment;
 import com.gnoemes.shikimori.presentation.view.manga.MangaFragment;
 import com.gnoemes.shikimori.presentation.view.more.MoreFragment;
 import com.gnoemes.shikimori.presentation.view.person.PersonFragment;
-import com.gnoemes.shikimori.presentation.view.rates.RatesContainerFragment;
+import com.gnoemes.shikimori.presentation.view.rates.RateFragment;
 import com.gnoemes.shikimori.presentation.view.search.SearchFragment;
 import com.gnoemes.shikimori.presentation.view.search.filter.FilterFragment;
 import com.gnoemes.shikimori.presentation.view.search.filter.genres.FilterGenresFragment;
@@ -65,8 +65,8 @@ public interface FragmentInjectionModule {
     AnimeFragment animeFragmentInjector();
 
     @BottomChildScope
-    @ContributesAndroidInjector(modules = RateContainerModule.class)
-    RatesContainerFragment ratesContainerFragment();
+    @ContributesAndroidInjector(modules = RateModule.class)
+    RateFragment ratesFragment();
 
     @BottomChildScope
     @ContributesAndroidInjector(modules = SearchModule.class)

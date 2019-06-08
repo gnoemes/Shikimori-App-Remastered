@@ -13,6 +13,7 @@
         <item name="actionOverflowButtonStyle">@style/Toolbar.Button.Overflow.Tinted</item>
 
         <item name="rateStyleStrokeWidth">0dp</item>
+        <item name="themeStrokeWidth">0dp</item>
     </style>
 
     <style name="ShikimoriAppTheme.Launch" parent="ShikimoriAppTheme.Base">
@@ -155,6 +156,7 @@
         <item name="android:listDivider">@drawable/list_divider_amoled</item>
 
         <item name="rateStyleStrokeWidth">1dp</item>
+        <item name="themeStrokeWidth">1dp</item>
 
         <item name="colorRateDefault">@color/rate_default_transparent</item>
         <item name="colorRateWatched">@color/rate_watched_transparent</item>

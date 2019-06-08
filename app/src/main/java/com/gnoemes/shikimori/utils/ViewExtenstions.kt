@@ -5,6 +5,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
+import androidx.appcompat.widget.Toolbar
+import androidx.core.view.iterator
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.utils.widgets.DebouncedOnClickListener
@@ -65,6 +67,19 @@ fun ImageView.tintWithRes(@ColorRes colorRes: Int) = tint(context.color(colorRes
 fun ImageView.tint(@ColorInt colorInt: Int) = setColorFilter(colorInt)
 
 fun ImageView.hasImage() = drawable != null
+
+fun Toolbar.menuVisibleIf(block: () -> Boolean) {
+    if (block.invoke()) showMenu()
+    else hideMenu()
+}
+
+fun Toolbar.hideMenu() {
+    this.menu?.iterator()?.forEach { menuItem -> menuItem.isVisible = false }
+}
+
+fun Toolbar.showMenu() {
+    this.menu?.iterator()?.forEach { menuItem -> menuItem.isVisible = true }
+}
 
 
 

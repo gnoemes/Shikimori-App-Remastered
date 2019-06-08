@@ -27,7 +27,7 @@ import com.gnoemes.shikimori.presentation.view.more.MoreFragment
 import com.gnoemes.shikimori.presentation.view.person.PersonFragment
 import com.gnoemes.shikimori.presentation.view.player.embedded.EmbeddedPlayerActivity
 import com.gnoemes.shikimori.presentation.view.player.web.WebPlayerActivity
-import com.gnoemes.shikimori.presentation.view.rates.RatesContainerFragment
+import com.gnoemes.shikimori.presentation.view.rates.RateFragment
 import com.gnoemes.shikimori.presentation.view.search.SearchFragment
 import com.gnoemes.shikimori.presentation.view.series.episodes.EpisodesFragment
 import com.gnoemes.shikimori.presentation.view.series.translations.TranslationsFragment
@@ -43,7 +43,7 @@ object RouteHolder {
 
     fun createFragment(screenKey: String?, data: Any?): Fragment? {
         return when (screenKey) {
-            BottomScreens.RATES -> RatesContainerFragment.newInstance(data as? RateNavigationData)
+            BottomScreens.RATES -> RateFragment.newInstance(data as? RateNavigationData)
             BottomScreens.CALENDAR -> CalendarFragment.newInstance()
             BottomScreens.SEARCH -> SearchFragment.newInstance(data as? SearchNavigationData)
             BottomScreens.MAIN -> ShikimoriMainFragment.newInstance()

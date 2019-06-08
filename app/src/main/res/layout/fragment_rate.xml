@@ -1,4 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge>
-    <include layout="@layout/layout_default_list" />
-</merge>
+<com.infideap.drawerbehavior.AdvanceDrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorRateMenuBackground"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinator"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorSurface"
+        android:fitsSystemWindows="true">
+
+        <include layout="@layout/layout_default_placeholders" />
+
+        <include layout="@layout/layout_default_list" />
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:fitsSystemWindows="true"
+            android:focusableInTouchMode="true"
+            app:elevation="0dp"
+            app:layout_collapseMode="pin">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="12dp"
+                app:cardBackgroundColor="?attr/colorPrimary"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="3dp"
+                app:strokeWidth="?attr/themeStrokeWidth"
+                app:strokeColor="?attr/colorDivider"
+                app:cardPreventCornerOverlap="false"
+                app:layout_scrollFlags="scroll|enterAlways|snap">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    style="@style/ToolbarStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@android:color/transparent"
+                    android:fitsSystemWindows="true"
+                    app:contentInsetStart="0dp"
+                    app:contentInsetStartWithNavigation="0dp"
+                    app:popupTheme="@style/PopupMenuTheme"
+                    app:title="@string/app_name">
+
+                    <androidx.appcompat.widget.SearchView
+                        android:id="@+id/searchView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        app:iconifiedByDefault="false"
+                        app:queryBackground="@android:color/transparent"
+                        app:searchIcon="@null"
+                        app:search_elevation="0dp"
+                        app:search_hint_color="?attr/colorTransparentBackground"
+                        app:search_text_color="?attr/colorOnSurface"
+                        app:search_text_size="16sp" />
+
+                </androidx.appcompat.widget.Toolbar>
+            </com.google.android.material.card.MaterialCardView>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@android:color/transparent"
+        android:maxWidth="200dp"
+        app:itemIconTint="?attr/colorOnPrimary"
+        app:itemTextColor="?attr/colorOnPrimary" />
+
+</com.infideap.drawerbehavior.AdvanceDrawerLayout>

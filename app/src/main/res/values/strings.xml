@@ -37,6 +37,7 @@
     <string name="common_anime">Аниме</string>
     <string name="common_manga">Манга</string>
     <string name="common_ranobe">Ранобэ</string>
+    <string name="common_manga_and_ranobe">Манга и ранобэ</string>
     <string name="common_video">Видео</string>
     <string name="common_empty">Ничего не найдено</string>
     <string name="common_need_auth">Для данного действия необходима авторизация</string>
@@ -108,6 +109,7 @@
     <string name="rates_title_manga">Редактирование манги</string>
     <string name="rates_title_anime_add">Добавление аниме</string>
     <string name="rates_title_manga_add">Добавление манги</string>
+    <string name="rate_switch_list">Переключить список</string>
 
 
     <string name="rating_empty">Нет оценки</string>
