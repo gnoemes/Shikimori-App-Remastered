@@ -5,7 +5,7 @@
     android:id="@+id/appBarLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/colorSurface"
+    android:background="@android:color/transparent"
     android:fitsSystemWindows="true"
     app:elevation="0dp">
 
@@ -16,7 +16,8 @@
         android:fitsSystemWindows="true"
         app:layout_scrollFlags="snap"
         app:popupTheme="@style/PopupMenuTheme"
-        app:title="@string/app_name">
+        app:title="@string/app_name"
+        app:titleTextAppearance="@style/ToolbarSmallTextAppearance">
 
         <ImageButton
             android:id="@+id/acceptBtn"
