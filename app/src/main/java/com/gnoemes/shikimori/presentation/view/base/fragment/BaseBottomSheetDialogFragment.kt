@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.annotation.LayoutRes
+import androidx.appcompat.content.res.AppCompatResources
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.utils.getCurrentAscentTheme
 import com.gnoemes.shikimori.utils.wrapTheme
@@ -39,7 +40,7 @@ abstract class BaseBottomSheetDialogFragment : MvpDialogFragment() {
                     setCanceledOnTouchOutside(true)
                     setOnShowListener {
                         bottomSheet = (it as BottomSheetDialog).findViewById(R.id.design_bottom_sheet)!!
-                        bottomSheet.background = ColorDrawable(Color.TRANSPARENT)
+                        bottomSheet.background = AppCompatResources.getDrawable(context, R.drawable.bg_bottom_sheet_window)
                         if (peekHeight == -1) bottomSheet.layoutParams = bottomSheet.layoutParams.apply { height = ViewGroup.LayoutParams.MATCH_PARENT }
                         else BottomSheetBehavior.from(bottomSheet).peekHeight = peekHeight
 

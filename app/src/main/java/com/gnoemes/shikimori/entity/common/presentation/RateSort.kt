@@ -1,7 +1,9 @@
 package com.gnoemes.shikimori.entity.common.presentation
 
+import java.io.Serializable
+
 //TODO generic sort interface for different lists
-sealed class RateSort(val order: Int) {
+sealed class RateSort(val order: Int) : Serializable {
     object Id : RateSort(0)
     object Name : RateSort(1)
     object Type : RateSort(2)

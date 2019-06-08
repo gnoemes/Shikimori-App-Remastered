@@ -35,7 +35,7 @@ class RateSortAdapterDelegate(
             get() = if (isDescending) R.drawable.ic_sort_descending else R.drawable.ic_sort_ascending
 
         init {
-            itemView.sortView.onClick { callback.invoke(SortAction.ChangeSort) }
+            itemView.sortView.onClick { callback.invoke(SortAction.ChangeSort(item.sorts.map { Triple(it.first, it.second, it.first == item.currentSort) })) }
             itemView.orderView.onClick {
                 isDescending = !isDescending
                 callback.invoke(SortAction.ChangeOrder(isDescending))

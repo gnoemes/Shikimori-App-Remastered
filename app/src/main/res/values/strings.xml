@@ -188,6 +188,7 @@
     <string name="type_manhua_translatable">Маньхуа</string>
     <string name="type_manhwa_translatable">Манхва</string>
 
+    <string name="sort">Сортировка</string>
     <string name="sort_id">По порядку</string>
     <string name="sort_type">По типу</string>
     <string name="sort_date">По дате выхода</string>

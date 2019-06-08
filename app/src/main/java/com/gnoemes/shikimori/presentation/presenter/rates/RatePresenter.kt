@@ -96,12 +96,12 @@ class RatePresenter @Inject constructor(
     fun onSortAction(it: SortAction) {
         when (it) {
             is SortAction.ChangeOrder -> onSortChanged(sort, it.isDescending)
-            is SortAction.ChangeSort -> onShowSortDialog()
+            is SortAction.ChangeSort -> onShowSortDialog(it.sorts)
         }
     }
 
-    private fun onShowSortDialog() {
-        viewState.showSortDialog()
+    private fun onShowSortDialog(sorts: List<Triple<RateSort, String, Boolean>>) {
+        viewState.showSortDialog(sorts)
     }
 
     fun onOpenRandom() {
@@ -174,7 +174,11 @@ class RatePresenter @Inject constructor(
                 .addToDisposables()
     }
 
-    fun onSortChanged(sort: RateSort, desc: Boolean) {
+    fun onSortChanged(sort : RateSort) {
+        onSortChanged(sort, isDescendingSort)
+    }
+
+    private fun onSortChanged(sort: RateSort, desc: Boolean) {
         isDescendingSort = desc
         this.sort = sort
         sortSource.saveSort(type, sort)

@@ -9,6 +9,7 @@ import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.app.domain.AppExtras
 import com.gnoemes.shikimori.entity.common.domain.Type
+import com.gnoemes.shikimori.entity.common.presentation.RateSort
 import com.gnoemes.shikimori.entity.rates.domain.Rate
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.rates.domain.UserRate
@@ -18,6 +19,7 @@ import com.gnoemes.shikimori.presentation.view.base.fragment.BasePaginationFragm
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
 import com.gnoemes.shikimori.presentation.view.common.fragment.EditRateFragment
 import com.gnoemes.shikimori.presentation.view.rates.adapter.RateAdapter
+import com.gnoemes.shikimori.presentation.view.rates.sort.RateSortDialog
 import com.gnoemes.shikimori.utils.*
 import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.gnoemes.shikimori.utils.widgets.VerticalSpaceItemDecorator
@@ -27,7 +29,7 @@ import kotlinx.android.synthetic.main.layout_progress.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import javax.inject.Inject
 
-class RateFragment : BasePaginationFragment<Rate, RatePresenter, RateView>(), RateView, EditRateFragment.RateDialogCallback, RandomRateListener {
+class RateFragment : BasePaginationFragment<Rate, RatePresenter, RateView>(), RateView, EditRateFragment.RateDialogCallback, RandomRateListener, RateSortDialog.RateSortCallback {
 
     @Inject
     lateinit var imageLoader: ImageLoader
@@ -100,6 +102,10 @@ class RateFragment : BasePaginationFragment<Rate, RatePresenter, RateView>(), Ra
         getPresenter().onOpenRandom()
     }
 
+    override fun onSortClicked(sort: RateSort) {
+        getPresenter().onSortChanged(sort)
+    }
+
     ///////////////////////////////////////////////////////////////////////////
     // GETTERS
     ///////////////////////////////////////////////////////////////////////////
@@ -125,7 +131,9 @@ class RateFragment : BasePaginationFragment<Rate, RatePresenter, RateView>(), Ra
         dialog.show(childFragmentManager, "RateTag")
     }
 
-    override fun showSortDialog() {
+    override fun showSortDialog(sorts: List<Triple<RateSort, String, Boolean>>) {
+        val dialog = RateSortDialog.newInstance(sorts)
+        dialog.show(childFragmentManager, "SortDialog")
     }
 
     override fun showContent(show: Boolean) = recyclerView.visibleIf { show }

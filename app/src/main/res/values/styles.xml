@@ -25,6 +25,12 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="MenuTextAppearance">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="titleTextColor">?attr/colorOnSurface</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
     <style name="Toolbar.Button.Navigation.Tinted" parent="Widget.AppCompat.Toolbar.Button.Navigation">
         <item name="tint">?attr/colorOnPrimary</item>
     </style>
