@@ -320,10 +320,8 @@ class RateFragment : BasePaginationFragment<Rate, RatePresenter, RateView>(), Ra
         }
     }
 
-    override fun showContent(show: Boolean) {
-        recyclerView.visibleIf { show }
-        appBarLayout.visibleIf { show }
-    }
+    override fun showContent(show: Boolean) = recyclerView.visibleIf { show }
+
 
     override fun onShowLoading() = refreshLayout.showRefresh()
 

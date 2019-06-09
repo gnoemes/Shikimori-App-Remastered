@@ -58,6 +58,10 @@ class RatePresenter @Inject constructor(
     private val isAnime: Boolean
         get() = type == Type.ANIME
 
+    private val isUserExist: Boolean
+        get() = userId != Constants.NO_ID
+
+
     private var isDescendingSort: Boolean = false
     private var items = mutableListOf<Any>()
     private var sort: RateSort = RateSort.Id
@@ -83,7 +87,7 @@ class RatePresenter @Inject constructor(
     ///////////////////////////////////////////////////////////////////////////
 
     private fun loadUserOrCategories() {
-        if (userId != Constants.NO_ID) loadRateCategories()
+        if (isUserExist) loadRateCategories()
         else loadMyUser()
     }
 
@@ -128,17 +132,21 @@ class RatePresenter @Inject constructor(
     }
 
     fun onChangeType() {
-        rateStatus = null
-        this.type = if (type == Type.ANIME) Type.MANGA else Type.ANIME
-        viewState.selectType(type)
-        destroyPaginator()
-        loadRateCategories()
+        if (isUserExist) {
+            destroyPaginator()
+            rateStatus = null
+            this.type = if (type == Type.ANIME) Type.MANGA else Type.ANIME
+            viewState.selectType(type)
+            loadRateCategories()
+        }
     }
 
     fun onChangeStatus(rateStatus: RateStatus) {
-        this.rateStatus = rateStatus
-        viewState.selectRateStatus(rateStatus)
-        loadData()
+        if (isUserExist) {
+            this.rateStatus = rateStatus
+            viewState.selectRateStatus(rateStatus)
+            loadData()
+        }
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -146,7 +154,8 @@ class RatePresenter @Inject constructor(
     ///////////////////////////////////////////////////////////////////////////
 
     override fun getPaginatorRequestFactory(): (Int) -> Single<List<Rate>> {
-        return if (isAnime) { page: Int -> ratesInteractor.getAnimeRates(userId, page, Constants.MAX_LIMIT, rateStatus!!) }
+        return if (rateStatus == null) { page: Int -> Single.error(IllegalStateException()) }
+        else if (isAnime) { page: Int -> ratesInteractor.getAnimeRates(userId, page, Constants.MAX_LIMIT, rateStatus!!) }
         else { page: Int -> ratesInteractor.getMangaRates(userId, page, Constants.MAX_LIMIT, rateStatus!!) }
     }
 
