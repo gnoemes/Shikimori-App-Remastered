@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -127,6 +128,7 @@ class RateFragment : BasePaginationFragment<Rate, RatePresenter, RateView>(), Ra
                     }; leftMargin = 0
                 }
             }
+            findViewById<ImageView>(R.id.search_close_btn)?.setPadding(context!!.dp(8), 0, context!!.dp(16), 0)
         }
 
         savedInstanceState?.let {
