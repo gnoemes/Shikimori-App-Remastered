@@ -1,7 +1,9 @@
 package com.gnoemes.shikimori.presentation.presenter.rates.converter
 
 import android.content.Context
+import android.graphics.Color
 import android.text.SpannableStringBuilder
+import androidx.core.graphics.ColorUtils
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.entity.anime.domain.AnimeType
@@ -12,12 +14,15 @@ import com.gnoemes.shikimori.entity.rates.domain.Rate
 import com.gnoemes.shikimori.entity.rates.presentation.RateViewModel
 import com.gnoemes.shikimori.utils.color
 import com.gnoemes.shikimori.utils.colorSpan
+import com.gnoemes.shikimori.utils.getCurrentTheme
 import javax.inject.Inject
 
 class RateViewModelConverterImpl @Inject constructor(
         private val context: Context,
         private val settings: SettingsSource
 ) : RateViewModelConverter {
+
+    private val isDarkTheme by lazy { context.getCurrentTheme != R.style.ShikimoriAppTheme_Default }
 
     override fun apply(t: List<Any>): List<Any> =
             t.map {
@@ -61,7 +66,8 @@ class RateViewModelConverterImpl @Inject constructor(
 
         fun appendDotIfNotEmpty() {
             if (builder.isNotEmpty()) {
-                val divider = " • "
+                val color = if (isDarkTheme) Color.WHITE else Color.BLACK
+                val divider = "  •  ".colorSpan(ColorUtils.setAlphaComponent(color, 97))
                 builder.append(divider)
             }
         }
