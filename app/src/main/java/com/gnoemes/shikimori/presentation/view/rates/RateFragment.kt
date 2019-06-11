@@ -16,6 +16,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
+import androidx.core.view.iterator
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.arellomobile.mvp.presenter.InjectPresenter
@@ -185,6 +186,8 @@ class RateFragment : BasePaginationFragment<Rate, RatePresenter, RateView>(), Ra
         navView.itemTextColor = AppCompatResources.getColorStateList(context!!, getRateTextColor(RateStatus.WATCHING.ordinal))
         navView.setNavigationItemSelectedListener {
             getPresenter().onChangeStatus(RateStatus.values()[it.itemId])
+            navView.menu.iterator().forEach { item -> item.actionView.isSelected = false }
+            it.actionView.isSelected = true
             true
         }
 
