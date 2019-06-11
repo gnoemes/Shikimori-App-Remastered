@@ -109,7 +109,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/playBtn"
             app:layout_constraintTop_toBottomOf="@+id/descriptionView"
-            app:layout_constraintVertical_bias="1" />
+            app:layout_constraintVertical_bias="1"
+            app:layout_goneMarginEnd="12dp"
+            app:layout_goneMarginRight="12dp" />
 
 
         <com.google.android.material.button.MaterialButton
@@ -117,12 +119,22 @@
             style="@style/FilledCircleButtonStyle"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="12dp"
             android:layout_marginRight="16dp"
             app:icon="@drawable/ic_play_arrow"
             app:layout_constraintBottom_toBottomOf="@+id/rateEditBtn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/rateEditBtn" />
+
+        <ImageView
+            android:id="@+id/pinView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_pin_badge" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

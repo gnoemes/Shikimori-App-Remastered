@@ -7,9 +7,11 @@ import androidx.core.graphics.ColorUtils
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.entity.anime.domain.AnimeType
+import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.common.domain.Status
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.manga.domain.MangaType
+import com.gnoemes.shikimori.entity.rates.domain.PinnedRate
 import com.gnoemes.shikimori.entity.rates.domain.Rate
 import com.gnoemes.shikimori.entity.rates.presentation.RateViewModel
 import com.gnoemes.shikimori.utils.color
@@ -24,13 +26,22 @@ class RateViewModelConverterImpl @Inject constructor(
 
     private val isDarkTheme by lazy { context.getCurrentTheme != R.style.ShikimoriAppTheme_Default }
 
-    override fun apply(t: List<Any>): List<Any> =
-            t.map {
-                if (it is Rate) convertRate(it)
-                else it
-            }
+    override fun apply(t: List<Any>, pinned: List<PinnedRate>): List<Any> =
+            t.asSequence()
+                    .map {
+                        if (it is Rate) convertRate(it, pinned)
+                        else it
+                    }.sortedBy {
+                        if (it is RateViewModel) !it.isPinned
+                        else false
+                    }
+                    .sortedBy {
+                        if (it is RateViewModel) it.pinOrder
+                        else 0
+                    }
+                    .toMutableList()
 
-    private fun convertRate(it: Rate): RateViewModel {
+    private fun convertRate(it: Rate, pinned: List<PinnedRate>): RateViewModel {
         val type = if (it.manga == null) Type.ANIME else Type.MANGA
 
         fun isAnime(): Boolean = type == Type.ANIME
@@ -48,6 +59,9 @@ class RateViewModelConverterImpl @Inject constructor(
         val description = getDescription(it)
         val progress = if (isAnime()) it.episodes.invalidIfNullOrZero() else it.chapters.invalidIfNullOrZero()
 
+        val pinnedRate = pinned.find { contentId == it.id }
+        val isPinned = pinnedRate != null
+
         return RateViewModel(
                 it.id,
                 contentId,
@@ -57,7 +71,9 @@ class RateViewModelConverterImpl @Inject constructor(
                 description,
                 it.score.invalidIfNullOrZero(),
                 progress,
-                it
+                it,
+                isPinned,
+                pinnedRate?.order ?: Constants.MAX_PINNED_RATES + 1
         )
     }
 

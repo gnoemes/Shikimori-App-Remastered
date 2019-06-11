@@ -6,10 +6,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.SearchView
@@ -144,7 +141,7 @@ class RateFragment : BasePaginationFragment<Rate, RatePresenter, RateView>(), Ra
             layoutManager = LinearLayoutManager(context).apply { initialPrefetchItemCount = 5 }
             itemAnimator = DefaultItemAnimator()
             val customSpacing = context.dp(76)
-            addItemDecoration(VerticalSpaceItemDecorator(context.dp(8), true, firstCustomSpacing = customSpacing))
+            addItemDecoration(VerticalSpaceItemDecorator(context.dp(8), true, firstCustomSpacing = customSpacing, lastCustomSpacing = context!!.dp(16)))
             addOnScrollListener(nextPageListener)
             setHasFixedSize(true)
         }
@@ -338,6 +335,10 @@ class RateFragment : BasePaginationFragment<Rate, RatePresenter, RateView>(), Ra
         val items = it.toMutableList()
         items.add(item)
         showData(items)
+    }
+
+    override fun showPinLimitMessage() {
+        Toast.makeText(context!!, R.string.rate_pin_max_message, Toast.LENGTH_SHORT).show()
     }
 
     override fun showNetworkView() = networkErrorView.visible()

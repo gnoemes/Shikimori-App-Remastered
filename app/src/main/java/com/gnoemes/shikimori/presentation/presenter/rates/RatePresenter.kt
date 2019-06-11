@@ -3,6 +3,7 @@ package com.gnoemes.shikimori.presentation.presenter.rates
 import com.arellomobile.mvp.InjectViewState
 import com.gnoemes.shikimori.data.local.preference.RateSortSource
 import com.gnoemes.shikimori.data.local.preference.SettingsSource
+import com.gnoemes.shikimori.domain.rates.PinnedRateInteractor
 import com.gnoemes.shikimori.domain.rates.RateChangesInteractor
 import com.gnoemes.shikimori.domain.rates.RatesInteractor
 import com.gnoemes.shikimori.domain.series.SeriesInteractor
@@ -16,11 +17,13 @@ import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.common.presentation.DetailsAction
 import com.gnoemes.shikimori.entity.common.presentation.RateSort
 import com.gnoemes.shikimori.entity.common.presentation.SortAction
+import com.gnoemes.shikimori.entity.rates.domain.PinnedRate
 import com.gnoemes.shikimori.entity.rates.domain.Rate
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.rates.domain.UserRate
 import com.gnoemes.shikimori.entity.rates.presentation.RateCategory
 import com.gnoemes.shikimori.entity.rates.presentation.RateSortViewModel
+import com.gnoemes.shikimori.entity.rates.presentation.RateViewModel
 import com.gnoemes.shikimori.entity.series.domain.TranslationSetting
 import com.gnoemes.shikimori.entity.series.presentation.TranslationsNavigationData
 import com.gnoemes.shikimori.presentation.presenter.base.BasePaginationPresenter
@@ -43,6 +46,7 @@ class RatePresenter @Inject constructor(
         private val seriesInteractor: SeriesInteractor,
         private val sortResourceProvider: SortResourceProvider,
         private val changesInteractor: RateChangesInteractor,
+        private val pinInteractor: PinnedRateInteractor,
         private val resourceProvider: CommonResourceProvider,
         private val settingsSource: SettingsSource,
         private val sortSource: RateSortSource,
@@ -66,6 +70,7 @@ class RatePresenter @Inject constructor(
     private var items = mutableListOf<Any>()
     private var sort: RateSort = RateSort.Id
     private var query: String? = null
+    private var pinnedRates: Int = 0
 
     override fun onViewReattached() {
         loadUserOrCategories()
@@ -190,6 +195,19 @@ class RatePresenter @Inject constructor(
             is DetailsAction.ChangeRateStatus -> onChangeRateStatus(it.id, it.newStatus)
             is DetailsAction.EditRate -> onEditRate(it.rate)
             is DetailsAction.WatchOnline -> onWatchOnline(it.id!!)
+            is DetailsAction.Pin -> onPinRate(it.rate)
+        }
+    }
+
+    private fun onPinRate(rate: RateViewModel) {
+        if (pinnedRates > Constants.MAX_PINNED_RATES) viewState.showPinLimitMessage()
+        else {
+            if (rate.isPinned) pinInteractor.removePinnedRate(rate.contentId)
+                    .subscribe({ onSortChanged(sort) }, this::processErrors)
+                    .addToDisposables()
+            else pinInteractor.addPinnedRate(PinnedRate(rate.contentId, type, rateStatus!!, 0))
+                    .subscribe({ onSortChanged(sort) }, this::processErrors)
+                    .addToDisposables()
         }
     }
 
@@ -329,6 +347,7 @@ class RatePresenter @Inject constructor(
     }
 
     private fun setData(it: List<Any>) {
+        pinnedRates = it.filter { it is RateViewModel }.count { (it as RateViewModel).isPinned }
         if (!query.isNullOrBlank() && (it.size == 1 && it.first() is RateSortViewModel)) viewState.showEmptySearchView(it)
         else viewState.showData(it)
 
@@ -341,7 +360,10 @@ class RatePresenter @Inject constructor(
                 .map { sortAction.invoke(it) }
                 .map { items = it; items }
                 .map { if (!query.isNullOrBlank()) searchItems(it) else it }
-                .map(converter)
+                .flatMap { rates ->
+                    pinInteractor.getPinnedRates(type, rateStatus ?: RateStatus.WATCHING)
+                            .map { converter.apply(rates, it) }
+                }
                 .subscribe({ setData(it) }, this::processErrors)
                 .addToDisposables()
     }

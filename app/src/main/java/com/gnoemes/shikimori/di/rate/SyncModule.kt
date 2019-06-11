@@ -1,15 +1,11 @@
 package com.gnoemes.shikimori.di.rate
 
-import com.gnoemes.shikimori.data.local.db.AnimeRateSyncDbSource
-import com.gnoemes.shikimori.data.local.db.ChapterDbSource
-import com.gnoemes.shikimori.data.local.db.EpisodeDbSource
-import com.gnoemes.shikimori.data.local.db.MangaRateSyncDbSource
-import com.gnoemes.shikimori.data.local.db.impl.AnimeRateSyncDbSourceImpl
-import com.gnoemes.shikimori.data.local.db.impl.ChapterDbSourceImpl
-import com.gnoemes.shikimori.data.local.db.impl.EpisodeDbSourceImpl
-import com.gnoemes.shikimori.data.local.db.impl.MangaRateSyncDbSourceImpl
+import com.gnoemes.shikimori.data.local.db.*
+import com.gnoemes.shikimori.data.local.db.impl.*
 import com.gnoemes.shikimori.data.repository.common.RateResponseConverter
 import com.gnoemes.shikimori.data.repository.common.impl.RateResponseConverterImpl
+import com.gnoemes.shikimori.data.repository.rates.PinnedRateRepository
+import com.gnoemes.shikimori.data.repository.rates.PinnedRateRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Reusable
@@ -36,5 +32,13 @@ interface SyncModule {
     @Binds
     @Reusable
     fun bindChapterDbSource(source: ChapterDbSourceImpl) : ChapterDbSource
+
+    @Binds
+    @Reusable
+    fun bindPinnedSource(source : PinnedRateDbSourceImpl) : PinnedRateDbSource
+
+    @Binds
+    @Reusable
+    fun bindPinnedRepo(repo : PinnedRateRepositoryImpl) : PinnedRateRepository
 
 }

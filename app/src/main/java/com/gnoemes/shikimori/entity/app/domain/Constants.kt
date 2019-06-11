@@ -26,4 +26,6 @@ object Constants {
     const val BIG_DEBOUNCE_INTERVAL = 750L
 
     const val FOUR_PDA_THEME_URL = "https://4pda.ru/forum/index.php?showtopic=903970"
+
+    const val MAX_PINNED_RATES = 3
 }

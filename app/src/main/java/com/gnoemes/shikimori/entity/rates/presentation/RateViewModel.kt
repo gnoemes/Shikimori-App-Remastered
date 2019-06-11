@@ -13,5 +13,7 @@ data class RateViewModel(
         val description: CharSequence,
         val rating: String,
         val progress: String,
-        val rawRate: Rate
+        val rawRate: Rate,
+        val isPinned : Boolean,
+        val pinOrder : Int
 )

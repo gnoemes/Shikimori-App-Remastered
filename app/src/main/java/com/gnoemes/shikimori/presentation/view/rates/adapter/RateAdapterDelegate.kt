@@ -38,6 +38,7 @@ class RateAdapterDelegate(
             with(itemView) {
                 playBtn.onClick { callback.invoke(DetailsAction.WatchOnline(item.id)) }
                 container.onClick { navigationCallback.invoke(item.type, item.contentId) }
+                container.setOnLongClickListener { callback.invoke(DetailsAction.Pin(item)); true }
                 rateEditBtn.onClick { callback.invoke(DetailsAction.EditRate(item.rawRate)) }
             }
         }
@@ -52,6 +53,7 @@ class RateAdapterDelegate(
                 progressView.text = item.progress
                 descriptionView.text = item.description
 
+                pinView.visibleIf { item.isPinned }
                 playBtn.visibleIf { item.type == Type.ANIME }
             }
         }

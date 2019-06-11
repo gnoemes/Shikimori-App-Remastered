@@ -24,4 +24,7 @@ interface RateView : BasePaginationView {
     fun selectRateStatus(rateStatus: RateStatus)
 
     fun showEmptySearchView(it: List<Any>)
+
+    @StateStrategyType(SkipStrategy::class)
+    fun showPinLimitMessage()
 }

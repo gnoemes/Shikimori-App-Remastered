@@ -1,5 +1,8 @@
 package com.gnoemes.shikimori.presentation.presenter.rates.converter
 
-import io.reactivex.functions.Function
+import com.gnoemes.shikimori.entity.rates.domain.PinnedRate
 
-interface RateViewModelConverter : Function<List<Any>, List<Any>>
+interface RateViewModelConverter {
+
+    fun apply(t: List<Any>, pinned : List<PinnedRate>): List<Any>
+}
