@@ -11,7 +11,6 @@
 
     <attr name="dialogCustomBackground" format="reference" />
 
-    <attr name="rateStyleStrokeWidth" format="dimension" />
     <attr name="themeStrokeWidth" format="dimension" />
 
     <attr name="colorRateDefault" format="color" />

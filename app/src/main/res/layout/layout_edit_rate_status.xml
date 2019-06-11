@@ -17,19 +17,18 @@
         android:layout_marginRight="8dp"
         android:insetTop="0dp"
         android:insetBottom="0dp"
+        android:minWidth="56dp"
         android:minHeight="48dp"
         android:paddingStart="16dp"
         android:paddingTop="12dp"
         android:paddingEnd="16dp"
-        android:minWidth="56dp"
         android:paddingBottom="12dp"
         app:icon="@drawable/ic_delete"
         app:iconGravity="textStart"
         app:iconPadding="0dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearance="@style/RightRoundShapeStyle"
-        app:strokeWidth="?attr/rateStyleStrokeWidth" />
+        app:shapeAppearance="@style/RightRoundShapeStyle" />
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"

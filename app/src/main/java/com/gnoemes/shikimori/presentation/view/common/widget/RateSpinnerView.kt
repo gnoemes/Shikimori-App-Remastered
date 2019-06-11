@@ -1,7 +1,6 @@
 package com.gnoemes.shikimori.presentation.view.common.widget
 
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.AttributeSet
@@ -48,17 +47,17 @@ class RateSpinnerView @JvmOverloads constructor(context: Context,
         hasEdit = ta.getBoolean(R.styleable.RateSpinnerView_showEdit, true)
         hasIcon = ta.getBoolean(R.styleable.RateSpinnerView_showIcon, true)
         itemSize = ta.getInt(R.styleable.RateSpinnerView_itemSize, NORMAL_SIZE)
-        isDarkTheme = context.dimenAttr(R.attr.rateStyleStrokeWidth) != 0
+        isDarkTheme = context.getCurrentTheme.let { it == R.style.ShikimoriAppTheme_Amoled || it == R.style.ShikimoriAppTheme_Dark }
         spinnerItemLayout = if (itemSize == SMALL_SIZE) R.layout.item_rate_spinner_small else R.layout.item_rate_spinner
         ta.recycle()
 
         items = mutableListOf(
-                ViewModel(R.drawable.ic_play_rate, R.color.rate_default, R.color.rate_default_dark, RateStatus.WATCHING, 0),
-                ViewModel(R.drawable.ic_plus, R.color.rate_default, R.color.rate_default_dark, RateStatus.PLANNED, 1),
-                ViewModel(R.drawable.ic_replay, R.color.rate_default, R.color.rate_default_dark, RateStatus.REWATCHING, 2),
-                ViewModel(R.drawable.ic_check, R.color.rate_watched, R.color.rate_watched_dark, RateStatus.COMPLETED, 3),
-                ViewModel(R.drawable.ic_pause_rate, R.color.rate_on_hold, R.color.rate_on_hold_dark, RateStatus.ON_HOLD, 4),
-                ViewModel(R.drawable.ic_close, R.color.rate_dropped, R.color.rate_dropped_dark, RateStatus.DROPPED, 5)
+                ViewModel(R.drawable.ic_play_rate, R.attr.colorRateDefault, R.color.rate_default_dark, RateStatus.WATCHING, 0),
+                ViewModel(R.drawable.ic_planned, R.attr.colorRateDefault, R.color.rate_default_dark, RateStatus.PLANNED, 1),
+                ViewModel(R.drawable.ic_replay, R.attr.colorRateDefault, R.color.rate_default_dark, RateStatus.REWATCHING, 2),
+                ViewModel(R.drawable.ic_check, R.attr.colorRateWatched, R.color.rate_watched_dark, RateStatus.COMPLETED, 3),
+                ViewModel(R.drawable.ic_pause_rate, R.attr.colorRateOnHold, R.color.rate_on_hold_dark, RateStatus.ON_HOLD, 4),
+                ViewModel(R.drawable.ic_close, R.attr.colorRateDropped, R.color.rate_dropped_dark, RateStatus.DROPPED, 5)
         )
 
         val defaultPadding = context.dp(16)
@@ -123,22 +122,23 @@ class RateSpinnerView @JvmOverloads constructor(context: Context,
 
     private fun updateColor() {
         val item = items.firstOrNull { it.status == status }
+        item?.let {
+            colorRes = context.attr(item?.colorRes!!).resourceId
+            colorDarkRes = item.colorDarkRes
 
-        colorRes = item?.colorRes ?: R.color.rate_default
-        colorDarkRes = item?.colorDarkRes ?: R.color.rate_default_dark
+            initAdapter()
 
-        initAdapter()
+            container.setCardBackgroundColor(context.color(colorRes))
+            container.strokeColor = context.color(colorDarkRes)
+            rateImage.setImageResource(item.iconRes)
+            rateImage.tintWithRes(colorDarkRes)
+            editBtn.tintWithRes(colorDarkRes)
 
-        container.setCardBackgroundColor(if (isDarkTheme) Color.TRANSPARENT else context.color(colorRes))
-        container.strokeColor = context.color(colorDarkRes)
-        rateImage.setImageResource(item?.iconRes ?: R.drawable.ic_plus)
-        rateImage.tintWithRes(colorDarkRes)
-        editBtn.tintWithRes(colorDarkRes)
+            spinnerView.setTextColor(context.color(colorDarkRes))
+            spinnerView.setArrowColor(context.color(colorDarkRes))
 
-        spinnerView.setTextColor(context.color(colorDarkRes))
-        spinnerView.setArrowColor(context.color(colorDarkRes))
-
-        editBtn.visibleIf { hasEdit }
+            editBtn.visibleIf { hasEdit }
+        }
     }
 
 
@@ -161,7 +161,7 @@ class RateSpinnerView @JvmOverloads constructor(context: Context,
     }
 
     val primaryColor: Int
-        get() = if (isDarkTheme) android.R.color.transparent else colorRes
+        get() = colorRes
 
     val onPrimaryColor: Int
         get() = colorDarkRes
