@@ -149,7 +149,7 @@ class RateFragment : BasePaginationFragment<Rate, RatePresenter, RateView>(), Ra
         refreshLayout.layoutParams = (refreshLayout.layoutParams as? CoordinatorLayout.LayoutParams)?.apply {
             behavior = OverlapHeaderScrollingBehavior()
         }
-        refreshLayout.setProgressViewOffset(false, context!!.dp(48), context!!.dp(128))
+        refreshLayout.setProgressViewOffset(false, context!!.dp(24), context!!.dp(96))
 
         emptyContentView.setText(R.string.rate_empty)
         networkErrorView.apply {
