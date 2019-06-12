@@ -27,5 +27,9 @@ object Constants {
 
     const val FOUR_PDA_THEME_URL = "https://4pda.ru/forum/index.php?showtopic=903970"
 
+    const val APP_CLUB_URL = "https://shikimori.one/clubs/1609"
+
+    const val ROAD_MAP_URL = "https://trello.com/b/TeSnqIHY/shikimori-app-public"
+
     const val MAX_PINNED_RATES = 3
 }

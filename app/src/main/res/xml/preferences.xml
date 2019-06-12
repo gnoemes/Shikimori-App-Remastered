@@ -19,15 +19,34 @@
     <Preference
         android:icon="@drawable/icon_theme_setting"
         android:key="theme_fragment"
-        android:title="@string/settings_theme"
         android:summary="@string/settings_theme_summary"
+        android:title="@string/settings_theme"
         app:fragment="com.gnoemes.shikimori.presentation.view.settings.fragments.SettingsThemeFragment" />
 
-    <Preference
-        android:icon="@drawable/icon_about_setting"
-        android:key="about_fragment"
-        android:summary="@string/settings_about_summary"
-        android:title="@string/settings_about"
-        app:fragment="com.gnoemes.shikimori.presentation.view.settings.fragments.SettingsAboutFragment" />
+    <PreferenceCategory
+        android:title="@string/settings_feedback"
+        app:iconSpaceReserved="false">
+
+        <Preference
+            android:key="@string/settings_roadmap_key"
+            android:title="@string/settings_roadmap_title"
+            app:iconSpaceReserved="false" />
+
+        <Preference
+            android:key="@string/settings_about_send_key"
+            android:title="@string/settings_about_send_title"
+            app:iconSpaceReserved="false" />
+
+        <Preference
+            android:key="@string/settings_about_forum_key"
+            android:title="@string/settings_about_forum_title"
+            app:iconSpaceReserved="false" />
+
+        <Preference
+            android:key="@string/settings_club_key"
+            android:title="@string/settings_club_title"
+            app:iconSpaceReserved="false" />
+
+    </PreferenceCategory>
 
 </PreferenceScreen>

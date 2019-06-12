@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/item_version"
+        android:actionLayout="@layout/item_setting_menu"
+        android:title=""
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/item_accept"
         android:icon="@drawable/ic_check"
         android:title="@string/common_accept"

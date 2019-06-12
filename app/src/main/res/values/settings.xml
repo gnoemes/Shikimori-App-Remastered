@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="settings_general">Приложение</string>
-    <string name="settings_general_summary">Контент, статусные списки</string>
+    <string name="settings_general_summary">Списки, контент</string>
     <string name="settings_notifications">Уведомления</string>
     <string name="settings_player">Плеер</string>
     <string name="settings_theme">Оформление</string>
@@ -125,10 +125,10 @@
     <string name="settings_about_version_key" translatable="false">VERSION_KEY</string>
 
     <string name="settings_about_send_key" translatable="false">SEND_MAIL_KEY</string>
-    <string name="settings_about_send_title">Написать разработчику</string>
+    <string name="settings_about_send_title">Письмо разработчику</string>
 
     <string name="settings_about_forum_key" translatable="false">OPEN_FORUM_KEY</string>
-    <string name="settings_about_forum_title">Открыть форум</string>
+    <string name="settings_about_forum_title">Тема на 4PDA</string>
 
     <string name="settings_player_gestures_zoom_type_title">Пропорциональный ресайз видео</string>
     <string name="settings_player_gestures_zoom_type_key" translatable="false">PLAYER_ZOOM_TYPE</string>
@@ -139,4 +139,13 @@
     <string name="settings_player_pip_key" translatable="false">PLAYER_AUTO_PIP</string>
     <string name="settings_player_pip_summary_on">При сворачивании плеера видео отобразится в плавающем окне</string>
     <string name="settings_player_pip_summary_off">Плеер свернется вместе с приложением</string>
+
+    <string name="settings_feedback">Обратная связь</string>
+
+    <string name="settings_roadmap_title">План развития проекта</string>
+    <string name="settings_roadmap_key" translatable="false">OPEN_ROAD_MAP</string>
+
+    <string name="settings_club_title">Клуб на Shikimori</string>
+    <string name="settings_club_key" translatable="false">OPEN_CLUB</string>
+
 </resources>
