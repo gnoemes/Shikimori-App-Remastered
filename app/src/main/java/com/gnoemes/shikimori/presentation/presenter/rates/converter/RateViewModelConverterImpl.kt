@@ -35,10 +35,6 @@ class RateViewModelConverterImpl @Inject constructor(
                         if (it is RateViewModel) !it.isPinned
                         else false
                     }
-                    .sortedBy {
-                        if (it is RateViewModel) it.pinOrder
-                        else 0
-                    }
                     .toMutableList()
 
     private fun convertRate(it: Rate, pinned: List<PinnedRate>): RateViewModel {

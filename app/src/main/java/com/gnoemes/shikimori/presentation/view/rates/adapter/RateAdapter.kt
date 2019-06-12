@@ -45,10 +45,7 @@ class RateAdapter(
         else -> false
     }
 
-    override fun canDragItem(position: Int): Boolean {
-        val item = items.getOrNull(position)
-        return !(item == null || item !is RateViewModel || !item.isPinned)
-    }
+    override fun canDragItem(position: Int): Boolean = false
 
     override fun canSwipeItem(position: Int): Boolean {
         val item = items.getOrNull(position)
