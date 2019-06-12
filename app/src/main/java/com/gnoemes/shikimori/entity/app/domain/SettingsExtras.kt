@@ -20,6 +20,8 @@ object SettingsExtras {
     const val IS_REMEMBER_PLAYER = "IS_REMEMBER_PLAYER"
     const val IS_USE_LOCAL_TRANSLATION_SETTINGS = "IS_USE_LOCAL_TRANSLATION_SETTINGS"
     const val IS_BEST_EXTERNAL_QUALITY = "IS_BEST_EXTERNAL_QUALITY"
+    const val RATE_SWIPE_TO_LEFT_ACTION = "RATE_SWIPE_TO_LEFT_ACTION"
+    const val RATE_SWIPE_TO_RIGHT_ACTION = "RATE_SWIPE_TO_RIGHT_ACTION"
 
     ////////////////////////////////////////////////////////////////////////
     // NOTIFICATIONS

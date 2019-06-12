@@ -42,6 +42,16 @@
             android:title="@string/settings_statuses_auto_status_title"
             app:iconSpaceReserved="false" />
 
+        <Preference
+            android:key="@string/settings_general_rate_swipe_to_left_key"
+            android:title="@string/settings_general_rate_swipe_to_left_title"
+            app:iconSpaceReserved="false" />
+
+        <Preference
+            android:key="@string/settings_general_rate_swipe_to_right_key"
+            android:title="@string/settings_general_rate_swipe_to_right_title"
+            app:iconSpaceReserved="false" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>

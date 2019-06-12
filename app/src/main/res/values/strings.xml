@@ -113,6 +113,11 @@
     <string name="rate_search_empty_title">В этом списке ничего не найдено</string>
     <string name="rate_search_empty_message">Измените запрос или воспользуйтесь разделом поиска.</string>
     <string name="rate_pin_max_message">Закрепить можно до трех элементов</string>
+    <string name="rate_swipe_increment">+1</string>
+    <string name="rate_swipe_change">Изменить список</string>
+    <string name="rate_swipe_hold">Отложить</string>
+    <string name="rate_swipe_drop">Бросить</string>
+    <string name="rate_swipe_disabled">Отключено</string>
 
     <string name="rating_empty">Нет оценки</string>
     <string name="rating_bad_ass">Хуже некуда</string>
@@ -585,6 +590,14 @@
         <item>@string/theme_default</item>
         <item>@string/theme_dark</item>
         <item>@string/theme_amoled</item>
+    </string-array>
+
+    <string-array name="rate_swipe_actions">
+        <item>@string/rate_swipe_increment</item>
+        <item>@string/rate_swipe_change</item>
+        <item>@string/rate_swipe_hold</item>
+        <item>@string/rate_swipe_drop</item>
+        <item>@string/rate_swipe_disabled</item>
     </string-array>
 
 </resources>

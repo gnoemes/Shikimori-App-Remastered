@@ -148,4 +148,9 @@
     <string name="settings_club_title">Клуб на Shikimori</string>
     <string name="settings_club_key" translatable="false">OPEN_CLUB</string>
 
+    <string name="settings_general_rate_swipe_to_left_title">Смахивание влево</string>
+    <string name="settings_general_rate_swipe_to_left_key">RATE_SWIPE_TO_LEFT_ACTION</string>
+
+    <string name="settings_general_rate_swipe_to_right_title">Смахивание вправо</string>
+    <string name="settings_general_rate_swipe_to_right_key">RATE_SWIPE_TO_RIGHT_ACTION</string>
 </resources>
