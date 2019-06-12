@@ -199,7 +199,29 @@ class RatePresenter @Inject constructor(
         when (it) {
             is RateListAction.Pin -> onPinRate(it.rate)
             is RateListAction.ChangeOrder -> onPinOrderChanged(it.rate, it.newOrder)
+            is RateListAction.SwipeAction -> onRateSwipeAction(it.rate, it.action)
         }
+    }
+
+    private fun onRateSwipeAction(rate: RateViewModel, action: RateSwipeAction) {
+        val rateItem = items.filter { it is Rate }.find { (it as Rate).id == rate.id } as? Rate
+        if (rateItem != null) {
+            when (action) {
+                RateSwipeAction.INCREMENT -> onIncrementRate(rateItem)
+                RateSwipeAction.ON_HOLD -> onChangeRateStatus(rateItem.id, RateStatus.ON_HOLD)
+                RateSwipeAction.DROP -> onChangeRateStatus(rateItem.id, RateStatus.DROPPED)
+                RateSwipeAction.CHANGE -> {
+                    onEditRate(rateItem); onSortChanged(sort)
+                }
+                else -> Unit
+            }
+        }
+    }
+
+    private fun onIncrementRate(rate: Rate) {
+        ratesInteractor.increment(rate.id)
+                .subscribe({ onRefresh()}, this::processErrors)
+                .addToDisposables()
     }
 
     private fun onPinOrderChanged(rate: RateViewModel, newOrder: Int) {
@@ -207,7 +229,6 @@ class RatePresenter @Inject constructor(
                 .subscribe({}, this::processErrors)
                 .addToDisposables()
     }
-
 
     private fun onPinRate(rate: RateViewModel) {
         if (rate.isPinned) pinInteractor.removePinnedRate(rate.contentId)
@@ -241,21 +262,23 @@ class RatePresenter @Inject constructor(
     }
 
     private fun onEditRate(rate: Rate?) {
-        val userRate = UserRate(
-                id = rate?.id,
-                targetId = rate?.anime?.id ?: rate?.manga?.id,
-                targetType = type,
-                score = rate?.score?.toDouble(),
-                status = rateStatus,
-                userId = userId,
-                episodes = rate?.episodes,
-                chapters = rate?.chapters,
-                text = rate?.text
-        )
+        val userRate = getUserRate(rate)
 
         viewState.showRateDialog(userRate)
         logEvent(AnalyticEvent.RATE_DIALOG)
     }
+
+    private fun getUserRate(rate: Rate?) = UserRate(
+            id = rate?.id,
+            targetId = rate?.anime?.id ?: rate?.manga?.id,
+            targetType = type,
+            score = rate?.score?.toDouble(),
+            status = rateStatus,
+            userId = userId,
+            episodes = rate?.episodes,
+            chapters = rate?.chapters,
+            text = rate?.text
+    )
 
     //TODO add manga
     private fun onWatchOnline(rateId: Long) {

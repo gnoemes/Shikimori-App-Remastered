@@ -5,6 +5,7 @@ import com.gnoemes.shikimori.entity.common.presentation.DetailsAction
 import com.gnoemes.shikimori.entity.common.presentation.ProgressItem
 import com.gnoemes.shikimori.entity.common.presentation.SortAction
 import com.gnoemes.shikimori.entity.rates.domain.RateListAction
+import com.gnoemes.shikimori.entity.rates.domain.RateSwipeAction
 import com.gnoemes.shikimori.entity.rates.presentation.RateSortViewModel
 import com.gnoemes.shikimori.entity.rates.presentation.RateViewModel
 import com.gnoemes.shikimori.presentation.view.base.adapter.BasePaginationAdapter
@@ -49,6 +50,11 @@ class RateAdapter(
         return !(item == null || item !is RateViewModel || !item.isPinned)
     }
 
+    override fun canSwipeItem(position: Int): Boolean {
+        val item = items.getOrNull(position)
+        return !(item == null || item !is RateViewModel)
+    }
+
     override fun onItemMove(oldPosition: Int, newPosition: Int): Boolean {
         if (newPosition == 0) return false
 
@@ -76,6 +82,10 @@ class RateAdapter(
         listActionCallback.invoke(RateListAction.ChangeOrder(item, newPosition - 1))
     }
 
-    override fun onItemDismiss(pos: Int, direction: Int) {
+    override fun onItemSwipeAction(pos: Int, action: RateSwipeAction) {
+        val item = items.getOrNull(pos)
+        if (item == null || item !is RateViewModel) return
+
+        listActionCallback.invoke(RateListAction.SwipeAction(item, action))
     }
 }

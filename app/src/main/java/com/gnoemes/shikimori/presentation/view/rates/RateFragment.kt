@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.entity.app.domain.AppExtras
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.common.presentation.RateSort
@@ -54,6 +55,9 @@ class RateFragment : BasePaginationFragment<Rate, RatePresenter, RateView>(), Ra
 
     @Inject
     lateinit var imageLoader: ImageLoader
+
+    @Inject
+    lateinit var settingsSource : SettingsSource
 
     @InjectPresenter
     lateinit var ratePresenter: RatePresenter
@@ -145,7 +149,7 @@ class RateFragment : BasePaginationFragment<Rate, RatePresenter, RateView>(), Ra
             val customSpacing = context.dp(76)
             addItemDecoration(VerticalSpaceItemDecorator(context.dp(8), true, firstCustomSpacing = customSpacing, lastCustomSpacing = context!!.dp(16)))
             addOnScrollListener(nextPageListener)
-            val touchHelper = ItemTouchHelper(RateItemTouchHelperCallback(this@RateFragment._adapter))
+            val touchHelper = ItemTouchHelper(RateItemTouchHelperCallback(this@RateFragment._adapter, settingsSource))
             touchHelper.attachToRecyclerView(this)
             setHasFixedSize(true)
         }
