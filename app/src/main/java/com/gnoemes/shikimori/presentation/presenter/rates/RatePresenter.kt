@@ -200,12 +200,12 @@ class RatePresenter @Inject constructor(
     }
 
     private fun onPinRate(rate: RateViewModel) {
-        if (pinnedRates > Constants.MAX_PINNED_RATES) viewState.showPinLimitMessage()
+        if (pinnedRates >= Constants.MAX_PINNED_RATES) viewState.showPinLimitMessage()
         else {
             if (rate.isPinned) pinInteractor.removePinnedRate(rate.contentId)
                     .subscribe({ onSortChanged(sort) }, this::processErrors)
                     .addToDisposables()
-            else pinInteractor.addPinnedRate(PinnedRate(rate.contentId, type, rateStatus!!, 0))
+            else pinInteractor.addPinnedRate(PinnedRate(rate.contentId, type, rateStatus!!, if (pinnedRates == 0) 0 else pinnedRates - 1))
                     .subscribe({ onSortChanged(sort) }, this::processErrors)
                     .addToDisposables()
         }
