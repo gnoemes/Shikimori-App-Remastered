@@ -17,9 +17,9 @@
 
     <string name="settings_content_download_folder_title">Папка загрузки</string>
     <string name="settings_content_download_folder_key" translatable="false">DOWNLOAD_FOLDER</string>
-    <string name="settings_content_download_folder_summary">Укажите путь для скачивания аниме и манги</string>
+    <string name="settings_content_download_folder_summary">Укажите путь для скачивания</string>
 
-    <string name="settings_statuses">Статусные списки</string>
+    <string name="settings_statuses">Списки</string>
     <string name="settings_statuses_auto_increment_title">Автоматический подсчет</string>
     <string name="settings_statuses_auto_increment_key" translatable="false">IS_AUTO_INCREMENT</string>
     <string name="settings_statuses_auto_increment_summary_off">Прогресс редактируется вручную</string>
@@ -27,7 +27,7 @@
 
     <string name="settings_statuses_auto_status_title">Автоматическое добавление</string>
     <string name="settings_statuses_auto_status_key" translatable="false">IS_AUTO_STATUS</string>
-    <string name="settings_statuses_auto_status_summary_on">Когда у тайтлов без статуса появился прогресс, они попадают в список</string>
+    <string name="settings_statuses_auto_status_summary_on">Тайтлы попадают в список при появлении прогресса</string>
     <string name="settings_statuses_auto_status_summary_off">Добавление тайтлов в список происходит вручную</string>
 
     <string name="settings_anime">Аниме</string>
