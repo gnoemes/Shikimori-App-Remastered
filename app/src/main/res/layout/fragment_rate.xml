@@ -42,10 +42,10 @@
                 app:cardBackgroundColor="?attr/colorPrimary"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="3dp"
-                app:strokeWidth="?attr/themeStrokeWidth"
-                app:strokeColor="?attr/colorDivider"
                 app:cardPreventCornerOverlap="false"
-                app:layout_scrollFlags="scroll|enterAlways|snap">
+                app:layout_scrollFlags="scroll|enterAlways|snap"
+                app:strokeColor="?attr/colorDivider"
+                app:strokeWidth="?attr/themeStrokeWidth">
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
@@ -64,11 +64,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
+                        app:closeIcon="@drawable/ic_close"
                         app:iconifiedByDefault="false"
                         app:queryBackground="@android:color/transparent"
                         app:searchIcon="@null"
                         app:search_elevation="0dp"
-                        app:closeIcon="@drawable/ic_close"
                         app:search_hint_color="?attr/colorTransparentBackground"
                         app:search_text_color="?attr/colorOnSurface"
                         app:search_text_size="16sp" />
@@ -87,7 +87,9 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="@android:color/transparent"
-        android:maxWidth="200dp"
+        android:maxWidth="228dp"
+        android:paddingEnd="12dp"
+        android:paddingRight="12dp"
         app:itemIconTint="?attr/colorOnPrimary"
         app:itemTextColor="?attr/colorOnPrimary" />
 
