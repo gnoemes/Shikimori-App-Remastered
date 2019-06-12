@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.iterator
 import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
@@ -35,6 +36,7 @@ import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
 import com.gnoemes.shikimori.presentation.view.base.fragment.TabRootFragment
 import com.gnoemes.shikimori.presentation.view.common.fragment.EditRateFragment
 import com.gnoemes.shikimori.presentation.view.rates.adapter.RateAdapter
+import com.gnoemes.shikimori.presentation.view.rates.adapter.RateItemTouchHelperCallback
 import com.gnoemes.shikimori.presentation.view.rates.sort.RateSortDialog
 import com.gnoemes.shikimori.utils.*
 import com.gnoemes.shikimori.utils.images.ImageLoader
@@ -67,7 +69,7 @@ class RateFragment : BasePaginationFragment<Rate, RatePresenter, RateView>(), Ra
         }
     }
 
-    private val _adapter by lazy { RateAdapter(imageLoader, getPresenter()::onContentClicked, { getPresenter().onAction(it) }, { getPresenter().onSortAction(it) }) }
+    private val _adapter by lazy { RateAdapter(imageLoader, getPresenter()::onContentClicked, getPresenter()::onListAction, getPresenter()::onAction, getPresenter()::onSortAction) }
 
     override val adapter: BasePaginationAdapter
         get() = _adapter
@@ -143,6 +145,8 @@ class RateFragment : BasePaginationFragment<Rate, RatePresenter, RateView>(), Ra
             val customSpacing = context.dp(76)
             addItemDecoration(VerticalSpaceItemDecorator(context.dp(8), true, firstCustomSpacing = customSpacing, lastCustomSpacing = context!!.dp(16)))
             addOnScrollListener(nextPageListener)
+            val touchHelper = ItemTouchHelper(RateItemTouchHelperCallback(this@RateFragment._adapter))
+            touchHelper.attachToRecyclerView(this)
             setHasFixedSize(true)
         }
 

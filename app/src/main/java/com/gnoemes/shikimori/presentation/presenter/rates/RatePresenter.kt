@@ -17,10 +17,7 @@ import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.common.presentation.DetailsAction
 import com.gnoemes.shikimori.entity.common.presentation.RateSort
 import com.gnoemes.shikimori.entity.common.presentation.SortAction
-import com.gnoemes.shikimori.entity.rates.domain.PinnedRate
-import com.gnoemes.shikimori.entity.rates.domain.Rate
-import com.gnoemes.shikimori.entity.rates.domain.RateStatus
-import com.gnoemes.shikimori.entity.rates.domain.UserRate
+import com.gnoemes.shikimori.entity.rates.domain.*
 import com.gnoemes.shikimori.entity.rates.presentation.RateCategory
 import com.gnoemes.shikimori.entity.rates.presentation.RateSortViewModel
 import com.gnoemes.shikimori.entity.rates.presentation.RateViewModel
@@ -195,9 +192,22 @@ class RatePresenter @Inject constructor(
             is DetailsAction.ChangeRateStatus -> onChangeRateStatus(it.id, it.newStatus)
             is DetailsAction.EditRate -> onEditRate(it.rate)
             is DetailsAction.WatchOnline -> onWatchOnline(it.id!!)
-            is DetailsAction.Pin -> onPinRate(it.rate)
         }
     }
+
+    fun onListAction(it: RateListAction) {
+        when (it) {
+            is RateListAction.Pin -> onPinRate(it.rate)
+            is RateListAction.ChangeOrder -> onPinOrderChanged(it.rate, it.newOrder)
+        }
+    }
+
+    private fun onPinOrderChanged(rate: RateViewModel, newOrder: Int) {
+        pinInteractor.addPinnedRate(PinnedRate(rate.contentId, rate.type, rateStatus!!, newOrder))
+                .subscribe({}, this::processErrors)
+                .addToDisposables()
+    }
+
 
     private fun onPinRate(rate: RateViewModel) {
         if (rate.isPinned) pinInteractor.removePinnedRate(rate.contentId)

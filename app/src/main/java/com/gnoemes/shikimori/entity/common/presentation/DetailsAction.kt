@@ -4,7 +4,6 @@ import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.common.domain.Genre
 import com.gnoemes.shikimori.entity.rates.domain.Rate
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
-import com.gnoemes.shikimori.entity.rates.presentation.RateViewModel
 
 sealed class DetailsAction {
     data class EditRate(val rate: Rate? = null) : DetailsAction()
@@ -13,8 +12,6 @@ sealed class DetailsAction {
     data class Video(val url: String) : DetailsAction()
     data class StudioClicked(val id: Long) : DetailsAction()
     data class WatchOnline(val id: Long? = null) : DetailsAction()
-    //Todo remove or rename sealed class
-    data class Pin(val rate : RateViewModel) : DetailsAction()
     object Links : DetailsAction()
     object Discussion : DetailsAction()
     object OpenInBrowser : DetailsAction()

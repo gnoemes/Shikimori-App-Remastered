@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.common.presentation.DetailsAction
+import com.gnoemes.shikimori.entity.rates.domain.RateListAction
 import com.gnoemes.shikimori.entity.rates.presentation.RateViewModel
 import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.gnoemes.shikimori.utils.inflate
@@ -17,7 +18,8 @@ import kotlinx.android.synthetic.main.item_rate.view.*
 class RateAdapterDelegate(
         private val imageLoader: ImageLoader,
         private val navigationCallback: (Type, Long) -> Unit,
-        private val callback: (DetailsAction) -> Unit
+        private val callback: (DetailsAction) -> Unit,
+        private val listActionCallback: (RateListAction) -> Unit
 ) : AbsListItemAdapterDelegate<RateViewModel, Any, RateAdapterDelegate.ViewHolder>() {
 
     override fun isForViewType(item: Any, items: MutableList<Any>, position: Int): Boolean =
@@ -38,7 +40,7 @@ class RateAdapterDelegate(
             with(itemView) {
                 playBtn.onClick { callback.invoke(DetailsAction.WatchOnline(item.id)) }
                 container.onClick { navigationCallback.invoke(item.type, item.contentId) }
-                container.setOnLongClickListener { callback.invoke(DetailsAction.Pin(item)); true }
+                imageView.setOnLongClickListener { listActionCallback.invoke(RateListAction.Pin(item)); true }
                 rateEditBtn.onClick { callback.invoke(DetailsAction.EditRate(item.rawRate)) }
             }
         }
