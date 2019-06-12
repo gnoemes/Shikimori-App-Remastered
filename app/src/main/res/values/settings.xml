@@ -132,8 +132,8 @@
 
     <string name="settings_player_gestures_zoom_type_title">Пропорциональный ресайз видео</string>
     <string name="settings_player_gestures_zoom_type_key" translatable="false">PLAYER_ZOOM_TYPE</string>
-    <string name="settings_player_gestures_zoom_type_on">Видео обрезается по краям, заполняя экран с помощью жеста пинч</string>
-    <string name="settings_player_gestures_zoom_type_off">Видео теряет пропорции, заполняя экран с помощью жеста пинч</string>
+    <string name="settings_player_gestures_zoom_type_on">При разведении пальцев видео заполняет экран с потерями пропорций</string>
+    <string name="settings_player_gestures_zoom_type_off">При разведении пальцев видео заполняет экран, обрезаясь по краям</string>
 
     <string name="settings_player_pip_title">Переход в Picture In Picture</string>
     <string name="settings_player_pip_key" translatable="false">PLAYER_AUTO_PIP</string>
