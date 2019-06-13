@@ -132,7 +132,10 @@ class RateFragment : BasePaginationFragment<Rate, RatePresenter, RateView>(), Ra
                     }; leftMargin = 0
                 }
             }
-            findViewById<ImageView>(R.id.search_close_btn)?.setPadding(context!!.dp(8), 0, context!!.dp(16), 0)
+            findViewById<ImageView>(R.id.search_close_btn)?.apply {
+                setPadding(context!!.dp(12), 0, context!!.dp(12), 0)
+                tint(context.colorAttr(R.attr.colorOnPrimary))
+            }
         }
 
         savedInstanceState?.let {
