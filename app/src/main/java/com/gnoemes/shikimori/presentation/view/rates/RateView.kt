@@ -30,4 +30,8 @@ interface RateView : BasePaginationView {
 
     @StateStrategyType(SkipStrategy::class)
     fun showPinLimitMessage()
+
+    fun showEmptyRatesView(show : Boolean, isAnime: Boolean? = null)
+
+    fun showNeedAuthView(show : Boolean)
 }

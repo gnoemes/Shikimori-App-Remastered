@@ -17,10 +17,12 @@ import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.common.presentation.DetailsAction
 import com.gnoemes.shikimori.entity.common.presentation.RateSort
 import com.gnoemes.shikimori.entity.common.presentation.SortAction
+import com.gnoemes.shikimori.entity.main.BottomScreens
 import com.gnoemes.shikimori.entity.rates.domain.*
 import com.gnoemes.shikimori.entity.rates.presentation.RateCategory
 import com.gnoemes.shikimori.entity.rates.presentation.RateSortViewModel
 import com.gnoemes.shikimori.entity.rates.presentation.RateViewModel
+import com.gnoemes.shikimori.entity.search.presentation.SearchNavigationData
 import com.gnoemes.shikimori.entity.series.domain.TranslationSetting
 import com.gnoemes.shikimori.entity.series.presentation.TranslationsNavigationData
 import com.gnoemes.shikimori.presentation.presenter.base.BasePaginationPresenter
@@ -113,12 +115,12 @@ class RatePresenter @Inject constructor(
         viewState.setNavigationItems(items)
         if (items.isNotEmpty()) {
             if (rateStatus == null) onChangeStatus(priorityStatus ?: items.first().status)
-            viewState.hideEmptyView()
+            viewState.showEmptyRatesView(false)
             viewState.hideNetworkView()
             viewState.showContent(true)
             priorityStatus = null
         } else {
-            viewState.showEmptyView()
+            viewState.showEmptyRatesView(true, isAnime)
             viewState.hideNetworkView()
             viewState.showContent(false)
         }
@@ -127,7 +129,7 @@ class RatePresenter @Inject constructor(
     private fun processUserErrors(throwable: Throwable) {
         when ((throwable as? BaseException)?.tag) {
             ContentException.TAG -> {
-                viewState.showEmptyView()
+                viewState.showNeedAuthView(true)
                 viewState.showContent(false)
             }
         }
@@ -149,6 +151,10 @@ class RatePresenter @Inject constructor(
             viewState.selectRateStatus(rateStatus)
             loadData()
         }
+    }
+
+    fun onEmptyRateClicked(anime: Boolean) {
+        router.navigateTo(BottomScreens.SEARCH, SearchNavigationData(null, if (anime) Type.ANIME else Type.MANGA))
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -223,7 +229,7 @@ class RatePresenter @Inject constructor(
 
     private fun onIncrementRate(rate: Rate) {
         ratesInteractor.increment(rate.id)
-                .subscribe({ onRefresh()}, this::processErrors)
+                .subscribe({ onRefresh() }, this::processErrors)
                 .addToDisposables()
     }
 

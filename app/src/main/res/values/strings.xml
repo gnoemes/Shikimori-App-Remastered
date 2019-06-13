@@ -118,6 +118,9 @@
     <string name="rate_swipe_hold">Отложить</string>
     <string name="rate_swipe_drop">Бросить</string>
     <string name="rate_swipe_disabled">Отключено</string>
+    <string name="rate_empty_list">Список пуст</string>
+    <string name="rate_empty_anime">Поиск аниме</string>
+    <string name="rate_empty_manga">Поиск манги</string>
 
     <string name="rating_empty">Нет оценки</string>
     <string name="rating_bad_ass">Хуже некуда</string>

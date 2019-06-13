@@ -20,6 +20,7 @@ import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.main.BottomScreens
 import com.gnoemes.shikimori.presentation.presenter.main.MainPresenter
 import com.gnoemes.shikimori.presentation.view.base.activity.BaseActivity
+import com.gnoemes.shikimori.presentation.view.base.fragment.BottomNavigationProvider
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
 import com.gnoemes.shikimori.presentation.view.base.fragment.TabContainer
 import com.gnoemes.shikimori.presentation.view.bottom.BottomTabContainer
@@ -35,7 +36,7 @@ import ru.terrakok.cicerone.commands.Command
 import ru.terrakok.cicerone.commands.Replace
 import javax.inject.Inject
 
-class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView, RouterProvider {
+class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView, RouterProvider, BottomNavigationProvider {
 
     @InjectPresenter
     lateinit var mainPresenter: MainPresenter
@@ -142,6 +143,14 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView, RouterPr
 
         override fun onServiceDisconnected(name: ComponentName?) {
 
+        }
+    }
+
+    override fun changeTab(screen: String) {
+        val tab = tabs.find { it.screenKey == screen }
+        if (tab != null) {
+            clearBackStack(tab.screenKey)
+            bottomNav.selectedItemId = tab.id
         }
     }
 

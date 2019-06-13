@@ -20,6 +20,10 @@
 
         <include layout="@layout/layout_default_list" />
 
+        <include
+            android:id="@+id/rateEmptyView"
+            layout="@layout/layout_rates_placeholder" />
+
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
@@ -83,7 +87,6 @@
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navView"
-        android:theme="@style/RateNavigationMenuStyle"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
@@ -91,6 +94,7 @@
         android:maxWidth="228dp"
         android:paddingEnd="12dp"
         android:paddingRight="12dp"
+        android:theme="@style/RateNavigationMenuStyle"
         app:itemIconTint="?attr/colorOnPrimary"
         app:itemTextColor="?attr/colorOnPrimary" />
 
