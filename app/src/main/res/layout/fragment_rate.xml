@@ -83,6 +83,7 @@
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navView"
+        android:theme="@style/RateNavigationMenuStyle"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"

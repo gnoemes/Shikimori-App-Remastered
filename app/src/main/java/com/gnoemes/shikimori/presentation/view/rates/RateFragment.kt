@@ -39,6 +39,7 @@ import com.gnoemes.shikimori.presentation.view.common.fragment.EditRateFragment
 import com.gnoemes.shikimori.presentation.view.rates.adapter.RateAdapter
 import com.gnoemes.shikimori.presentation.view.rates.adapter.RateItemTouchHelperCallback
 import com.gnoemes.shikimori.presentation.view.rates.sort.RateSortDialog
+import com.gnoemes.shikimori.presentation.view.rates.status.RateStatusDialog
 import com.gnoemes.shikimori.utils.*
 import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.gnoemes.shikimori.utils.widgets.OverlapHeaderScrollingBehavior
@@ -51,13 +52,13 @@ import kotlinx.android.synthetic.main.layout_progress.*
 import kotlinx.android.synthetic.main.layout_toolbar.toolbar
 import javax.inject.Inject
 
-class RateFragment : BasePaginationFragment<Rate, RatePresenter, RateView>(), RateView, EditRateFragment.RateDialogCallback, RateSortDialog.RateSortCallback, TabRootFragment {
+class RateFragment : BasePaginationFragment<Rate, RatePresenter, RateView>(), RateView, EditRateFragment.RateDialogCallback, RateSortDialog.RateSortCallback, TabRootFragment, RateStatusDialog.RateStatusCallback {
 
     @Inject
     lateinit var imageLoader: ImageLoader
 
     @Inject
-    lateinit var settingsSource : SettingsSource
+    lateinit var settingsSource: SettingsSource
 
     @InjectPresenter
     lateinit var ratePresenter: RatePresenter
@@ -254,6 +255,10 @@ class RateFragment : BasePaginationFragment<Rate, RatePresenter, RateView>(), Ra
         getPresenter().onDeleteRate(id)
     }
 
+    override fun onStatusChanged(id: Long, newStatus: RateStatus) {
+        getPresenter().onChangeRateStatus(id, newStatus)
+    }
+
     override fun onDestroyView() {
         recyclerView.adapter = null
         super.onDestroyView()
@@ -292,6 +297,11 @@ class RateFragment : BasePaginationFragment<Rate, RatePresenter, RateView>(), Ra
     override fun showSortDialog(sorts: List<Triple<RateSort, String, Boolean>>) {
         val dialog = RateSortDialog.newInstance(sorts)
         dialog.show(childFragmentManager, "SortDialog")
+    }
+
+    override fun showStatusDialog(id: Long, name: String, currentStatus: RateStatus, isAnime: Boolean) {
+        val dialog = RateStatusDialog.newInstance(id, name, currentStatus, isAnime)
+        dialog.show(childFragmentManager, "StatusDialog")
     }
 
     override fun onBackPressed() {

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><!--<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"--><!--xmlns:app="http://schemas.android.com/apk/res-auto"--><!--android:id="@+id/backdrop"--><!--style="@style/BackDropCardStyle"--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"--><!--app:cardPreventCornerOverlap="false">-->
-
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/container"
@@ -35,6 +34,7 @@
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navView"
+        android:theme="@style/NavigationDialogMenuStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
@@ -42,13 +42,11 @@
         android:paddingLeft="16dp"
         android:paddingEnd="0dp"
         android:paddingRight="0dp"
-        android:paddingBottom="16dp"
+        android:paddingBottom="64dp"
         app:itemIconTint="?attr/colorOnSurface"
         app:itemTextAppearance="@style/MenuTextAppearance"
         app:itemTextColor="?attr/colorOnSurface"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-    <!--</com.google.android.material.card.MaterialCardView>-->
 

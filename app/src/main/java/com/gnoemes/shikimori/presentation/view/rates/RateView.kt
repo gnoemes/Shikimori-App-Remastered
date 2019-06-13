@@ -17,6 +17,9 @@ interface RateView : BasePaginationView {
     @StateStrategyType(SkipStrategy::class)
     fun showSortDialog(sorts: List<Triple<RateSort, String, Boolean>>)
 
+    @StateStrategyType(SkipStrategy::class)
+    fun showStatusDialog(id : Long, name : String, currentStatus: RateStatus, isAnime : Boolean)
+
     fun setNavigationItems(items: List<RateCategory>)
 
     fun selectType(type: Type)

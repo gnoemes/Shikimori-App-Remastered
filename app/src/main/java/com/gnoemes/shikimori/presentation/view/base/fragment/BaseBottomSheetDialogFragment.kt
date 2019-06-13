@@ -54,6 +54,8 @@ abstract class BaseBottomSheetDialogFragment : MvpDialogFragment() {
                         if (autoExpand) {
                             expandDialog()
                         }
+
+                        BottomSheetBehavior.from(bottomSheet).skipCollapsed = true
                     }
                 }
     }

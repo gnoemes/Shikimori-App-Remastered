@@ -210,12 +210,15 @@ class RatePresenter @Inject constructor(
                 RateSwipeAction.INCREMENT -> onIncrementRate(rateItem)
                 RateSwipeAction.ON_HOLD -> onChangeRateStatus(rateItem.id, RateStatus.ON_HOLD)
                 RateSwipeAction.DROP -> onChangeRateStatus(rateItem.id, RateStatus.DROPPED)
-                RateSwipeAction.CHANGE -> {
-                    onEditRate(rateItem); onSortChanged(sort)
-                }
+                RateSwipeAction.CHANGE -> onShowStatusDialog(rate)
                 else -> Unit
             }
         }
+    }
+
+    private fun onShowStatusDialog(rate: RateViewModel) {
+        viewState.showStatusDialog(rate.id, rate.name, rate.rawRate.status, rate.type == Type.ANIME)
+        onSortChanged(sort)
     }
 
     private fun onIncrementRate(rate: Rate) {
@@ -315,7 +318,7 @@ class RatePresenter @Inject constructor(
         router.navigateTo(Screens.TRANSLATIONS, navigationData)
     }
 
-    private fun onChangeRateStatus(id: Long, newStatus: RateStatus) {
+    fun onChangeRateStatus(id: Long, newStatus: RateStatus) {
         ratesInteractor.changeRateStatus(id, newStatus)
                 .subscribeAndRefresh(id)
         logEvent(AnalyticEvent.RATE_DROP_MENU)
