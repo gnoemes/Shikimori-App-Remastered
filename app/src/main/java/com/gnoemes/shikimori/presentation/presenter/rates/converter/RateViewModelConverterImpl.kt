@@ -92,12 +92,14 @@ class RateViewModelConverterImpl @Inject constructor(
             else -> Unit
         }
 
-        if (it.anime?.dateAired != null) {
-            appendDotIfNotEmpty()
-            builder.append("${it.anime.dateAired.year}")
-        } else if (it.manga?.dateAired != null) {
-            appendDotIfNotEmpty()
-            builder.append("${it.manga.dateAired.year}")
+        if (status != Status.ONGOING) {
+            if (it.anime?.dateAired != null) {
+                appendDotIfNotEmpty()
+                builder.append("${it.anime.dateAired.year}")
+            } else if (it.manga?.dateAired != null) {
+                appendDotIfNotEmpty()
+                builder.append("${it.manga.dateAired.year}")
+            }
         }
 
         if (it.anime != null) {
