@@ -3,6 +3,7 @@ package com.gnoemes.shikimori.presentation.presenter.rates
 import com.arellomobile.mvp.InjectViewState
 import com.gnoemes.shikimori.data.local.preference.RateSortSource
 import com.gnoemes.shikimori.data.local.preference.SettingsSource
+import com.gnoemes.shikimori.domain.app.CancelableTaskInteractor
 import com.gnoemes.shikimori.domain.rates.PinnedRateInteractor
 import com.gnoemes.shikimori.domain.rates.RateChangesInteractor
 import com.gnoemes.shikimori.domain.rates.RatesInteractor
@@ -10,6 +11,7 @@ import com.gnoemes.shikimori.domain.series.SeriesInteractor
 import com.gnoemes.shikimori.domain.user.UserInteractor
 import com.gnoemes.shikimori.entity.app.domain.AnalyticEvent
 import com.gnoemes.shikimori.entity.app.domain.Constants
+import com.gnoemes.shikimori.entity.app.domain.Task
 import com.gnoemes.shikimori.entity.app.domain.exceptions.BaseException
 import com.gnoemes.shikimori.entity.app.domain.exceptions.ContentException
 import com.gnoemes.shikimori.entity.common.domain.Screens
@@ -31,6 +33,7 @@ import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResour
 import com.gnoemes.shikimori.presentation.presenter.common.provider.SortResourceProvider
 import com.gnoemes.shikimori.presentation.presenter.rates.converter.RateCountConverter
 import com.gnoemes.shikimori.presentation.presenter.rates.converter.RateViewModelConverter
+import com.gnoemes.shikimori.presentation.presenter.rates.provider.RateResourceProvider
 import com.gnoemes.shikimori.presentation.view.rates.RateView
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -45,11 +48,13 @@ class RatePresenter @Inject constructor(
         private val seriesInteractor: SeriesInteractor,
         private val sortResourceProvider: SortResourceProvider,
         private val changesInteractor: RateChangesInteractor,
+        private val taskInteractor: CancelableTaskInteractor,
         private val pinInteractor: PinnedRateInteractor,
         private val resourceProvider: CommonResourceProvider,
         private val settingsSource: SettingsSource,
         private val sortSource: RateSortSource,
         private val rateCountConverter: RateCountConverter,
+        private val rateResourceProvider: RateResourceProvider,
         private val converter: RateViewModelConverter
 ) : BasePaginationPresenter<Rate, RateView>(), ViewController<Rate> {
 
@@ -158,6 +163,12 @@ class RatePresenter @Inject constructor(
         router.navigateTo(BottomScreens.SEARCH, SearchNavigationData(null, if (anime) Type.ANIME else Type.MANGA))
     }
 
+    fun onTaskCanceled(taskId: Int) {
+        taskInteractor.cancelTask(taskId)
+                .subscribe(this::onRefresh, this::processErrors)
+                .addToDisposables()
+    }
+
     ///////////////////////////////////////////////////////////////////////////
     // Rate list logic
     ///////////////////////////////////////////////////////////////////////////
@@ -189,9 +200,18 @@ class RatePresenter @Inject constructor(
         }
     }
 
+    private fun localRefresh() {
+        onSortChanged(sort)
+    }
+
+    private fun removeFromListAndRefresh(item: Rate) {
+        items.remove(item)
+        localRefresh()
+    }
+
     fun onQueryChanged(newText: String?) {
         query = newText
-        onSortChanged(sort)
+        localRefresh()
     }
 
     fun onAction(it: DetailsAction) {
@@ -225,7 +245,7 @@ class RatePresenter @Inject constructor(
 
     private fun onShowStatusDialog(rate: RateViewModel) {
         viewState.showStatusDialog(rate.id, rate.name, rate.rawRate.status, rate.type == Type.ANIME)
-        onSortChanged(sort)
+        localRefresh()
     }
 
     private fun onIncrementRate(rate: Rate) {
@@ -242,12 +262,12 @@ class RatePresenter @Inject constructor(
 
     private fun onPinRate(rate: RateViewModel) {
         if (rate.isPinned) pinInteractor.removePinnedRate(rate.contentId)
-                .subscribe({ onSortChanged(sort) }, this::processErrors)
+                .subscribe(this::localRefresh, this::processErrors)
                 .addToDisposables()
         else {
             if (pinnedRates >= Constants.MAX_PINNED_RATES) viewState.showPinLimitMessage()
             else pinInteractor.addPinnedRate(PinnedRate(rate.contentId, type, rateStatus!!, if (pinnedRates == 0) 0 else pinnedRates - 1))
-                    .subscribe({ onSortChanged(sort) }, this::processErrors)
+                    .subscribe(this::localRefresh, this::processErrors)
                     .addToDisposables()
         }
     }
@@ -326,14 +346,33 @@ class RatePresenter @Inject constructor(
     }
 
     fun onChangeRateStatus(id: Long, newStatus: RateStatus) {
-        ratesInteractor.changeRateStatus(id, newStatus)
-                .subscribeAndRefresh(id)
-        logEvent(AnalyticEvent.RATE_DROP_MENU)
+        val item = items.find { (it as? Rate)?.id == id } as? Rate
+        if (item != null) {
+            val task = Task {
+                ratesInteractor.changeRateStatus(id, newStatus)
+                        .subscribeAndRefresh(id)
+                logEvent(AnalyticEvent.RATE_DROP_MENU)
+            }
+            taskInteractor.newTask(task)
+                    .doOnNext { viewState.showRateMessage(it, rateResourceProvider.getChangeRateStatusMessage(item.type, newStatus)) }
+                    .subscribe({ removeFromListAndRefresh(item) }, this::processErrors)
+                    .addToDisposables()
+        }
     }
 
-    fun onDeleteRate(id: Long) =
-            ratesInteractor.deleteRate(id)
-                    .subscribeAndRefresh(id)
+    fun onDeleteRate(id: Long) {
+        val item = items.find { (it as? Rate)?.id == id } as? Rate
+        if (item != null) {
+            val task = Task {
+                ratesInteractor.deleteRate(id)
+                        .subscribeAndRefresh(id)
+            }
+            taskInteractor.newTask(task)
+                    .doOnNext { viewState.showRateMessage(it, rateResourceProvider.getDeleteRateMessage(item.type)) }
+                    .subscribe({ removeFromListAndRefresh(item) }, this::processErrors)
+                    .addToDisposables()
+        }
+    }
 
     fun onUpdateRate(rate: UserRate) =
             ratesInteractor.updateRate(rate)

@@ -1,15 +1,22 @@
 package com.gnoemes.shikimori.utils
 
+import android.content.Context
 import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
+import androidx.annotation.DimenRes
+import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.iterator
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.utils.widgets.DebouncedOnClickListener
+import com.google.android.material.snackbar.Snackbar
 
 fun View.visible() {
     visibility = View.VISIBLE
@@ -79,6 +86,18 @@ fun Toolbar.hideMenu() {
 
 fun Toolbar.showMenu() {
     this.menu?.iterator()?.forEach { menuItem -> menuItem.isVisible = true }
+}
+
+
+fun Snackbar.floatingStyle(context: Context, @DimenRes margins: Int = R.dimen.snackbar_margin, @DrawableRes background: Int = R.drawable.bg_snackbar): Snackbar {
+    val params = this.view.layoutParams as ViewGroup.MarginLayoutParams
+    val margin = context.dimen(margins).toInt()
+    params.setMargins(margin, margin, margin, margin)
+    this.view.findViewById<Button>(R.id.snackbar_action)?.isAllCaps = false
+    this.view.findViewById<TextView>(R.id.snackbar_text)?.setTextColor(context.color(R.color.player_controls))
+    this.view.layoutParams = params
+    this.view.background = context.drawable(background)
+    return this
 }
 
 

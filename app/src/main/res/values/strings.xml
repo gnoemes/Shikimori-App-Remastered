@@ -21,6 +21,7 @@
     <string name="common_error_message_without_pull">Похоже, что у Вас отсуствует интернет-соединение или произошла ошибка.</string>
     <string name="common_description">Описание</string>
     <string name="common_cancel">Отмена</string>
+    <string name="common_cancel_variant">Отменить</string>
     <string name="common_next">Далее</string>
     <string name="common_sign_in">Войти</string>
     <string name="common_sign_up">Регистрация</string>
@@ -121,6 +122,30 @@
     <string name="rate_empty_list">Список пуст</string>
     <string name="rate_empty_anime">Поиск аниме</string>
     <string name="rate_empty_manga">Поиск манги</string>
+
+    <string name="rate_message_anime_in_progress">В ожидании просмотра.</string>
+    <string name="rate_message_anime_planned">Запланировано.</string>
+    <string name="rate_message_anime_rewatched">В ожидании перепросмотра.</string>
+    <string name="rate_message_anime_completed">Просмотрено.</string>
+    <string name="rate_message_anime_on_hold">Отложено.</string>
+    <string name="rate_message_anime_drop">Брошено.</string>
+    <string name="rate_message_anime_deleted">Удалено.</string>
+
+    <string name="rate_message_manga_in_progress">В ожидании прочтения.</string>
+    <string name="rate_message_manga_planned">Запланирована.</string>
+    <string name="rate_message_manga_rewatched">В ожидании перечитывания.</string>
+    <string name="rate_message_manga_completed">Прочитана.</string>
+    <string name="rate_message_manga_on_hold">Отложена.</string>
+    <string name="rate_message_manga_drop">Брошена.</string>
+    <string name="rate_message_manga_deleted">Удалена</string>
+
+    <string name="rate_message_ranobe_in_progress">В ожидании прочтения.</string>
+    <string name="rate_message_ranobe_planned">Запланировано.</string>
+    <string name="rate_message_ranobe_rewatched">В ожидании перечитывания.</string>
+    <string name="rate_message_ranobe_completed">Прочитано.</string>
+    <string name="rate_message_ranobe_on_hold">Отложено.</string>
+    <string name="rate_message_ranobe_drop">Брошено.</string>
+    <string name="rate_message_ranobe_deleted">Удалено.</string>
 
     <string name="rating_empty">Нет оценки</string>
     <string name="rating_bad_ass">Хуже некуда</string>

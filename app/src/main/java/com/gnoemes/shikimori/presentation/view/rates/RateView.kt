@@ -35,6 +35,8 @@ interface RateView : BasePaginationView {
 
     fun showNeedAuthView(show : Boolean)
 
+    fun showRateMessage(taskId : Int, message : String)
+
     @StateStrategyType(SkipStrategy::class)
     fun scrollToTop()
 }

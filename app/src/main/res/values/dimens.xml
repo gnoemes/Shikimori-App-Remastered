@@ -32,5 +32,6 @@
     <dimen name="margin_biggest">24dp</dimen>
 
     <dimen name="default_shadow">3dp</dimen>
+    <dimen name="snackbar_margin">8dp</dimen>
 
 </resources>
