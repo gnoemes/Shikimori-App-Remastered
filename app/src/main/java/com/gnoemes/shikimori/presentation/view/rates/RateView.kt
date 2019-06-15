@@ -34,4 +34,7 @@ interface RateView : BasePaginationView {
     fun showEmptyRatesView(show : Boolean, isAnime: Boolean? = null)
 
     fun showNeedAuthView(show : Boolean)
+
+    @StateStrategyType(SkipStrategy::class)
+    fun scrollToTop()
 }

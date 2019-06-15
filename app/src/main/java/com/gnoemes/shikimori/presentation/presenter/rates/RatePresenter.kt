@@ -148,6 +148,7 @@ class RatePresenter @Inject constructor(
     fun onChangeStatus(rateStatus: RateStatus) {
         if (isUserExist) {
             this.rateStatus = rateStatus
+            viewState.scrollToTop()
             viewState.selectRateStatus(rateStatus)
             loadData()
         }

@@ -293,6 +293,11 @@ class RateFragment : BasePaginationFragment<Rate, RatePresenter, RateView>(), Ra
         recyclerView.layoutManager?.onRestoreInstanceState(parcelable)
     }
 
+    override fun scrollToTop() {
+        appBarLayout.setExpanded(true)
+        recyclerView.scrollToPosition(0)
+    }
+
     override fun showRateDialog(userRate: UserRate) {
         val dialog = EditRateFragment.newInstance(rate = userRate, isAnime = userRate.targetType == Type.ANIME)
         dialog.show(childFragmentManager, "RateTag")
