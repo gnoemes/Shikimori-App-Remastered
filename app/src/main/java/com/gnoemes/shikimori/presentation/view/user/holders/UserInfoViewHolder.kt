@@ -24,7 +24,7 @@ class UserInfoViewHolder(
             messageFab.onClick { actionCallback.invoke(UserProfileAction.Message) }
             friendshipFab.onClick { actionCallback.invoke(UserProfileAction.ChangeFriendshipStatus(!item.isFriend)) }
             ignoreFab.onClick { actionCallback.invoke(UserProfileAction.ChangeIgnoreStatus(!item.isIgnored)) }
-            bansFab.onClick { actionCallback.invoke(UserProfileAction.Bans) }
+            historyFab.onClick { actionCallback.invoke(UserProfileAction.History) }
             aboutBtn.onClick { actionCallback.invoke(UserProfileAction.About) }
         }
     }

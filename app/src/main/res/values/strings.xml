@@ -321,6 +321,7 @@
     <string name="profile_friendship">Дружба</string>
     <string name="profile_ignore">Игнор</string>
     <string name="profile_bans">Баны</string>
+    <string name="profile_history">История</string>
     <string name="profile_about_me">Обо мне</string>
 
     <string name="profile_rate_anime">Список аниме</string>
