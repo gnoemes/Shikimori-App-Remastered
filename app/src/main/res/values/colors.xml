@@ -68,17 +68,17 @@
     <color name="white">#FFFFFF</color>
 
     <color name="rate_default">#daf1ff</color>
-    <color name="rate_default_transparent">#1f176093</color>
-    <color name="rate_default_dark">#176093</color>
+    <color name="rate_default_transparent">#1f3d5afe</color>
+    <color name="rate_default_dark">#3d5afe</color>
     <color name="rate_watched">#eef6dc</color>
-    <color name="rate_watched_transparent">#1f419541</color>
-    <color name="rate_watched_dark">#419541</color>
+    <color name="rate_watched_transparent">#1f00a700</color>
+    <color name="rate_watched_dark">#00a700</color>
     <color name="rate_on_hold">#ebeef1</color>
-    <color name="rate_on_hold_transparent">#1f7b8084</color>
-    <color name="rate_on_hold_dark">#7b8084</color>
+    <color name="rate_on_hold_transparent">#1fa26450</color>
+    <color name="rate_on_hold_dark">#b86c55</color>
     <color name="rate_dropped">#fedddf</color>
-    <color name="rate_dropped_transparent">#1ffc575e</color>
-    <color name="rate_dropped_dark">#fc575e</color>
+    <color name="rate_dropped_transparent">#1fd11414</color>
+    <color name="rate_dropped_dark">#d11414</color>
 
     <color name="topic_news">#ff8a3c</color>
     <color name="topic_cosplay">#f7b42c</color>
