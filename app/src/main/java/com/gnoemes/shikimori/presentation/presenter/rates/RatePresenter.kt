@@ -359,7 +359,7 @@ class RatePresenter @Inject constructor(
             is RateSort.Id -> sortAndShow { it.idSort() }
             is RateSort.DateAired -> sortAndShow { it.dateAiredSort() }
             is RateSort.Episodes -> sortAndShow { it.episodesSort() }
-            is RateSort.EpisodesWatched -> sortAndShow { it.episodesWatchedSort() }
+            is RateSort.Progress -> sortAndShow { it.episodesWatchedSort() }
             is RateSort.Type -> sortAndShow { it.typeSort() }
             is RateSort.Status -> sortAndShow { it.statusSort() }
             is RateSort.Score -> sortAndShow { it.scoreSort() }
