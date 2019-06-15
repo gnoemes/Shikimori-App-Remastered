@@ -83,6 +83,7 @@ class UserPresenter @Inject constructor(
             is UserProfileAction.Bans -> onBansClicked()
             is UserProfileAction.About -> onAboutClicked()
             is UserProfileAction.Message -> onMessageClicked()
+            is UserProfileAction.MessageBox -> onMessageBoxClicked()
             is UserProfileAction.More -> onMoreClicked(action.type)
             is UserProfileAction.ChangeIgnoreStatus -> onIgnoreStatusChanged(action.newStatus)
             is UserProfileAction.ChangeFriendshipStatus -> onFriendshipStatusChanged(action.newStatus)
@@ -129,6 +130,11 @@ class UserPresenter @Inject constructor(
                 logEvent(AnalyticEvent.NAVIGATION_USER_FAVORITES)
             }
         }
+    }
+
+    private fun onMessageBoxClicked() {
+        if (checkUserStatus()) return
+        //TODO
     }
 
     private fun onMessageClicked() {

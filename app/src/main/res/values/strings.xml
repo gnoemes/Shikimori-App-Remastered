@@ -343,6 +343,7 @@
     <string name="player_hosting_error">Этот хостинг не поддерживается плеером</string>
 
     <string name="profile_write">Написать</string>
+    <string name="profile_message_box">Почта</string>
     <string name="profile_friendship">Дружба</string>
     <string name="profile_ignore">Игнор</string>
     <string name="profile_bans">Баны</string>
