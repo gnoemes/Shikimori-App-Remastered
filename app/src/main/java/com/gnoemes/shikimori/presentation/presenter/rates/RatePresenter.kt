@@ -348,6 +348,11 @@ class RatePresenter @Inject constructor(
     fun onChangeRateStatus(id: Long, newStatus: RateStatus) {
         val item = items.find { (it as? Rate)?.id == id } as? Rate
         if (item != null) {
+            if (item.status == newStatus) {
+                localRefresh()
+                return
+            }
+
             val task = Task {
                 ratesInteractor.changeRateStatus(id, newStatus)
                         .subscribeAndRefresh(id)
