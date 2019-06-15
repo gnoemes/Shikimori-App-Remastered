@@ -21,4 +21,8 @@ interface UserView : BaseFragmentView {
     fun setAnimeRate(data: UserRateViewModel)
 
     fun setMangaRate(data: UserRateViewModel)
+
+    fun addSettings()
+
+    fun showAuthView(show: Boolean)
 }

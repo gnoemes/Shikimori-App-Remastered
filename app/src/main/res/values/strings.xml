@@ -7,7 +7,8 @@
     <string name="common_calendar">Онгоинги</string>
     <string name="common_search">Поиск</string>
     <string name="common_main">Главная</string>
-    <string name="common_more">Еще</string>
+    <string name="common_more">Профиль</string>
+    <string name="common_profile">Профиль</string>
     <string name="common_today">Сегодня</string>
     <string name="common_tomorrow">Завтра</string>
     <string name="common_genre">Жанр</string>
@@ -357,6 +358,9 @@
     <string name="profile_rate_readed">Прочитано</string>
     <string name="profile_rate_reading">Читаю/Планирую</string>
     <string name="profile_rate_dropped">Брошено</string>
+    <string name="profile_auth_title">Вы не вошли в аккаунт</string>
+    <string name="profile_auth_description">Войдите, чтобы все функции стали доступны.</string>
+    <string name="profile_auth_register">Создать аккаунт</string>
 
     <string name="profile_rate_rewatched">Пересмотр</string>
     <string name="profile_rate_reread">Перечитано</string>

@@ -9,6 +9,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.app.domain.AppExtras
+import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.user.presentation.UserContentViewModel
 import com.gnoemes.shikimori.entity.user.presentation.UserHeadViewModel
 import com.gnoemes.shikimori.entity.user.presentation.UserInfoViewModel
@@ -26,6 +27,7 @@ import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_user_profile.*
 import kotlinx.android.synthetic.main.layout_default_placeholders.*
+import kotlinx.android.synthetic.main.layout_profile_auth.*
 import kotlinx.android.synthetic.main.layout_user_profile_info_content.*
 import kotlinx.android.synthetic.main.layout_user_profile_toolbar.*
 import javax.inject.Inject
@@ -43,11 +45,13 @@ class UserFragment : BaseFragment<UserPresenter, UserView>(), UserView {
     fun providePresenter(): UserPresenter =
             presenterProvider.get().apply {
                 localRouter = (parentFragment as RouterProvider).localRouter
-                id = arguments!!.getLong(AppExtras.ARGUMENT_USER_ID)
+                id = arguments?.getLong(AppExtras.ARGUMENT_USER_ID, Constants.NO_ID)
+                        ?: Constants.NO_ID
             }
 
     companion object {
         fun newInstance(id: Long) = UserFragment().withArgs { putLong(AppExtras.ARGUMENT_USER_ID, id) }
+        fun newInstance() = UserFragment()
     }
 
     private val maxHeight by lazy { (appBarLayout.height - toolbar.height).toFloat() }
@@ -61,9 +65,9 @@ class UserFragment : BaseFragment<UserPresenter, UserView>(), UserView {
     private lateinit var animeRateHolder: UserRateViewHolder
     private lateinit var mangaRateHolder: UserRateViewHolder
 
-    private lateinit var favoritesHolder: UserContentViewHolder
-    private lateinit var friendsHolder: UserContentViewHolder
-    private lateinit var clubsHolder: UserContentViewHolder
+    private var favoritesHolder: UserContentViewHolder? = null
+    private var friendsHolder: UserContentViewHolder? = null
+    private var clubsHolder: UserContentViewHolder? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(getFragmentLayout(), container, false)
@@ -84,6 +88,10 @@ class UserFragment : BaseFragment<UserPresenter, UserView>(), UserView {
 
         networkErrorView.callback = { getPresenter().onRefresh() }
         networkErrorView.showButton()
+
+        signUpBtn.onClick { getPresenter().onSignUp() }
+        signInBtn.onClick { getPresenter().onSignIn() }
+        authLayout.gone()
     }
 
     private val appbarOffsetListener = AppBarLayout.OnOffsetChangedListener { _, offset ->
@@ -138,24 +146,42 @@ class UserFragment : BaseFragment<UserPresenter, UserView>(), UserView {
     override fun setFavorites(isMe: Boolean, it: UserContentViewModel) {
         val layout = if (isMe) thirdContentLayout else firstContentLayout
         favoritesHolder = UserContentViewHolder(layout, favoritesAdapter)
-        favoritesHolder.bind(it)
+        favoritesHolder?.bind(it)
     }
 
     override fun setFriends(isMe: Boolean, it: UserContentViewModel) {
         val layout = if (isMe) firstContentLayout else secondContentLayout
         friendsHolder = UserContentViewHolder(layout, friendsAdapter)
-        friendsHolder.bind(it)
+        friendsHolder?.bind(it)
     }
 
     override fun setClubs(isMe: Boolean, it: UserContentViewModel) {
         val layout = if (isMe) secondContentLayout else thirdContentLayout
         clubsHolder = UserContentViewHolder(layout, clubsAdapter)
-        clubsHolder.bind(it)
+        clubsHolder?.bind(it)
     }
 
     override fun showContent(show: Boolean) {
         scrollView.visibleIf { show }
         appBarLayout.visibleIf { show }
+    }
+
+    override fun addSettings() {
+        with(toolbar) {
+            navigationIcon = null
+            inflateMenu(R.menu.menu_user)
+            setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.item_settings -> getPresenter().onSettingsClicked()
+                }
+                true
+            }
+        }
+    }
+
+    override fun showAuthView(show: Boolean) {
+        authLayout.visibleIf { show }
+        appBarLayout.visible()
     }
 
     override fun showNetworkView() = networkErrorView.visible()

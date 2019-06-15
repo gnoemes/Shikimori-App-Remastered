@@ -33,10 +33,10 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             android:fitsSystemWindows="true"
+            app:contentInsetStart="16dp"
             app:contentInsetStartWithNavigation="0dp"
             app:layout_collapseMode="pin"
             app:popupTheme="@style/PopupMenuTheme"
-            app:titleMarginStart="12dp"
             tools:navigationIcon="@drawable/ic_arrow_back">
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -44,6 +44,8 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_gravity="start"
+                android:layout_marginEnd="12dp"
+                android:layout_marginRight="12dp"
                 android:fitsSystemWindows="true"
                 app:civ_border_color="?attr/colorDivider"
                 app:civ_border_width="1dp"
@@ -56,8 +58,6 @@
                 android:id="@+id/nameCollapsedView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginLeft="12dp"
                 android:textAppearance="@style/ToolbarTextAppearance"
                 app:layout_constraintEnd_toEndOf="@+id/avatarView"
                 app:layout_constraintStart_toStartOf="@+id/avatarView"

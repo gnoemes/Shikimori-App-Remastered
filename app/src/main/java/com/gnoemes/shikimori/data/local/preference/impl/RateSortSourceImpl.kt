@@ -20,7 +20,7 @@ class RateSortSourceImpl @Inject constructor(
 
     override fun getSort(type: Type): RateSort {
         val order = prefs.getInt(getSortKey(type), 0)
-        return RateSort.values().first { it.order == order }
+        return RateSort.values().firstOrNull { it.order == order } ?: RateSort.Name
     }
     override fun saveSort(type: Type, sort: RateSort) = prefs.putInt(getSortKey(type), sort.order)
 

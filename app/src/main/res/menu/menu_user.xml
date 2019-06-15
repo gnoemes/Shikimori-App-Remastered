@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/item_settings"
+        android:icon="@drawable/ic_settings_outline"
+        android:title="@string/more_settings"
+        app:iconTint="?attr/colorOnSurface"
+        app:showAsAction="ifRoom" />
+
+
+</menu>

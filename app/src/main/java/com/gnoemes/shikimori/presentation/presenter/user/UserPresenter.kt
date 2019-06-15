@@ -4,6 +4,7 @@ import com.arellomobile.mvp.InjectViewState
 import com.gnoemes.shikimori.domain.user.UserInteractor
 import com.gnoemes.shikimori.entity.app.domain.AnalyticEvent
 import com.gnoemes.shikimori.entity.app.domain.Constants
+import com.gnoemes.shikimori.entity.auth.AuthType
 import com.gnoemes.shikimori.entity.common.domain.Screens
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.main.BottomScreens
@@ -32,12 +33,33 @@ class UserPresenter @Inject constructor(
 ) : BaseNetworkPresenter<UserView>() {
 
     var id: Long = Constants.NO_ID
+    private var wasGuest = false
+    private var isMe = false
 
     private lateinit var currentUser: UserDetails
 
     override fun initData() {
-        loadData()
+        if (id == Constants.NO_ID) {
+            viewState.addSettings()
+            if (isGuest()) {
+                wasGuest = true
+                viewState.showContent(false)
+                viewState.showAuthView(true)
+            } else loadMyUser()
+        } else loadData()
     }
+
+    override fun onViewReattached() {
+        if (wasGuest) loadMyUser()
+        wasGuest = false
+    }
+
+    private fun loadMyUser() = interactor.getMyUserBrief()
+            .doOnSuccess { id = it.id }
+            .doOnSubscribe { isMe = true }
+            .doOnSubscribe { viewState.showAuthView(false) }
+            .subscribe({ loadData() }, this::processErrors)
+            .addToDisposables()
 
     private fun loadData() =
             loadUser()
@@ -89,6 +111,10 @@ class UserPresenter @Inject constructor(
             is UserProfileAction.ChangeFriendshipStatus -> onFriendshipStatusChanged(action.newStatus)
             is UserProfileAction.RateClicked -> onRateClicked(action.isAnime, action.status)
         }
+    }
+
+    fun onSettingsClicked() {
+        router.navigateTo(Screens.SETTINGS)
     }
 
     private fun onRateClicked(anime: Boolean, status: RateStatus) {
@@ -174,4 +200,12 @@ class UserPresenter @Inject constructor(
     }
 
     private fun isGuest(): Boolean = interactor.getUserStatus() == UserStatus.GUEST
+
+    fun onSignIn() = openAuth(AuthType.SIGN_IN)
+    fun onSignUp() = openAuth(AuthType.SIGN_UP)
+
+    private fun openAuth(type: AuthType) {
+        router.navigateTo(Screens.AUTHORIZATION, type)
+        logEvent(AnalyticEvent.NAVIGATION_AUTHORIZATION)
+    }
 }

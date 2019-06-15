@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/titleView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/profile_auth_title"
+        android:textColor="?attr/colorOnSurface"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/descriptionView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/descriptionView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="@string/profile_auth_description"
+        android:textColor="?attr/colorOnPrimarySecondary"
+        app:layout_constraintBottom_toTopOf="@+id/signUpBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleView"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/signUpBtn"
+        style="@style/OutlinedButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginRight="12dp"
+        android:minWidth="0dp"
+        android:paddingStart="16dp"
+        android:paddingLeft="16dp"
+        android:paddingEnd="16dp"
+        android:paddingRight="16dp"
+        android:text="@string/profile_auth_register"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/signInBtn"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/descriptionView" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/signInBtn"
+        style="@style/ActionUnelevatedButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        android:fontFamily="sans-serif"
+        android:paddingStart="16dp"
+        android:paddingLeft="16dp"
+        android:paddingEnd="16dp"
+        android:paddingRight="16dp"
+        android:text="@string/common_sign_in"
+        android:textAllCaps="false"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/signUpBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/signUpBtn"
+        app:layout_constraintTop_toTopOf="@+id/signUpBtn" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
