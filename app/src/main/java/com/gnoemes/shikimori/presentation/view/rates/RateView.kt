@@ -35,6 +35,7 @@ interface RateView : BasePaginationView {
 
     fun showNeedAuthView(show : Boolean)
 
+    @StateStrategyType(SkipStrategy::class)
     fun showRateMessage(taskId : Int, message : String)
 
     @StateStrategyType(SkipStrategy::class)
