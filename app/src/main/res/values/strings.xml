@@ -354,9 +354,9 @@
     <string name="profile_rate_anime">Список аниме</string>
     <string name="profile_rate_manga">Список манги</string>
     <string name="profile_rate_watched">Просмотрено</string>
-    <string name="profile_rate_watching">Смотрю/Планирую</string>
+    <string name="profile_rate_watching">Смотрю / Планирую</string>
     <string name="profile_rate_readed">Прочитано</string>
-    <string name="profile_rate_reading">Читаю/Планирую</string>
+    <string name="profile_rate_reading">Читаю / Планирую</string>
     <string name="profile_rate_dropped">Брошено</string>
     <string name="profile_auth_title">Вы не вошли в аккаунт</string>
     <string name="profile_auth_description">Войдите, чтобы все функции стали доступны.</string>
