@@ -36,7 +36,6 @@ class RateSpinnerView @JvmOverloads constructor(context: Context,
     private var colorDarkRes: Int = R.color.rate_default_dark
     private var spinnerItemLayout: Int = 0
 
-    private var isDarkTheme = false
 
     override fun getLayout(): Int = R.layout.view_rate_spinner
 
@@ -47,7 +46,6 @@ class RateSpinnerView @JvmOverloads constructor(context: Context,
         hasEdit = ta.getBoolean(R.styleable.RateSpinnerView_showEdit, true)
         hasIcon = ta.getBoolean(R.styleable.RateSpinnerView_showIcon, true)
         itemSize = ta.getInt(R.styleable.RateSpinnerView_itemSize, NORMAL_SIZE)
-        isDarkTheme = context.getCurrentTheme.let { it == R.style.ShikimoriAppTheme_Amoled || it == R.style.ShikimoriAppTheme_Dark }
         spinnerItemLayout = if (itemSize == SMALL_SIZE) R.layout.item_rate_spinner_small else R.layout.item_rate_spinner
         ta.recycle()
 
@@ -95,12 +93,12 @@ class RateSpinnerView @JvmOverloads constructor(context: Context,
         val selection = items.firstOrNull { it.status == status }?.pos ?: 0
 
         spinnerView.apply {
-            adapterTextColor = if (isDarkTheme) context.colorAttr(R.attr.colorOnSurface) else context.color(colorDarkRes)
+            adapterTextColor = context.colorAttr(R.attr.colorOnSurface)
             setAdapter(MaterialSpinnerAdapter<String>(context, context.resources.getStringArray(arrayRes).toMutableList()))
             selectedIndex = selection
 
             popupWindow.setBackgroundDrawable(context.drawable(R.drawable.background_player_spinner)?.apply {
-                tint(if (isDarkTheme) context.colorAttr(R.attr.colorDialogSurface) else context.color(colorRes))
+                tint(context.colorAttr(R.attr.colorDialogSurface))
             })
             setOnItemSelectedListener { _, pos, _, item ->
                 val position = if (arrayRes == R.array.anime_rate_stasuses_empty || arrayRes == R.array.manga_rate_stasuses_empty) pos - 1 else pos
@@ -122,15 +120,20 @@ class RateSpinnerView @JvmOverloads constructor(context: Context,
 
     private fun updateColor() {
         val item = items.firstOrNull { it.status == status }
-        item?.let {
-            colorRes = context.attr(item?.colorRes!!).resourceId
-            colorDarkRes = item.colorDarkRes
+            colorRes =
+                    try {
+                        context.attr(item?.colorRes!!).resourceId
+                    } catch (e : Exception) {
+                        R.color.rate_default_transparent
+                    }
+
+            colorDarkRes = item?.colorDarkRes ?: R.color.rate_default_dark
 
             initAdapter()
 
             container.setCardBackgroundColor(context.color(colorRes))
             container.strokeColor = context.color(colorDarkRes)
-            rateImage.setImageResource(item.iconRes)
+            rateImage.setImageResource(item?.iconRes ?: R.drawable.ic_plus)
             rateImage.tintWithRes(colorDarkRes)
             editBtn.tintWithRes(colorDarkRes)
 
@@ -138,7 +141,6 @@ class RateSpinnerView @JvmOverloads constructor(context: Context,
             spinnerView.setArrowColor(context.color(colorDarkRes))
 
             editBtn.visibleIf { hasEdit }
-        }
     }
 
 
