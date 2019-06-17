@@ -8,7 +8,10 @@
 
     <include
         android:id="@+id/rateInclude"
-        layout="@layout/layout_edit_rate_status" />
+        layout="@layout/layout_edit_rate_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
 
     <com.willy.ratingbar.ScaleRatingBar
         android:id="@+id/ratingBar"

@@ -1,6 +1,7 @@
 package com.gnoemes.shikimori.presentation.presenter.anime
 
 import com.arellomobile.mvp.InjectViewState
+import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.domain.anime.AnimeInteractor
 import com.gnoemes.shikimori.domain.rates.RatesInteractor
 import com.gnoemes.shikimori.domain.related.RelatedInteractor
@@ -30,6 +31,7 @@ class AnimePresenter @Inject constructor(
         private val animeInteractor: AnimeInteractor,
         private val relatedInteractor: RelatedInteractor,
         private val viewModelConverter: AnimeDetailsViewModelConverter,
+        private val settingsSource: SettingsSource,
         ratesInteractor: RatesInteractor,
         userInteractor: UserInteractor,
         resourceProvider: CommonResourceProvider,
@@ -130,7 +132,9 @@ class AnimePresenter @Inject constructor(
     }
 
     override fun onEditRate() {
-        viewState.showRateDialog(currentAnime.userRate)
+        val title = if (settingsSource.isRussianNaming) currentAnime.nameRu
+                ?: currentAnime.name else currentAnime.name
+        viewState.showRateDialog(title, currentAnime.userRate)
         logEvent(AnalyticEvent.RATE_DIALOG)
     }
 

@@ -42,7 +42,7 @@ class RateAdapterDelegate(
                 container.onClick { navigationCallback.invoke(item.type, item.contentId) }
                 imageView.onClick { navigationCallback.invoke(item.type, item.contentId) }
                 imageView.setOnLongClickListener { listActionCallback.invoke(RateListAction.Pin(item)); true }
-                rateEditBtn.onClick { callback.invoke(DetailsAction.EditRate(item.rawRate)) }
+                rateEditBtn.onClick { listActionCallback.invoke(RateListAction.EditRate(item)) }
             }
         }
 

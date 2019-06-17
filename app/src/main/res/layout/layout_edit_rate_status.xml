@@ -1,52 +1,195 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/chipGroup"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:showIn="@layout/layout_edit_rate_content">
+    android:background="@android:color/transparent"
+    app:singleSelection="true"
+    tools:showIn="@layout/layout_edit_rate_content"
+    tools:ignore="SmallSp">
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/deleteBtn"
-        style="@style/Widget.MaterialComponents.Button.UnelevatedButton.Icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="-2dp"
-        android:layout_marginLeft="-2dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:minWidth="56dp"
-        android:minHeight="48dp"
-        android:paddingStart="16dp"
-        android:paddingTop="12dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="12dp"
-        app:icon="@drawable/ic_delete"
-        app:iconGravity="textStart"
-        app:iconPadding="0dp"
+        android:id="@+id/progressBtn"
+        style="@style/CircleButtonStyle"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginLeft="56dp"
+        android:layout_marginTop="24dp"
+        app:backgroundTint="@color/selector_rate_blue_transparent"
+        app:icon="@drawable/ic_play_rate"
+        app:iconTint="@color/selector_rate_blue"
+        app:layout_constraintEnd_toStartOf="@+id/plannedBtn"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearance="@style/RightRoundShapeStyle" />
+        app:rippleColor="@color/selector_rate_blue_transparent"
+        app:strokeColor="@color/selector_divider" />
 
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="match_parent"
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/plannedBtn"
+        style="@style/CircleButtonStyle"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:backgroundTint="@color/selector_rate_blue_transparent"
+        app:icon="@drawable/ic_planned"
+        app:iconTint="@color/selector_rate_blue"
+        app:layout_constraintEnd_toStartOf="@+id/reProgressBtn"
+        app:layout_constraintStart_toEndOf="@+id/progressBtn"
+        app:layout_constraintTop_toTopOf="@+id/progressBtn"
+        app:rippleColor="@color/selector_rate_blue_transparent"
+        app:strokeColor="@color/selector_divider" />
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/reProgressBtn"
+        style="@style/CircleButtonStyle"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="56dp"
+        android:layout_marginRight="56dp"
+        app:backgroundTint="@color/selector_rate_blue_transparent"
+        app:icon="@drawable/ic_replay"
+        app:iconTint="@color/selector_rate_blue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/plannedBtn"
+        app:layout_constraintTop_toTopOf="@+id/progressBtn"
+        app:rippleColor="@color/selector_rate_blue_transparent"
+        app:strokeColor="@color/selector_divider" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/completedBtn"
+        style="@style/CircleButtonStyle"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="24dp"
+        app:backgroundTint="@color/selector_rate_green_transparent"
+        app:icon="@drawable/ic_check"
+        app:iconTint="@color/selector_rate_green"
+        app:layout_constraintEnd_toEndOf="@+id/progressBtn"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="@+id/progressBtn"
+        app:layout_constraintTop_toBottomOf="@+id/progressLabel"
+        app:rippleColor="@color/selector_rate_green_transparent"
+        app:strokeColor="@color/selector_divider" />
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/onHoldBtn"
+        style="@style/CircleButtonStyle"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:backgroundTint="@color/selector_rate_gray_transparent"
+        app:icon="@drawable/ic_pause_rate"
+        app:iconTint="@color/selector_rate_gray"
+        app:layout_constraintEnd_toEndOf="@+id/plannedBtn"
+        app:layout_constraintStart_toStartOf="@+id/plannedBtn"
+        app:layout_constraintTop_toTopOf="@+id/completedBtn"
+        app:rippleColor="@color/selector_rate_gray_transparent"
+        app:strokeColor="@color/selector_divider" />
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/droppedBtn"
+        style="@style/CircleButtonStyle"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:backgroundTint="@color/selector_rate_red_transparent"
+        app:icon="@drawable/ic_close"
+        app:iconTint="@color/selector_rate_red"
+        app:layout_constraintEnd_toEndOf="@+id/reProgressBtn"
+        app:layout_constraintStart_toStartOf="@+id/reProgressBtn"
+        app:layout_constraintTop_toTopOf="@+id/onHoldBtn"
+        app:rippleColor="@color/selector_rate_red_transparent"
+        app:strokeColor="@color/selector_divider" />
+
+    <TextView
+        android:id="@+id/progressLabel"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="-4dp"
-        android:layout_marginRight="-4dp"
-        app:cardBackgroundColor="@android:color/transparent"
-        app:cardElevation="0dp"
-        app:cardPreventCornerOverlap="false"
-        app:shapeAppearance="@style/LeftRoundShapeStyle">
+        android:layout_marginTop="8dp"
+        android:textAllCaps="true"
+        android:textColor="?attr/colorOnPrimarySecondary"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="@+id/progressBtn"
+        app:layout_constraintStart_toStartOf="@+id/progressBtn"
+        app:layout_constraintTop_toBottomOf="@+id/progressBtn"
+        tools:text="@string/rate_watching" />
 
-        <com.gnoemes.shikimori.presentation.view.common.widget.RateSpinnerView
-            android:id="@+id/rateSpinnerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:itemSize="normal"
-            app:showEdit="false" />
+    <TextView
+        android:id="@+id/plannedLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/rate_planned_short"
+        android:textAllCaps="true"
+        android:textColor="?attr/colorOnPrimarySecondary"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="@+id/plannedBtn"
+        app:layout_constraintStart_toStartOf="@+id/plannedBtn"
+        app:layout_constraintTop_toBottomOf="@+id/plannedBtn" />
 
-    </com.google.android.material.card.MaterialCardView>
+    <TextView
+        android:id="@+id/reProgressLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textAllCaps="true"
+        android:textColor="?attr/colorOnPrimarySecondary"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="@+id/reProgressBtn"
+        app:layout_constraintStart_toStartOf="@+id/reProgressBtn"
+        app:layout_constraintTop_toBottomOf="@+id/reProgressBtn"
+        tools:text="@string/rate_rewatch" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/completedLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="24dp"
+        android:textAllCaps="true"
+        android:textColor="?attr/colorOnPrimarySecondary"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/completedBtn"
+        app:layout_constraintStart_toStartOf="@+id/completedBtn"
+        app:layout_constraintTop_toBottomOf="@+id/completedBtn"
+        tools:text="@string/rate_completed" />
+
+    <TextView
+        android:id="@+id/onHoldLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/rate_on_hold"
+        android:textAllCaps="true"
+        android:textColor="?attr/colorOnPrimarySecondary"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="@+id/onHoldBtn"
+        app:layout_constraintStart_toStartOf="@+id/onHoldBtn"
+        app:layout_constraintTop_toBottomOf="@+id/onHoldBtn" />
+
+    <TextView
+        android:id="@+id/droppedLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/rate_dropped"
+        android:textAllCaps="true"
+        android:textColor="?attr/colorOnPrimarySecondary"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="@+id/droppedBtn"
+        app:layout_constraintStart_toStartOf="@+id/droppedBtn"
+        app:layout_constraintTop_toBottomOf="@+id/droppedBtn" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?attr/colorDivider"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

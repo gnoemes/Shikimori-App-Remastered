@@ -38,10 +38,10 @@ inline fun View.visibleIf(block: () -> Boolean) {
     if (block()) visible() else gone()
 }
 
-fun View.onClick(mills : Long = Constants.DEFAULT_DEBOUNCE_INTERVAL, l: (v: android.view.View?) -> Unit) {
+fun View.onClick(mills : Long = Constants.DEFAULT_DEBOUNCE_INTERVAL, l: (v: View) -> Unit) {
     setOnClickListener(object : DebouncedOnClickListener(mills) {
         override fun onDebouncedClick(v: View?) {
-            l.invoke(v)
+            if (v != null) l.invoke(v)
         }
     })
 }

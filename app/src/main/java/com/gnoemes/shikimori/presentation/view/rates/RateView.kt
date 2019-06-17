@@ -12,7 +12,7 @@ import com.gnoemes.shikimori.presentation.view.base.fragment.BasePaginationView
 interface RateView : BasePaginationView {
 
     @StateStrategyType(SkipStrategy::class)
-    fun showRateDialog(userRate: UserRate)
+    fun showRateDialog(title : String, userRate: UserRate)
 
     @StateStrategyType(SkipStrategy::class)
     fun showSortDialog(sorts: List<Triple<RateSort, String, Boolean>>)

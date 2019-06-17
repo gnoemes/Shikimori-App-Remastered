@@ -1,6 +1,7 @@
 package com.gnoemes.shikimori.presentation.presenter.manga
 
 import com.arellomobile.mvp.InjectViewState
+import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.domain.manga.MangaInteractor
 import com.gnoemes.shikimori.domain.ranobe.RanobeInteractor
 import com.gnoemes.shikimori.domain.rates.RatesInteractor
@@ -28,6 +29,7 @@ class MangaPresenter @Inject constructor(
         private val ranobeInteractor: RanobeInteractor,
         private val relatedInteractor: RelatedInteractor,
         private val detailsConverter: MangaDetailsViewModelConverter,
+        private val settingsSource: SettingsSource,
         ratesInteractor: RatesInteractor,
         userInteractor: UserInteractor,
         resourceProvider: CommonResourceProvider,
@@ -106,7 +108,9 @@ class MangaPresenter @Inject constructor(
     }
 
     override fun onEditRate() {
-        viewState.showRateDialog(currentManga.userRate)
+        val title = if (settingsSource.isRussianNaming) currentManga.nameRu
+                ?: currentManga.name else currentManga.name
+        viewState.showRateDialog(title, currentManga.userRate)
     }
 
     override fun onOpenInBrowser() = onOpenWeb(currentManga.url)

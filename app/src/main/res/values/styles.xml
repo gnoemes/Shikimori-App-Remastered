@@ -127,6 +127,14 @@
         <item name="shapeAppearance">@style/CircleShapeAppearance</item>
     </style>
 
+    <style name="GrayTransparentCircleButtonStyle" parent="CircleButtonStyle">
+        <item name="backgroundTint">@color/selector_gray_circle_background_color</item>
+        <item name="iconTint">@drawable/selector_circle_button_text_color</item>
+        <item name="android:textColor">@drawable/selector_circle_button_text_color</item>
+        <item name="strokeWidth">0dp</item>
+        <item name="rippleColor">@drawable/selector_button_ripple_color</item>
+    </style>
+
     <style name="FilledCircleButtonStyle" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
@@ -156,7 +164,9 @@
         <item name="chipStrokeColor">@drawable/selector_action_chip_stroke_color</item>
         <item name="chipStrokeWidth">1dp</item>
         <item name="rippleColor">@drawable/selector_button_ripple_color</item>
-        <item name="android:outlineAmbientShadowColor" tools:targetApi="p">?attr/colorSecondaryTransparent</item>
+        <item name="android:outlineAmbientShadowColor" tools:targetApi="p">
+            ?attr/colorSecondaryTransparent
+        </item>
     </style>
 
     <style name="FilterChipStyle" parent="Widget.MaterialComponents.Chip.Filter">
@@ -168,7 +178,9 @@
         <item name="checkedIconEnabled">false</item>
         <item name="chipIconTint">?attr/colorSecondary</item>
         <item name="rippleColor">@drawable/selector_button_ripple_color</item>
-        <item name="android:outlineAmbientShadowColor" tools:targetApi="p">?attr/colorSecondaryTransparent</item>
+        <item name="android:outlineAmbientShadowColor" tools:targetApi="p">
+            ?attr/colorSecondaryTransparent
+        </item>
     </style>
 
     <style name="EntryChipStyle" parent="Widget.MaterialComponents.Chip.Entry">
@@ -179,7 +191,9 @@
         <item name="chipIconTint">?attr/colorSecondary</item>
         <item name="rippleColor">?attr/colorPrimary</item>
         <item name="closeIconTint">?attr/colorSecondary</item>
-        <item name="android:outlineAmbientShadowColor" tools:targetApi="p">?attr/colorSecondaryTransparent</item>
+        <item name="android:outlineAmbientShadowColor" tools:targetApi="p">
+            ?attr/colorSecondaryTransparent
+        </item>
     </style>
 
     <style name="ActionUnelevatedButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">

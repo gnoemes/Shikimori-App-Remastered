@@ -217,7 +217,6 @@ class RatePresenter @Inject constructor(
     fun onAction(it: DetailsAction) {
         when (it) {
             is DetailsAction.ChangeRateStatus -> onChangeRateStatus(it.id, it.newStatus)
-            is DetailsAction.EditRate -> onEditRate(it.rate)
             is DetailsAction.WatchOnline -> onWatchOnline(it.id!!)
         }
     }
@@ -227,6 +226,7 @@ class RatePresenter @Inject constructor(
             is RateListAction.Pin -> onPinRate(it.rate)
             is RateListAction.ChangeOrder -> onPinOrderChanged(it.rate, it.newOrder)
             is RateListAction.SwipeAction -> onRateSwipeAction(it.rate, it.action)
+            is RateListAction.EditRate -> onEditRate(it.rate)
         }
     }
 
@@ -291,10 +291,9 @@ class RatePresenter @Inject constructor(
         } else router.showSystemMessage(resourceProvider.emptyMessage)
     }
 
-    private fun onEditRate(rate: Rate?) {
-        val userRate = getUserRate(rate)
-
-        viewState.showRateDialog(userRate)
+    private fun onEditRate(rate: RateViewModel) {
+        val userRate = getUserRate(rate.rawRate)
+        viewState.showRateDialog(rate.name, userRate)
         logEvent(AnalyticEvent.RATE_DIALOG)
     }
 
