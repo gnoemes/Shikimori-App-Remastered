@@ -27,12 +27,12 @@ class SettingsGeneralFragment : BaseSettingsFragment() {
         }
 
         preference(SettingsExtras.RATE_SWIPE_TO_LEFT_ACTION)?.apply {
-            summary = getRateActionSummary(prefs().getString(key, RateSwipeAction.CHANGE.name)!!)
+            summary = getRateActionSummary(prefs().getString(key, RateSwipeAction.INCREMENT.name)!!)
             setOnPreferenceClickListener { showRateSwipeActionDialog(key); true }
         }
 
         preference(SettingsExtras.RATE_SWIPE_TO_RIGHT_ACTION)?.apply {
-            summary = getRateActionSummary(prefs().getString(key, RateSwipeAction.INCREMENT.name)!!)
+            summary = getRateActionSummary(prefs().getString(key, RateSwipeAction.DISABLED.name)!!)
             setOnPreferenceClickListener { showRateSwipeActionDialog(key); true }
         }
     }

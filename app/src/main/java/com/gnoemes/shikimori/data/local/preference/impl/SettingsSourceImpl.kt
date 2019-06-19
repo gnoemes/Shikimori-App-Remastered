@@ -67,14 +67,14 @@ class SettingsSourceImpl @Inject constructor(
         set(value) = prefs.putBoolean(SettingsExtras.IS_BEST_EXTERNAL_QUALITY, value)
 
     override var rateSwipeToLeftAction: RateSwipeAction
-        get() = prefs.getString(SettingsExtras.RATE_SWIPE_TO_LEFT_ACTION, RateSwipeAction.CHANGE.name)?.let { action ->
-            RateSwipeAction.values().find { it.name == action } ?: RateSwipeAction.CHANGE
-        } ?: RateSwipeAction.CHANGE
+        get() = prefs.getString(SettingsExtras.RATE_SWIPE_TO_LEFT_ACTION, RateSwipeAction.INCREMENT.name)?.let { action ->
+            RateSwipeAction.values().find { it.name == action } ?: RateSwipeAction.INCREMENT
+        } ?: RateSwipeAction.INCREMENT
         set(value) = prefs.putString(SettingsExtras.RATE_SWIPE_TO_LEFT_ACTION, value.name)
 
     override var rateSwipeToRightAction: RateSwipeAction
-        get() = prefs.getString(SettingsExtras.RATE_SWIPE_TO_RIGHT_ACTION, RateSwipeAction.INCREMENT.name)?.let { action ->
-            RateSwipeAction.values().find { it.name == action } ?: RateSwipeAction.INCREMENT
-        } ?: RateSwipeAction.INCREMENT
+        get() = prefs.getString(SettingsExtras.RATE_SWIPE_TO_RIGHT_ACTION, RateSwipeAction.DISABLED.name)?.let { action ->
+            RateSwipeAction.values().find { it.name == action } ?: RateSwipeAction.DISABLED
+        } ?: RateSwipeAction.DISABLED
         set(value) = prefs.putString(SettingsExtras.RATE_SWIPE_TO_RIGHT_ACTION, value.name)
 }
