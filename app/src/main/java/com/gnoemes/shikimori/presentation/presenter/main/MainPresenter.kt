@@ -23,7 +23,7 @@ class MainPresenter @Inject constructor(
         when (screenKey) {
             BottomScreens.RATES -> viewState.rateActionOrClearBackStack()
             BottomScreens.CALENDAR -> viewState.clearCalendarBackStack()
-            BottomScreens.SEARCH -> viewState.clearSearchBackStack()
+            BottomScreens.SEARCH -> viewState.searchActionOrClearSearchBackStack()
             BottomScreens.MAIN -> viewState.clearMainBackStack()
             BottomScreens.MORE -> viewState.clearMoreBackStack()
         }

@@ -233,7 +233,7 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView, RouterPr
 
     override fun clearMainBackStack() = clearBackStack(BottomScreens.MAIN)
 
-    override fun clearSearchBackStack() = clearBackStack(BottomScreens.SEARCH)
+    override fun searchActionOrClearSearchBackStack() = invokeTabRootActionOrClearBackStack(BottomScreens.SEARCH)
 
     override fun clearCalendarBackStack() = clearBackStack(BottomScreens.CALENDAR)
 

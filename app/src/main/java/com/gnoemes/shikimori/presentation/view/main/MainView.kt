@@ -15,7 +15,7 @@ interface MainView : BaseView {
     fun clearMainBackStack()
 
     @StateStrategyType(SkipStrategy::class)
-    fun clearSearchBackStack()
+    fun searchActionOrClearSearchBackStack()
 
     @StateStrategyType(SkipStrategy::class)
     fun clearCalendarBackStack()
