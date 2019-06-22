@@ -48,7 +48,7 @@
         <item name="md_color_content">@color/default_colorOnPrimarySecondary</item>
 
         <item name="colorPrimaryDark">@color/default_colorPrimaryVariant</item>
-        <item name="android:statusBarColor">@color/default_colorPrimary</item>
+        <item name="android:statusBarColor">@color/default_colorStatusBar</item>
 
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
@@ -94,7 +94,7 @@
         <item name="md_color_content">@color/dark_colorOnPrimarySecondary</item>
 
         <item name="colorPrimaryDark">@color/dark_colorPrimaryVariant</item>
-        <item name="android:statusBarColor">@color/dark_colorPrimary</item>
+        <item name="android:statusBarColor">@color/dark_colorStatusBar</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
         <item name="colorControlHighlight">@color/dark_colorRipple</item>
@@ -139,7 +139,7 @@
         <item name="md_color_content">@color/amoled_colorOnPrimarySecondary</item>
 
         <item name="colorPrimaryDark">@color/amoled_colorPrimaryVariant</item>
-        <item name="android:statusBarColor">@color/amoled_colorPrimary</item>
+        <item name="android:statusBarColor">@color/amoled_colorStatusBar</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
         <item name="colorControlHighlight">@color/amoled_colorRipple</item>
