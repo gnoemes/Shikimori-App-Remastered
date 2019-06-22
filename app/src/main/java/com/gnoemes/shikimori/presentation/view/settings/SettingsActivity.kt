@@ -12,6 +12,7 @@ import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.presentation.view.base.activity.MvpActivity
 import com.gnoemes.shikimori.presentation.view.settings.fragments.SettingsFragment
 import com.gnoemes.shikimori.utils.*
+import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.layout_toolbar.*
 
 class SettingsActivity : MvpActivity(), PreferenceFragmentCompat.OnPreferenceStartFragmentCallback, ToolbarCallback {
@@ -40,6 +41,9 @@ class SettingsActivity : MvpActivity(), PreferenceFragmentCompat.OnPreferenceSta
         }
 
         toolbar.menu.findItem(R.id.item_version).actionView = versionView
+        toolbar.layoutParams = (toolbar.layoutParams as AppBarLayout.LayoutParams).apply {
+            scrollFlags = 0
+        }
 
         replaceFragment(SettingsFragment())
     }
@@ -77,7 +81,7 @@ class SettingsActivity : MvpActivity(), PreferenceFragmentCompat.OnPreferenceSta
                 .commit()
     }
 
-    private fun showVersion(show : Boolean) {
+    private fun showVersion(show: Boolean) {
         toolbar.menu.findItem(R.id.item_version).isVisible = show
     }
 
