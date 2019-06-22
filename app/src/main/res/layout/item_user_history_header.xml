@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.google.android.material.chip.Chip
-        android:id="@+id/chip"
+    <TextView
+        android:id="@+id/headerView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="8dp"
+        android:layout_gravity="center_horizontal|start"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="24dp"
         android:layout_marginBottom="8dp"
+        style="@style/ToolbarSmallTextAppearance"
         android:clickable="false"
         android:focusable="false"
-        android:textColor="?attr/colorOnPrimarySecondary"
-        app:chipBackgroundColor="?attr/colorPrimary"
-        app:chipStrokeColor="?attr/colorDivider"
-        app:chipStrokeWidth="1dp"
         tools:text="Сегодня, 3 февраля" />
 
 </FrameLayout>

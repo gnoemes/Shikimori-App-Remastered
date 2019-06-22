@@ -59,7 +59,7 @@ class UserHistoryFragment : BasePaginationFragment<UserHistoryViewModel, UserHis
         with(recyclerView) {
             adapter = this@UserHistoryFragment.adapter
             layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-            addItemDecoration(VerticalSpaceItemDecorator(context.dimen(R.dimen.margin_normal).toInt()))
+            addItemDecoration(VerticalSpaceItemDecorator(context.dimen(R.dimen.margin_normal).toInt(), true, 0))
             background = ColorDrawable(context.colorAttr(R.attr.colorPrimary))
             addOnScrollListener(nextPageListener)
         }

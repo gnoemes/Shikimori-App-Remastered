@@ -50,7 +50,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/user_history_gradient" />
+            app:srcCompat="@drawable/user_history_gradient"
+            />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideLine"
