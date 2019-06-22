@@ -111,8 +111,8 @@ class RatePresenter @Inject constructor(
 
 
     private fun loadMyUser() =
-            userInteractor.getMyUserBrief()
-                    .doOnSuccess { userId = it.id }
+            userInteractor.getMyUserId()
+                    .doOnSuccess { userId = it }
                     .doOnSuccess { loadRateCategories() }
                     .subscribe({ }, this::processUserErrors)
 

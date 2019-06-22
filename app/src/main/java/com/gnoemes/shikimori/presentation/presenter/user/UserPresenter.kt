@@ -54,8 +54,8 @@ class UserPresenter @Inject constructor(
         wasGuest = false
     }
 
-    private fun loadMyUser() = interactor.getMyUserBrief()
-            .doOnSuccess { id = it.id }
+    private fun loadMyUser() = interactor.getMyUserId()
+            .doOnSuccess { id = it }
             .doOnSubscribe { isMe = true }
             .doOnSubscribe { viewState.showAuthView(false) }
             .subscribe({ loadData() }, this::processErrors)

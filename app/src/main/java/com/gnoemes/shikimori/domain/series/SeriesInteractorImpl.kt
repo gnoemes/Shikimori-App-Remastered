@@ -94,8 +94,8 @@ class SeriesInteractorImpl @Inject constructor(
 
     private fun incrementOrCreate(animeId: Long, rateId: Long): Completable {
         return when (rateId) {
-            Constants.NO_ID -> userRepository.getMyUserBrief()
-                    .flatMapCompletable { ratesInteractor.createRate(animeId, Type.ANIME, UserRate(id = rateId, status = RateStatus.WATCHING), it.id) }
+            Constants.NO_ID -> userRepository.getMyUserId()
+                    .flatMapCompletable { ratesInteractor.createRate(animeId, Type.ANIME, UserRate(id = rateId, status = RateStatus.WATCHING), it) }
             else -> ratesInteractor.increment(UserRate(rateId, targetType = Type.ANIME, targetId = animeId))
         }
     }
