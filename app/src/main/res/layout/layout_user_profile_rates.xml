@@ -1,57 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/materialCardView2"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/colorSurface"
-    android:padding="16dp">
+    android:layout_marginStart="16dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginTop="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginRight="16dp"
+    app:cardBackgroundColor="?attr/colorSurface"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="0dp"
+    app:cardPreventCornerOverlap="false"
+    app:strokeColor="?attr/colorDivider"
+    app:strokeWidth="1dp">
 
-    <TextView
-        android:id="@+id/rateLabel"
-        style="@style/ToolbarTextAppearance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Список аниме" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="16dp"
+        android:paddingLeft="16dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="16dp"
+        android:paddingRight="16dp">
 
-    <ImageButton
-        android:id="@+id/menuView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:visibility="gone"
-        android:tint="?attr/colorOnPrimary"
-        app:layout_constraintBottom_toBottomOf="@+id/rateLabel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/rateLabel"
-        app:srcCompat="@drawable/ic_three_dots" />
+        <TextView
+            android:id="@+id/rateLabel"
+            style="@style/ToolbarTextAppearance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Список аниме" />
 
-    <include
-        android:id="@+id/progressView"
-        layout="@layout/layout_progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rateLabel"
-        tools:visibility="gone" />
+        <ImageButton
+            android:id="@+id/menuView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:tint="?attr/colorOnPrimary"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/rateLabel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/rateLabel"
+            app:srcCompat="@drawable/ic_bookmark"
+            tools:visibility="visible" />
 
-    <include
-        android:id="@+id/rateProgressLayout"
-        layout="@layout/layout_rate_progress"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rateLabel"
-        tools:visibility="visible" />
+        <include
+            android:id="@+id/progressView"
+            layout="@layout/layout_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rateLabel"
+            tools:visibility="gone" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <include
+            android:id="@+id/rateProgressLayout"
+            layout="@layout/layout_rate_progress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="303dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rateLabel"
+            tools:visibility="visible" />
+
+        <include
+            android:id="@+id/scoreLayout"
+            layout="@layout/layout_user_profile_statistic"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rateProgressLayout" />
+
+        <include
+            android:id="@+id/typesLayout"
+            layout="@layout/layout_user_profile_statistic"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/scoreLayout" />
+
+        <include
+            android:id="@+id/ratingsLayout"
+            layout="@layout/layout_user_profile_statistic"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/typesLayout" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="rateProgressLayout, typesLayout, ratingsLayout" />
+
+        <ImageButton
+            android:id="@+id/arrowBtn"
+            android:layout_width="128dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:tint="?attr/colorOnSurface"
+            android:background="@android:color/transparent"
+            android:minHeight="48dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/barrier"
+            app:srcCompat="@drawable/ic_chevron_down" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

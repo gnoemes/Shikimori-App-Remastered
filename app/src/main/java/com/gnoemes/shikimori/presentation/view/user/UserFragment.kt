@@ -61,9 +61,9 @@ class UserFragment : BaseFragment<UserPresenter, UserView>(), UserView {
     private val friendsAdapter by lazy { UserProfileContentAdapter(imageLoader, getPresenter()::onContentClicked, getPresenter()::onAction) }
     private val clubsAdapter by lazy { UserProfileContentAdapter(imageLoader, getPresenter()::onContentClicked, getPresenter()::onAction) }
 
-    private lateinit var infoHolder: UserInfoViewHolder
-    private lateinit var animeRateHolder: UserRateViewHolder
-    private lateinit var mangaRateHolder: UserRateViewHolder
+    private var infoHolder: UserInfoViewHolder? = null
+    private var animeRateHolder: UserRateViewHolder? = null
+    private var mangaRateHolder: UserRateViewHolder? = null
 
     private var favoritesHolder: UserContentViewHolder? = null
     private var friendsHolder: UserContentViewHolder? = null
@@ -81,8 +81,8 @@ class UserFragment : BaseFragment<UserPresenter, UserView>(), UserView {
         }
 
         infoHolder = UserInfoViewHolder(infoLayout, getPresenter()::onAction)
-        animeRateHolder = UserRateViewHolder(animeRateLayout, true, getPresenter()::onAction)
-        mangaRateHolder = UserRateViewHolder(mangaRateLayout, false, getPresenter()::onAction)
+        animeRateHolder = UserRateViewHolder(animeRateLayout, true, getPresenter()::onAction, getPresenter()::onArrowClicked)
+        mangaRateHolder = UserRateViewHolder(mangaRateLayout, false, getPresenter()::onAction, getPresenter()::onArrowClicked)
 
         appBarLayout.addOnOffsetChangedListener(appbarOffsetListener)
 
@@ -102,7 +102,8 @@ class UserFragment : BaseFragment<UserPresenter, UserView>(), UserView {
         avatarView.alpha = percent
         avatarCollapsedView.alpha = 1 - percent
         nameCollapsedView.alpha = 1 - percent
-        toolbar.setBackgroundColor(ColorUtils.setAlphaComponent(primaryColor, 255 - (255 * percent).toInt()))
+        val alpha = 255 - (255 * percent).toInt()
+        toolbar.setBackgroundColor(ColorUtils.setAlphaComponent(primaryColor, if (alpha < 0) 0 else if (alpha > 255) 255 else alpha))
     }
 
     override fun onDestroyView() {
@@ -132,15 +133,15 @@ class UserFragment : BaseFragment<UserPresenter, UserView>(), UserView {
     }
 
     override fun setInfo(data: UserInfoViewModel) {
-        infoHolder.bind(data)
+        infoHolder?.bind(data)
     }
 
     override fun setAnimeRate(data: UserRateViewModel) {
-        animeRateHolder.bind(data)
+        animeRateHolder?.bind(data)
     }
 
     override fun setMangaRate(data: UserRateViewModel) {
-        mangaRateHolder.bind(data)
+        mangaRateHolder?.bind(data)
     }
 
     override fun setFavorites(isMe: Boolean, it: UserContentViewModel) {
@@ -164,6 +165,14 @@ class UserFragment : BaseFragment<UserPresenter, UserView>(), UserView {
     override fun showContent(show: Boolean) {
         scrollView.visibleIf { show }
         appBarLayout.visibleIf { show }
+    }
+
+    override fun toggleAnimeRate(expanded: Boolean) {
+        animeRateHolder?.toggle(expanded)
+    }
+
+    override fun toggleMangaRate(expanded: Boolean) {
+        mangaRateHolder?.toggle(expanded)
     }
 
     override fun addSettings() {

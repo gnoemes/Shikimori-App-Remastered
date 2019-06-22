@@ -219,6 +219,7 @@
     <string name="person_birthday">Дата рождения:</string>
 
     <string name="type_tv_translatable">TV сериал</string>
+    <string name="type_tv_long_translatable">Сериал</string>
     <string name="type_tv_short_translatable">TV</string>
     <string name="type_movie_translatable">Фильм</string>
     <string name="type_special_translatable">Спешл</string>
@@ -374,6 +375,10 @@
 
     <string name="profile_rate_rewatched">Пересмотр</string>
     <string name="profile_rate_reread">Перечитано</string>
+    <string name="profile_score">Оценки</string>
+    <string name="profile_middle_score">Средняя</string>
+    <string name="profile_types">Типы</string>
+    <string name="profile_ratings">Рейтинги</string>
 
     <string name="club_free">Свободное обсуждение и вступление</string>
     <string name="club_free_join">Свободное вступление</string>

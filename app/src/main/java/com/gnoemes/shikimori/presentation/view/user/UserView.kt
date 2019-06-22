@@ -25,4 +25,7 @@ interface UserView : BaseFragmentView {
     fun addSettings()
 
     fun showAuthView(show: Boolean)
+
+    fun toggleAnimeRate(expanded: Boolean)
+    fun toggleMangaRate(expanded: Boolean)
 }

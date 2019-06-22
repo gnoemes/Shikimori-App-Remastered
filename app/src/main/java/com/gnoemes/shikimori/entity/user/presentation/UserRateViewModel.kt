@@ -1,9 +1,10 @@
 package com.gnoemes.shikimori.entity.user.presentation
 
-import com.gnoemes.shikimori.entity.rates.domain.RateStatus
-
 data class UserRateViewModel(
         val isAnime: Boolean,
         val rates: Map<RateProgressStatus, Int>,
-        val rawRates : Map<RateStatus, String>
+        val averageScore : Float,
+        val scores : List<UserStatisticItem>,
+        val types : List<UserStatisticItem>,
+        val ratings : List<UserStatisticItem>
 )

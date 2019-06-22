@@ -36,6 +36,9 @@ class UserPresenter @Inject constructor(
     private var wasGuest = false
     private var isMe = false
 
+    private var animeExpanded = false
+    private var mangaExpanded = false
+
     private lateinit var currentUser: UserDetails
 
     override fun initData() {
@@ -78,8 +81,8 @@ class UserPresenter @Inject constructor(
                     .doOnSuccess { currentUser = it }
                     .doOnSuccess { viewState.setInfo(converter.convertInfo(it)) }
                     .doOnSuccess { viewState.setHead(converter.convertHead(it)) }
-                    .doOnSuccess { viewState.setAnimeRate(converter.convertAnimeRate(it.stats.animeStatuses)) }
-                    .doOnSuccess { viewState.setMangaRate(converter.convertMangaRate(it.stats.mangaStatuses)) }
+                    .doOnSuccess { viewState.setAnimeRate(converter.convertAnimeRate(it.stats)) }
+                    .doOnSuccess { viewState.setMangaRate(converter.convertMangaRate(it.stats)) }
 
     private fun loadFavorites() =
             interactor.getFavorites(id)
@@ -110,6 +113,16 @@ class UserPresenter @Inject constructor(
             is UserProfileAction.ChangeIgnoreStatus -> onIgnoreStatusChanged(action.newStatus)
             is UserProfileAction.ChangeFriendshipStatus -> onFriendshipStatusChanged(action.newStatus)
             is UserProfileAction.RateClicked -> onRateClicked(action.isAnime, action.status)
+        }
+    }
+
+    fun onArrowClicked(isAnime: Boolean) {
+        if (isAnime) {
+            animeExpanded = !animeExpanded
+            viewState.toggleAnimeRate(animeExpanded)
+        } else {
+            mangaExpanded = !mangaExpanded
+            viewState.toggleMangaRate(mangaExpanded)
         }
     }
 
