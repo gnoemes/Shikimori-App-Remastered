@@ -1,28 +1,32 @@
 package com.gnoemes.shikimori.presentation.view.calendar
 
+import android.os.Build
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.appcompat.widget.SearchView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
-import com.gnoemes.shikimori.entity.calendar.presentation.CalendarPage
 import com.gnoemes.shikimori.entity.calendar.presentation.CalendarViewModel
+import com.gnoemes.shikimori.entity.series.presentation.SeriesPlaceholderItem
 import com.gnoemes.shikimori.presentation.presenter.calendar.CalendarPresenter
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragment
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
 import com.gnoemes.shikimori.presentation.view.calendar.adapter.CalendarAdapter
-import com.gnoemes.shikimori.presentation.view.common.adapter.PageTitleAdapter
-import com.gnoemes.shikimori.utils.gone
-import com.gnoemes.shikimori.utils.ifNotNull
+import com.gnoemes.shikimori.utils.*
 import com.gnoemes.shikimori.utils.images.ImageLoader
-import com.gnoemes.shikimori.utils.visible
+import com.gnoemes.shikimori.utils.widgets.OverlapHeaderScrollingBehavior
+import com.gnoemes.shikimori.utils.widgets.VerticalSpaceItemDecorator
 import kotlinx.android.synthetic.main.fragment_calendar.*
-import kotlinx.android.synthetic.main.layout_appbar_tabs.*
-import kotlinx.android.synthetic.main.layout_default_list.view.*
-import kotlinx.android.synthetic.main.layout_default_placeholders.view.*
-import kotlinx.android.synthetic.main.layout_progress.*
-import kotlinx.android.synthetic.main.layout_toolbar.*
+import kotlinx.android.synthetic.main.layout_default_list.*
+import kotlinx.android.synthetic.main.layout_default_placeholders.*
 import javax.inject.Inject
 
 class CalendarFragment : BaseFragment<CalendarPresenter, CalendarView>(), CalendarView {
@@ -34,90 +38,72 @@ class CalendarFragment : BaseFragment<CalendarPresenter, CalendarView>(), Calend
     lateinit var calendarPresenter: CalendarPresenter
 
     @ProvidePresenter
-    fun providePresenter(): CalendarPresenter {
-        calendarPresenter = presenterProvider.get()
-
-        parentFragment.ifNotNull {
-            calendarPresenter.localRouter = (it as RouterProvider).localRouter
-        }
-
-        return calendarPresenter
+    fun providePresenter(): CalendarPresenter = presenterProvider.get().apply {
+        localRouter = (parentFragment as RouterProvider).localRouter
     }
 
     companion object {
         fun newInstance() = CalendarFragment()
     }
 
-    private lateinit var pages: List<Pair<String, View>>
+    private val adapter by lazy { CalendarAdapter(imageLoader, getPresenter()::onAnimeClicked) }
 
-    private val ongoingsAdapter by lazy { CalendarAdapter(imageLoader) { getPresenter().onAnimeClicked(it) } }
-    private val myOngoingsAdapter by lazy { CalendarAdapter(imageLoader) { getPresenter().onAnimeClicked(it) } }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(getFragmentLayout(), container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initViews()
 
-        if (savedInstanceState != null) {
-            savedInstanceState.getBundle("ongoingsState")?.let { ongoingsAdapter.onRestoreInstanceState(it) }
-            savedInstanceState.getBundle("myOngoingsState")?.let { myOngoingsAdapter.onRestoreInstanceState(it) }
+        toolbar.setNavigationIcon(R.drawable.ic_search)
+
+        with(recyclerView) {
+            adapter = this@CalendarFragment.adapter
+            layoutManager = LinearLayoutManager(context).apply { initialPrefetchItemCount = 3 }
+            val customSpacing = context.dp(84)
+            addItemDecoration(VerticalSpaceItemDecorator(context.dp(32), true, firstCustomSpacing = customSpacing, lastCustomSpacing = context!!.dp(32)))
+            setHasFixedSize(true)
         }
-    }
 
-    private fun initViews() {
-        appBarLayout?.gone()
-        progressBar?.gone()
+        refreshLayout.layoutParams = (refreshLayout.layoutParams as? CoordinatorLayout.LayoutParams)?.apply {
+            behavior = OverlapHeaderScrollingBehavior()
+        }
+        refreshLayout.setProgressViewOffset(false, context!!.dp(24), context!!.dp(96))
 
-        if (!::pages.isInitialized) {
-            val ongoingsPage = layoutInflater.inflate(R.layout.page_calendar, null)!!
-            val myOngoingsPage = layoutInflater.inflate(R.layout.page_calendar, null)!!
+        networkErrorView.apply {
+            setText(R.string.common_error_message_without_pull)
+            callback = { getPresenter().initData() }
+            showButton()
+        }
 
-            pages = listOf(
-                    Pair(getString(R.string.common_all), ongoingsPage),
-                    Pair(getString(R.string.calendar_my_ongoings), myOngoingsPage)
-            )
+        with(searchView) {
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    hideSoftInput()
+                    return true
+                }
 
-            fun initRecycler(page: CalendarPage) {
-                val isAll = page == CalendarPage.ALL
-                val pageLayout = if (isAll) ongoingsPage else myOngoingsPage
-                val pageAdapter = if (isAll) ongoingsAdapter else myOngoingsAdapter
-
-                with(pageLayout.recyclerView) {
-                    adapter = pageAdapter.apply { if (!hasObservers()) setHasStableIds(true) }
-                    layoutManager = LinearLayoutManager(context).apply { initialPrefetchItemCount = 3 }
-                    setHasFixedSize(true)
-                    setItemViewCacheSize(20)
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    getPresenter().onQueryChanged(newText)
+                    return true
+                }
+            })
+            findViewById<SearchView.SearchAutoComplete>(R.id.search_src_text)?.apply {
+                setPadding(0, 0, context.dp(8), 0)
+                setHintTextColor(AppCompatResources.getColorStateList(context, context.attr(R.attr.colorOnPrimarySecondary).resourceId))
+            }
+            findViewById<LinearLayout>(R.id.search_edit_frame)?.apply {
+                layoutParams = (layoutParams as? LinearLayout.LayoutParams)?.apply {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                        marginStart = 0
+                    }; leftMargin = 0
                 }
             }
-
-            initRecycler(CalendarPage.ALL)
-            initRecycler(CalendarPage.MY_ONGOINGS)
-
-            ongoingsPage.refreshLayout.setOnRefreshListener { getPresenter().onRefresh() }
-            myOngoingsPage.refreshLayout.setOnRefreshListener { getPresenter().onRefreshMyOngoings() }
-
-            ongoingsPage.networkErrorView.setText(R.string.common_error_message)
-            myOngoingsPage.emptyContentView.setText(R.string.calendar_nothing)
-            myOngoingsPage.networkErrorView.setText(R.string.common_error_message)
+            findViewById<ImageView>(R.id.search_close_btn)?.apply {
+                setPadding(context!!.dp(12), 0, context!!.dp(12), 0)
+                tint(context.colorAttr(R.attr.colorOnPrimary))
+            }
         }
 
-        pagesContainerView.offscreenPageLimit = 2
-        pagesContainerView.adapter = PageTitleAdapter(pages)
-
-        tabLayout.setupWithViewPager(pagesContainerView)
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-
-        val ongoingsState = ongoingsAdapter.onSaveInstanceState()
-        outState.putBundle("ongoingsState", ongoingsState)
-        val myOngoingsState = myOngoingsAdapter.onSaveInstanceState()
-        outState.putBundle("myOngoingsState", myOngoingsState)
-    }
-
-    override fun onDestroyView() {
-        pagesContainerView.adapter = null
-        super.onDestroyView()
+        refreshLayout.setOnRefreshListener { calendarPresenter.onRefresh() }
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -128,48 +114,20 @@ class CalendarFragment : BaseFragment<CalendarPresenter, CalendarView>(), Calend
 
     override fun getFragmentLayout(): Int = R.layout.fragment_calendar
 
-    private fun getPage(calendarPage: CalendarPage): View = pages[calendarPage.ordinal].second
-
     ///////////////////////////////////////////////////////////////////////////
     // MVP
     ///////////////////////////////////////////////////////////////////////////
 
-    override fun showOngoings(calendarPage: CalendarPage, items: List<CalendarViewModel>) {
-        getPage(calendarPage).recyclerView.apply {
-            visible()
-            (adapter as? CalendarAdapter)?.bindItems(items)
-        }
+    override fun showData(items: List<CalendarViewModel>) {
+        adapter.bindItems(items)
     }
 
-    override fun hideOngoings(calendarPage: CalendarPage) {
-        getPage(calendarPage).recyclerView.gone()
-    }
+    override fun showContent(show: Boolean) = recyclerView.visibleIf { show }
+    override fun onShowLoading() = refreshLayout.showRefresh()
+    override fun onHideLoading() = refreshLayout.hideRefresh()
 
-    override fun onShowOngoingsLoading(calendarPage: CalendarPage) {
-        getPage(calendarPage).refreshLayout.isRefreshing = true
-    }
-
-    override fun onHideOngoingsLoading(calendarPage: CalendarPage) {
-        getPage(calendarPage).refreshLayout.isRefreshing = false
-    }
-
-    override fun onShowNetworkError(calendarPage: CalendarPage) {
-        getPage(calendarPage).networkErrorView.visible()
-    }
-
-    override fun onHideNetworkError(calendarPage: CalendarPage) {
-        getPage(calendarPage).networkErrorView.gone()
-    }
-
-    override fun onShowEmptyView(calendarPage: CalendarPage) {
-        getPage(calendarPage).emptyContentView.visible()
-    }
-
-    override fun onHideEmptyView(calendarPage: CalendarPage) {
-        getPage(calendarPage).emptyContentView.gone()
-    }
-
-    override fun setPage(page: CalendarPage) {
-        postViewAction { pagesContainerView.currentItem = page.ordinal }
+    override fun showEmptyView() {
+        val item = SeriesPlaceholderItem(R.string.calendar_empty_title, R.string.calendar_empty_description)
+        adapter.bindItems(mutableListOf(item))
     }
 }

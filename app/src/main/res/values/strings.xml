@@ -179,11 +179,19 @@
     <string name="calendar_must_aired">Сейчас на ТВ</string>
     <string name="calendar_my_ongoings">Мои онгоинги</string>
     <string name="calendar_nothing">Ничего не найдено.\n Добавляйте аниме в списки для отслеживания выхода новых серий</string>
+    <string name="calendar_search_hint">Онгоинги и анонсы</string>
+    <string name="calendar_aired_already">Вышедшее сегодня</string>
+    <string name="calendar_season_end">Конец сезона</string>
+    <string name="calendar_empty_title">В ближайший месяц ничего нет</string>
+    <string name="calendar_empty_description">Измените запрос или попробуйте найти более позднюю дату выхода на странице тайтла.</string>
+
     <string name="episodes_format">\n[%s из %s]</string>
     <string name="volumes_format">\n[%s-%s]</string>
     <string name="episode_number">%d эпизод</string>
     <string name="episode_short">эп.</string>
     <string name="episode_in">через %s</string>
+    <string name="minute_short">мин</string>
+    <string name="hour_short">ч</string>
     <string name="type_pattern">%s (%s эп.), %d мин.</string>
     <string name="type_pattern_manga">%s, %s т. %s гл.</string>
     <string name="type_pattern_without_duration">%s (%s эп.)</string>

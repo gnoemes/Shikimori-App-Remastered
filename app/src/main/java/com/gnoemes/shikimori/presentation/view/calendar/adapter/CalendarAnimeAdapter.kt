@@ -3,9 +3,12 @@ package com.gnoemes.shikimori.presentation.view.calendar.adapter
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
 import androidx.recyclerview.widget.RecyclerView
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.calendar.presentation.CalendarAnimeItem
+import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.gnoemes.shikimori.utils.images.Prefetcher
 import com.gnoemes.shikimori.utils.images.SimplePrefetcher
@@ -43,20 +46,15 @@ class CalendarAnimeAdapter(
         super.onViewRecycled(holder)
         holder.itemView.apply {
             imageLoader.clearImage(imageView)
-            cardView.setOnClickListener(null)
-            nameView.text = null
-            typeView.text = null
-            episodeView.text = null
-            nextEpisodeDateView.text = null
         }
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        private lateinit var item : CalendarAnimeItem
+        private lateinit var item: CalendarAnimeItem
 
         init {
-            itemView.cardView.onClick { callback.invoke(item.id) }
+            itemView.materialCardView.onClick { callback.invoke(item.id) }
         }
 
         fun bind(item: CalendarAnimeItem) {
@@ -64,11 +62,36 @@ class CalendarAnimeAdapter(
             with(itemView) {
                 imageLoader.setImageListItem(imageView, item.image.original)
                 nameView.text = item.name
-                typeView.text = item.type.type
-                episodeView.text = item.episodeText
-                nextEpisodeDateView.text = item.nextEpisode
-                nextEpisodeDateView.visibleIf { item.isToday }
+                descriptionView.text = item.description
+
+                if (item.status != null) {
+                    rateView.setIconResource(getRateIcon(item.status))
+                    rateView.setIconTintResource(getRateColor(item.status))
+                }
+
+                rateView.visibleIf { item.status != null }
+                seasonLastView.visibleIf { item.isLast }
             }
+        }
+
+        @DrawableRes
+        private fun getRateIcon(status: RateStatus): Int = when (status) {
+            RateStatus.WATCHING -> R.drawable.ic_play_rate
+            RateStatus.PLANNED -> R.drawable.ic_planned
+            RateStatus.REWATCHING -> R.drawable.ic_replay
+            RateStatus.COMPLETED -> R.drawable.ic_check
+            RateStatus.ON_HOLD -> R.drawable.ic_pause_rate
+            RateStatus.DROPPED -> R.drawable.ic_close
+        }
+
+        @ColorRes
+        private fun getRateColor(status: RateStatus) = when (status) {
+            RateStatus.WATCHING -> R.color.rate_default_dark
+            RateStatus.PLANNED -> R.color.rate_default_dark
+            RateStatus.REWATCHING -> R.color.rate_default_dark
+            RateStatus.COMPLETED -> R.color.rate_watched_dark
+            RateStatus.ON_HOLD -> R.color.rate_on_hold_dark
+            RateStatus.DROPPED -> R.color.rate_dropped_dark
         }
     }
 }

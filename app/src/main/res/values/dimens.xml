@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="image_calendar_height">190dp</dimen>
-    <dimen name="image_calendar_width">140dp</dimen>
+    <dimen name="image_calendar_height">160dp</dimen>
+    <dimen name="image_calendar_width">128dp</dimen>
+
+    <dimen name="image_default_height">190dp</dimen>
+    <dimen name="image_default_width">140dp</dimen>
 
     <dimen name="image_details_height">140dp</dimen>
     <dimen name="image_details_width">105dp</dimen>

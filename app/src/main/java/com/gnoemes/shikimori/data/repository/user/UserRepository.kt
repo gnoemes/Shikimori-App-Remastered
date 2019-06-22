@@ -8,6 +8,8 @@ import io.reactivex.Single
 
 interface UserRepository {
 
+    fun getMyUserId() : Single<Long>
+
     fun getMyUserBrief(): Single<UserBrief>
 
     fun getUserMessages(type: MessageType): Single<List<Message>>

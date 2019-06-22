@@ -33,12 +33,6 @@
     <string name="settings_anime">Аниме</string>
     <string name="settings_authors">Список авторов</string>
     <string name="settings_anime_summary">Плеер, тип перевода</string>
-    <string name="settings_anime_my_ongoings_title">Главный раздел \"Мои онгоинги\"</string>
-    <string name="settings_anime_my_ongoings_key" translatable="false">IS_MY_ONGOINGS_PRIORITY</string>
-    <string name="settings_anime_my_ongoings_summary_on">При переходе на календарь открывается раздел ваших онгоингов</string>
-    <string name="settings_anime_my_ongoings_summary_off">При переходе на календарь открывается раздел всех онгоингов</string>
-
-    <string name="settings_calendar">Календарь</string>
 
     <string name="settings_anime_translation_type_title">Предпочитаемый тип перевода</string>
     <string name="settings_anime_translation_type_key" translatable="false">TRANSLATION_TYPE</string>

@@ -54,10 +54,6 @@ class SettingsSourceImpl @Inject constructor(
         get() = prefs.getBoolean(SettingsExtras.IS_USE_LOCAL_TRANSLATION_SETTINGS, true)
         set(value) = prefs.putBoolean(SettingsExtras.IS_USE_LOCAL_TRANSLATION_SETTINGS, value)
 
-    override var isMyOngoingPriority: Boolean
-        get() = prefs.getBoolean(SettingsExtras.IS_MY_ONGOINGS_PRIORITY, false)
-        set(value) = prefs.putBoolean(SettingsExtras.IS_MY_ONGOINGS_PRIORITY, value)
-
     override var downloadFolder: String
         get() = prefs.getString(SettingsExtras.DOWNLOAD_FOLDER, "")!!
         set(value) = prefs.putString(SettingsExtras.DOWNLOAD_FOLDER, value)
