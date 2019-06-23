@@ -45,9 +45,10 @@
                 android:gravity="center"
                 android:textAllCaps="true"
                 android:textColor="@color/colorOnProtector"
-                android:textSize="12sp"
+                android:textSize="10sp"
                 app:layout_constraintStart_toStartOf="@+id/imageView"
                 app:layout_constraintTop_toTopOf="@+id/imageView"
+                tools:ignore="SmallSp"
                 tools:text="10" />
 
         </com.google.android.material.card.MaterialCardView>
