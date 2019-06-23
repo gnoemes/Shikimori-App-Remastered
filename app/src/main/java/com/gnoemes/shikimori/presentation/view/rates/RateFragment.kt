@@ -300,16 +300,19 @@ class RateFragment : BasePaginationFragment<Rate, RatePresenter, RateView>(), Ra
     }
 
     override fun showRateDialog(title : String, userRate: UserRate) {
+        hideSoftInput()
         val dialog = EditRateFragment.newInstance(rate = userRate, isAnime = userRate.targetType == Type.ANIME, title = title)
         dialog.show(childFragmentManager, "RateTag")
     }
 
     override fun showSortDialog(sorts: List<Triple<RateSort, String, Boolean>>) {
+        hideSoftInput()
         val dialog = RateSortDialog.newInstance(sorts)
         dialog.show(childFragmentManager, "SortDialog")
     }
 
     override fun showStatusDialog(id: Long, name: String, currentStatus: RateStatus, isAnime: Boolean) {
+        hideSoftInput()
         val dialog = RateStatusDialog.newInstance(id, name, currentStatus, isAnime)
         dialog.show(childFragmentManager, "StatusDialog")
     }
