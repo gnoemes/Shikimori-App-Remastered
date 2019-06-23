@@ -72,6 +72,8 @@ class UserDetailsViewModelConverterImpl @Inject constructor(
     )
 
     private fun countAvgScore(scores: List<Statistic>): Float {
+        if (scores.isEmpty()) return 0f
+
         val sum = scores.sumBy { it.value }
         return scores
                 .sumBy { it.name.toInt() * it.value }
