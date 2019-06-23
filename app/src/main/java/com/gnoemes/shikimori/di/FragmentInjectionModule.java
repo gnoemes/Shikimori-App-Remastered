@@ -14,7 +14,7 @@ import com.gnoemes.shikimori.di.rate.RateModule;
 import com.gnoemes.shikimori.di.search.FilterModule;
 import com.gnoemes.shikimori.di.search.SearchModule;
 import com.gnoemes.shikimori.di.series.EpisodeModule;
-import com.gnoemes.shikimori.di.series.TranslationModule;
+import com.gnoemes.shikimori.di.series.SeriesModule;
 import com.gnoemes.shikimori.di.shikimorimain.ShikimoriMainModule;
 import com.gnoemes.shikimori.di.topic.details.TopicModule;
 import com.gnoemes.shikimori.di.topic.list.TopicListModule;
@@ -34,8 +34,8 @@ import com.gnoemes.shikimori.presentation.view.search.SearchFragment;
 import com.gnoemes.shikimori.presentation.view.search.filter.FilterFragment;
 import com.gnoemes.shikimori.presentation.view.search.filter.genres.FilterGenresFragment;
 import com.gnoemes.shikimori.presentation.view.search.filter.seasons.FilterSeasonsFragment;
+import com.gnoemes.shikimori.presentation.view.series.SeriesFragment;
 import com.gnoemes.shikimori.presentation.view.series.episodes.EpisodesFragment;
-import com.gnoemes.shikimori.presentation.view.series.translations.TranslationsFragment;
 import com.gnoemes.shikimori.presentation.view.shikimorimain.ShikimoriMainFragment;
 import com.gnoemes.shikimori.presentation.view.topic.details.TopicFragment;
 import com.gnoemes.shikimori.presentation.view.topic.list.TopicListFragment;
@@ -93,10 +93,6 @@ public interface FragmentInjectionModule {
     EpisodesFragment episodeFragment();
 
     @BottomChildScope
-    @ContributesAndroidInjector(modules = TranslationModule.class)
-    TranslationsFragment translationsFragment();
-
-    @BottomChildScope
     @ContributesAndroidInjector(modules = MangaModule.class)
     MangaFragment mangaFragment();
 
@@ -128,4 +124,8 @@ public interface FragmentInjectionModule {
 
     @ContributesAndroidInjector(modules = FilterModule.class)
     FilterSeasonsFragment filterSeasonsFragment();
+
+    @BottomChildScope
+    @ContributesAndroidInjector(modules = SeriesModule.class)
+    SeriesFragment seriesFragment();
 }

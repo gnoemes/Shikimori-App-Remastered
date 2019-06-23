@@ -1,17 +1,20 @@
-package com.gnoemes.shikimori.presentation.view.series.translations
+package com.gnoemes.shikimori.presentation.view.series
 
 import com.arellomobile.mvp.viewstate.strategy.SkipStrategy
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
+import com.gnoemes.shikimori.entity.common.domain.Image
 import com.gnoemes.shikimori.entity.series.domain.TranslationType
 import com.gnoemes.shikimori.entity.series.presentation.TranslationViewModel
 import com.gnoemes.shikimori.presentation.presenter.common.AddToEndSingleTagStrategy
-import com.gnoemes.shikimori.presentation.view.series.BaseSeriesView
+import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragmentView
 
-interface TranslationsView : BaseSeriesView {
+interface SeriesView : BaseFragmentView {
 
     fun showData(newItems: List<TranslationViewModel>)
 
     fun setEpisodeName(index: Int)
+
+    fun changeSource(isAlternative : Boolean)
 
     fun setTranslationType(type: TranslationType)
 
@@ -31,6 +34,9 @@ interface TranslationsView : BaseSeriesView {
     fun showAuthorDialog(author: String)
 
     @StateStrategyType(SkipStrategy::class)
+    fun showEpisodesDialog()
+
+    @StateStrategyType(SkipStrategy::class)
     fun checkPermissions()
 
     @StateStrategyType(SkipStrategy::class)
@@ -41,4 +47,16 @@ interface TranslationsView : BaseSeriesView {
 
     fun hideFab()
 
+    fun setBackground(image: Image)
+
+    fun showEmptyAuthorsView(show: Boolean, isAlternative: Boolean = false)
+
+    fun showEmptySearchView()
+
+    @StateStrategyType(SkipStrategy::class)
+    fun scrollToPosition(position: Int)
+
+    fun showEpisodeLoading(show: Boolean)
+
+    fun hideEpisodeName()
 }

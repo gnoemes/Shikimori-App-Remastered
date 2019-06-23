@@ -9,8 +9,8 @@ import com.gnoemes.shikimori.di.rate.RateUtilModule
 import com.gnoemes.shikimori.di.rate.SyncModule
 import com.gnoemes.shikimori.di.user.UserInteractorModule
 import com.gnoemes.shikimori.di.user.UserUtilModule
-import com.gnoemes.shikimori.presentation.presenter.series.translations.TranslationsPresenter
-import com.gnoemes.shikimori.presentation.view.series.translations.TranslationsFragment
+import com.gnoemes.shikimori.presentation.presenter.series.SeriesPresenter
+import com.gnoemes.shikimori.presentation.view.series.SeriesFragment
 import dagger.Binds
 import dagger.Module
 import javax.inject.Named
@@ -25,13 +25,13 @@ import javax.inject.Named
     SeriesUtilModule::class,
     UserInteractorModule::class
 ])
-interface TranslationModule {
+interface SeriesModule {
 
     @Binds
-    fun bindPresenter(presenter: TranslationsPresenter): MvpPresenter<*>
+    fun bindPresenter(presenter: SeriesPresenter): MvpPresenter<*>
 
     @Binds
     @Named(BaseChildFragmentModule.CHILD_FRAGMENT)
     @BottomScope
-    fun bindFragment(fragment: TranslationsFragment): Fragment
+    fun bindFragment(fragment: SeriesFragment): Fragment
 }

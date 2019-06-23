@@ -25,7 +25,10 @@ class SeriesInteractorImpl @Inject constructor(
         private val progressRepository: AnimeProgressRepository
 ) : SeriesInteractor {
 
-    override fun getEpisodes(id: Long, alternative: Boolean): Single<List<Episode>> = repository.getEpisodes(id, alternative).applyErrorHandlerAndSchedulers()
+    override fun getEpisodes(id: Long, alternative: Boolean): Single<List<Episode>> =
+            repository.getEpisodes(id, alternative)
+                    .map { list -> list.sortedBy { it.index } }
+                    .applyErrorHandlerAndSchedulers()
 
     override fun getTranslations(type: TranslationType, animeId: Long, episodeId: Long, alternative: Boolean): Single<List<Translation>> =
             repository.getTranslations(type, animeId, episodeId, alternative)

@@ -15,6 +15,7 @@ import com.gnoemes.shikimori.entity.app.domain.Task
 import com.gnoemes.shikimori.entity.app.domain.exceptions.BaseException
 import com.gnoemes.shikimori.entity.app.domain.exceptions.ContentException
 import com.gnoemes.shikimori.entity.common.domain.Screens
+import com.gnoemes.shikimori.entity.common.domain.Status
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.common.presentation.DetailsAction
 import com.gnoemes.shikimori.entity.common.presentation.RateSort
@@ -26,7 +27,7 @@ import com.gnoemes.shikimori.entity.rates.presentation.RateSortViewModel
 import com.gnoemes.shikimori.entity.rates.presentation.RateViewModel
 import com.gnoemes.shikimori.entity.search.presentation.SearchNavigationData
 import com.gnoemes.shikimori.entity.series.domain.TranslationSetting
-import com.gnoemes.shikimori.entity.series.presentation.TranslationsNavigationData
+import com.gnoemes.shikimori.entity.series.presentation.SeriesNavigationData
 import com.gnoemes.shikimori.presentation.presenter.base.BasePaginationPresenter
 import com.gnoemes.shikimori.presentation.presenter.common.paginator.ViewController
 import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResourceProvider
@@ -322,6 +323,7 @@ class RatePresenter @Inject constructor(
                                         else rate.episodes + 1
                                     } else episodeIndex
                                 }
+                        else if (episodeIndex > rate.anime.episodes) Single.just(rate.anime.episodes)
                         else Single.just(episodeIndex)
                     }
                     .subscribe({ checkRateWatchProgress(true, rate, it) }, this::processErrors)
@@ -337,11 +339,13 @@ class RatePresenter @Inject constructor(
 
     //TODO manga
     private fun watchOnlineOrOpenList(rate: Rate, settings: TranslationSetting, progress: Int) {
-        val isAuto = settings.lastAuthor != null && settings.lastType != null
-        val name = if (settingsSource.isRussianNaming) rate.anime?.nameRu
-                ?: rate.anime?.name!! else rate.anime?.name!!
-        val navigationData = TranslationsNavigationData(settings.animeId, rate.anime?.image!!, name, progress.toLong(), progress, rate.id, false, isAuto)
-        router.navigateTo(Screens.TRANSLATIONS, navigationData)
+        val name =
+                if (settingsSource.isRussianNaming) rate.anime?.nameRu ?: rate.anime?.name!!
+                else rate.anime?.name!!
+        val episodesAired = if (rate.anime?.status == Status.RELEASED) rate.anime.episodes else rate.anime?.episodesAired
+        val navigationData = SeriesNavigationData(settings.animeId, rate.anime?.image!!, name, rate.id, episodesAired!!, progress)
+        router.navigateTo(Screens.SERIES, navigationData)
+        analyticInteractor.logEvent(AnalyticEvent.NAVIGATION_ANIME_TRANSLATIONS)
     }
 
     fun onChangeRateStatus(id: Long, newStatus: RateStatus) {

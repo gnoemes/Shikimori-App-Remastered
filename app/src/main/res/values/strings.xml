@@ -346,6 +346,11 @@
     <string name="translation_search_empty_title">Ничего не найдено</string>
     <string name="translation_search_empty_desc">Попробуйте поискать что-нибудь другое</string>
 
+    <string name="series_main_source">Основной</string>
+    <string name="series_alt_source">Альтернативный</string>
+    <string name="series_empty_authors_title">Авторы не найдены</string>
+    <string name="series_empty_authors_description">Попробуйте изменить источник или тип, если смотрите не в одном.</string>
+
     <string name="player_web">Веб-плеер</string>
     <string name="player_embedded">Внутренний плеер (BETA)</string>
     <string name="player_external">Внешний плеер</string>

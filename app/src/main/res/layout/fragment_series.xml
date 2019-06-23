@@ -1,23 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
-    <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <ImageView
+        android:id="@+id/backgroundImage"
+        android:layout_width="match_parent"
+        android:layout_height="420dp"
+        android:fitsSystemWindows="true"
+        android:scaleType="centerCrop"
+        tools:srcCompat="@drawable/test_preview2" />
+
+    <FrameLayout
+        android:id="@+id/backgroundBlur"
+        android:layout_width="match_parent"
+        android:layout_height="420dp"
+        android:background="?attr/colorTransparentBackground"
+        android:fitsSystemWindows="true" />
+
+    <include layout="@layout/layout_toolbar_transparent_with_search" />
+
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/backdrop"
+        style="@style/BackDropCardStyle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="-16dp"
         app:cardBackgroundColor="?attr/colorSurface"
-        app:cardCornerRadius="16dp"
-        app:cardPreventCornerOverlap="false">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:animateLayoutChanges="true">
 
-            <include layout="@layout/layout_translations_toolbar" />
+            <include layout="@layout/layout_series_toolbar" />
 
             <com.github.ybq.android.spinkit.SpinKitView
                 android:id="@+id/progress"
@@ -49,10 +68,25 @@
 
                 <include layout="@layout/layout_default_placeholders" />
 
+                <include
+                    android:id="@+id/authorsLayout"
+                    layout="@layout/layout_series_empty_authors" />
+
             </FrameLayout>
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
-</merge>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        app:srcCompat="@drawable/ic_comment" />
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
