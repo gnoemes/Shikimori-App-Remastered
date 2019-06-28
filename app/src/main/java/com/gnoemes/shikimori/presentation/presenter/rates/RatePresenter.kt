@@ -323,7 +323,7 @@ class RatePresenter @Inject constructor(
                                         else rate.episodes + 1
                                     } else episodeIndex
                                 }
-                        else if (episodeIndex > rate.anime.episodes) Single.just(rate.anime.episodes)
+                        else if (episodeIndex > rate.anime.episodes && rate.anime.episodes != 0) Single.just(rate.anime.episodes)
                         else Single.just(episodeIndex)
                     }
                     .subscribe({ checkRateWatchProgress(true, rate, it) }, this::processErrors)
