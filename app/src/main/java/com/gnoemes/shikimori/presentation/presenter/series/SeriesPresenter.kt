@@ -8,10 +8,7 @@ import com.gnoemes.shikimori.entity.app.domain.AnalyticEvent
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.download.DownloadVideoData
 import com.gnoemes.shikimori.entity.series.domain.*
-import com.gnoemes.shikimori.entity.series.presentation.EmbeddedPlayerNavigationData
-import com.gnoemes.shikimori.entity.series.presentation.SeriesNavigationData
-import com.gnoemes.shikimori.entity.series.presentation.TranslationVideo
-import com.gnoemes.shikimori.entity.series.presentation.TranslationViewModel
+import com.gnoemes.shikimori.entity.series.presentation.*
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
 import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResourceProvider
 import com.gnoemes.shikimori.presentation.presenter.series.translations.converter.TranslationsViewModelConverter
@@ -140,6 +137,19 @@ class SeriesPresenter @Inject constructor(
         is TranslationMenu.Author -> showAuthorDialog(category.author)
     }
 
+    fun onEpisodeSelected(episodeId: Long, episode: Int, alternative: Boolean) {
+        this.episodeId = episodeId
+        this.episode = episode
+
+        viewState.setEpisodeName(episode)
+
+        if (isAlternative != alternative){
+            viewState.changeSource(alternative)
+            isAlternative = alternative
+        }
+        loadWithEpisode()
+    }
+
     private fun showAuthorDialog(author: String) {
         logEvent(AnalyticEvent.ANIME_TRANSLATIONS_AUTHORS)
         viewState.showAuthorDialog(author)
@@ -162,7 +172,8 @@ class SeriesPresenter @Inject constructor(
     }
 
     fun showEpisodes() {
-        viewState.showEpisodesDialog()
+        val data = EpisodesNavigationData(navigationData.animeId, episode!!, rateId, isAlternative)
+        viewState.showEpisodesDialog(data)
     }
 
     fun onTypeChanged(newType: TranslationType) {

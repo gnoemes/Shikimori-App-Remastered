@@ -6,9 +6,6 @@ import com.gnoemes.shikimori.domain.series.SeriesInteractor
 import com.gnoemes.shikimori.domain.user.UserInteractor
 import com.gnoemes.shikimori.entity.app.domain.AnalyticEvent
 import com.gnoemes.shikimori.entity.app.domain.Constants
-import com.gnoemes.shikimori.entity.app.domain.HttpStatusCode
-import com.gnoemes.shikimori.entity.app.domain.exceptions.BaseException
-import com.gnoemes.shikimori.entity.app.domain.exceptions.ServiceCodeException
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.series.domain.EpisodeChanges
@@ -19,6 +16,7 @@ import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
 import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResourceProvider
 import com.gnoemes.shikimori.presentation.presenter.series.episodes.converter.EpisodeViewModelConverter
 import com.gnoemes.shikimori.presentation.view.series.episodes.EpisodesView
+import com.gnoemes.shikimori.utils.appendLoadingLogic
 import com.gnoemes.shikimori.utils.clearAndAddAll
 import io.reactivex.Single
 import javax.inject.Inject
@@ -37,6 +35,7 @@ class EpisodesPresenter @Inject constructor(
     private var isAlternativeSource = false
 
     private val items = mutableListOf<EpisodeViewModel>()
+    private var query : String? = null
 
     override fun initData() {
         super.initData()
@@ -44,8 +43,7 @@ class EpisodesPresenter @Inject constructor(
         rateId = navigationData.rateId ?: rateId
         subscribeToChanges()
 
-        viewState.setBackground(navigationData.image)
-        viewState.setName(navigationData.name)
+        viewState.showAlternativeLabel(navigationData.isAlternative)
     }
 
     fun onRefresh() {
@@ -54,20 +52,13 @@ class EpisodesPresenter @Inject constructor(
 
     private fun loadData() =
             loadEpisodes()
-                    .doOnSubscribe { viewState.onShowLoading() }
-                    .doOnSubscribe { viewState.hideEmptyView() }
-                    .doOnSubscribe { viewState.hideNetworkView() }
-                    .doOnSubscribe { viewState.showBlockedError(false) }
-                    .doOnSubscribe { viewState.showLicencedError(false) }
-                    .doOnSubscribe { viewState.showContent(true) }
-                    .doAfterTerminate { viewState.onHideLoading() }
-                    .doOnEvent { _, _ -> viewState.onHideLoading() }
+                    .appendLoadingLogic(viewState)
                     .subscribe(this::setData, this::processErrors)
                     .addToDisposables()
 
     private fun loadEpisodes(): Single<List<EpisodeViewModel>> =
             interactor.getEpisodes(navigationData.animeId, isAlternativeSource)
-                    .map(converter)
+                    .map{ converter.convert(it, navigationData.currentEpisode, userInteractor.getUserStatus())}
 
     private fun setData(items: List<EpisodeViewModel>) {
         val first = this.items.isEmpty()
@@ -77,20 +68,12 @@ class EpisodesPresenter @Inject constructor(
         if (first) scrollToPenultimate()
     }
 
-    private fun showData(items: List<EpisodeViewModel>, isSearch: Boolean = false) {
-        viewState.showLicencedError(false)
-        viewState.showBlockedError(false)
-
-        if (items.isNotEmpty()) {
-            viewState.showData(items)
-            viewState.hideEmptyView()
-            viewState.showContent(true)
-        } else {
-            if (!isSearch) {
-                viewState.showEmptyView()
-                viewState.showContent(false)
-            } else viewState.showSearchEmpty()
-        }
+    private fun showData(items: List<EpisodeViewModel>) {
+        if (!query.isNullOrBlank() && items.isEmpty()) viewState.showSearchEmpty()
+        else if (items.isEmpty()) {
+            viewState.showEmptyView()
+            viewState.showContent(false)
+        } else viewState.showData(items)
     }
 
     private fun scrollToPenultimate() {
@@ -105,7 +88,7 @@ class EpisodesPresenter @Inject constructor(
     }
 
     fun onEpisodeClicked(item: EpisodeViewModel) {
-        logEvent(AnalyticEvent.NAVIGATION_ANIME_TRANSLATIONS)
+        viewState.onEpisodeSelected(item.id, item.index, isAlternativeSource)
     }
 
     fun onEpisodeLongClick(item: EpisodeViewModel) {
@@ -121,6 +104,7 @@ class EpisodesPresenter @Inject constructor(
         logEvent(AnalyticEvent.ANIME_EPISODES_CHECKED_MANUALLY)
 
         createRateIfNotExist(rateId)
+                .doOnSuccess { viewState.onRateCreated(it) }
                 .flatMapCompletable { interactor.sendEpisodeChanges(EpisodeChanges.Changes(it, item.animeId, item.index, newStatus)) }
                 .doOnSubscribe { showEpisodeLoading(item, newStatus) }
                 .subscribe({}, this::processErrors)
@@ -145,9 +129,7 @@ class EpisodesPresenter @Inject constructor(
     }
 
     fun onSearchClosed() {
-        //restoring first state
-        showData(items)
-        scrollToPenultimate()
+        viewState.hideSearchView()
     }
 
     fun onAlternativeSourceClicked() {
@@ -160,41 +142,16 @@ class EpisodesPresenter @Inject constructor(
     }
 
     fun onQueryChanged(newText: String?) {
-        val text = newText ?: ""
+       query = newText
 
-        if (text.isBlank()) {
+        if (query.isNullOrBlank()) {
             showData(items)
         } else {
-            val searchItems = items.filter { it.index.toString().contains(text) }
-            showData(searchItems, true)
+            val searchItems = items.filter { it.index.toString().contains(query ?: "") }
+            showData(searchItems)
         }
 
         viewState.scrollToPosition(0)
-    }
-
-    override fun processErrors(throwable: Throwable) {
-        when ((throwable as? BaseException)?.tag) {
-            ServiceCodeException.TAG -> processServiceCodeException(throwable as ServiceCodeException)
-            else -> super.processErrors(throwable)
-        }
-    }
-
-    private fun processServiceCodeException(throwable: ServiceCodeException) {
-        if (isAlternativeSource) {
-            super.processErrors(throwable)
-            return
-        }
-
-        viewState.apply {
-            when (throwable.serviceCode) {
-                HttpStatusCode.FORBIDDED -> showLicencedError(true)
-                HttpStatusCode.NOT_FOUND -> showBlockedError(true)
-                else -> super.processErrors(throwable)
-            }
-
-            showContent(false)
-            router.showSystemMessage("HTTP error ${throwable.serviceCode}")
-        }
     }
 
     fun onCheckAllPrevious(index: Int) {

@@ -4,14 +4,16 @@
 
     <item
         android:id="@+id/item_alternative_source"
-        android:icon="@drawable/ic_alternative_source"
+        android:icon="@drawable/ic_source"
         android:title="@string/series_alternative_source"
+        app:iconTint="?attr/colorOnSurface"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/item_search"
         android:icon="@drawable/ic_search"
         android:title="@string/common_search"
+        app:iconTint="?attr/colorOnSurface"
         app:showAsAction="ifRoom" />
 
 </menu>

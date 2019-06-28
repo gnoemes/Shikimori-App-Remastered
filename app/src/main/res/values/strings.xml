@@ -333,6 +333,7 @@
     <string name="episode_check_all_previous">Отметить все до</string>
     <string name="episode_search_empty_title">Эпизод не найден</string>
     <string name="episode_search_empty_desc">Неверный запрос или его еще не выложили</string>
+    <string name="episode_opened">Открыт</string>
     <string name="translation_authors">Авторы</string>
     <string name="translation_downloadable">Можно скачать</string>
     <string name="translation_sources">Источники</string>

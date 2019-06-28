@@ -9,7 +9,9 @@ data class EpisodeViewModel(
         val types: List<TranslationType>,
         val state: State,
         val isWatched: Boolean,
-        val isFromAlternative: Boolean
+        val isFromAlternative: Boolean,
+        val isOpened : Boolean,
+        val isGuest : Boolean
 ) {
 
     sealed class State {

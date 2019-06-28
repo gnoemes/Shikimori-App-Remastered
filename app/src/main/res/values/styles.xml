@@ -265,4 +265,10 @@
         <item name="selectableItemBackground">@drawable/background_item_menu_ripple</item>
     </style>
 
+    <style name="SubtitleTextAppearance">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="titleTextColor">?attr/colorOnSurface</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
 </resources>

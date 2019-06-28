@@ -7,7 +7,7 @@ import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 import javax.inject.Provider
 
-abstract class BaseBottomSheetInjectionDialogFragment<Presenter : BasePresenter<View>, View : BaseNetworkView> : BaseBottomSheetDialogFragment(), BaseFragmentView {
+abstract class BaseInjectionDialogFragment<Presenter : BasePresenter<View>, View : BaseNetworkView> : BaseDialogFragment() {
 
     @Inject
     lateinit var presenterProvider: Provider<Presenter>
@@ -18,12 +18,4 @@ abstract class BaseBottomSheetInjectionDialogFragment<Presenter : BasePresenter<
     }
 
     abstract val presenter : Presenter
-
-    override fun onBackPressed() {
-        dismiss()
-    }
-
-    override fun hideSoftInput() = Unit
-    override fun setTitle(title: String) = Unit
-    override fun setTitle(stringRes: Int) = Unit
 }

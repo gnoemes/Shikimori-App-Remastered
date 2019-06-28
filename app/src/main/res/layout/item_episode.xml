@@ -12,14 +12,14 @@
     app:cardBackgroundColor="?attr/colorSurface"
     app:cardCornerRadius="4dp"
     app:cardElevation="0dp"
+    app:rippleColor="?attr/colorDivider"
     app:strokeColor="?attr/colorDivider"
     app:strokeWidth="1dp"
     tools:layout_marginTop="8dp">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:foreground="?attr/selectableItemBackgroundBorderless"
         android:orientation="horizontal"
         android:paddingStart="16dp"
         android:paddingLeft="16dp"
@@ -28,42 +28,63 @@
 
         <TextView
             android:id="@+id/episodeNameView"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_weight="1"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
             android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="1 эпизод" />
+
+        <TextView
+            android:id="@+id/currentEpisodeView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/episode_opened"
+            android:textColor="?attr/colorOnPrimarySecondary"
+            android:textSize="12sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/watchedView"
-            style="@style/CircleButtonStyle"
+            style="@style/GrayTransparentCircleButtonStyle"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="12dp"
-            android:layout_marginLeft="12dp"
             android:layout_marginTop="12dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
             android:layout_marginBottom="12dp"
-            app:icon="@drawable/selector_episode_fab_icon" />
+            app:icon="@drawable/selector_episode_fab_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <com.github.ybq.android.spinkit.SpinKitView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <com.github.ybq.android.spinkit.SpinKitView
             android:id="@+id/progressBar"
             style="@style/SpinKitView.ThreeBounce"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="12dp"
-            android:layout_marginLeft="12dp"
             android:layout_marginTop="12dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
             android:layout_marginBottom="12dp"
             android:layout_weight="0"
             android:visibility="gone"
-            app:SpinKit_Color="?colorAccent"
-            app:layout_behavior="@string/appBarFixScrollingFooterBehavior" />
+            app:SpinKit_Color="?attr/colorSecondary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </com.google.android.material.card.MaterialCardView>

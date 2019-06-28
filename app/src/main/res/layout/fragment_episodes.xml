@@ -1,93 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/backdrop"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="-16dp"
-    app:cardBackgroundColor="?attr/colorSurface"
-    app:cardCornerRadius="16dp"
-    app:cardPreventCornerOverlap="false">
+    android:background="?attr/colorSurface"
+    android:fitsSystemWindows="true">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:animateLayoutChanges="true">
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:fitsSystemWindows="true"
+        app:elevation="0dp"
+        app:layout_collapseMode="pin">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/alternativeAppBarLayout"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@android:color/transparent"
+            android:fitsSystemWindows="true"
+            app:contentInsetStartWithNavigation="0dp"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/PopupMenuTheme"
+            app:subtitleTextAppearance="@style/SubtitleTextAppearance"
+            app:title="@string/app_name"
+            app:titleTextColor="?attr/colorOnPrimary" />
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/searchToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/holders"
-            app:liftOnScroll="true"
-            tools:visibility="visible">
+            android:background="?attr/colorPrimary"
+            android:visibility="gone">
 
-            <androidx.appcompat.widget.Toolbar
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/searchView"
                 android:layout_width="match_parent"
-                android:layout_height="46dp">
+                android:layout_height="56dp"
+                android:background="@android:color/transparent"
+                android:inputType="number"
+                app:closeIcon="@drawable/ic_close"
+                app:iconifiedByDefault="false"
+                app:queryBackground="@android:color/transparent"
+                app:queryHint="@string/episode_number_hint"
+                app:searchIcon="@null"
+                app:search_elevation="0dp"
+                app:search_hint_color="?attr/colorTransparentBackground"
+                app:search_text_color="?attr/colorOnSurface"
+                app:search_text_size="16sp" />
 
-                <TextView
-                    android:id="@+id/alternativeLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="16dp"
-                    android:paddingBottom="4dp"
-                    android:text="@string/series_alternative_source"
-                    android:textColor="?attr/colorOnPrimarySecondary"
-                    android:textSize="12sp" />
+        </androidx.appcompat.widget.Toolbar>
 
-            </androidx.appcompat.widget.Toolbar>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_gravity="bottom"
+            android:background="?attr/colorDivider" />
 
-        </com.google.android.material.appbar.AppBarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginBottom="16dp"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/alternativeAppBarLayout"
-            tools:itemCount="5"
-            tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_episode"
-            tools:orientation="vertical" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="16dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:itemCount="5"
+        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_episode"
+        tools:orientation="vertical" />
 
-        <ImageView
-            android:id="@+id/gradient"
-            android:layout_width="0dp"
-            android:layout_height="32dp"
-            android:tint="?attr/colorSurface"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/recyclerView"
-            app:srcCompat="@drawable/episodes_gradient" />
+    <include layout="@layout/layout_default_placeholders" />
 
-        <FrameLayout
-            android:id="@+id/holders"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginBottom="16dp"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-
-            <include layout="@layout/layout_default_placeholders" />
-
-            <include layout="@layout/layout_episode_error_placeholder" />
-
-        </FrameLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</com.google.android.material.card.MaterialCardView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.ViewCompat
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.AutoTransition
@@ -26,6 +27,7 @@ import com.gnoemes.shikimori.entity.common.domain.Image
 import com.gnoemes.shikimori.entity.series.domain.PlayerType
 import com.gnoemes.shikimori.entity.series.domain.TranslationType
 import com.gnoemes.shikimori.entity.series.domain.Video
+import com.gnoemes.shikimori.entity.series.presentation.EpisodesNavigationData
 import com.gnoemes.shikimori.entity.series.presentation.SeriesNavigationData
 import com.gnoemes.shikimori.entity.series.presentation.SeriesPlaceholderItem
 import com.gnoemes.shikimori.entity.series.presentation.TranslationViewModel
@@ -34,12 +36,16 @@ import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragment
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
 import com.gnoemes.shikimori.presentation.view.common.fragment.DescriptionDialogFragment
 import com.gnoemes.shikimori.presentation.view.common.fragment.ListDialogFragment
+import com.gnoemes.shikimori.presentation.view.series.episodes.EpisodesFragment
 import com.gnoemes.shikimori.presentation.view.series.translations.adapter.TranslationsAdapter
 import com.gnoemes.shikimori.utils.*
 import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.gnoemes.shikimori.utils.widgets.VerticalSpaceItemDecorator
 import com.google.gson.Gson
 import com.kotlinpermissions.KotlinPermissions
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.fragment_series.*
 import kotlinx.android.synthetic.main.layout_default_placeholders.*
 import kotlinx.android.synthetic.main.layout_series_empty_authors.*
@@ -47,13 +53,18 @@ import kotlinx.android.synthetic.main.layout_series_toolbar.*
 import kotlinx.android.synthetic.main.layout_toolbar_transparent_with_search.*
 import javax.inject.Inject
 
-class SeriesFragment : BaseFragment<SeriesPresenter, SeriesView>(), SeriesView, PlayerSelectDialog.Callback, ListDialogFragment.DialogCallback {
+class SeriesFragment : BaseFragment<SeriesPresenter, SeriesView>(), SeriesView, PlayerSelectDialog.Callback, ListDialogFragment.DialogCallback, EpisodesFragment.EpisodesCallback, HasSupportFragmentInjector {
 
     @Inject
     lateinit var imageLoader: ImageLoader
 
     @InjectPresenter
     lateinit var seriesPresenter: SeriesPresenter
+
+    @Inject
+    lateinit var childFragmentInjector: DispatchingAndroidInjector<Fragment>
+
+    override fun supportFragmentInjector(): AndroidInjector<Fragment> = childFragmentInjector
 
     @ProvidePresenter
     fun providePresenter(): SeriesPresenter = presenterProvider.get().apply {
@@ -208,6 +219,10 @@ class SeriesFragment : BaseFragment<SeriesPresenter, SeriesView>(), SeriesView, 
         }
     }
 
+    override fun onRateCreated(id: Long) = getPresenter().onRateCreated(id)
+    override fun onEpisodeSelected(episodeId: Long, episode: Int, isAlternative: Boolean) =
+            getPresenter().onEpisodeSelected(episodeId, episode, isAlternative)
+
     ///////////////////////////////////////////////////////////////////////////
     // GETTERS
     ///////////////////////////////////////////////////////////////////////////
@@ -308,7 +323,9 @@ class SeriesFragment : BaseFragment<SeriesPresenter, SeriesView>(), SeriesView, 
                 .show(childFragmentManager, "AuthorsDialog")
     }
 
-    override fun showEpisodesDialog() {
+    override fun showEpisodesDialog(data: EpisodesNavigationData) {
+        val dialog = EpisodesFragment.newInstance(data)
+        dialog.show(childFragmentManager, "EpisodeDialog")
     }
 
     override fun checkPermissions() {

@@ -4,6 +4,7 @@ import com.arellomobile.mvp.viewstate.strategy.SkipStrategy
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
 import com.gnoemes.shikimori.entity.common.domain.Image
 import com.gnoemes.shikimori.entity.series.domain.TranslationType
+import com.gnoemes.shikimori.entity.series.presentation.EpisodesNavigationData
 import com.gnoemes.shikimori.entity.series.presentation.TranslationViewModel
 import com.gnoemes.shikimori.presentation.presenter.common.AddToEndSingleTagStrategy
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragmentView
@@ -34,7 +35,7 @@ interface SeriesView : BaseFragmentView {
     fun showAuthorDialog(author: String)
 
     @StateStrategyType(SkipStrategy::class)
-    fun showEpisodesDialog()
+    fun showEpisodesDialog(data: EpisodesNavigationData)
 
     @StateStrategyType(SkipStrategy::class)
     fun checkPermissions()
