@@ -103,7 +103,12 @@ class SeriesPresenter @Inject constructor(
         if (episode != null && episodeId != null) {
             loadData(episodeId!!)
             viewState.setEpisodeName(episode!!)
-        } else viewState.showEmptyView()
+        } else {
+            viewState.onHideLoading()
+            viewState.showEmptyView()
+            viewState.hideEpisodeName()
+            viewState.hideFab()
+        }
     }
 
     private fun setData(data: List<TranslationViewModel>) {

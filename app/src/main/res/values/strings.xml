@@ -351,6 +351,8 @@
     <string name="series_alt_source">Альтернативный</string>
     <string name="series_empty_authors_title">Авторы не найдены</string>
     <string name="series_empty_authors_description">Попробуйте изменить источник или тип, если смотрите не в одном.</string>
+    <string name="series_empty_episode_title">Эпизод не найден</string>
+    <string name="series_empty_episode_description">Тайтл не вышел или видео не выложили.</string>
 
     <string name="player_web">Веб-плеер</string>
     <string name="player_embedded">Внутренний плеер (BETA)</string>

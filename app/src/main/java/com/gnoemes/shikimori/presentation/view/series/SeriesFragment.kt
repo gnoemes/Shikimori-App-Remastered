@@ -245,7 +245,10 @@ class SeriesFragment : BaseFragment<SeriesPresenter, SeriesView>(), SeriesView, 
 
     override fun showEmptyAuthorsView(show: Boolean, isAlternative: Boolean) {
         authorsLayout.visibleIf { show }
+        titleView.setText(R.string.series_empty_authors_title)
+        descriptionView.setText(R.string.series_empty_authors_description)
         if (isAlternative) actionBtn.gone()
+        else actionBtn.visible()
     }
 
     override fun showEmptySearchView() {
@@ -355,8 +358,15 @@ class SeriesFragment : BaseFragment<SeriesPresenter, SeriesView>(), SeriesView, 
         }.show(childFragmentManager, "QualityDialog")
     }
 
+    override fun showEmptyView() {
+        authorsLayout.visible()
+        actionBtn.gone()
+        titleView.setText(R.string.series_empty_episode_title)
+        descriptionView.setText(R.string.series_empty_episode_description)
+        sourceChangeBtn.gone()
+    }
+
     override fun showContent(show: Boolean) = recyclerView.visibleIf { show }
-    override fun showEmptyView() = emptyContentView.visible()
     override fun hideEmptyView() = emptyContentView.gone()
     override fun showNetworkView() = networkErrorView.visible()
     override fun hideNetworkView() = networkErrorView.gone()
