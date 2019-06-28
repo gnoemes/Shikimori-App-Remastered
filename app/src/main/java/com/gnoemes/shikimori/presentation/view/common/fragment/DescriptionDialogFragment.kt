@@ -1,47 +1,53 @@
 package com.gnoemes.shikimori.presentation.view.common.fragment
 
-import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
-import com.afollestad.materialdialogs.MaterialDialog
+import android.view.View
 import com.gnoemes.shikimori.R
-import com.gnoemes.shikimori.presentation.view.base.fragment.MvpDialogFragment
+import com.gnoemes.shikimori.presentation.view.base.fragment.BaseBottomSheetDialogFragment
+import com.gnoemes.shikimori.utils.dimenAttr
 import com.gnoemes.shikimori.utils.withArgs
+import kotlinx.android.synthetic.main.dialog_base_bottom_sheet.*
+import kotlinx.android.synthetic.main.dialog_description.*
 
-class DescriptionDialogFragment : MvpDialogFragment() {
+class DescriptionDialogFragment : BaseBottomSheetDialogFragment() {
 
     private var title: String? = null
     private var titleRes: Int = 0
     private var text: String? = null
-    private var positiveText: String? = null
-    private val defaultPositiveText by lazy { context?.getString(R.string.common_accept) }
 
     companion object {
-        fun newInstance(title: String? = null, titleRes: Int = 0, text: String? = null, positiveText: String? = null) = DescriptionDialogFragment().withArgs {
+        fun newInstance(title: String? = null, titleRes: Int = 0, text: String? = null) = DescriptionDialogFragment().withArgs {
             putString(ARGUMENT_TITLE, title)
             putInt(ARGUMENT_TITLE_ID, titleRes)
             putString(ARGUMENT_TEXT, text)
-            putString(ARGUMENT_POSITIVE_TEXT, positiveText)
         }
 
         private const val ARGUMENT_TITLE = "ARGUMENT_TITLE"
         private const val ARGUMENT_TITLE_ID = "ARGUMENT_TITLE_ID"
         private const val ARGUMENT_TEXT = "ARGUMENT_TEXT"
-        private const val ARGUMENT_POSITIVE_TEXT = "ARGUMENT_POSITIVE_TEXT"
     }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        peekHeight =  context.dimenAttr(android.R.attr.actionBarSize)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         title = arguments?.getString(ARGUMENT_TITLE, null)
         titleRes = arguments?.getInt(ARGUMENT_TITLE_ID, 0) ?: 0
         text = arguments?.getString(ARGUMENT_TEXT, null)
-        positiveText = arguments?.getString(ARGUMENT_POSITIVE_TEXT, null)
 
-        return MaterialDialog(context!!).show {
-            if (hasTitle()) title(titleRes, title)
-            message(text = text)
-            positiveButton(text = positiveText ?: defaultPositiveText)
+        with(toolbar) {
+            this@DescriptionDialogFragment.title?.let { title = it } ?: setTitle(titleRes)
+            inflateMenu(R.menu.menu_close)
+            setOnMenuItemClickListener { dismiss(); true }
         }
+
+        descriptionView.text = text
     }
 
-    private fun hasTitle(): Boolean = title != null || titleRes != 0
+    override fun getDialogLayout(): Int = R.layout.dialog_description
 }

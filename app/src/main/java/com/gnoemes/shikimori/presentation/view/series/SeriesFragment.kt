@@ -321,8 +321,7 @@ class SeriesFragment : BaseFragment<SeriesPresenter, SeriesView>(), SeriesView, 
     }
 
     override fun showAuthorDialog(author: String) {
-        val positiveText = context?.getString(R.string.common_understand)
-        DescriptionDialogFragment.newInstance(titleRes = R.string.translation_authors, text = author, positiveText = positiveText)
+        DescriptionDialogFragment.newInstance(titleRes = R.string.translation_authors, text = author)
                 .show(childFragmentManager, "AuthorsDialog")
     }
 
