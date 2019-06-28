@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.fragment.app.Fragment
+import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.app.domain.AppExtras
 import com.gnoemes.shikimori.entity.auth.AuthType
 import com.gnoemes.shikimori.entity.common.domain.Screens
@@ -73,6 +74,7 @@ object RouteHolder {
             Screens.WEB_PLAYER -> Intent(context, WebPlayerActivity::class.java).apply { putExtra(AppExtras.ARGUMENT_URL, data as String) }
             Screens.EMBEDDED_PLAYER -> Intent(context, EmbeddedPlayerActivity::class.java).apply { putExtra(AppExtras.ARGUMENT_PLAYER_DATA, data as EmbeddedPlayerNavigationData) }
             Screens.EXTERNAL_PLAYER -> Intent(Intent.ACTION_VIEW, data?.toString()?.toUri()).apply { setDataAndType(data?.toString()?.toUri(), "video/mp4") }
+            Screens.SHARE -> Intent.createChooser(Intent(Intent.ACTION_SEND).apply { type = "text/plain"; putExtra(Intent.EXTRA_TEXT, data?.toString()) }, context!!.getString(R.string.common_share))
             else -> null
         }
     }

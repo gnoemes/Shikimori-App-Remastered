@@ -6,11 +6,13 @@ import com.gnoemes.shikimori.domain.download.DownloadInteractor
 import com.gnoemes.shikimori.domain.series.SeriesInteractor
 import com.gnoemes.shikimori.entity.app.domain.AnalyticEvent
 import com.gnoemes.shikimori.entity.app.domain.Constants
+import com.gnoemes.shikimori.entity.common.domain.Screens
 import com.gnoemes.shikimori.entity.download.DownloadVideoData
 import com.gnoemes.shikimori.entity.series.domain.*
 import com.gnoemes.shikimori.entity.series.presentation.*
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
 import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResourceProvider
+import com.gnoemes.shikimori.presentation.presenter.common.provider.ShareResourceProvider
 import com.gnoemes.shikimori.presentation.presenter.series.translations.converter.TranslationsViewModelConverter
 import com.gnoemes.shikimori.presentation.view.series.SeriesView
 import com.gnoemes.shikimori.utils.Utils
@@ -27,7 +29,8 @@ class SeriesPresenter @Inject constructor(
         private val downloadInteractor: DownloadInteractor,
         private val settingsSource: SettingsSource,
         private val converter: TranslationsViewModelConverter,
-        private val commonResourceProvider: CommonResourceProvider
+        private val commonResourceProvider: CommonResourceProvider,
+        private val shareResourceProvider: ShareResourceProvider
 ) : BaseNetworkPresenter<SeriesView>() {
 
     lateinit var navigationData: SeriesNavigationData
@@ -148,11 +151,16 @@ class SeriesPresenter @Inject constructor(
 
         viewState.setEpisodeName(episode)
 
-        if (isAlternative != alternative){
+        if (isAlternative != alternative) {
             viewState.changeSource(alternative)
             isAlternative = alternative
         }
         loadWithEpisode()
+    }
+
+    fun onShare(url: String) {
+        val text = shareResourceProvider.getEpisodeShareFormattedMessage(navigationData.name, episode!!, url)
+        router.navigateTo(Screens.SHARE, text)
     }
 
     private fun showAuthorDialog(author: String) {
@@ -172,7 +180,7 @@ class SeriesPresenter @Inject constructor(
                 }
                 .toList()
                 .appendLoadingLogic(viewState)
-                .subscribe(viewState::showDownloadDialog, this::processErrors)
+                .subscribe({ viewState.showDownloadDialog(filteredItems.first().author, it) }, this::processErrors)
                 .addToDisposables()
     }
 

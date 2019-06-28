@@ -27,11 +27,9 @@ import com.gnoemes.shikimori.entity.common.domain.Image
 import com.gnoemes.shikimori.entity.series.domain.PlayerType
 import com.gnoemes.shikimori.entity.series.domain.TranslationType
 import com.gnoemes.shikimori.entity.series.domain.Video
-import com.gnoemes.shikimori.entity.series.presentation.EpisodesNavigationData
-import com.gnoemes.shikimori.entity.series.presentation.SeriesNavigationData
-import com.gnoemes.shikimori.entity.series.presentation.SeriesPlaceholderItem
-import com.gnoemes.shikimori.entity.series.presentation.TranslationViewModel
+import com.gnoemes.shikimori.entity.series.presentation.*
 import com.gnoemes.shikimori.presentation.presenter.series.SeriesPresenter
+import com.gnoemes.shikimori.presentation.presenter.series.download.SeriesDownloadDialog
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragment
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
 import com.gnoemes.shikimori.presentation.view.common.fragment.DescriptionDialogFragment
@@ -41,7 +39,6 @@ import com.gnoemes.shikimori.presentation.view.series.translations.adapter.Trans
 import com.gnoemes.shikimori.utils.*
 import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.gnoemes.shikimori.utils.widgets.VerticalSpaceItemDecorator
-import com.google.gson.Gson
 import com.kotlinpermissions.KotlinPermissions
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -53,7 +50,13 @@ import kotlinx.android.synthetic.main.layout_series_toolbar.*
 import kotlinx.android.synthetic.main.layout_toolbar_transparent_with_search.*
 import javax.inject.Inject
 
-class SeriesFragment : BaseFragment<SeriesPresenter, SeriesView>(), SeriesView, PlayerSelectDialog.Callback, ListDialogFragment.DialogCallback, EpisodesFragment.EpisodesCallback, HasSupportFragmentInjector {
+class SeriesFragment : BaseFragment<SeriesPresenter, SeriesView>(),
+        SeriesView,
+        PlayerSelectDialog.Callback,
+        ListDialogFragment.DialogCallback,
+        EpisodesFragment.EpisodesCallback,
+        SeriesDownloadDialog.SeriesDownloadCallback,
+        HasSupportFragmentInjector {
 
     @Inject
     lateinit var imageLoader: ImageLoader
@@ -207,17 +210,13 @@ class SeriesFragment : BaseFragment<SeriesPresenter, SeriesView>(), SeriesView, 
     }
 
     override fun dialogItemCallback(tag: String?, action: String) {
-        if (tag == "DownloadDialog") {
-            val actions = action.split("$")
-            if (actions.size == 2) {
-                val url = actions[0]
-                val video = Gson().fromJson<Video>(actions[1], Video::class.java)
-                getPresenter().onTrackForDownloadSelected(url, video)
-            }
-        } else if (tag == "QualityDialog") {
+        if (tag == "QualityDialog") {
             getPresenter().onQualityChoosed(action)
         }
     }
+
+    override fun onDownload(url: String, video: Video) = getPresenter().onTrackForDownloadSelected(url, video)
+    override fun onShare(url: String) = getPresenter().onShare(url)
 
     override fun onRateCreated(id: Long) = getPresenter().onRateCreated(id)
     override fun onEpisodeSelected(episodeId: Long, episode: Int, isAlternative: Boolean) =
@@ -313,11 +312,9 @@ class SeriesFragment : BaseFragment<SeriesPresenter, SeriesView>(), SeriesView, 
         dialog.show(childFragmentManager, "PlayerSelect")
     }
 
-    override fun showDownloadDialog(items: List<Pair<String, String>>) {
-        val dialog = ListDialogFragment.newInstance()
-        dialog.apply {
-            setItems(items)
-        }.show(childFragmentManager, "DownloadDialog")
+    override fun showDownloadDialog(title: String, items: List<SeriesDownloadItem>) {
+        val dialog = SeriesDownloadDialog.newInstance(title, items)
+        dialog.show(childFragmentManager, "DownloadDialog")
     }
 
     override fun showAuthorDialog(author: String) {

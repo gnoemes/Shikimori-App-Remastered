@@ -6,6 +6,8 @@ import com.gnoemes.shikimori.data.repository.club.ClubResponseConverter;
 import com.gnoemes.shikimori.data.repository.club.ClubResponseConverterImpl;
 import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResourceProvider;
 import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResourceProviderImpl;
+import com.gnoemes.shikimori.presentation.presenter.common.provider.ShareResourceProvider;
+import com.gnoemes.shikimori.presentation.presenter.common.provider.ShareResourceProviderImpl;
 import com.gnoemes.shikimori.presentation.presenter.common.provider.SortResourceProvider;
 import com.gnoemes.shikimori.presentation.presenter.common.provider.SortResourceProviderImpl;
 import com.gnoemes.shikimori.utils.date.DateTimeConverter;
@@ -61,5 +63,9 @@ public interface UtilModule {
     static FirebaseAnalytics provideFirebaseAnalytics(Context context) {
         return FirebaseAnalytics.getInstance(context);
     }
+
+    @Binds
+    @Reusable
+    ShareResourceProvider bindShareResourceProvider(ShareResourceProviderImpl provider);
 
 }
