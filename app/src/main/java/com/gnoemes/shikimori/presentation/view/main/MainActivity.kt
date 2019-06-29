@@ -13,10 +13,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
+import com.crashlytics.android.Crashlytics
+import com.gnoemes.shikimori.BuildConfig
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.domain.series.SeriesSyncService
 import com.gnoemes.shikimori.entity.app.domain.AnalyticEvent
 import com.gnoemes.shikimori.entity.app.domain.Constants
+import com.gnoemes.shikimori.entity.app.domain.SettingsExtras
 import com.gnoemes.shikimori.entity.main.BottomScreens
 import com.gnoemes.shikimori.presentation.presenter.main.MainPresenter
 import com.gnoemes.shikimori.presentation.view.base.activity.BaseActivity
@@ -24,10 +27,9 @@ import com.gnoemes.shikimori.presentation.view.base.fragment.BottomNavigationPro
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
 import com.gnoemes.shikimori.presentation.view.base.fragment.TabContainer
 import com.gnoemes.shikimori.presentation.view.bottom.BottomTabContainer
-import com.gnoemes.shikimori.utils.getCurrentTheme
-import com.gnoemes.shikimori.utils.ifNotNull
+import com.gnoemes.shikimori.utils.*
 import com.gnoemes.shikimori.utils.navigation.SupportAppNavigator
-import com.gnoemes.shikimori.utils.visibleIf
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.layout_bottom_bar.*
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder
@@ -61,6 +63,7 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView, RouterPr
         super.onCreate(savedInstanceState)
         initBottomNav()
         initContainer()
+        if (savedInstanceState == null) checkVersion()
     }
 
     override fun onStart() {
@@ -104,6 +107,18 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView, RouterPr
             }
         }
         ta.commitNow()
+    }
+
+    private fun checkVersion() {
+        val db = FirebaseFirestore.getInstance()
+
+        db.collection("versions")
+                .get()
+                .addOnSuccessListener {
+                    val version = it.documents.firstOrNull()?.data?.get("lastVersion")
+                    val hasUpdate = BuildConfig.VERSION_NAME.replace(Regex("[^0-9.]"), "") != version
+                    getDefaultSharedPreferences().putBoolean(SettingsExtras.NEW_VERSION_AVAILABLE, hasUpdate)
+                }.addOnFailureListener { Crashlytics.logException(it) }
     }
 
     private fun invokeTabRootActionOrClearBackStack(screenKey: String) {
