@@ -1,5 +1,6 @@
 package com.gnoemes.shikimori.presentation.view.settings
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
@@ -9,6 +10,8 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.gnoemes.shikimori.BuildConfig
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.entity.app.domain.Constants
+import com.gnoemes.shikimori.entity.app.domain.SettingsExtras.NEW_VERSION_AVAILABLE
 import com.gnoemes.shikimori.presentation.view.base.activity.MvpActivity
 import com.gnoemes.shikimori.presentation.view.settings.fragments.SettingsFragment
 import com.gnoemes.shikimori.utils.*
@@ -34,16 +37,15 @@ class SettingsActivity : MvpActivity(), PreferenceFragmentCompat.OnPreferenceSta
         }
 
         val versionView = View.inflate(this, R.layout.item_setting_menu, null) as TextView
-        versionView.apply {
-            val indicator = context.drawable(R.drawable.ic_version_indicator)?.apply { tint(context.colorAttr(R.attr.colorSecondary)) }
-            setCompoundDrawablesWithIntrinsicBounds(indicator, null, null, null)
-            text = BuildConfig.VERSION_NAME.replace(Regex("[^0-9.]"), "")
-        }
+        versionView.text = BuildConfig.VERSION_NAME.replace(Regex("[^0-9.]"), "")
+
 
         toolbar.menu.findItem(R.id.item_version).actionView = versionView
         toolbar.layoutParams = (toolbar.layoutParams as AppBarLayout.LayoutParams).apply {
             scrollFlags = 0
         }
+
+        if (getDefaultSharedPreferences().getBoolean(NEW_VERSION_AVAILABLE, false)) onNewVersionAvailable()
 
         replaceFragment(SettingsFragment())
     }
@@ -83,6 +85,14 @@ class SettingsActivity : MvpActivity(), PreferenceFragmentCompat.OnPreferenceSta
 
     private fun showVersion(show: Boolean) {
         toolbar.menu.findItem(R.id.item_version).isVisible = show
+    }
+
+    private fun onNewVersionAvailable() {
+        (toolbar.menu.findItem(R.id.item_version).actionView as TextView).apply {
+            val indicator = context.drawable(R.drawable.ic_version_indicator)?.apply { tint(context.colorAttr(R.attr.colorSecondary)) }
+            setCompoundDrawablesWithIntrinsicBounds(indicator, null, null, null)
+            onClick { startActivity(Intent(Intent.ACTION_VIEW, Constants.FOUR_PDA_THEME_URL.toUri())) }
+        }
     }
 
     override fun showToolbarMenu() = run { toolbar.menu.findItem(R.id.item_accept).isVisible = true }
