@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/bottomNav"
     android:layout_width="match_parent"
-    android:layout_height="48dp"
+    android:layout_height="56dp"
     android:layout_gravity="bottom"
     android:fitsSystemWindows="true"
     app:backgroundTint="?attr/colorPrimary"

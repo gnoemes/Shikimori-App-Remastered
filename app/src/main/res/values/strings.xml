@@ -4,7 +4,7 @@
     <string name="main_exit_message">Для выхода из программы нажмите кнопку еще раз</string>
 
     <string name="common_rates">Списки</string>
-    <string name="common_calendar">Онгоинги</string>
+    <string name="common_calendar">Календарь</string>
     <string name="common_search">Поиск</string>
     <string name="common_main">Главная</string>
     <string name="common_more">Профиль</string>
