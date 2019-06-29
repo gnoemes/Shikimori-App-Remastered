@@ -437,7 +437,7 @@ class RatePresenter @Inject constructor(
     }
 
     private fun setData(it: List<Any>) {
-        pinnedRates = it.filter { it is RateViewModel }.count { (it as RateViewModel).isPinned }
+        if (query.isNullOrBlank()) pinnedRates = it.filter { it is RateViewModel }.count { (it as RateViewModel).isPinned }
         if (!query.isNullOrBlank() && (it.size == 1 && it.first() is RateSortViewModel)) viewState.showEmptySearchView(it)
         else viewState.showData(it)
 
