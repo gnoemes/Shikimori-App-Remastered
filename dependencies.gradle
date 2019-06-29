@@ -50,5 +50,7 @@ ext.versions = [
         advancedVersioning: '1.6.0',
 
         ratingBar         : '1.4.2',
-        jsoup             : '1.10.2'
+        jsoup             : '1.10.2',
+
+        firebaseMessaging : '19.0.1'
 ]
