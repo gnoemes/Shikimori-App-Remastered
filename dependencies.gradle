@@ -54,4 +54,6 @@ ext.versions = [
 
         firebaseMessaging : '19.0.1',
         firebaseFirestore : '20.1.0',
+
+        multidex          : '2.0.1'
 ]

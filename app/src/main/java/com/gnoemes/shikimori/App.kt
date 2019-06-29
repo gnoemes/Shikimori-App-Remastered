@@ -4,7 +4,9 @@ import android.app.Activity
 import android.app.Application
 import android.app.Service
 import android.content.BroadcastReceiver
+import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.multidex.MultiDex
 import com.crashlytics.android.Crashlytics
 import com.gnoemes.shikimori.di.app.component.DaggerAppComponent
 import dagger.android.*
@@ -29,6 +31,11 @@ class App : Application(), HasActivityInjector, HasServiceInjector, HasBroadcast
         JodaTimeAndroid.init(this)
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
         DaggerAppComponent.builder().create(this).inject(this)
+    }
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        MultiDex.install(this)
     }
 
     override fun activityInjector(): AndroidInjector<Activity> = dispatchingAndroidInjector

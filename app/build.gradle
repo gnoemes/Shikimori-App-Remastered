@@ -46,6 +46,7 @@ android {
         versionCode appVersionCode
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -145,6 +146,8 @@ dependencies {
 
     implementation 'com.github.ome450901:SimpleRatingBar:' + versions.ratingBar
     implementation 'org.jsoup:jsoup:' + versions.jsoup
+
+    implementation 'androidx.multidex:multidex:' + versions.multidex
 
     implementation project(":storio-common")
     implementation project(":storio-sqlite")
