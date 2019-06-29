@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -191,6 +192,10 @@ class EpisodesFragment : BaseInjectionDialogFragment<EpisodesPresenter, Episodes
 
     override fun onRateCreated(id: Long) {
         (parentFragment as? EpisodesCallback)?.onRateCreated(id)
+    }
+
+    override fun showSystemMessage(message: String) {
+        Toast.makeText(context!!, message, Toast.LENGTH_SHORT).show()
     }
 
     interface EpisodesCallback {

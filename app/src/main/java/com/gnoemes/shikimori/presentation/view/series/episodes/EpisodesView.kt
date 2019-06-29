@@ -30,4 +30,7 @@ interface EpisodesView : BaseFragmentView {
     @StateStrategyType(SkipStrategy::class)
     fun onRateCreated(id : Long)
 
+    @StateStrategyType(SkipStrategy::class)
+    fun showSystemMessage(message: String)
+
 }
