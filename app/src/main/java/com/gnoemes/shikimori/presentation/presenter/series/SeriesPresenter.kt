@@ -90,7 +90,7 @@ class SeriesPresenter @Inject constructor(
             .doOnSubscribe { viewState.setTranslationType(type) }
             .map { converter.convertTranslations(it, setting) }
 
-    private fun loadSettingsIfNeed(): Single<TranslationType> = (if (setting == null && settingsSource.useLocalTranslationSettings) loadSettings() else Single.just(type))
+    private fun loadSettingsIfNeed(): Single<TranslationType> = (if (setting == null && settingsSource.useLocalTranslationSettings || setting?.lastAuthor == null) loadSettings() else Single.just(type))
 
     private fun loadSettings() =
             interactor.getTranslationSettings(navigationData.animeId)
@@ -259,13 +259,11 @@ class SeriesPresenter @Inject constructor(
     override fun openPlayer(playerType: PlayerType, payload: Any?) {
         super.openPlayer(playerType, payload)
 
-        if (playerType != PlayerType.EMBEDDED) {
-            setEpisodeWatched(selectedVideo)
-        }
+        saveSettingsAndIncrementOptional(playerType != PlayerType.EMBEDDED, selectedVideo)
     }
 
-    private fun setEpisodeWatched(payload: TranslationVideo) {
-        (if (settingsSource.isAutoIncrement) interactor.sendEpisodeChanges(EpisodeChanges.Changes(rateId, payload.animeId, episode!!, true))
+    private fun saveSettingsAndIncrementOptional(increment: Boolean, payload: TranslationVideo) {
+        (if (settingsSource.isAutoIncrement && increment) interactor.sendEpisodeChanges(EpisodeChanges.Changes(rateId, payload.animeId, episode!!, true))
         else Completable.complete())
                 .andThen(interactor.saveTranslationSettings(TranslationSetting(payload.animeId, payload.author, payload.type)))
                 .subscribe({}, this::processErrors)
