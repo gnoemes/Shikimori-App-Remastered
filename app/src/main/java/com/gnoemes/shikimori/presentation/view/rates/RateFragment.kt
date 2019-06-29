@@ -154,7 +154,7 @@ class RateFragment : BasePaginationFragment<Rate, RatePresenter, RateView>(), Ra
             adapter = this@RateFragment.adapter
             layoutManager = LinearLayoutManager(context).apply { initialPrefetchItemCount = 5 }
             itemAnimator = DefaultItemAnimator()
-            val customSpacing = context.dp(76)
+            val customSpacing = context.dp(68)
             addItemDecoration(VerticalSpaceItemDecorator(context.dp(8), true, firstCustomSpacing = customSpacing, lastCustomSpacing = context!!.dp(16)))
             addOnScrollListener(nextPageListener)
             val touchHelper = ItemTouchHelper(RateItemTouchHelperCallback(this@RateFragment._adapter, settingsSource))
