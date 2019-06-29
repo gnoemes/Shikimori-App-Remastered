@@ -154,6 +154,7 @@ class SeriesFragment : BaseFragment<SeriesPresenter, SeriesView>(),
         altSource.onClick { onSourceSelected(true) }
 
         actionBtn.onClick { onSourceSelected(true) }
+        fab.onClick { getPresenter().onDiscussionClicked() }
     }
 
     private fun onTypeSelected(newType: TranslationType) {

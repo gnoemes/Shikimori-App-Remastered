@@ -4,12 +4,14 @@ import com.gnoemes.shikimori.BuildConfig
 import com.gnoemes.shikimori.data.local.db.AnimeRateSyncDbSource
 import com.gnoemes.shikimori.data.local.db.EpisodeDbSource
 import com.gnoemes.shikimori.data.network.AnimeSource
+import com.gnoemes.shikimori.data.network.TopicApi
 import com.gnoemes.shikimori.data.network.VideoApi
 import com.gnoemes.shikimori.data.repository.series.shikimori.converter.EpisodeResponseConverter
 import com.gnoemes.shikimori.data.repository.series.shikimori.converter.TranslationResponseConverter
 import com.gnoemes.shikimori.data.repository.series.shikimori.converter.VideoResponseConverter
 import com.gnoemes.shikimori.data.repository.series.shikimori.converter.VkVideoConverter
 import com.gnoemes.shikimori.entity.app.domain.Constants
+import com.gnoemes.shikimori.entity.forum.domain.ForumType
 import com.gnoemes.shikimori.entity.series.domain.*
 import com.gnoemes.shikimori.entity.series.presentation.TranslationVideo
 import io.reactivex.Completable
@@ -20,6 +22,7 @@ import javax.inject.Inject
 
 class SeriesRepositoryImpl @Inject constructor(
         private val api: VideoApi,
+        private val topicApi: TopicApi,
         private val source: AnimeSource,
         private val converter: EpisodeResponseConverter,
         private val translationConverter: TranslationResponseConverter,
@@ -68,8 +71,8 @@ class SeriesRepositoryImpl @Inject constructor(
                     .map { vkConverter.convertTracks(video, it) }
 
     override fun getTopic(animeId: Long, episodeId: Int): Single<Long> =
-            api.getTopic(animeId, episodeId)
-                    .map { it.id }
+            topicApi.getList(1, 1000, ForumType.ANIME_AND_MANGA.type, "Anime", animeId)
+                    .map { list -> list.firstOrNull { it.episode?.toIntOrNull() == episodeId }?.id }
 
     override fun setEpisodeStatus(animeId: Long, episodeId: Int, isWatched: Boolean): Completable =
             if (isWatched) episodeSource.episodeWatched(animeId, episodeId)

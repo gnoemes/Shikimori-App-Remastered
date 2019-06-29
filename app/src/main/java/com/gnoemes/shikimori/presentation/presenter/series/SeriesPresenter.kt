@@ -90,7 +90,7 @@ class SeriesPresenter @Inject constructor(
             .doOnSubscribe { viewState.setTranslationType(type) }
             .map { converter.convertTranslations(it, setting) }
 
-    private fun loadSettingsIfNeed(): Single<TranslationType> = (if (setting == null && settingsSource.useLocalTranslationSettings || setting?.lastAuthor == null) loadSettings() else Single.just(type))
+    private fun loadSettingsIfNeed(): Single<TranslationType> = (if (setting == null && settingsSource.useLocalTranslationSettings) loadSettings() else Single.just(type))
 
     private fun loadSettings() =
             interactor.getTranslationSettings(navigationData.animeId)
