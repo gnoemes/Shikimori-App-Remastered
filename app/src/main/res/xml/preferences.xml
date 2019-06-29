@@ -5,6 +5,7 @@
     <Preference
         android:icon="@drawable/icon_app_setting"
         android:key="general_fragment"
+        android:layout="@layout/layout_preference"
         android:summary="@string/settings_general_summary"
         android:title="@string/settings_general"
         app:fragment="com.gnoemes.shikimori.presentation.view.settings.fragments.SettingsGeneralFragment" />
@@ -12,6 +13,7 @@
     <Preference
         android:icon="@drawable/icon_anime_setting"
         android:key="anime_fragment"
+        android:layout="@layout/layout_preference"
         android:summary="@string/settings_anime_summary"
         android:title="@string/settings_anime"
         app:fragment="com.gnoemes.shikimori.presentation.view.settings.fragments.SettingsAnimeFragment" />
@@ -19,34 +21,13 @@
     <Preference
         android:icon="@drawable/icon_theme_setting"
         android:key="theme_fragment"
+        android:layout="@layout/layout_preference"
         android:summary="@string/settings_theme_summary"
         android:title="@string/settings_theme"
         app:fragment="com.gnoemes.shikimori.presentation.view.settings.fragments.SettingsThemeFragment" />
 
-    <PreferenceCategory
-        android:title="@string/settings_feedback"
-        app:iconSpaceReserved="false">
-
-        <Preference
-            android:key="@string/settings_roadmap_key"
-            android:title="@string/settings_roadmap_title"
-            app:iconSpaceReserved="false" />
-
-        <Preference
-            android:key="@string/settings_about_send_key"
-            android:title="@string/settings_about_send_title"
-            app:iconSpaceReserved="false" />
-
-        <Preference
-            android:key="@string/settings_about_forum_key"
-            android:title="@string/settings_about_forum_title"
-            app:iconSpaceReserved="false" />
-
-        <Preference
-            android:key="@string/settings_club_key"
-            android:title="@string/settings_club_title"
-            app:iconSpaceReserved="false" />
-
-    </PreferenceCategory>
+    <com.gnoemes.shikimori.presentation.view.common.widget.preferences.AppGroupPreference
+        android:key="info_group"
+        app:iconSpaceReserved="false" />
 
 </PreferenceScreen>

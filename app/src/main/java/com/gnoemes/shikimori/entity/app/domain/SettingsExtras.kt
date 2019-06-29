@@ -28,7 +28,6 @@ object SettingsExtras {
     // NOTIFICATIONS
     ////////////////////////////////////////////////////////////////////////
     const val IS_NOTIFICATIONS_ENABLED = "IS_NOTIFICATIONS_ENABLED"
-    const val NEW_VERSION_AVAILABLE = "NEW_VERSION_AVAILABLE"
 
     ////////////////////////////////////////////////////////////////////////
     // PLAYER
@@ -43,4 +42,9 @@ object SettingsExtras {
     const val PLAYER_IS_ZOOM_PROPORTIONAL = "PLAYER_ZOOM_TYPE"
     const val PLAYER_IS_AUTO_PIP = "PLAYER_AUTO_PIP"
 
+    ////////////////////////////////////////////////////////////////////////
+    // OTHER
+    ////////////////////////////////////////////////////////////////////////
+    const val NEW_VERSION_AVAILABLE = "NEW_VERSION_AVAILABLE"
+    const val DONATION_LINK = "DONATION_LINK"
 }

@@ -63,7 +63,7 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView, RouterPr
         super.onCreate(savedInstanceState)
         initBottomNav()
         initContainer()
-        if (savedInstanceState == null) checkVersion()
+        if (savedInstanceState == null) syncValues()
     }
 
     override fun onStart() {
@@ -109,15 +109,17 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView, RouterPr
         ta.commitNow()
     }
 
-    private fun checkVersion() {
+    private fun syncValues() {
         val db = FirebaseFirestore.getInstance()
 
-        db.collection("versions")
+        db.collection("app")
                 .get()
                 .addOnSuccessListener {
+                    val donationLink = it.documents.firstOrNull()?.data?.get("donationLink") as? String
                     val version = it.documents.firstOrNull()?.data?.get("lastVersion")
                     val hasUpdate = BuildConfig.VERSION_NAME.replace(Regex("[^0-9.]"), "") != version
                     getDefaultSharedPreferences().putBoolean(SettingsExtras.NEW_VERSION_AVAILABLE, hasUpdate)
+                    getDefaultSharedPreferences().putString(SettingsExtras.DONATION_LINK, donationLink)
                 }.addOnFailureListener { Crashlytics.logException(it) }
     }
 
