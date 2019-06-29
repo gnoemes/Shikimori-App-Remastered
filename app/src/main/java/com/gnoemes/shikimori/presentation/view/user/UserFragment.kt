@@ -164,7 +164,8 @@ class UserFragment : BaseFragment<UserPresenter, UserView>(), UserView {
 
     override fun showContent(show: Boolean) {
         scrollView.visibleIf { show }
-        appBarLayout.visibleIf { show }
+        if (toolbar.navigationIcon == null) appBarLayout.visible()
+        else appBarLayout.visibleIf { show }
     }
 
     override fun toggleAnimeRate(expanded: Boolean) {

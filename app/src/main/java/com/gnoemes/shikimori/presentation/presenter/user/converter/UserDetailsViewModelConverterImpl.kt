@@ -94,11 +94,10 @@ class UserDetailsViewModelConverterImpl @Inject constructor(
         )
         val sum = ratings.sumBy { it.value }
 
-        return items
-                .map { stat ->
-                    val item = ratings.find { stat.category.equals(it.name) }
-                    if (item != null) stat.copy(count = item.value, progress = item.value / sum.toFloat())
-                    else stat
+        return ratings
+                .mapNotNull { stat ->
+                    val item = items.find { it.category == stat.name }
+                    item?.copy(count = stat.value, progress = stat.value / sum.toFloat())
                 }
     }
 
@@ -121,31 +120,20 @@ class UserDetailsViewModelConverterImpl @Inject constructor(
 
         val sum = types.sumBy { it.value }
 
-        return items
-                .map { pair ->
-                    val item = types.find { pair.first.split("|").contains(it.name) }
-                    if (item != null) pair.second.copy(count = item.value, progress = item.value / sum.toFloat())
-                    else pair.second
+        return types
+                .mapNotNull { statistic ->
+                    val item = items.find { it.first.split("|").contains(statistic.name) }
+                    item?.second?.copy(count = statistic.value, progress = statistic.value / sum.toFloat())
                 }
     }
 
 
     private fun convertScores(scores: List<Statistic>): List<UserStatisticItem> {
-        val allScores = (1..10).toMutableList()
         val sum = scores.sumBy { it.value }
 
         return scores
                 .asSequence()
-                .map {
-                    val score = it.name.toIntOrNull() ?: 0
-                    if (allScores.contains(score)) {
-                        allScores.remove(score)
-                        UserStatisticItem(it.name, it.value, it.value / sum.toFloat())
-                    } else null
-                }
-                .filterNotNull()
-                .toMutableList()
-                .union(allScores.map { UserStatisticItem(it.toString(), 0, 0f) })
+                .map { UserStatisticItem(it.name, it.value, it.value / sum.toFloat()) }
                 .sortedByDescending { it.category.toInt() }
                 .toMutableList()
     }
