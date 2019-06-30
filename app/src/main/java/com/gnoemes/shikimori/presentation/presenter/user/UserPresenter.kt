@@ -54,15 +54,13 @@ class UserPresenter @Inject constructor(
     }
 
     override fun onViewReattached() {
-        if (wasGuest) {
-            loadMyUser()
-            wasGuest = false
-        }
+        if (wasGuest) loadMyUser()
     }
 
     private fun loadMyUser() = interactor.getMyUserId()
             .doOnSuccess { id = it }
             .doOnSubscribe { isMe = true }
+            .doOnSuccess { wasGuest = false }
             .doOnSuccess { viewState.showAuthView(false) }
             .subscribe({ loadData() }, this::processErrors)
             .addToDisposables()
