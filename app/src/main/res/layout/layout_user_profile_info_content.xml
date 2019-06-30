@@ -170,7 +170,7 @@
         android:paddingTop="8dp"
         android:paddingEnd="16dp"
         android:paddingRight="16dp"
-        android:paddingBottom="8dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/profile_about_me"
         android:textAllCaps="false"
         android:textColor="@drawable/selector_circle_button_text_color"
