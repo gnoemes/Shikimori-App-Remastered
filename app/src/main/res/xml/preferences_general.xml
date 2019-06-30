@@ -9,6 +9,7 @@
         <SwitchPreference
             android:defaultValue="true"
             android:key="@string/settings_content_naming_key"
+            android:layout="@layout/layout_preference"
             android:summaryOff="@string/settings_content_naming_summary_off"
             android:summaryOn="@string/settings_content_naming_summary_on"
             android:title="@string/settings_content_naming_title"
@@ -16,6 +17,7 @@
 
         <Preference
             android:key="@string/settings_content_download_folder_key"
+            android:layout="@layout/layout_preference"
             android:summary="@string/settings_content_download_folder_summary"
             android:title="@string/settings_content_download_folder_title"
             app:iconSpaceReserved="false" />
@@ -29,6 +31,7 @@
         <SwitchPreference
             android:defaultValue="true"
             android:key="@string/settings_statuses_auto_increment_key"
+            android:layout="@layout/layout_preference"
             android:summaryOff="@string/settings_statuses_auto_increment_summary_off"
             android:summaryOn="@string/settings_statuses_auto_increment_summary_on"
             android:title="@string/settings_statuses_auto_increment_title"
@@ -37,6 +40,7 @@
         <SwitchPreference
             android:defaultValue="true"
             android:key="@string/settings_statuses_auto_status_key"
+            android:layout="@layout/layout_preference"
             android:summaryOff="@string/settings_statuses_auto_status_summary_off"
             android:summaryOn="@string/settings_statuses_auto_status_summary_on"
             android:title="@string/settings_statuses_auto_status_title"
@@ -44,11 +48,13 @@
 
         <Preference
             android:key="@string/settings_general_rate_swipe_to_left_key"
+            android:layout="@layout/layout_preference"
             android:title="@string/settings_general_rate_swipe_to_left_title"
             app:iconSpaceReserved="false" />
 
         <Preference
             android:key="@string/settings_general_rate_swipe_to_right_key"
+            android:layout="@layout/layout_preference"
             android:title="@string/settings_general_rate_swipe_to_right_title"
             app:iconSpaceReserved="false" />
 

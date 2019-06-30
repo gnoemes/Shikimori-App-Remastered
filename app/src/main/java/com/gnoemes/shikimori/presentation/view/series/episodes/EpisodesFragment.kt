@@ -22,7 +22,7 @@ import com.gnoemes.shikimori.entity.series.presentation.EpisodeViewModel
 import com.gnoemes.shikimori.entity.series.presentation.EpisodesNavigationData
 import com.gnoemes.shikimori.entity.series.presentation.SeriesPlaceholderItem
 import com.gnoemes.shikimori.presentation.presenter.series.episodes.EpisodesPresenter
-import com.gnoemes.shikimori.presentation.view.base.fragment.BaseInjectionDialogFragment
+import com.gnoemes.shikimori.presentation.view.base.fragment.BaseBottomSheetInjectionDialogFragment
 import com.gnoemes.shikimori.presentation.view.common.fragment.ListDialogFragment
 import com.gnoemes.shikimori.presentation.view.series.episodes.adapter.EpisodeAdapter
 import com.gnoemes.shikimori.utils.*
@@ -30,7 +30,7 @@ import com.gnoemes.shikimori.utils.widgets.VerticalSpaceItemDecorator
 import kotlinx.android.synthetic.main.fragment_episodes.*
 import kotlinx.android.synthetic.main.layout_default_placeholders.*
 
-class EpisodesFragment : BaseInjectionDialogFragment<EpisodesPresenter, EpisodesView>(), EpisodesView, ListDialogFragment.DialogCallback {
+class EpisodesFragment : BaseBottomSheetInjectionDialogFragment<EpisodesPresenter, EpisodesView>(), EpisodesView, ListDialogFragment.DialogCallback {
 
     @InjectPresenter
     lateinit var episodesPresenter: EpisodesPresenter
@@ -164,6 +164,7 @@ class EpisodesFragment : BaseInjectionDialogFragment<EpisodesPresenter, Episodes
     override fun showAlternativeLabel(show: Boolean) {
         if (show) toolbar.setSubtitle(R.string.series_alternative_source)
         else toolbar.subtitle = null
+        toolbar.setTitleTextAppearance(context, if (show) R.style.ToolbarSmallTextAppearance else R.style.ToolbarTextAppearance)
     }
 
     override fun showEpisodeOptionsDialog(index: Int) {

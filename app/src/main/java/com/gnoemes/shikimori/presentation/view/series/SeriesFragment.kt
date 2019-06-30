@@ -170,7 +170,6 @@ class SeriesFragment : BaseFragment<SeriesPresenter, SeriesView>(),
     private fun showSources(show: Boolean) {
         TransitionManager.beginDelayedTransition(motionLayout, AutoTransition())
         if (show && !translationBtn.isVisible()) showTypes(false)
-        translationTypeLabel.visibleIf { !show }
         sourceChangeBtn.visibleIf { !show }
         if (episodeChip.isEnabled) episodeChip.visibleIf { !show }
         mainSource.visibleIf { show }
@@ -180,7 +179,6 @@ class SeriesFragment : BaseFragment<SeriesPresenter, SeriesView>(),
     private fun showTypes(show: Boolean) {
         TransitionManager.beginDelayedTransition(motionLayout, AutoTransition())
         if (show && !sourceChangeBtn.isVisible()) showSources(false)
-        translationTypeLabel.visibleIf { !show }
         translationBtn.visibleIf { !show }
         voiceBtn.visibleIf { show }
         subtitlesBtn.visibleIf { show }
@@ -277,16 +275,15 @@ class SeriesFragment : BaseFragment<SeriesPresenter, SeriesView>(),
     }
 
     override fun setTranslationType(type: TranslationType) {
-        val textAndIcon = when (type) {
-            TranslationType.VOICE_RU -> Pair(R.string.translation_voice, R.drawable.ic_voice)
-            TranslationType.SUB_RU -> Pair(R.string.translation_subtitles, R.drawable.ic_subs)
-            TranslationType.RAW -> Pair(R.string.translation_original, R.drawable.ic_original)
-            else -> null
+        val icon = when (type) {
+            TranslationType.VOICE_RU -> R.drawable.ic_voice
+            TranslationType.SUB_RU -> R.drawable.ic_subs
+            TranslationType.RAW -> R.drawable.ic_original
+            else -> 0
         }
 
-        textAndIcon?.let {
-            translationTypeLabel.setText(it.first)
-            translationBtn.setIconResource(it.second)
+        if (icon != 0) {
+            translationBtn.setIconResource(icon)
         }
 
         if (!translationBtn.isVisible()) translationBtn.visible()

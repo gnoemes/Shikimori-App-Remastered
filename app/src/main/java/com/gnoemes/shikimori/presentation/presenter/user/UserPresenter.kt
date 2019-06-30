@@ -13,6 +13,7 @@ import com.gnoemes.shikimori.entity.rates.presentation.RateNavigationData
 import com.gnoemes.shikimori.entity.user.domain.UserDetails
 import com.gnoemes.shikimori.entity.user.domain.UserStatus
 import com.gnoemes.shikimori.entity.user.presentation.UserContentType
+import com.gnoemes.shikimori.entity.user.presentation.UserHistoryNavigationData
 import com.gnoemes.shikimori.entity.user.presentation.UserProfileAction
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
 import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResourceProvider
@@ -193,7 +194,7 @@ class UserPresenter @Inject constructor(
     }
 
     private fun onHistoryClicked() {
-        router.navigateTo(Screens.USER_HISTORY, id)
+        router.navigateTo(Screens.USER_HISTORY, UserHistoryNavigationData(id, currentUser.nickname))
         logEvent(AnalyticEvent.NAVIGATION_USER_HISTORY)
     }
 

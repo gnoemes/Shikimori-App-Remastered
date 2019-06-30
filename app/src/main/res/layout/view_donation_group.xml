@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_marginStart="16dp"
     android:layout_marginLeft="16dp"
+    android:layout_marginTop="14dp"
     android:layout_marginEnd="16dp"
     android:layout_marginRight="16dp"
     android:layout_marginBottom="24dp"
@@ -67,10 +68,6 @@
                 style="@style/GrayTransparentCircleButtonStyle"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="8dp"
                 app:icon="@drawable/ic_wallet"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -85,7 +82,10 @@
 
         <include
             android:id="@+id/sendLayout"
-            layout="@layout/layout_preference" />
+            layout="@layout/layout_preference"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp" />
 
         <include
             android:id="@+id/trelloLayout"
@@ -97,7 +97,10 @@
 
         <include
             android:id="@+id/clubLayout"
-            layout="@layout/layout_preference" />
+            layout="@layout/layout_preference"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp" />
 
     </LinearLayout>
 

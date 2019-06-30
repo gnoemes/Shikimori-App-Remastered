@@ -109,7 +109,7 @@
     <string name="rate_dropped_with_count">Брошено (%s)</string>
     <string name="rate_remove">Удалить из списка</string>
     <string name="rate_comment">Комментарий</string>
-    <string name="rate_status">Статус просмотра</string>
+    <string name="rate_status">Список</string>
     <string name="rates_need_auth">Для измения статуса необходимо авторизоваться в приложении</string>
     <string name="rates_title_anime">Редактирование аниме</string>
     <string name="rates_title_manga">Редактирование манги</string>
@@ -372,8 +372,8 @@
     <string name="profile_history">История</string>
     <string name="profile_about_me">Обо мне</string>
 
-    <string name="profile_rate_anime">Список аниме</string>
-    <string name="profile_rate_manga">Список манги</string>
+    <string name="profile_rate_anime">Аниме</string>
+    <string name="profile_rate_manga">Манга и ранобэ</string>
     <string name="profile_rate_watched">Просмотрено</string>
     <string name="profile_rate_watching">Смотрю / Планирую</string>
     <string name="profile_rate_readed">Прочитано</string>
@@ -389,6 +389,7 @@
     <string name="profile_middle_score">Средняя</string>
     <string name="profile_types">Типы</string>
     <string name="profile_ratings">Рейтинги</string>
+    <string name="profile_history_format">История %s</string>
 
     <string name="club_free">Свободное обсуждение и вступление</string>
     <string name="club_free_join">Свободное вступление</string>

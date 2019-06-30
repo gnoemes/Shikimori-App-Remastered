@@ -15,11 +15,15 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         tools:srcCompat="@drawable/icon_shikimori_setting" />
 
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:layout_weight="1">
 
         <TextView
@@ -27,15 +31,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="24dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginRight="24dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
             android:ellipsize="marquee"
             android:fadingEdge="horizontal"
             android:fontFamily="sans-serif-medium"
             android:singleLine="true"
             android:textColor="?attr/colorOnSurface"
+            android:textSize="14sp"
             tools:text="@string/settings_club_title" />
 
         <TextView
@@ -50,6 +53,16 @@
             android:textSize="12sp" />
 
     </RelativeLayout>
+
+    <!-- Preference should place its actual preference widget here. -->
+    <LinearLayout
+        android:id="@android:id/widget_frame"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical" />
 
 
 </com.gnoemes.shikimori.utils.widgets.UniqueStateLinearLayout>

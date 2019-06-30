@@ -29,6 +29,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:cardBackgroundColor="?attr/colorSurface"
+        app:cardCornerRadius="16dp"
+        app:cardPreventCornerOverlap="false"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout

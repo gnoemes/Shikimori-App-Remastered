@@ -16,6 +16,7 @@ import com.gnoemes.shikimori.entity.search.presentation.SearchNavigationData
 import com.gnoemes.shikimori.entity.series.presentation.EmbeddedPlayerNavigationData
 import com.gnoemes.shikimori.entity.series.presentation.EpisodesNavigationData
 import com.gnoemes.shikimori.entity.series.presentation.SeriesNavigationData
+import com.gnoemes.shikimori.entity.user.presentation.UserHistoryNavigationData
 import com.gnoemes.shikimori.presentation.view.anime.AnimeFragment
 import com.gnoemes.shikimori.presentation.view.auth.AuthActivity
 import com.gnoemes.shikimori.presentation.view.calendar.CalendarFragment
@@ -59,7 +60,7 @@ object RouteHolder {
             Screens.SERIES -> SeriesFragment.newInstance(data as SeriesNavigationData)
             Screens.USER_FRIENDS -> FriendsFragment.newInstance(data as Long)
             Screens.USER_CLUBS -> UserClubsFragment.newInstance(data as Long)
-            Screens.USER_HISTORY -> UserHistoryFragment.newInstance(data as Long)
+            Screens.USER_HISTORY -> UserHistoryFragment.newInstance(data as UserHistoryNavigationData)
             Screens.USER_FAVORITES -> FavoritesFragment.newInstance(data as Long)
             else -> null
         }

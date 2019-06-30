@@ -15,11 +15,12 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@android:color/transparent"
         android:fitsSystemWindows="true"
-        app:titleTextColor="?attr/colorOnPrimary"
         app:contentInsetStartWithNavigation="0dp"
         app:layout_scrollFlags="scroll|enterAlways"
         app:popupTheme="@style/PopupMenuTheme"
-        app:title="@string/app_name" />
+        app:title="@string/app_name"
+        app:titleTextAppearance="@style/ToolbarSmallTextAppearance"
+        app:titleTextColor="?attr/colorOnPrimary" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/searchToolbar"
