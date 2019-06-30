@@ -14,6 +14,7 @@ import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.app.domain.Task
 import com.gnoemes.shikimori.entity.app.domain.exceptions.BaseException
 import com.gnoemes.shikimori.entity.app.domain.exceptions.ContentException
+import com.gnoemes.shikimori.entity.auth.AuthType
 import com.gnoemes.shikimori.entity.common.domain.Screens
 import com.gnoemes.shikimori.entity.common.domain.Status
 import com.gnoemes.shikimori.entity.common.domain.Type
@@ -119,6 +120,7 @@ class RatePresenter @Inject constructor(
 
     private fun setRateData(items: List<RateCategory>) {
         viewState.setNavigationItems(items)
+        viewState.showNeedAuthView(false)
         if (items.isNotEmpty()) {
             if (rateStatus == null) onChangeStatus(priorityStatus ?: items.first().status)
             viewState.showEmptyRatesView(false)
@@ -316,7 +318,7 @@ class RatePresenter @Inject constructor(
         rateItem?.let { rate ->
             seriesInteractor.getFirstNotWatchedEpisodeIndex(rate.anime?.id!!)
                     .flatMap { episodeIndex ->
-                        if (episodeIndex < rate.episodes!!) seriesInteractor.getWatchedEpisodesCount(rate.anime.id)
+                        if (episodeIndex <= rate.episodes!!) seriesInteractor.getWatchedEpisodesCount(rate.anime.id)
                                 .map { watchedCount ->
                                     if (watchedCount < rate.episodes) {
                                         if (rate.anime.episodesAired != 0 && (rate.episodes + 1 > rate.anime.episodesAired && rate.episodes + 1 > rate.anime.episodes)) rate.anime.episodes
@@ -522,6 +524,14 @@ class RatePresenter @Inject constructor(
 
     private val isRussianNaming: Boolean
         get() = settingsSource.isRussianNaming
+
+    fun onSignIn() = openAuth(AuthType.SIGN_IN)
+    fun onSignUp() = openAuth(AuthType.SIGN_UP)
+
+    private fun openAuth(type: AuthType) {
+        router.navigateTo(Screens.AUTHORIZATION, type)
+        logEvent(AnalyticEvent.NAVIGATION_AUTHORIZATION)
+    }
 }
 
 

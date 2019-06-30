@@ -206,6 +206,7 @@
         <item name="android:padding">0dp</item>
         <item name="strokeWidth">1dp</item>
         <item name="cornerRadius">4dp</item>
+        <item name="rippleColor">?attr/colorDivider</item>
     </style>
 
     <style name="OutlinedButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Icon">

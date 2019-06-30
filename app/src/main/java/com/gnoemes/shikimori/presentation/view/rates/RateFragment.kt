@@ -24,7 +24,6 @@ import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.entity.app.domain.AppExtras
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.common.presentation.RateSort
-import com.gnoemes.shikimori.entity.main.BottomScreens
 import com.gnoemes.shikimori.entity.rates.domain.Rate
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.rates.domain.UserRate
@@ -34,7 +33,6 @@ import com.gnoemes.shikimori.entity.series.presentation.SeriesPlaceholderItem
 import com.gnoemes.shikimori.presentation.presenter.rates.RatePresenter
 import com.gnoemes.shikimori.presentation.view.base.adapter.BasePaginationAdapter
 import com.gnoemes.shikimori.presentation.view.base.fragment.BasePaginationFragment
-import com.gnoemes.shikimori.presentation.view.base.fragment.BottomNavigationProvider
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
 import com.gnoemes.shikimori.presentation.view.base.fragment.TabRootFragment
 import com.gnoemes.shikimori.presentation.view.common.fragment.EditRateFragment
@@ -51,6 +49,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_rate.*
 import kotlinx.android.synthetic.main.layout_default_list.*
 import kotlinx.android.synthetic.main.layout_default_placeholders.*
+import kotlinx.android.synthetic.main.layout_profile_auth.*
 import kotlinx.android.synthetic.main.layout_progress.*
 import kotlinx.android.synthetic.main.layout_rates_placeholder.*
 import kotlinx.android.synthetic.main.layout_toolbar.toolbar
@@ -175,6 +174,13 @@ class RateFragment : BasePaginationFragment<Rate, RatePresenter, RateView>(), Ra
         }
         rateEmptyView.gone()
         progressBar?.gone()
+
+        signInBtn.onClick { getPresenter().onSignIn() }
+        signUpBtn.onClick { getPresenter().onSignUp() }
+
+        titleView.setText(R.string.rate_empty_list)
+        descriptionView.gone()
+        authLayout.gone()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -386,12 +392,7 @@ class RateFragment : BasePaginationFragment<Rate, RatePresenter, RateView>(), Ra
     }
 
     override fun showNeedAuthView(show: Boolean) {
-        actionBtn.setText(R.string.common_sign_in)
-        actionBtn.onClick {
-            (activity as? BottomNavigationProvider)?.changeTab(BottomScreens.MORE)
-        }
-
-        rateEmptyView.visibleIf { show }
+        authLayout.visibleIf { show }
     }
 
     override fun showRateMessage(taskId: Int, message: String) {

@@ -24,6 +24,10 @@
             android:id="@+id/rateEmptyView"
             layout="@layout/layout_rates_placeholder" />
 
+        <include
+            android:id="@+id/authLayout"
+            layout="@layout/layout_profile_auth" />
+
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
