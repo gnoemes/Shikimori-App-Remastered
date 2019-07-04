@@ -103,11 +103,17 @@ class RateViewModelConverterImpl @Inject constructor(
         }
 
         if (it.anime != null) {
-            appendDotIfNotEmpty()
-            builder.append(getLocalizedType(it.anime.type))
+            val localizedType = getLocalizedType(it.anime.type)
+            if (!localizedType.isNullOrEmpty()) {
+                appendDotIfNotEmpty()
+                builder.append(localizedType)
+            }
         } else if (it.manga != null) {
-            appendDotIfNotEmpty()
-            builder.append(getLocalizedType(it.manga.type))
+            val localizedType = getLocalizedType(it.manga.type)
+            if (!localizedType.isNullOrEmpty()) {
+                appendDotIfNotEmpty()
+                builder.append(localizedType)
+            }
         }
 
         if (it.anime != null && it.anime.type == AnimeType.MOVIE) {
