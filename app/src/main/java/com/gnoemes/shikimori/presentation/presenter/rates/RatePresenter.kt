@@ -78,6 +78,8 @@ class RatePresenter @Inject constructor(
     private var query: String? = null
     private var pinnedRates: Int = 0
 
+    private var localRemovedItems = mutableListOf<Long>()
+
     override fun onViewReattached() {
         loadUserOrCategories()
         if (rateStatus != null) onRefresh()
@@ -149,6 +151,7 @@ class RatePresenter @Inject constructor(
             rateStatus = null
             this.type = if (type == Type.ANIME) Type.MANGA else Type.ANIME
             viewState.selectType(type)
+            localRemovedItems.clear()
             loadRateCategories()
         }
     }
@@ -158,6 +161,7 @@ class RatePresenter @Inject constructor(
             this.rateStatus = rateStatus
             viewState.scrollToTop()
             viewState.selectRateStatus(rateStatus)
+            localRemovedItems.clear()
             loadData()
         }
     }
@@ -166,7 +170,9 @@ class RatePresenter @Inject constructor(
         router.navigateTo(BottomScreens.SEARCH, SearchNavigationData(null, if (anime) Type.ANIME else Type.MANGA))
     }
 
-    fun onTaskCanceled(taskId: Int) {
+    fun onTaskCanceled(taskId: Int, rateId: Long) {
+        localRemovedItems.remove(rateId)
+
         taskInteractor.cancelTask(taskId)
                 .subscribe(this::onRefresh, this::processErrors)
                 .addToDisposables()
@@ -208,6 +214,7 @@ class RatePresenter @Inject constructor(
     }
 
     private fun removeFromListAndRefresh(item: Rate) {
+        localRemovedItems.add(item.id)
         items.remove(item)
         localRefresh()
     }
@@ -364,7 +371,7 @@ class RatePresenter @Inject constructor(
                 logEvent(AnalyticEvent.RATE_DROP_MENU)
             }
             taskInteractor.newTask(task)
-                    .doOnNext { viewState.showRateMessage(it, rateResourceProvider.getChangeRateStatusMessage(item.type, newStatus)) }
+                    .doOnNext { viewState.showRateMessage(it, rateResourceProvider.getChangeRateStatusMessage(item.type, newStatus), item.id) }
                     .subscribe({ removeFromListAndRefresh(item) }, this::processErrors)
                     .addToDisposables()
         }
@@ -378,7 +385,7 @@ class RatePresenter @Inject constructor(
                         .subscribeAndRefresh(id)
             }
             taskInteractor.newTask(task)
-                    .doOnNext { viewState.showRateMessage(it, rateResourceProvider.getDeleteRateMessage(item.type)) }
+                    .doOnNext { viewState.showRateMessage(it, rateResourceProvider.getDeleteRateMessage(item.type), item.id) }
                     .subscribe({ removeFromListAndRefresh(item) }, this::processErrors)
                     .addToDisposables()
         }
@@ -455,6 +462,12 @@ class RatePresenter @Inject constructor(
                 .flatMap { rates ->
                     pinInteractor.getPinnedRates(type, rateStatus ?: RateStatus.WATCHING)
                             .map { converter.apply(rates, it) }
+                }
+                .map { list ->
+                    list.filter {
+                        if (it is RateViewModel) !localRemovedItems.contains(it.id)
+                        else false
+                    }
                 }
                 .subscribe({ setData(it) }, this::processErrors)
                 .addToDisposables()

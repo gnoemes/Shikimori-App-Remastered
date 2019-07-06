@@ -395,11 +395,11 @@ class RateFragment : BasePaginationFragment<Rate, RatePresenter, RateView>(), Ra
         authLayout.visibleIf { show }
     }
 
-    override fun showRateMessage(taskId: Int, message: String) {
+    override fun showRateMessage(taskId: Int, message: String, rateId: Long) {
         Snackbar.make(coordinator, message, Snackbar.LENGTH_LONG)
                 .floatingStyle(context!!)
                 .setActionTextColor(context!!.colorAttr(R.attr.colorSecondary))
-                .setAction(R.string.common_cancel_variant) { getPresenter().onTaskCanceled(taskId) }
+                .setAction(R.string.common_cancel_variant) { getPresenter().onTaskCanceled(taskId, rateId) }
                 .show()
     }
 
