@@ -9,13 +9,13 @@ import androidx.preference.PreferenceFragmentCompat
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.datetime.timePicker
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.entity.app.domain.AscentTheme
+import com.gnoemes.shikimori.entity.app.domain.Theme
 import com.gnoemes.shikimori.entity.app.domain.ThemeExtras
 import com.gnoemes.shikimori.presentation.view.common.widget.preferences.AscentPreference
 import com.gnoemes.shikimori.presentation.view.common.widget.preferences.ThemePreference
 import com.gnoemes.shikimori.presentation.view.settings.ToolbarCallback
-import com.gnoemes.shikimori.utils.getThemeSharedPreferences
-import com.gnoemes.shikimori.utils.preference
-import com.gnoemes.shikimori.utils.putInt
+import com.gnoemes.shikimori.utils.*
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
 import org.joda.time.LocalTime
@@ -26,15 +26,15 @@ class SettingsThemeFragment : BaseSettingsFragment(), Toolbar.OnMenuItemClickLis
         super.onCreatePreferences(savedInstanceState, rootKey)
         (activity as? ToolbarCallback)?.showToolbarMenu()
         themePreference.apply {
-            setTheme(prefs().getInt(ThemeExtras.THEME_KEY, R.style.ShikimoriAppTheme_Default))
-            setNightTheme(prefs().getInt(ThemeExtras.NIGHT_THEME_KEY, -1))
-            setNightModeStartTime(prefs().getInt(ThemeExtras.NIGHT_THEME_START_KEY, LocalTime(20, 0, 0, 0).millisOfDay))
-            setNightModeEndTime(prefs().getInt(ThemeExtras.NIGHT_THEME_END_KEY, LocalTime(8, 0, 0, 0).millisOfDay))
+            setTheme(context.getCurrentTheme)
+            setNightTheme(context.getCurrentNightTheme)
+            setNightModeStartTime(context.getNightThemeStartTime.millisOfDay)
+            setNightModeEndTime(context.getNightThemeEndTime.millisOfDay)
             nightTimeStartClickListener = View.OnClickListener { showTimeDialog(getNightModeStartTime()) { setNightModeStartTime(it) } }
             nightTimeEndClickListener = View.OnClickListener { showTimeDialog(getNightModeEndTime()) { setNightModeEndTime(it) } }
         }
 
-        ascentPreference.setAscentStyle(prefs().getInt(ThemeExtras.ASCENT_KEY, R.style.AscentStyle_Orange))
+        ascentPreference.setAscentStyle(context!!.getCurrentAscentTheme)
     }
 
     private fun showTimeDialog(initValue: Int, action: (Int) -> Unit) {
@@ -51,12 +51,30 @@ class SettingsThemeFragment : BaseSettingsFragment(), Toolbar.OnMenuItemClickLis
     }
 
     private fun saveTheme() {
-        prefs().putInt(ThemeExtras.THEME_KEY, themePreference.getTheme())
-        prefs().putInt(ThemeExtras.ASCENT_KEY, ascentPreference.getAscentStyle())
+        prefs().putInt(ThemeExtras.THEME_KEY, getTheme(themePreference.getTheme()))
+        prefs().putInt(ThemeExtras.ASCENT_KEY, getAscentTheme(ascentPreference.getAscentStyle()))
         prefs().putInt(ThemeExtras.NIGHT_THEME_KEY, themePreference.getNightTheme())
         prefs().putInt(ThemeExtras.NIGHT_THEME_START_KEY, themePreference.getNightModeStartTime())
         prefs().putInt(ThemeExtras.NIGHT_THEME_END_KEY, themePreference.getNightModeEndTime())
         activity?.onBackPressed()
+    }
+
+    private fun getAscentTheme(ascentStyle: Int): Int = when (ascentStyle) {
+        R.style.AscentStyle_Red -> AscentTheme.RED.index
+        R.style.AscentStyle_Orange -> AscentTheme.ORANGE.index
+        R.style.AscentStyle_Yellow -> AscentTheme.YELLOW.index
+        R.style.AscentStyle_Green -> AscentTheme.GREEN.index
+        R.style.AscentStyle_Cyan -> AscentTheme.CYAN.index
+        R.style.AscentStyle_Blue -> AscentTheme.BLUE.index
+        R.style.AscentStyle_Purple -> AscentTheme.PURPLE.index
+        else -> AscentTheme.ORANGE.index
+    }
+
+    private fun getTheme(theme: Int): Int = when (theme) {
+        R.style.ShikimoriAppTheme_Default -> Theme.DEFAULT.index
+        R.style.ShikimoriAppTheme_Dark -> Theme.DARK.index
+        R.style.ShikimoriAppTheme_Amoled -> Theme.AMOLED.index
+        else -> Theme.DEFAULT.index
     }
 
     override fun onDestroy() {
