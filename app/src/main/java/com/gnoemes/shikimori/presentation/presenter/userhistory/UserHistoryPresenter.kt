@@ -13,10 +13,17 @@ import javax.inject.Inject
 @InjectViewState
 class UserHistoryPresenter @Inject constructor(
         private val interactor: UserInteractor,
-        private val converter : UserHistoryViewModelConverter
+        private val converter: UserHistoryViewModelConverter
 ) : BasePaginationPresenter<UserHistoryViewModel, UserHistoryView>() {
 
     var id: Long = Constants.NO_ID
+    var name = ""
+
+    override fun initData() {
+        super.initData()
+
+        if (name.isNotBlank()) viewState.setTitle(name)
+    }
 
     override fun getPaginatorRequestFactory(): (Int) -> Single<List<UserHistoryViewModel>> =
             { page -> interactor.getHistory(id, page).map(converter) }

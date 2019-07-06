@@ -1,6 +1,7 @@
 package com.gnoemes.shikimori.entity.common.domain
 
 object Screens {
+
     ////////////////////////////////////////////////////////////////////////
     // Details
     ////////////////////////////////////////////////////////////////////////
@@ -20,13 +21,14 @@ object Screens {
     const val MAIN = "MAIN"
     const val WEB = "WEB"
     const val SETTINGS = "SETTINGS"
+    const val SHARE = "SHARE"
 
     ////////////////////////////////////////////////////////////////////////
     // Other
     ////////////////////////////////////////////////////////////////////////
     const val TOPICS = "TOPICS"
     const val EPISODES = "EPISODES"
-    const val TRANSLATIONS = "TRANSLATIONS"
+    const val SERIES = "SERIES"
     const val USER_HISTORY = "USER_HISTORY"
     const val USER_BANS = "USER_BANS"
     const val USER_FRIENDS = "USER_FRIENDS"

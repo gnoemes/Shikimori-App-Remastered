@@ -67,8 +67,8 @@ class AnimeFragment : BaseDetailsFragment<AnimePresenter, AnimeView>(), AnimeVie
     // MVP
     ///////////////////////////////////////////////////////////////////////////
 
-    override fun showRateDialog(userRate: UserRate?) {
-        val dialog = EditRateFragment.newInstance(rate = userRate)
+    override fun showRateDialog(title: String, userRate: UserRate?) {
+        val dialog = EditRateFragment.newInstance(rate = userRate, title = title)
         dialog.show(childFragmentManager, "RateTag")
     }
 

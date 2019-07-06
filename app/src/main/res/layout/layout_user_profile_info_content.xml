@@ -74,7 +74,7 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
-        app:icon="@drawable/ic_message"
+        app:icon="@drawable/ic_message_outline"
         app:layout_constraintEnd_toStartOf="@+id/friendshipFab"
         app:layout_constraintTop_toBottomOf="@+id/infoView"
         app:layout_goneMarginEnd="12dp" />
@@ -97,19 +97,19 @@
         android:layout_height="48dp"
         android:layout_marginStart="12dp"
         android:layout_marginLeft="12dp"
-        app:icon="@drawable/selector_ignore_icon"
+        app:icon="@drawable/ic_ignore"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toTopOf="@+id/bansFab" />
+        app:layout_constraintTop_toTopOf="@+id/historyFab" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/bansFab"
+        android:id="@+id/historyFab"
         style="@style/CircleButtonStyle"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="24dp"
-        app:icon="@drawable/ic_ban_history"
+        app:icon="@drawable/ic_history"
         app:layout_constraintStart_toEndOf="@+id/ignoreFab"
         app:layout_constraintTop_toBottomOf="@+id/infoView"
         app:layout_goneMarginStart="12dp" />
@@ -148,37 +148,35 @@
         app:layout_constraintTop_toBottomOf="@+id/ignoreFab" />
 
     <TextView
-        android:id="@+id/bansLabel"
+        android:id="@+id/historyLabel"
         style="@style/ProfileLabelStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="@string/profile_bans"
-        app:layout_constraintEnd_toEndOf="@+id/bansFab"
-        app:layout_constraintStart_toStartOf="@+id/bansFab"
-        app:layout_constraintTop_toBottomOf="@+id/bansFab" />
+        android:text="@string/profile_history"
+        app:layout_constraintEnd_toEndOf="@+id/historyFab"
+        app:layout_constraintStart_toStartOf="@+id/historyFab"
+        app:layout_constraintTop_toBottomOf="@+id/historyFab" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/aboutBtn"
-        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+        style="@style/OutlinedButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:layout_marginBottom="16dp"
         android:fontFamily="sans-serif"
+        android:minWidth="0dp"
         android:paddingStart="12dp"
         android:paddingLeft="12dp"
-        android:paddingTop="8dp"
+        android:paddingTop="10dp"
         android:paddingEnd="16dp"
         android:paddingRight="16dp"
-        android:paddingBottom="8dp"
+        android:paddingBottom="9dp"
         android:text="@string/profile_about_me"
         android:textAllCaps="false"
-        android:textColor="@drawable/selector_circle_button_text_color"
-        app:backgroundTint="@drawable/selector_circle_button_background_color"
-        app:cornerRadius="4dp"
+        android:textSize="14sp"
         app:icon="@drawable/ic_global"
-        app:iconTint="@drawable/selector_circle_button_text_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="@+id/guideline"

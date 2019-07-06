@@ -1,6 +1,7 @@
 package com.gnoemes.shikimori.presentation.presenter.anime
 
 import com.arellomobile.mvp.InjectViewState
+import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.domain.anime.AnimeInteractor
 import com.gnoemes.shikimori.domain.rates.RatesInteractor
 import com.gnoemes.shikimori.domain.related.RelatedInteractor
@@ -13,7 +14,7 @@ import com.gnoemes.shikimori.entity.common.presentation.DetailsContentType
 import com.gnoemes.shikimori.entity.common.presentation.DetailsHeadItem
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.roles.domain.Character
-import com.gnoemes.shikimori.entity.series.presentation.EpisodesNavigationData
+import com.gnoemes.shikimori.entity.series.presentation.SeriesNavigationData
 import com.gnoemes.shikimori.presentation.presenter.anime.converter.AnimeDetailsViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.common.converter.DetailsContentViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.common.converter.FranchiseNodeViewModelConverter
@@ -30,6 +31,7 @@ class AnimePresenter @Inject constructor(
         private val animeInteractor: AnimeInteractor,
         private val relatedInteractor: RelatedInteractor,
         private val viewModelConverter: AnimeDetailsViewModelConverter,
+        private val settingsSource: SettingsSource,
         ratesInteractor: RatesInteractor,
         userInteractor: UserInteractor,
         resourceProvider: CommonResourceProvider,
@@ -123,14 +125,20 @@ class AnimePresenter @Inject constructor(
     override fun onOpenInBrowser() = onOpenWeb(currentAnime.url)
 
     override fun onWatchOnline() {
-        val data = EpisodesNavigationData(id, currentAnime.image, currentAnime.nameRu
-                ?: currentAnime.name, currentAnime.userRate?.id)
-        router.navigateTo(Screens.EPISODES, data)
-        logEvent(AnalyticEvent.NAVIGATION_ANIME_EPISODES)
+        val data = SeriesNavigationData(id,
+                currentAnime.image,
+                currentAnime.nameRu ?: currentAnime.name,
+                currentAnime.userRate?.id,
+                if (currentAnime.status == Status.RELEASED) currentAnime.episodes else currentAnime.episodesAired,
+                null)
+        router.navigateTo(Screens.SERIES, data)
+        logEvent(AnalyticEvent.NAVIGATION_ANIME_TRANSLATIONS)
     }
 
     override fun onEditRate() {
-        viewState.showRateDialog(currentAnime.userRate)
+        val title = if (settingsSource.isRussianNaming) currentAnime.nameRu
+                ?: currentAnime.name else currentAnime.name
+        viewState.showRateDialog(title, currentAnime.userRate)
         logEvent(AnalyticEvent.RATE_DIALOG)
     }
 

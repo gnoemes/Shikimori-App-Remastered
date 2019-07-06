@@ -7,6 +7,8 @@ import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.user.domain.*
 import com.gnoemes.shikimori.entity.user.presentation.*
+import java.math.MathContext
+import java.math.RoundingMode
 import javax.inject.Inject
 
 class UserDetailsViewModelConverterImpl @Inject constructor(
@@ -51,35 +53,99 @@ class UserDetailsViewModelConverterImpl @Inject constructor(
         return convertContentViewModel(UserContentType.CLUBS, clubs)
     }
 
-    override fun convertAnimeRate(statuses: List<Status>?): UserRateViewModel = convertRate(true, statuses)
+    override fun convertAnimeRate(stats: UserStats): UserRateViewModel = UserRateViewModel(
+            true,
+            convertRate(stats.animeStatuses),
+            countAvgScore(stats.scores.anime),
+            convertScores(stats.scores.anime),
+            convertTypes(true, stats.types.anime),
+            convertRatings(stats.ratings.anime)
+    )
 
-    override fun convertMangaRate(statuses: List<Status>?): UserRateViewModel = convertRate(false, statuses)
+    override fun convertMangaRate(stats: UserStats): UserRateViewModel = UserRateViewModel(
+            false,
+            convertRate(stats.mangaStatuses),
+            countAvgScore(stats.scores.manga ?: emptyList()),
+            convertScores(stats.scores.manga ?: emptyList()),
+            convertTypes(false, stats.types.manga ?: emptyList()),
+            emptyList()
+    )
 
-    private fun convertRate(isAnime: Boolean, statuses: List<Status>?): UserRateViewModel {
-        if (statuses.isNullOrEmpty()) return UserRateViewModel(isAnime, emptyMap(), emptyMap())
+    private fun countAvgScore(scores: List<Statistic>): Float {
+        if (scores.isEmpty()) return 0f
 
-        val inProgressStatuses = mutableListOf(RateStatus.PLANNED, RateStatus.WATCHING, RateStatus.ON_HOLD)
+        val sum = scores.sumBy { it.value }
+        return scores
+                .sumBy { it.name.toInt() * it.value }
+                .toFloat()
+                .div(sum)
+                .toBigDecimal(MathContext(3, RoundingMode.UP))
+                .toFloat()
+    }
 
-        val rates = mapOf(
-                Pair(RateProgressStatus.COMPLETED, statuses.countRate { it.name == RateStatus.COMPLETED }),
-                Pair(RateProgressStatus.IN_PROGRESS, statuses.countRate { inProgressStatuses.contains(it.name) }),
-                Pair(RateProgressStatus.DROPPED, statuses.countRate { it.name == RateStatus.DROPPED })
+    private fun convertRatings(ratings: List<Statistic>): List<UserStatisticItem> {
+        val items = mutableListOf(
+                UserStatisticItem("G", 0, 0f),
+                UserStatisticItem("PG", 0, 0f),
+                UserStatisticItem("PG-13", 0, 0f),
+                UserStatisticItem("R-17", 0, 0f),
+                UserStatisticItem("R+", 0, 0f),
+                UserStatisticItem("Rx", 0, 0f)
+        )
+        val sum = ratings.sumBy { it.value }
+
+        return ratings
+                .mapNotNull { stat ->
+                    val item = items.find { it.category == stat.name }
+                    item?.copy(count = stat.value, progress = stat.value / sum.toFloat())
+                }
+    }
+
+    private fun convertTypes(isAnime: Boolean, types: List<Statistic>): List<UserStatisticItem> {
+        val items = if (isAnime) mutableListOf(
+                Pair("TV Series|Сериал", UserStatisticItem(context.getString(R.string.type_tv_long_translatable), 0, 0f)),
+                Pair("Movie|Фильм", UserStatisticItem(context.getString(R.string.type_movie_translatable), 0, 0f)),
+                Pair("OVA", UserStatisticItem(context.getString(R.string.type_ova), 0, 0f)),
+                Pair("ONA", UserStatisticItem(context.getString(R.string.type_ona), 0, 0f)),
+                Pair("Special|Спешл", UserStatisticItem(context.getString(R.string.type_special_translatable), 0, 0f)),
+                Pair("Music|Клип", UserStatisticItem(context.getString(R.string.type_music_translatable), 0, 0f))
+        ) else mutableListOf(
+                Pair("Manga|Манга", UserStatisticItem(context.getString(R.string.type_manga_translatable), 0, 0f)),
+                Pair("Manhwa|Манхва", UserStatisticItem(context.getString(R.string.type_manhwa_translatable), 0, 0f)),
+                Pair("Manhua|Маньхуа", UserStatisticItem(context.getString(R.string.type_manhua_translatable), 0, 0f)),
+                Pair("Light Novel|Ранобэ", UserStatisticItem(context.getString(R.string.type_novel_translatable), 0, 0f)),
+                Pair("One Shot|Ваншот", UserStatisticItem(context.getString(R.string.type_one_shot_translatable), 0, 0f)),
+                Pair("Doujin|Додзинси", UserStatisticItem(context.getString(R.string.type_doujin_translatable), 0, 0f))
         )
 
-        val formatArray = if (isAnime) R.array.anime_rate_stasuses_with_count else R.array.manga_rate_stasuses_with_count
+        val sum = types.sumBy { it.value }
 
-        val rateFormatStrings = RateStatus.values()
-                .zip(context.resources.getStringArray(formatArray))
-                .toMap()
+        return types
+                .mapNotNull { statistic ->
+                    val item = items.find { it.first.split("|").contains(statistic.name) }
+                    item?.second?.copy(count = statistic.value, progress = statistic.value / sum.toFloat())
+                }
+    }
 
-        val rawRates = RateStatus.values()
-                .associateBy({ it }, { rate -> statuses.countRate { it.name == rate } })
-                .mapValues { String.format(rateFormatStrings.getValue(it.key), it.value) }
 
-        return UserRateViewModel(
-                isAnime,
-                rates,
-                rawRates
+    private fun convertScores(scores: List<Statistic>): List<UserStatisticItem> {
+        val sum = scores.sumBy { it.value }
+
+        return scores
+                .asSequence()
+                .map { UserStatisticItem(it.name, it.value, it.value / sum.toFloat()) }
+                .sortedByDescending { it.category.toInt() }
+                .toMutableList()
+    }
+
+    private fun convertRate(statuses: List<Status>?): Map<RateProgressStatus, Int> {
+        if (statuses.isNullOrEmpty()) return emptyMap()
+
+        return mapOf(
+                Pair(RateProgressStatus.PLANNED, statuses.countRate { it.name == RateStatus.PLANNED }),
+                Pair(RateProgressStatus.COMPLETED, statuses.countRate { it.name == RateStatus.COMPLETED }),
+                Pair(RateProgressStatus.IN_PROGRESS, statuses.countRate { it.name == RateStatus.WATCHING }),
+                Pair(RateProgressStatus.DROPPED, statuses.countRate { it.name == RateStatus.DROPPED })
         )
     }
 

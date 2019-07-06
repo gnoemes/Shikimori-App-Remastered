@@ -17,7 +17,7 @@ interface BaseDetailsView : BaseFragmentView {
     fun setContentItem(type: DetailsContentType, item : DetailsContentItem)
 
     @StateStrategyType(SkipStrategy::class)
-    fun showRateDialog(userRate: UserRate?)
+    fun showRateDialog(title : String, userRate: UserRate?)
 
     @StateStrategyType(SkipStrategy::class)
     fun showLinks(it: List<Pair<String, String>>)

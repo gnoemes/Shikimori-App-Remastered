@@ -12,7 +12,7 @@
         <item name="toolbarNavigationButtonStyle">@style/Toolbar.Button.Navigation.Tinted</item>
         <item name="actionOverflowButtonStyle">@style/Toolbar.Button.Overflow.Tinted</item>
 
-        <item name="rateStyleStrokeWidth">0dp</item>
+        <item name="themeStrokeWidth">0dp</item>
     </style>
 
     <style name="ShikimoriAppTheme.Launch" parent="ShikimoriAppTheme.Base">
@@ -52,6 +52,7 @@
         <item name="colorDialogSurface">@color/default_colorDialogSurface</item>
         <item name="colorRateMenuBackground">@color/default_colorRateMenuBackground</item>
         <item name="colorRateDialog">@color/default_colorRateDialog</item>
+        <item name="colorSnackbarSurface">@color/default_colorSnackBar</item>
 
         <item name="android:textColor">@color/default_colorOnSurface</item>
         <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
@@ -67,6 +68,14 @@
         <item name="dialogCustomBackground">@drawable/dialog_surface</item>
 
         <item name="android:listDivider">@drawable/list_divider_default</item>
+
+        <item name="colorRateDefault">@color/rate_default_transparent</item>
+        <item name="colorRateWatched">@color/rate_watched_transparent</item>
+        <item name="colorRateOnHold">@color/rate_on_hold_transparent</item>
+        <item name="colorRateDropped">@color/rate_dropped_transparent</item>
+
+        <item name="bottomSheetBackground">@drawable/bg_bottom_sheet_window_default</item>
+        <item name="editRateBackground">@drawable/bg_rate_dialog_window_default</item>
     </style>
 
     <style name="ShikimoriAppTheme.Dark" parent="ShikimoriAppTheme.Base">
@@ -89,6 +98,7 @@
         <item name="colorDialogSurface">@color/dark_colorDialogSurface</item>
         <item name="colorRateMenuBackground">@color/dark_colorRateMenuBackground</item>
         <item name="colorRateDialog">@color/dark_colorRateDialog</item>
+        <item name="colorSnackbarSurface">@color/dark_colorSnackBar</item>
 
         <item name="android:textColor">@color/dark_colorOnSurface</item>
         <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
@@ -105,7 +115,13 @@
 
         <item name="android:listDivider">@drawable/list_divider_dark</item>
 
-        <item name="rateStyleStrokeWidth">1dp</item>
+        <item name="colorRateDefault">@color/rate_default_transparent</item>
+        <item name="colorRateWatched">@color/rate_watched_transparent</item>
+        <item name="colorRateOnHold">@color/rate_on_hold_transparent</item>
+        <item name="colorRateDropped">@color/rate_dropped_transparent</item>
+
+        <item name="bottomSheetBackground">@drawable/bg_bottom_sheet_window_dark</item>
+        <item name="editRateBackground">@drawable/bg_rate_dialog_window_dark</item>
     </style>
 
     <style name="ShikimoriAppTheme.Amoled" parent="ShikimoriAppTheme.Base">
@@ -128,6 +144,7 @@
         <item name="colorDialogSurface">@color/amoled_colorDialogSurface</item>
         <item name="colorRateMenuBackground">@color/amoled_colorRateMenuBackground</item>
         <item name="colorRateDialog">@color/amoled_colorRateDialog</item>
+        <item name="colorSnackbarSurface">@color/amoled_colorSnackBar</item>
 
         <item name="android:textColor">@color/amoled_colorOnSurface</item>
         <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
@@ -144,7 +161,15 @@
 
         <item name="android:listDivider">@drawable/list_divider_amoled</item>
 
-        <item name="rateStyleStrokeWidth">1dp</item>
+        <item name="themeStrokeWidth">1dp</item>
+
+        <item name="colorRateDefault">@color/rate_default_transparent</item>
+        <item name="colorRateWatched">@color/rate_watched_transparent</item>
+        <item name="colorRateOnHold">@color/rate_on_hold_transparent</item>
+        <item name="colorRateDropped">@color/rate_dropped_transparent</item>
+
+        <item name="bottomSheetBackground">@drawable/bg_bottom_sheet_window_amoled</item>
+        <item name="editRateBackground">@drawable/bg_rate_dialog_window_amoled</item>
     </style>
 
     <style name="AscentStyle" />

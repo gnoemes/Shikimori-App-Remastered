@@ -12,7 +12,7 @@ class DbOpenHelper @Inject constructor(
 
     companion object {
         const val DATABASE = "shikimori_database"
-        const val VERSION = 2
+        const val VERSION = 3
     }
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -22,12 +22,17 @@ class DbOpenHelper @Inject constructor(
             execSQL(MangaRateSyncTable.CREATE_QUERY)
             execSQL(TranslationSettingTable.CREATE_QUERY)
             execSQL(ChapterTable.CREATE_QUERY)
+            execSQL(PinnedRateTable.CREATE_QUERY)
         }
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, old: Int, new: Int) {
         if (old < 2) {
             db?.execSQL(ChapterTable.CREATE_QUERY)
+        }
+
+        if (old < 3) {
+            db?.execSQL(PinnedRateTable.CREATE_QUERY)
         }
     }
 

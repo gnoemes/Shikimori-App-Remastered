@@ -96,12 +96,4 @@ class FilterGenresFragment : BaseBottomSheetInjectionDialogFragment<FilterGenres
         (targetFragment as? FilterCallback)?.onFiltersSelected(tag, appliedFilters)
         onBackPressed()
     }
-
-    override fun onBackPressed() {
-        dismiss()
-    }
-
-    override fun hideSoftInput() = Unit
-    override fun setTitle(title: String) = Unit
-    override fun setTitle(stringRes: Int) = Unit
 }

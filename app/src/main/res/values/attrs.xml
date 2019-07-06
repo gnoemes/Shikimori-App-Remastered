@@ -1,25 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <attr name="colorSecondaryTransparent" format="color" />
-    <attr name="colorOnPrimarySecondary" format="color"/>
-    <attr name="colorDivider" format="color"/>
-    <attr name="colorTransparentBackground" format="color"/>
-    <attr name="colorOnTransparentBackground" format="color"/>
-    <attr name="colorDialogSurface" format="color"/>
-    <attr name="colorRateMenuBackground" format="reference"/>
-    <attr name="colorRateDialog" format="reference"/>
+    <attr name="colorOnPrimarySecondary" format="color" />
+    <attr name="colorDivider" format="color" />
+    <attr name="colorTransparentBackground" format="color" />
+    <attr name="colorOnTransparentBackground" format="color" />
+    <attr name="colorDialogSurface" format="color" />
+    <attr name="colorRateMenuBackground" format="reference" />
+    <attr name="colorRateDialog" format="color" />
 
-    <attr name="dialogCustomBackground" format="reference"/>
+    <attr name="dialogCustomBackground" format="reference" />
+    <attr name="bottomSheetBackground" format="reference" />
+    <attr name="editRateBackground" format="reference" />
+    <attr name="colorSnackbarSurface" format="reference" />
 
-    <attr name="rateStyleStrokeWidth" format="dimension"/>
+    <attr name="themeStrokeWidth" format="dimension" />
+
+    <attr name="colorRateDefault" format="color" />
+    <attr name="colorRateWatched" format="color" />
+    <attr name="colorRateOnHold" format="color" />
+    <attr name="colorRateDropped" format="color" />
 
     <declare-styleable name="RateSpinnerView">
         <attr name="anime" format="boolean" />
         <attr name="showEdit" format="boolean" />
         <attr name="showIcon" format="boolean" />
         <attr name="itemSize" format="enum">
-            <enum name="small" value="0"/>
-            <enum name="normal" value="1"/>
+            <enum name="small" value="0" />
+            <enum name="normal" value="1" />
         </attr>
     </declare-styleable>
 
@@ -29,12 +37,12 @@
 
     <declare-styleable name="ShikimoriContentView">
         <attr name="shikimori_content" format="string" />
-        <attr name="expandable" format="boolean"/>
-        <attr name="content_margin" format="dimension"/>
-        <attr name="content_margin_top" format="dimension"/>
-        <attr name="content_margin_left" format="dimension"/>
-        <attr name="content_margin_right" format="dimension"/>
-        <attr name="content_margin_bottom" format="dimension"/>
+        <attr name="expandable" format="boolean" />
+        <attr name="content_margin" format="dimension" />
+        <attr name="content_margin_top" format="dimension" />
+        <attr name="content_margin_left" format="dimension" />
+        <attr name="content_margin_right" format="dimension" />
+        <attr name="content_margin_bottom" format="dimension" />
     </declare-styleable>
 
     <declare-styleable name="ThemeView">

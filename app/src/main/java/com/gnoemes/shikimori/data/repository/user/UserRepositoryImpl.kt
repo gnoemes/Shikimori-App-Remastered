@@ -4,6 +4,7 @@ import com.gnoemes.shikimori.data.local.preference.UserSource
 import com.gnoemes.shikimori.data.network.UserApi
 import com.gnoemes.shikimori.data.repository.club.ClubResponseConverter
 import com.gnoemes.shikimori.data.repository.user.converter.*
+import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.club.domain.Club
 import com.gnoemes.shikimori.entity.user.domain.*
 import io.reactivex.Completable
@@ -21,6 +22,13 @@ class UserRepositoryImpl @Inject constructor(
         private val messageConverter: MessageResponseConverter
 ) : UserRepository {
 
+    override fun getMyUserId(): Single<Long> =
+            Single.just(userSource.getUserId())
+                    .flatMap {
+                        if (it == Constants.NO_ID) getMyUserBrief().map { it.id }
+                        else Single.just(it)
+                    }
+
     override fun getMyUserBrief(): Single<UserBrief> =
             Single.fromCallable { userSource.getUserStatus() }
                     .filter { it == UserStatus.AUTHORIZED }
@@ -30,6 +38,7 @@ class UserRepositoryImpl @Inject constructor(
                         api.getCurrentUserBrief()
                                 .map { converter.convertResponse(it)!! }
                                 .doOnSuccess { userSource.setUser(it) }
+                                .doOnSuccess { userSource.setUserId(it.id) }
                     }
 
     override fun getUserMessages(type: MessageType): Single<List<Message>> =

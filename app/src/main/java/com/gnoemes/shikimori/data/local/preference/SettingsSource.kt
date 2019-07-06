@@ -1,5 +1,6 @@
 package com.gnoemes.shikimori.data.local.preference
 
+import com.gnoemes.shikimori.entity.rates.domain.RateSwipeAction
 import com.gnoemes.shikimori.entity.series.domain.PlayerType
 import com.gnoemes.shikimori.entity.series.domain.TranslationType
 
@@ -21,9 +22,11 @@ interface SettingsSource {
 
     var useLocalTranslationSettings : Boolean
 
-    var isMyOngoingPriority : Boolean
-
     var downloadFolder : String
 
     var isExternalBestQuality : Boolean
+
+    var rateSwipeToLeftAction : RateSwipeAction
+
+    var rateSwipeToRightAction : RateSwipeAction
 }

@@ -1,43 +1,65 @@
 package com.gnoemes.shikimori.presentation.view.user.holders
 
-import android.view.Menu
 import android.view.View
-import androidx.appcompat.view.ContextThemeWrapper
-import androidx.appcompat.widget.PopupMenu
+import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.transition.Fade
+import androidx.transition.TransitionManager
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.user.presentation.UserProfileAction
 import com.gnoemes.shikimori.entity.user.presentation.UserRateViewModel
-import com.gnoemes.shikimori.utils.gone
-import com.gnoemes.shikimori.utils.onClick
-import com.gnoemes.shikimori.utils.visible
+import com.gnoemes.shikimori.presentation.view.user.adapter.UserStatisticItemAdapter
+import com.gnoemes.shikimori.utils.*
+import com.gnoemes.shikimori.utils.widgets.VerticalSpaceItemDecorator
 import kotlinx.android.synthetic.main.layout_user_profile_rates.view.*
+import kotlinx.android.synthetic.main.layout_user_profile_statistic.view.*
 
 class UserRateViewHolder(
         private val view: View,
         private val isAnime: Boolean,
-        private val actionCallback: (UserProfileAction) -> Unit
+        private val actionCallback: (UserProfileAction) -> Unit,
+        private val toggleCallback : (Boolean) -> Unit
 ) {
 
+    private var item: UserRateViewModel? = null
     private val holder: RateProgressViewHolder = RateProgressViewHolder(view.rateProgressLayout, isAnime)
-    private lateinit var rawRates: Map<Int, String>
-    private val menuItemClickListener =
-            PopupMenu.OnMenuItemClickListener { menuItem ->
-                when (menuItem?.itemId) {
-                    R.id.rate_watching -> actionCallback.invoke(UserProfileAction.RateClicked(isAnime, RateStatus.WATCHING))
-                    R.id.rate_completed -> actionCallback.invoke(UserProfileAction.RateClicked(isAnime, RateStatus.COMPLETED))
-                    R.id.rate_dropped -> actionCallback.invoke(UserProfileAction.RateClicked(isAnime, RateStatus.DROPPED))
-                    R.id.rate_on_hold -> actionCallback.invoke(UserProfileAction.RateClicked(isAnime, RateStatus.ON_HOLD))
-                    R.id.rate_planned -> actionCallback.invoke(UserProfileAction.RateClicked(isAnime, RateStatus.PLANNED))
-                    R.id.rate_rewatching -> actionCallback.invoke(UserProfileAction.RateClicked(isAnime, RateStatus.REWATCHING))
-                }
-                true
-            }
+    private val scoreAdapter by lazy { UserStatisticItemAdapter() }
+    private val typesAdapter by lazy { UserStatisticItemAdapter() }
+    private val ratingsAdapter by lazy { UserStatisticItemAdapter() }
 
     init {
         val rateTypeText: Int = if (isAnime) R.string.profile_rate_anime else R.string.profile_rate_manga
         view.rateLabel.setText(rateTypeText)
-        view.menuView.onClick { showPopup(rawRates) }
+        view.menuView.onClick { actionCallback.invoke(UserProfileAction.RateClicked(isAnime, RateStatus.WATCHING)) }
+        view.scoreLayout.headerView.setText(R.string.profile_score)
+        view.typesLayout.headerView.setText(R.string.profile_types)
+        view.ratingsLayout.headerView.setText(R.string.profile_ratings)
+        view.ratingsLayout.visibleIf { isAnime }
+        view.arrowBtn.onClick { toggleCallback.invoke(isAnime) }
+
+        with(view.scoreLayout.recyclerView) {
+            layoutManager = LinearLayoutManager(view.context)
+            addItemDecoration(VerticalSpaceItemDecorator(context.dp(8), true, 0, 0))
+            adapter = this@UserRateViewHolder.scoreAdapter
+        }
+
+        with(view.typesLayout.recyclerView) {
+            layoutManager = LinearLayoutManager(view.context)
+            addItemDecoration(VerticalSpaceItemDecorator(context.dp(8), true, 0, 0))
+            adapter = this@UserRateViewHolder.typesAdapter
+        }
+
+        with(view.ratingsLayout.recyclerView) {
+            layoutManager = LinearLayoutManager(view.context)
+            addItemDecoration(VerticalSpaceItemDecorator(context.dp(8), true, 0, 0))
+            adapter = this@UserRateViewHolder.ratingsAdapter
+        }
+    }
+
+    fun toggle(expanded: Boolean) {
+        view.arrowBtn.animate().rotation(if (expanded) 180f else 0f).start()
+        updateVisibility(expanded)
     }
 
     fun bind(item: UserRateViewModel) {
@@ -45,37 +67,30 @@ class UserRateViewHolder(
             view.gone()
             return
         }
-
-        this.rawRates = item.rawRates.mapKeys { mapStatusToId(it) }
+        this.item = item
 
         holder.bind(item.rates)
+
+        scoreAdapter.bindItems(item.scores)
+        typesAdapter.bindItems(item.types)
+        ratingsAdapter.bindItems(item.ratings)
 
         with(view) {
             progressView.gone()
             rateProgressLayout.visible()
             menuView.visible()
+            val scoreSubHeader = "${context.getString(R.string.profile_middle_score)} ${item.averageScore}"
+            scoreLayout.subHeaderView.text = scoreSubHeader
+            updateVisibility(false)
         }
     }
 
-    private fun mapStatusToId(it: Map.Entry<RateStatus, String>): Int =
-            when (it.key) {
-                RateStatus.WATCHING -> R.id.rate_watching
-                RateStatus.COMPLETED -> R.id.rate_completed
-                RateStatus.DROPPED -> R.id.rate_dropped
-                RateStatus.ON_HOLD -> R.id.rate_on_hold
-                RateStatus.PLANNED -> R.id.rate_planned
-                RateStatus.REWATCHING -> R.id.rate_rewatching
-            }
-
-
-    private fun showPopup(rates: Map<Int, String>) {
-        val wrapper = ContextThemeWrapper(view.context, R.style.PopupMenuTheme)
-        val menu = PopupMenu(wrapper, view.menuView)
-                .apply {
-                    setOnMenuItemClickListener(menuItemClickListener)
-                    rates.entries.forEach { menu.add(Menu.NONE, it.key, Menu.NONE, it.value) }
-                }
-        view.post(menu::show)
+    private fun updateVisibility(isExpanded: Boolean) {
+        if (isExpanded) TransitionManager.beginDelayedTransition(view as ViewGroup, Fade())
+        with(view) {
+            scoreLayout.visibleIf { isExpanded && item?.scores?.isNotEmpty() ?: false }
+            typesLayout.visibleIf { isExpanded && item?.types?.isNotEmpty() ?: false }
+            ratingsLayout.visibleIf { isExpanded && item?.ratings?.isNotEmpty() ?: false }
+        }
     }
-
 }

@@ -18,7 +18,7 @@ class UserHistoryHeaderAdapterDelegate : AbsListItemAdapterDelegate<UserHistoryH
             ViewHolder(parent.inflate(R.layout.item_user_history_header))
 
     override fun onBindViewHolder(item: UserHistoryHeaderViewModel, holder: ViewHolder, payloads: MutableList<Any>) {
-        holder.itemView.chip.text = item.date
+        holder.itemView.headerView.text = item.date
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view)

@@ -1,11 +1,13 @@
 package com.gnoemes.shikimori.entity.app.domain
 
 object SettingsExtras {
+
     ////////////////////////////////////////////////////////////////////////
     // USER
     ////////////////////////////////////////////////////////////////////////
     const val USER_BRIEF = "USER_BRIEF"
     const val USER_STATUS = "USER_STATUS"
+    const val USER_ID = "USER_ID"
 
     ////////////////////////////////////////////////////////////////////////
     // GENERAL
@@ -14,12 +16,13 @@ object SettingsExtras {
     const val DOWNLOAD_FOLDER = "DOWNLOAD_FOLDER"
     const val IS_AUTO_INCREMENT = "IS_AUTO_INCREMENT"
     const val IS_AUTO_STATUS = "IS_AUTO_STATUS"
-    const val IS_MY_ONGOINGS_PRIORITY = "IS_MY_ONGOINGS_PRIORITY"
     const val TRANSLATION_TYPE = "TRANSLATION_TYPE"
     const val PLAYER_TYPE = "PLAYER_TYPE"
     const val IS_REMEMBER_PLAYER = "IS_REMEMBER_PLAYER"
     const val IS_USE_LOCAL_TRANSLATION_SETTINGS = "IS_USE_LOCAL_TRANSLATION_SETTINGS"
     const val IS_BEST_EXTERNAL_QUALITY = "IS_BEST_EXTERNAL_QUALITY"
+    const val RATE_SWIPE_TO_LEFT_ACTION = "RATE_SWIPE_TO_LEFT_ACTION"
+    const val RATE_SWIPE_TO_RIGHT_ACTION = "RATE_SWIPE_TO_RIGHT_ACTION"
 
     ////////////////////////////////////////////////////////////////////////
     // NOTIFICATIONS
@@ -39,4 +42,9 @@ object SettingsExtras {
     const val PLAYER_IS_ZOOM_PROPORTIONAL = "PLAYER_ZOOM_TYPE"
     const val PLAYER_IS_AUTO_PIP = "PLAYER_AUTO_PIP"
 
+    ////////////////////////////////////////////////////////////////////////
+    // OTHER
+    ////////////////////////////////////////////////////////////////////////
+    const val NEW_VERSION_AVAILABLE = "NEW_VERSION_AVAILABLE"
+    const val DONATION_LINK = "DONATION_LINK"
 }

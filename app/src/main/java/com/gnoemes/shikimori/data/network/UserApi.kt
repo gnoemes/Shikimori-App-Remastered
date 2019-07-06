@@ -5,7 +5,6 @@ import com.gnoemes.shikimori.entity.club.data.ClubResponse
 import com.gnoemes.shikimori.entity.rates.data.RateResponse
 import com.gnoemes.shikimori.entity.rates.data.UserRateCreateOrUpdateRequest
 import com.gnoemes.shikimori.entity.rates.data.UserRateResponse
-import com.gnoemes.shikimori.entity.rates.domain.UserRate
 import com.gnoemes.shikimori.entity.user.data.*
 import com.gnoemes.shikimori.entity.user.domain.MessageType
 import io.reactivex.Completable
@@ -37,6 +36,15 @@ interface UserApi {
                           @Query("page") page: Int,
                           @Query("limit") limit: Int,
                           @Query("status") status: String): Single<List<RateResponse>>
+
+    @GET("/api/v2/user_rates")
+    fun getUserRates(@Query("user_id") userId : Long,
+                     @Query("target_id") targetId : Long? = null,
+                     @Query("target_type") targetType : String? = null,
+                     @Query("status") status : String? = null,
+                     @Query("page") page : Int? = null,
+                     @Query("limit") limit : Int? = null
+    ) : Single<List<UserRateResponse>>
 
     @GET("/api/v2/user_rates/{id}")
     fun getRate(@Path("id") id: Long): Single<UserRateResponse>

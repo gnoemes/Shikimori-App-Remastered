@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/item_random"
-        android:icon="@drawable/ic_random"
-        android:title="@string/sort_random"
+        android:id="@+id/item_switch_list"
+        android:icon="@drawable/ic_switch_list"
+        android:title="@string/rate_switch_list"
         app:iconTint="?attr/colorOnPrimary"
         app:showAsAction="ifRoom" />
 

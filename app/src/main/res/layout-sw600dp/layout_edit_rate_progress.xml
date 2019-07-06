@@ -48,7 +48,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/progressDecrementView"
-            style="@style/CircleButtonStyle"
+            style="@style/GrayTransparentCircleButtonStyle"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginEnd="24dp"
@@ -63,7 +63,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/progressIncrementView"
-            style="@style/CircleButtonStyle"
+            style="@style/GrayTransparentCircleButtonStyle"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginEnd="24dp"

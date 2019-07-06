@@ -10,5 +10,6 @@ sealed class UserProfileAction {
     object About : UserProfileAction()
     object History : UserProfileAction()
     object Message : UserProfileAction()
+    object MessageBox : UserProfileAction()
     object Bans : UserProfileAction()
 }

@@ -1,13 +1,7 @@
 package com.gnoemes.shikimori.data.repository.user.converter
 
-import com.gnoemes.shikimori.entity.user.data.StatusResponse
-import com.gnoemes.shikimori.entity.user.data.UserDetailsResponse
-import com.gnoemes.shikimori.entity.user.data.UserImageResponse
-import com.gnoemes.shikimori.entity.user.data.UserStatsResponse
-import com.gnoemes.shikimori.entity.user.domain.Status
-import com.gnoemes.shikimori.entity.user.domain.UserDetails
-import com.gnoemes.shikimori.entity.user.domain.UserImage
-import com.gnoemes.shikimori.entity.user.domain.UserStats
+import com.gnoemes.shikimori.entity.user.data.*
+import com.gnoemes.shikimori.entity.user.domain.*
 import com.gnoemes.shikimori.utils.appendHostIfNeed
 import javax.inject.Inject
 
@@ -51,11 +45,26 @@ class UserDetailsResponseConverterImpl @Inject constructor() : UserDetailsRespon
         val animes = stats.status.anime.map { convertStatus(it) }
         val mangas = stats.status.manga.map { convertStatus(it) }
 
-        return UserStats(animes, mangas, stats.hasAnime, stats.hasManga)
+        return UserStats(
+                animes,
+                mangas,
+                convertStat(stats.scores),
+                convertStat(stats.types),
+                convertStat(stats.ratings),
+                stats.hasAnime,
+                stats.hasManga)
     }
 
-    private fun convertStatus(it: StatusResponse): Status =
-            Status(it.id, it.name, it.size, it.type)
+    private fun convertStat(scores: StatResponse): UserStat {
+        return UserStat(
+                scores.anime.map { convertStatistic(it) },
+                scores.manga?.map { convertStatistic(it) }
+        )
+    }
+
+    private fun convertStatistic(it: StatisticResponse): Statistic = Statistic(it.name, it.value)
+
+    private fun convertStatus(it: StatusResponse): Status = Status(it.id, it.name, it.size, it.type)
 
     private fun convertImage(image: UserImageResponse): UserImage = UserImage(
             image.x160?.appendHostIfNeed(),

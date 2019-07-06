@@ -92,4 +92,17 @@ class EpisodeDbSourceImpl @Inject constructor(
                             .build())
                     .prepare()
                     .asRxCompletable()
+
+    override fun getFirstNotWatchedEpisodeIndex(animeId: Long): Single<Int> =
+            storIOSQLite
+                    .get()
+                    .listOfObjects(EpisodeDao::class.java)
+                    .withQuery(Query.builder()
+                            .table(EpisodeTable.TABLE)
+                            .where("${EpisodeTable.COLUMN_ANIME_ID} = ? AND ${EpisodeTable.COLUMN_IS_WATCHED} = ?")
+                            .whereArgs(animeId, false.toInt())
+                            .build())
+                    .prepare()
+                    .asRxSingle()
+                    .map { it.firstOrNull()?.episodeId ?: 1}
 }

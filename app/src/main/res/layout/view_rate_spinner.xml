@@ -8,11 +8,9 @@
     app:cardCornerRadius="4dp"
     app:cardElevation="0dp"
     app:cardPreventCornerOverlap="false"
-    app:strokeColor="@color/rate_default_dark"
-    app:strokeWidth="?attr/rateStyleStrokeWidth"
     tools:cardBackgroundColor="@color/rate_default">
 
-    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:minWidth="246dp"
