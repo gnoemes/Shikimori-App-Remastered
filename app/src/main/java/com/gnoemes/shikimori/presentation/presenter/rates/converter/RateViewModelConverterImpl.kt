@@ -127,9 +127,9 @@ class RateViewModelConverterImpl @Inject constructor(
                 builder.append("${it.manga.chapters}")
             }
         } else if (status == Status.ONGOING) {
-            if (it.anime != null && it.anime.episodes != 0) {
+            if (it.anime != null) {
                 appendDotIfNotEmpty()
-                builder.append("${it.anime.episodesAired}/${it.anime.episodes} ${context.getString(R.string.episode_short)}")
+                builder.append("${it.anime.episodesAired}/${it.anime.episodes.invalidIfNullOrZero()} ${context.getString(R.string.episode_short)}")
             } else if (it.manga != null && it.manga.chapters != 0) {
                 appendDotIfNotEmpty()
                 builder.append(context.resources.getQuantityString(R.plurals.chapters, it.manga.chapters, it.manga.chapters))
