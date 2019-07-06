@@ -29,7 +29,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:rippleColor="?attr/colorDivider"
+            app:rippleColor="@drawable/selector_button_ripple_color"
             tools:text="# 72251" />
 
         <com.google.android.material.button.MaterialButton
@@ -37,8 +37,8 @@
             style="@style/CircleButtonStyle"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
             app:backgroundTint="?attr/colorSecondaryTransparent"
             app:elevation="0dp"
             app:icon="@drawable/ic_source"

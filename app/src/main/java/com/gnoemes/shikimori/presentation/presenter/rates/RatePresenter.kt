@@ -466,7 +466,7 @@ class RatePresenter @Inject constructor(
                 .map { list ->
                     list.filter {
                         if (it is RateViewModel) !localRemovedItems.contains(it.id)
-                        else false
+                        else true
                     }
                 }
                 .subscribe({ setData(it) }, this::processErrors)

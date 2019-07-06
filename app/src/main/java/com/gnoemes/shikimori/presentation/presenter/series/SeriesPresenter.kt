@@ -52,8 +52,8 @@ class SeriesPresenter @Inject constructor(
     override fun initData() {
         super.initData()
         type = settingsSource.translationType
-        episode = navigationData.episode
-        episodeId = navigationData.episode?.toLong()
+        episode = if (navigationData.episodesAired < navigationData.episode ?: 0) navigationData.episodesAired else navigationData.episode
+        episodeId = episode?.toLong()
         rateId = navigationData.rateId ?: rateId
 
         viewState.setBackground(navigationData.image)

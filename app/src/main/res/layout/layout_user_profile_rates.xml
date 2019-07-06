@@ -115,10 +115,8 @@
         <ImageButton
             android:id="@+id/arrowBtn"
             android:layout_width="128dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="8dp"
+            android:layout_height="56dp"
             android:background="@android:color/transparent"
-            android:minHeight="48dp"
             android:tint="?attr/colorOnSurface"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
