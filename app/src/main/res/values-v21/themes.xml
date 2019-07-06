@@ -45,7 +45,7 @@
         <item name="android:windowBackground">@color/default_colorBackground</item>
 
         <item name="md_background_color">@color/default_colorDialogSurface</item>
-        <item name="md_color_content">@color/default_colorOnPrimarySecondary</item>
+        <item name="md_color_content">@color/default_colorOnSurface</item>
 
         <item name="colorPrimaryDark">@color/default_colorPrimaryVariant</item>
         <item name="android:statusBarColor">@color/default_colorStatusBar</item>
@@ -91,7 +91,7 @@
         <item name="android:windowBackground">@color/dark_colorBackground</item>
 
         <item name="md_background_color">@color/dark_colorDialogSurface</item>
-        <item name="md_color_content">@color/dark_colorOnPrimarySecondary</item>
+        <item name="md_color_content">@color/dark_colorOnSurface</item>
 
         <item name="colorPrimaryDark">@color/dark_colorPrimaryVariant</item>
         <item name="android:statusBarColor">@color/dark_colorStatusBar</item>
@@ -136,7 +136,7 @@
         <item name="android:windowBackground">@color/amoled_colorBackground</item>
 
         <item name="md_background_color">@color/amoled_colorDialogSurface</item>
-        <item name="md_color_content">@color/amoled_colorOnPrimarySecondary</item>
+        <item name="md_color_content">@color/amoled_colorOnSurface</item>
 
         <item name="colorPrimaryDark">@color/amoled_colorPrimaryVariant</item>
         <item name="android:statusBarColor">@color/amoled_colorStatusBar</item>

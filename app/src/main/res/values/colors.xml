@@ -38,7 +38,7 @@
     <color name="dark_colorRipple">#0FFFFFFF</color>
     <color name="dark_colorTransparentBackground">#80000000</color>
     <color name="dark_colorOnTransparentBackground">#99ffffff</color>
-    <color name="dark_colorDialogSurface">#424242</color>
+    <color name="dark_colorDialogSurface">#212121</color>
     <color name="dark_colorRateMenuBackground">#1d1d1d</color>
     <color name="dark_colorRateDialog">#212121</color>
     <color name="dark_colorSnackBar">#424242</color>
