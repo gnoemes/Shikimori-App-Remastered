@@ -1,6 +1,7 @@
 package com.gnoemes.shikimori.utils
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.net.Uri
@@ -130,6 +131,10 @@ fun Context.inflateLayout(layoutResId: Int, parent: ViewGroup, attachToRoot: Boo
 
 fun Context.drawable(@DrawableRes drawableResId: Int): Drawable? {
     return AppCompatResources.getDrawable(this, drawableResId)
+}
+
+fun Context.colorStateList(@ColorRes colorRes: Int): ColorStateList {
+    return AppCompatResources.getColorStateList(this, colorRes)
 }
 
 fun Context.drawable(@DrawableRes drawableResId: Int, @ColorRes tintColor: Int = 0): Drawable? {

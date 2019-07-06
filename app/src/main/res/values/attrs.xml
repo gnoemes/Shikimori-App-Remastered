@@ -10,6 +10,8 @@
     <attr name="colorRateDialog" format="color" />
 
     <attr name="dialogCustomBackground" format="reference" />
+    <attr name="bottomSheetBackground" format="reference" />
+    <attr name="editRateBackground" format="reference" />
     <attr name="colorSnackbarSurface" format="reference" />
 
     <attr name="themeStrokeWidth" format="dimension" />

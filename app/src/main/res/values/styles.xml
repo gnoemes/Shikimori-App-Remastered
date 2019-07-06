@@ -253,18 +253,8 @@
         <item name="color">?attr/colorOnPrimary</item>
     </style>
 
-    <style name="NavigationDialogMenuStyle">
-        <item name="android:listPreferredItemHeightSmall">56dp</item>
-        <item name="listPreferredItemHeightSmall">56dp</item>
-        <item name="android:selectableItemBackground">@drawable/background_item_menu_ripple_second
-        </item>
-        <item name="selectableItemBackground">@drawable/background_item_menu_ripple_second</item>
-    </style>
-
-    <style name="RateNavigationMenuStyle">
-        <item name="android:selectableItemBackground">@drawable/background_item_menu_ripple</item>
-        <item name="selectableItemBackground">@drawable/background_item_menu_ripple</item>
-    </style>
+    <style name="NavigationDialogMenuStyle" />
+    <style name="RateNavigationMenuStyle" />
 
     <style name="SubtitleTextAppearance">
         <item name="android:fontFamily">sans-serif</item>

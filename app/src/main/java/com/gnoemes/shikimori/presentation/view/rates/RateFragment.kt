@@ -8,10 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.SearchView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.iterator
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -127,7 +125,7 @@ class RateFragment : BasePaginationFragment<Rate, RatePresenter, RateView>(), Ra
             })
             findViewById<SearchView.SearchAutoComplete>(R.id.search_src_text)?.apply {
                 setPadding(0, 0, context.dp(8), 0)
-                setHintTextColor(AppCompatResources.getColorStateList(context, context.attr(R.attr.colorOnPrimarySecondary).resourceId))
+                setHintTextColor(context.colorStateList(context.attr(R.attr.colorOnPrimarySecondary).resourceId))
             }
             findViewById<LinearLayout>(R.id.search_edit_frame)?.apply {
                 layoutParams = (layoutParams as? LinearLayout.LayoutParams)?.apply {
@@ -202,8 +200,7 @@ class RateFragment : BasePaginationFragment<Rate, RatePresenter, RateView>(), Ra
     }
 
     private fun initNav() {
-        navView.setItemBackgroundResource(getRateBackground(RateStatus.WATCHING.ordinal))
-        navView.itemTextColor = AppCompatResources.getColorStateList(context!!, getRateTextColor(RateStatus.WATCHING.ordinal))
+        updateNavColors(RateStatus.WATCHING.ordinal)
         navView.setNavigationItemSelectedListener {
             getPresenter().onChangeStatus(RateStatus.values()[it.itemId])
             navView.menu.iterator().forEach { item -> item.actionView.isSelected = false }
@@ -249,9 +246,20 @@ class RateFragment : BasePaginationFragment<Rate, RatePresenter, RateView>(), Ra
         val view = TextView(context!!)
         view.text = "$count"
         view.gravity = Gravity.CENTER_VERTICAL
-        view.setTextColor(ContextCompat.getColorStateList(context!!, getRateTextColor(ordinal)))
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            view.setTextColor(context!!.colorStateList(getRateTextColor(ordinal)))
+        }
         view.isSelected = isSelected
         return view
+    }
+
+    private fun updateNavColors(rateIndex: Int) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            navView.apply {
+                setItemBackgroundResource(getRateBackground(rateIndex))
+                itemTextColor = context.colorStateList(getRateTextColor(rateIndex))
+            }
+        }
     }
 
     override fun onTabRootAction() {
@@ -305,7 +313,7 @@ class RateFragment : BasePaginationFragment<Rate, RatePresenter, RateView>(), Ra
         recyclerView.scrollToPosition(0)
     }
 
-    override fun showRateDialog(title : String, userRate: UserRate) {
+    override fun showRateDialog(title: String, userRate: UserRate) {
         hideSoftInput()
         val dialog = EditRateFragment.newInstance(rate = userRate, isAnime = userRate.targetType == Type.ANIME, title = title)
         dialog.show(childFragmentManager, "RateTag")
@@ -347,8 +355,7 @@ class RateFragment : BasePaginationFragment<Rate, RatePresenter, RateView>(), Ra
 
     override fun selectRateStatus(rateStatus: RateStatus) {
         navView.apply {
-            setItemBackgroundResource(getRateBackground(rateStatus.ordinal))
-            itemTextColor = ContextCompat.getColorStateList(context!!, getRateTextColor(rateStatus.ordinal))
+            updateNavColors(rateStatus.ordinal)
             setCheckedItem(rateStatus.ordinal)
             (menu.findItem(rateStatus.ordinal)?.actionView as? TextView)?.isSelected = true
         }

@@ -73,6 +73,9 @@
         <item name="colorRateWatched">@color/rate_watched_transparent</item>
         <item name="colorRateOnHold">@color/rate_on_hold_transparent</item>
         <item name="colorRateDropped">@color/rate_dropped_transparent</item>
+
+        <item name="bottomSheetBackground">@drawable/bg_bottom_sheet_window_default</item>
+        <item name="editRateBackground">@drawable/bg_rate_dialog_window_default</item>
     </style>
 
     <style name="ShikimoriAppTheme.Dark" parent="ShikimoriAppTheme.Base">
@@ -116,6 +119,9 @@
         <item name="colorRateWatched">@color/rate_watched_transparent</item>
         <item name="colorRateOnHold">@color/rate_on_hold_transparent</item>
         <item name="colorRateDropped">@color/rate_dropped_transparent</item>
+
+        <item name="bottomSheetBackground">@drawable/bg_bottom_sheet_window_dark</item>
+        <item name="editRateBackground">@drawable/bg_rate_dialog_window_dark</item>
     </style>
 
     <style name="ShikimoriAppTheme.Amoled" parent="ShikimoriAppTheme.Base">
@@ -161,6 +167,9 @@
         <item name="colorRateWatched">@color/rate_watched_transparent</item>
         <item name="colorRateOnHold">@color/rate_on_hold_transparent</item>
         <item name="colorRateDropped">@color/rate_dropped_transparent</item>
+
+        <item name="bottomSheetBackground">@drawable/bg_bottom_sheet_window_amoled</item>
+        <item name="editRateBackground">@drawable/bg_rate_dialog_window_amoled</item>
     </style>
 
     <style name="AscentStyle" />

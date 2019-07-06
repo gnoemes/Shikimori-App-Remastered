@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.SearchView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -88,7 +87,7 @@ class CalendarFragment : BaseFragment<CalendarPresenter, CalendarView>(), Calend
             })
             findViewById<SearchView.SearchAutoComplete>(R.id.search_src_text)?.apply {
                 setPadding(0, 0, context.dp(8), 0)
-                setHintTextColor(AppCompatResources.getColorStateList(context, context.attr(R.attr.colorOnPrimarySecondary).resourceId))
+                setHintTextColor(context.colorStateList(context.attr(R.attr.colorOnPrimarySecondary).resourceId))
             }
             findViewById<LinearLayout>(R.id.search_edit_frame)?.apply {
                 layoutParams = (layoutParams as? LinearLayout.LayoutParams)?.apply {

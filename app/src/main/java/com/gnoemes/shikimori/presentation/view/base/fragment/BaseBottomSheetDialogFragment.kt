@@ -9,10 +9,10 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import androidx.annotation.DrawableRes
 import androidx.annotation.LayoutRes
-import androidx.appcompat.content.res.AppCompatResources
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.utils.attr
+import com.gnoemes.shikimori.utils.drawable
 import com.gnoemes.shikimori.utils.getCurrentAscentTheme
 import com.gnoemes.shikimori.utils.wrapTheme
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -46,7 +46,8 @@ abstract class BaseBottomSheetDialogFragment : MvpDialogFragment() {
                             it.window?.statusBarColor = Color.TRANSPARENT
                         }
 
-                        bottomSheet.background = AppCompatResources.getDrawable(context, windowBackground)
+                        bottomSheet.background = context.drawable(windowBackground)
+
                         if (peekHeight == -1) bottomSheet.layoutParams = bottomSheet.layoutParams.apply { height = ViewGroup.LayoutParams.MATCH_PARENT }
                         else BottomSheetBehavior.from(bottomSheet).peekHeight = peekHeight
 
@@ -82,6 +83,8 @@ abstract class BaseBottomSheetDialogFragment : MvpDialogFragment() {
         viewHandler.post { action.invoke() }
     }
 
-    @DrawableRes
-    protected open val windowBackground = R.drawable.bg_bottom_sheet_window
+    protected open val windowBackground by lazy {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) R.drawable.bg_bottom_sheet_window
+            else context!!.attr(R.attr.bottomSheetBackground).resourceId
+    }
 }

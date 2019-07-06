@@ -1,6 +1,7 @@
 package com.gnoemes.shikimori.presentation.view.common.fragment
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -189,8 +190,11 @@ class EditRateFragment : BaseBottomSheetDialogFragment() {
 
     override fun getDialogLayout(): Int = R.layout.fragment_edit_rate
 
-    override val windowBackground: Int
-        get() = R.drawable.bg_rate_dialog_window
+    override val windowBackground: Int by lazy {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) R.drawable.bg_rate_dialog_window
+        else context!!.attr(R.attr.editRateBackground).resourceId
+    }
+
 
     interface RateDialogCallback {
         fun onUpdateRate(rate: UserRate) = Unit

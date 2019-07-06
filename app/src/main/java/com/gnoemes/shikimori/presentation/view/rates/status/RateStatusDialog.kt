@@ -1,17 +1,18 @@
 package com.gnoemes.shikimori.presentation.view.rates.status
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
-import androidx.appcompat.content.res.AppCompatResources
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseBottomSheetDialogFragment
+import com.gnoemes.shikimori.utils.colorStateList
 import com.gnoemes.shikimori.utils.dimenAttr
 import com.gnoemes.shikimori.utils.withArgs
 import kotlinx.android.synthetic.main.dialog_menu.*
@@ -34,7 +35,7 @@ class RateStatusDialog : BaseBottomSheetDialogFragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        peekHeight =  context.dimenAttr(android.R.attr.actionBarSize)
+        peekHeight = context.dimenAttr(android.R.attr.actionBarSize)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -56,10 +57,12 @@ class RateStatusDialog : BaseBottomSheetDialogFragment() {
 
         navView.apply {
 
-            val item = items.first { it.isSelected }
-            itemTextColor = AppCompatResources.getColorStateList(context, item.tint)
-            itemIconTintList = AppCompatResources.getColorStateList(context, item.tint)
-            setItemBackgroundResource(item.selector)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                val item = items.first { it.isSelected }
+                itemTextColor = context.colorStateList(item.tint)
+                itemIconTintList = context.colorStateList(item.tint)
+                setItemBackgroundResource(item.selector)
+            }
 
             setNavigationItemSelectedListener { menu ->
                 val id = arguments?.getLong(ID) ?: Constants.NO_ID
