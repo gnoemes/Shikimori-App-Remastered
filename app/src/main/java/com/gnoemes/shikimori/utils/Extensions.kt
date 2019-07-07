@@ -1,6 +1,7 @@
 package com.gnoemes.shikimori.utils
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.net.Uri
@@ -15,6 +16,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.*
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
@@ -128,7 +130,11 @@ fun Context.inflateLayout(layoutResId: Int, parent: ViewGroup, attachToRoot: Boo
         inflateView(this, layoutResId, parent, attachToRoot)
 
 fun Context.drawable(@DrawableRes drawableResId: Int): Drawable? {
-    return ContextCompat.getDrawable(this, drawableResId)
+    return AppCompatResources.getDrawable(this, drawableResId)
+}
+
+fun Context.colorStateList(@ColorRes colorRes: Int): ColorStateList {
+    return AppCompatResources.getColorStateList(this, colorRes)
 }
 
 fun Context.drawable(@DrawableRes drawableResId: Int, @ColorRes tintColor: Int = 0): Drawable? {

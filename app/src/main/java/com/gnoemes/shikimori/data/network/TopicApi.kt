@@ -1,6 +1,5 @@
 package com.gnoemes.shikimori.data.network
 
-import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.forum.data.ForumResponse
 import com.gnoemes.shikimori.entity.topic.data.TopicResponse
 import io.reactivex.Single
@@ -14,7 +13,7 @@ interface TopicApi {
     fun getList(@Query("page") page: Int,
                 @Query("limit") limit: Int,
                 @Query("forum") forum: String,
-                @Query("linked_type") linkedType: Type? = null,
+                @Query("linked_type") linkedType: String? = null,
                 @Query("linked_id") linkedId: Long? = null
     ): Single<List<TopicResponse>>
 

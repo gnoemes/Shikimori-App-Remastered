@@ -9,7 +9,11 @@ import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.app.domain.AppExtras
-import com.gnoemes.shikimori.entity.user.presentation.*
+import com.gnoemes.shikimori.entity.app.domain.Constants
+import com.gnoemes.shikimori.entity.user.presentation.UserContentViewModel
+import com.gnoemes.shikimori.entity.user.presentation.UserHeadViewModel
+import com.gnoemes.shikimori.entity.user.presentation.UserInfoViewModel
+import com.gnoemes.shikimori.entity.user.presentation.UserRateViewModel
 import com.gnoemes.shikimori.presentation.presenter.user.UserPresenter
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragment
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
@@ -23,6 +27,7 @@ import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_user_profile.*
 import kotlinx.android.synthetic.main.layout_default_placeholders.*
+import kotlinx.android.synthetic.main.layout_profile_auth.*
 import kotlinx.android.synthetic.main.layout_user_profile_info_content.*
 import kotlinx.android.synthetic.main.layout_user_profile_toolbar.*
 import javax.inject.Inject
@@ -40,11 +45,13 @@ class UserFragment : BaseFragment<UserPresenter, UserView>(), UserView {
     fun providePresenter(): UserPresenter =
             presenterProvider.get().apply {
                 localRouter = (parentFragment as RouterProvider).localRouter
-                id = arguments!!.getLong(AppExtras.ARGUMENT_USER_ID)
+                id = arguments?.getLong(AppExtras.ARGUMENT_USER_ID, Constants.NO_ID)
+                        ?: Constants.NO_ID
             }
 
     companion object {
         fun newInstance(id: Long) = UserFragment().withArgs { putLong(AppExtras.ARGUMENT_USER_ID, id) }
+        fun newInstance() = UserFragment()
     }
 
     private val maxHeight by lazy { (appBarLayout.height - toolbar.height).toFloat() }
@@ -54,13 +61,13 @@ class UserFragment : BaseFragment<UserPresenter, UserView>(), UserView {
     private val friendsAdapter by lazy { UserProfileContentAdapter(imageLoader, getPresenter()::onContentClicked, getPresenter()::onAction) }
     private val clubsAdapter by lazy { UserProfileContentAdapter(imageLoader, getPresenter()::onContentClicked, getPresenter()::onAction) }
 
-    private lateinit var infoHolder: UserInfoViewHolder
-    private lateinit var animeRateHolder: UserRateViewHolder
-    private lateinit var mangaRateHolder: UserRateViewHolder
+    private var infoHolder: UserInfoViewHolder? = null
+    private var animeRateHolder: UserRateViewHolder? = null
+    private var mangaRateHolder: UserRateViewHolder? = null
 
-    private lateinit var favoritesHolder: UserContentViewHolder
-    private lateinit var friendsHolder: UserContentViewHolder
-    private lateinit var clubsHolder: UserContentViewHolder
+    private var favoritesHolder: UserContentViewHolder? = null
+    private var friendsHolder: UserContentViewHolder? = null
+    private var clubsHolder: UserContentViewHolder? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(getFragmentLayout(), container, false)
@@ -71,23 +78,20 @@ class UserFragment : BaseFragment<UserPresenter, UserView>(), UserView {
 
         toolbar.apply {
             addBackButton { getPresenter().onBackPressed() }
-            inflateMenu(R.menu.menu_user)
-            setOnMenuItemClickListener {
-                when (it.itemId) {
-                    R.id.menu_history -> getPresenter().onAction(UserProfileAction.History)
-                }
-                true
-            }
         }
 
         infoHolder = UserInfoViewHolder(infoLayout, getPresenter()::onAction)
-        animeRateHolder = UserRateViewHolder(animeRateLayout, true, getPresenter()::onAction)
-        mangaRateHolder = UserRateViewHolder(mangaRateLayout, false, getPresenter()::onAction)
+        animeRateHolder = UserRateViewHolder(animeRateLayout, true, getPresenter()::onAction, getPresenter()::onArrowClicked)
+        mangaRateHolder = UserRateViewHolder(mangaRateLayout, false, getPresenter()::onAction, getPresenter()::onArrowClicked)
 
         appBarLayout.addOnOffsetChangedListener(appbarOffsetListener)
 
         networkErrorView.callback = { getPresenter().onRefresh() }
         networkErrorView.showButton()
+
+        signUpBtn.onClick { getPresenter().onSignUp() }
+        signInBtn.onClick { getPresenter().onSignIn() }
+        authLayout.gone()
     }
 
     private val appbarOffsetListener = AppBarLayout.OnOffsetChangedListener { _, offset ->
@@ -98,7 +102,8 @@ class UserFragment : BaseFragment<UserPresenter, UserView>(), UserView {
         avatarView.alpha = percent
         avatarCollapsedView.alpha = 1 - percent
         nameCollapsedView.alpha = 1 - percent
-        toolbar.setBackgroundColor(ColorUtils.setAlphaComponent(primaryColor, 255 - (255 * percent).toInt()))
+        val alpha = 255 - (255 * percent).toInt()
+        toolbar.setBackgroundColor(ColorUtils.setAlphaComponent(primaryColor, if (alpha < 0) 0 else if (alpha > 255) 255 else alpha))
     }
 
     override fun onDestroyView() {
@@ -128,38 +133,65 @@ class UserFragment : BaseFragment<UserPresenter, UserView>(), UserView {
     }
 
     override fun setInfo(data: UserInfoViewModel) {
-        infoHolder.bind(data)
+        infoHolder?.bind(data)
     }
 
     override fun setAnimeRate(data: UserRateViewModel) {
-        animeRateHolder.bind(data)
+        animeRateHolder?.bind(data)
     }
 
     override fun setMangaRate(data: UserRateViewModel) {
-        mangaRateHolder.bind(data)
+        mangaRateHolder?.bind(data)
     }
 
     override fun setFavorites(isMe: Boolean, it: UserContentViewModel) {
         val layout = if (isMe) thirdContentLayout else firstContentLayout
         favoritesHolder = UserContentViewHolder(layout, favoritesAdapter)
-        favoritesHolder.bind(it)
+        favoritesHolder?.bind(it)
     }
 
     override fun setFriends(isMe: Boolean, it: UserContentViewModel) {
         val layout = if (isMe) firstContentLayout else secondContentLayout
         friendsHolder = UserContentViewHolder(layout, friendsAdapter)
-        friendsHolder.bind(it)
+        friendsHolder?.bind(it)
     }
 
     override fun setClubs(isMe: Boolean, it: UserContentViewModel) {
         val layout = if (isMe) secondContentLayout else thirdContentLayout
         clubsHolder = UserContentViewHolder(layout, clubsAdapter)
-        clubsHolder.bind(it)
+        clubsHolder?.bind(it)
     }
 
     override fun showContent(show: Boolean) {
         scrollView.visibleIf { show }
-        appBarLayout.visibleIf { show }
+        if (toolbar.navigationIcon == null) appBarLayout.visible()
+        else appBarLayout.visibleIf { show }
+    }
+
+    override fun toggleAnimeRate(expanded: Boolean) {
+        animeRateHolder?.toggle(expanded)
+    }
+
+    override fun toggleMangaRate(expanded: Boolean) {
+        mangaRateHolder?.toggle(expanded)
+    }
+
+    override fun addSettings() {
+        with(toolbar) {
+            navigationIcon = null
+            inflateMenu(R.menu.menu_user)
+            setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.item_settings -> getPresenter().onSettingsClicked()
+                }
+                true
+            }
+        }
+    }
+
+    override fun showAuthView(show: Boolean) {
+        authLayout.visibleIf { show }
+        appBarLayout.visible()
     }
 
     override fun showNetworkView() = networkErrorView.visible()

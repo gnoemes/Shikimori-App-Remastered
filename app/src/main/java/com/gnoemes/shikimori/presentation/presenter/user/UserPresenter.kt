@@ -4,6 +4,7 @@ import com.arellomobile.mvp.InjectViewState
 import com.gnoemes.shikimori.domain.user.UserInteractor
 import com.gnoemes.shikimori.entity.app.domain.AnalyticEvent
 import com.gnoemes.shikimori.entity.app.domain.Constants
+import com.gnoemes.shikimori.entity.auth.AuthType
 import com.gnoemes.shikimori.entity.common.domain.Screens
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.main.BottomScreens
@@ -12,6 +13,7 @@ import com.gnoemes.shikimori.entity.rates.presentation.RateNavigationData
 import com.gnoemes.shikimori.entity.user.domain.UserDetails
 import com.gnoemes.shikimori.entity.user.domain.UserStatus
 import com.gnoemes.shikimori.entity.user.presentation.UserContentType
+import com.gnoemes.shikimori.entity.user.presentation.UserHistoryNavigationData
 import com.gnoemes.shikimori.entity.user.presentation.UserProfileAction
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
 import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResourceProvider
@@ -32,12 +34,36 @@ class UserPresenter @Inject constructor(
 ) : BaseNetworkPresenter<UserView>() {
 
     var id: Long = Constants.NO_ID
+    private var wasGuest = false
+    private var isMe = false
+
+    private var animeExpanded = false
+    private var mangaExpanded = false
 
     private lateinit var currentUser: UserDetails
 
     override fun initData() {
-        loadData()
+        if (id == Constants.NO_ID) {
+            viewState.addSettings()
+            if (isGuest()) {
+                wasGuest = true
+                viewState.showContent(false)
+                viewState.showAuthView(true)
+            } else loadMyUser()
+        } else loadData()
     }
+
+    override fun onViewReattached() {
+        if (wasGuest) loadMyUser()
+    }
+
+    private fun loadMyUser() = interactor.getMyUserId()
+            .doOnSuccess { id = it }
+            .doOnSubscribe { isMe = true }
+            .doOnSuccess { wasGuest = false }
+            .doOnSuccess { viewState.showAuthView(false) }
+            .subscribe({ loadData() }, this::processErrors)
+            .addToDisposables()
 
     private fun loadData() =
             loadUser()
@@ -56,8 +82,8 @@ class UserPresenter @Inject constructor(
                     .doOnSuccess { currentUser = it }
                     .doOnSuccess { viewState.setInfo(converter.convertInfo(it)) }
                     .doOnSuccess { viewState.setHead(converter.convertHead(it)) }
-                    .doOnSuccess { viewState.setAnimeRate(converter.convertAnimeRate(it.stats.animeStatuses)) }
-                    .doOnSuccess { viewState.setMangaRate(converter.convertMangaRate(it.stats.mangaStatuses)) }
+                    .doOnSuccess { viewState.setAnimeRate(converter.convertAnimeRate(it.stats)) }
+                    .doOnSuccess { viewState.setMangaRate(converter.convertMangaRate(it.stats)) }
 
     private fun loadFavorites() =
             interactor.getFavorites(id)
@@ -83,11 +109,26 @@ class UserPresenter @Inject constructor(
             is UserProfileAction.Bans -> onBansClicked()
             is UserProfileAction.About -> onAboutClicked()
             is UserProfileAction.Message -> onMessageClicked()
+            is UserProfileAction.MessageBox -> onMessageBoxClicked()
             is UserProfileAction.More -> onMoreClicked(action.type)
             is UserProfileAction.ChangeIgnoreStatus -> onIgnoreStatusChanged(action.newStatus)
             is UserProfileAction.ChangeFriendshipStatus -> onFriendshipStatusChanged(action.newStatus)
             is UserProfileAction.RateClicked -> onRateClicked(action.isAnime, action.status)
         }
+    }
+
+    fun onArrowClicked(isAnime: Boolean) {
+        if (isAnime) {
+            animeExpanded = !animeExpanded
+            viewState.toggleAnimeRate(animeExpanded)
+        } else {
+            mangaExpanded = !mangaExpanded
+            viewState.toggleMangaRate(mangaExpanded)
+        }
+    }
+
+    fun onSettingsClicked() {
+        router.navigateTo(Screens.SETTINGS)
     }
 
     private fun onRateClicked(anime: Boolean, status: RateStatus) {
@@ -131,6 +172,11 @@ class UserPresenter @Inject constructor(
         }
     }
 
+    private fun onMessageBoxClicked() {
+        if (checkUserStatus()) return
+        //TODO
+    }
+
     private fun onMessageClicked() {
         if (checkUserStatus()) return
         //TODO
@@ -146,7 +192,7 @@ class UserPresenter @Inject constructor(
     }
 
     private fun onHistoryClicked() {
-        router.navigateTo(Screens.USER_HISTORY, id)
+        router.navigateTo(Screens.USER_HISTORY, UserHistoryNavigationData(id, currentUser.nickname))
         logEvent(AnalyticEvent.NAVIGATION_USER_HISTORY)
     }
 
@@ -168,4 +214,12 @@ class UserPresenter @Inject constructor(
     }
 
     private fun isGuest(): Boolean = interactor.getUserStatus() == UserStatus.GUEST
+
+    fun onSignIn() = openAuth(AuthType.SIGN_IN)
+    fun onSignUp() = openAuth(AuthType.SIGN_UP)
+
+    private fun openAuth(type: AuthType) {
+        router.navigateTo(Screens.AUTHORIZATION, type)
+        logEvent(AnalyticEvent.NAVIGATION_AUTHORIZATION)
+    }
 }

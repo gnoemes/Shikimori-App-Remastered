@@ -109,8 +109,8 @@ abstract class BaseDetailsPresenter<View : BaseDetailsView>(
                     }, this::processErrors)
 
     protected open fun loadUser() =
-            userInteractor.getMyUserBrief()
-                    .doOnSuccess { userId = it.id }
+            userInteractor.getMyUserId()
+                    .doOnSuccess { userId = it }
                     .subscribe({}, this::processUserErrors)
                     .addToDisposables()
 

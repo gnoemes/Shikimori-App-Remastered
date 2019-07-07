@@ -19,7 +19,7 @@ android {
         nameOptions {
             versionMajor 0
             versionMinor 8
-            versionPatch 3
+            versionPatch 4
             versionBuild 0
         }
         codeOptions {
@@ -46,6 +46,7 @@ android {
         versionCode appVersionCode
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -87,6 +88,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:' + versions.constraint
     implementation 'androidx.fragment:fragment:' + versions.androidxFragment
     implementation 'androidx.preference:preference:' + versions.androidxPrefs
+    implementation 'androidx.core:core-ktx:' + versions.ktx
     implementation 'com.google.android.material:material:' + versions.material
     implementation 'androidx.palette:palette:' + versions.androidx
 
@@ -135,6 +137,8 @@ dependencies {
     implementation 'org.kefirsf:kefirbb:' + versions.kefirBB
 
     implementation 'com.google.firebase:firebase-core:' + versions.firebase
+    implementation 'com.google.firebase:firebase-messaging:' + versions.firebaseMessaging
+    implementation 'com.google.firebase:firebase-firestore:' + versions.firebaseFirestore
 
     implementation('com.crashlytics.sdk.android:crashlytics:' + versions.crashlytics) {
         transitive = true
@@ -142,6 +146,8 @@ dependencies {
 
     implementation 'com.github.ome450901:SimpleRatingBar:' + versions.ratingBar
     implementation 'org.jsoup:jsoup:' + versions.jsoup
+
+    implementation 'androidx.multidex:multidex:' + versions.multidex
 
     implementation project(":storio-common")
     implementation project(":storio-sqlite")

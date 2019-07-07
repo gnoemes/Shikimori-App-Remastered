@@ -9,6 +9,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.app.domain.AppExtras
+import com.gnoemes.shikimori.entity.user.presentation.UserHistoryNavigationData
 import com.gnoemes.shikimori.entity.user.presentation.UserHistoryViewModel
 import com.gnoemes.shikimori.presentation.presenter.userhistory.UserHistoryPresenter
 import com.gnoemes.shikimori.presentation.view.base.adapter.BasePaginationAdapter
@@ -39,11 +40,17 @@ class UserHistoryFragment : BasePaginationFragment<UserHistoryViewModel, UserHis
         return presenterProvider.get().apply {
             localRouter = (parentFragment as RouterProvider).localRouter
             id = arguments!!.getLong(AppExtras.ARGUMENT_USER_ID)
+            name = arguments!!.getString(USER_NAME, "")
         }
     }
 
     companion object {
-        fun newInstance(id: Long) = UserHistoryFragment().withArgs { putLong(AppExtras.ARGUMENT_USER_ID, id) }
+        fun newInstance(data: UserHistoryNavigationData) = UserHistoryFragment().withArgs {
+            putLong(AppExtras.ARGUMENT_USER_ID, data.id)
+            putString(USER_NAME, data.name)
+        }
+
+        private const val USER_NAME = "USER_NAME"
     }
 
     private val historyAdapter by lazy { UserHistoryAdapter(imageLoader, getPresenter()::onContentClicked) }
@@ -59,7 +66,7 @@ class UserHistoryFragment : BasePaginationFragment<UserHistoryViewModel, UserHis
         with(recyclerView) {
             adapter = this@UserHistoryFragment.adapter
             layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-            addItemDecoration(VerticalSpaceItemDecorator(context.dimen(R.dimen.margin_normal).toInt()))
+            addItemDecoration(VerticalSpaceItemDecorator(context.dimen(R.dimen.margin_normal).toInt(), true, 0))
             background = ColorDrawable(context.colorAttr(R.attr.colorPrimary))
             addOnScrollListener(nextPageListener)
         }
@@ -80,5 +87,8 @@ class UserHistoryFragment : BasePaginationFragment<UserHistoryViewModel, UserHis
     // MVP
     ///////////////////////////////////////////////////////////////////////////
 
-
+    override fun setTitle(title: String) {
+        val text = String.format(context!!.getString(R.string.profile_history_format), title)
+        toolbar.title = text
+    }
 }

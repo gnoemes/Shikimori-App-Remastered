@@ -2,6 +2,7 @@ package com.gnoemes.shikimori.di.app.component;
 
 import com.gnoemes.shikimori.App;
 import com.gnoemes.shikimori.di.ActivityInjectionModule;
+import com.gnoemes.shikimori.di.ServiceInjectionModule;
 import com.gnoemes.shikimori.di.app.module.AppModule;
 import com.gnoemes.shikimori.di.app.module.ConverterModule;
 import com.gnoemes.shikimori.di.app.module.InteractorModule;
@@ -19,7 +20,7 @@ import dagger.Component;
 import dagger.android.AndroidInjector;
 
 @Singleton
-@Component(modules = {AppModule.class, ApiModule.class,
+@Component(modules = {AppModule.class, ApiModule.class, ServiceInjectionModule.class,
         ActivityInjectionModule.class, NavigationModule.class,
         UtilModule.class, DbModule.class, SettingsModule.class,
         HistoryModule.class, RepositoryModule.class, InteractorModule.class,

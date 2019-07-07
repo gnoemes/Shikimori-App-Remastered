@@ -23,7 +23,7 @@
 
     <item
         android:id="@+id/tab_more"
-        android:icon="@drawable/ic_menu"
-        android:title="@string/common_more" />
+        android:icon="@drawable/selector_bottom_nav_profile"
+        android:title="@string/common_profile" />
 
 </menu>

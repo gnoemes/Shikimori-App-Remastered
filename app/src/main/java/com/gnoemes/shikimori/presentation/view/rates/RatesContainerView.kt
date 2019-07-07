@@ -24,4 +24,6 @@ interface RatesContainerView : BaseFragmentView {
     @StateStrategyType(SkipStrategy::class)
     fun showRandomRate(type: Type, status: RateStatus)
 
+    fun selectRateStatus(rateStatus: RateStatus)
+
 }

@@ -22,7 +22,7 @@ import com.gnoemes.shikimori.utils.withArgs
 import kotlinx.android.synthetic.main.fragment_details.*
 import kotlinx.android.synthetic.main.layout_details_options_content.*
 
-class MangaFragment : BaseDetailsFragment<MangaPresenter, MangaView>(), MangaView{
+class MangaFragment : BaseDetailsFragment<MangaPresenter, MangaView>(), MangaView {
 
     @InjectPresenter
     lateinit var mangaPresenter: MangaPresenter
@@ -75,8 +75,8 @@ class MangaFragment : BaseDetailsFragment<MangaPresenter, MangaView>(), MangaVie
     // MVP
     ///////////////////////////////////////////////////////////////////////////
 
-    override fun showRateDialog(userRate: UserRate?) {
-        val dialog = EditRateFragment.newInstance(rate = userRate, isAnime = false)
+    override fun showRateDialog(title: String, userRate: UserRate?) {
+        val dialog = EditRateFragment.newInstance(rate = userRate, isAnime = false, title = title)
         dialog.show(childFragmentManager, "RateTag")
     }
 

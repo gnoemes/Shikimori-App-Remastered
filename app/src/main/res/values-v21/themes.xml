@@ -14,7 +14,7 @@
         <item name="android:listDivider">@drawable/list_divider</item>
         <item name="android:timePickerStyle">@style/TimePickerStyle</item>
 
-        <item name="rateStyleStrokeWidth">0dp</item>
+        <item name="themeStrokeWidth">0dp</item>
     </style>
 
     <style name="ShikimoriAppTheme.Default" parent="ShikimoriAppTheme.Base">
@@ -37,6 +37,7 @@
         <item name="colorDialogSurface">@color/default_colorDialogSurface</item>
         <item name="colorRateMenuBackground">@color/default_colorRateMenuBackground</item>
         <item name="colorRateDialog">@color/default_colorRateDialog</item>
+        <item name="colorSnackbarSurface">@color/default_colorSnackBar</item>
 
         <item name="android:textColor">@color/default_colorOnSurface</item>
         <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
@@ -44,10 +45,10 @@
         <item name="android:windowBackground">@color/default_colorBackground</item>
 
         <item name="md_background_color">@color/default_colorDialogSurface</item>
-        <item name="md_color_content">@color/default_colorOnPrimarySecondary</item>
+        <item name="md_color_content">@color/default_colorOnSurface</item>
 
         <item name="colorPrimaryDark">@color/default_colorPrimaryVariant</item>
-        <item name="android:statusBarColor">@color/default_colorPrimary</item>
+        <item name="android:statusBarColor">@color/default_colorStatusBar</item>
 
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
@@ -55,6 +56,11 @@
 
         <item name="dialogCustomBackground">@drawable/dialog_surface</item>
         <item name="android:navigationBarColor">@color/default_colorPrimary</item>
+
+        <item name="colorRateDefault">@color/rate_default_transparent</item>
+        <item name="colorRateWatched">@color/rate_watched_transparent</item>
+        <item name="colorRateOnHold">@color/rate_on_hold_transparent</item>
+        <item name="colorRateDropped">@color/rate_dropped_transparent</item>
     </style>
 
     <style name="ShikimoriAppTheme.Dark" parent="ShikimoriAppTheme.Base">
@@ -77,6 +83,7 @@
         <item name="colorDialogSurface">@color/dark_colorDialogSurface</item>
         <item name="colorRateMenuBackground">@color/dark_colorRateMenuBackground</item>
         <item name="colorRateDialog">@color/dark_colorRateDialog</item>
+        <item name="colorSnackbarSurface">@color/dark_colorSnackBar</item>
 
         <item name="android:textColor">@color/dark_colorOnSurface</item>
         <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
@@ -84,10 +91,10 @@
         <item name="android:windowBackground">@color/dark_colorBackground</item>
 
         <item name="md_background_color">@color/dark_colorDialogSurface</item>
-        <item name="md_color_content">@color/dark_colorOnPrimarySecondary</item>
+        <item name="md_color_content">@color/dark_colorOnSurface</item>
 
         <item name="colorPrimaryDark">@color/dark_colorPrimaryVariant</item>
-        <item name="android:statusBarColor">@color/dark_colorPrimary</item>
+        <item name="android:statusBarColor">@color/dark_colorStatusBar</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
         <item name="colorControlHighlight">@color/dark_colorRipple</item>
@@ -95,7 +102,10 @@
         <item name="dialogCustomBackground">@drawable/dialog_surface_dark</item>
         <item name="android:navigationBarColor">@color/dark_colorPrimary</item>
 
-        <item name="rateStyleStrokeWidth">1dp</item>
+        <item name="colorRateDefault">@color/rate_default_transparent</item>
+        <item name="colorRateWatched">@color/rate_watched_transparent</item>
+        <item name="colorRateOnHold">@color/rate_on_hold_transparent</item>
+        <item name="colorRateDropped">@color/rate_dropped_transparent</item>
     </style>
 
     <style name="ShikimoriAppTheme.Amoled" parent="ShikimoriAppTheme.Base">
@@ -118,6 +128,7 @@
         <item name="colorDialogSurface">@color/amoled_colorDialogSurface</item>
         <item name="colorRateMenuBackground">@color/amoled_colorRateMenuBackground</item>
         <item name="colorRateDialog">@color/amoled_colorRateDialog</item>
+        <item name="colorSnackbarSurface">@color/amoled_colorSnackBar</item>
 
         <item name="android:textColor">@color/amoled_colorOnSurface</item>
         <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
@@ -125,10 +136,10 @@
         <item name="android:windowBackground">@color/amoled_colorBackground</item>
 
         <item name="md_background_color">@color/amoled_colorDialogSurface</item>
-        <item name="md_color_content">@color/amoled_colorOnPrimarySecondary</item>
+        <item name="md_color_content">@color/amoled_colorOnSurface</item>
 
         <item name="colorPrimaryDark">@color/amoled_colorPrimaryVariant</item>
-        <item name="android:statusBarColor">@color/amoled_colorPrimary</item>
+        <item name="android:statusBarColor">@color/amoled_colorStatusBar</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
         <item name="colorControlHighlight">@color/amoled_colorRipple</item>
@@ -136,7 +147,12 @@
         <item name="dialogCustomBackground">@drawable/dialog_surface_black</item>
         <item name="android:navigationBarColor">@color/amoled_colorPrimary</item>
 
-        <item name="rateStyleStrokeWidth">1dp</item>
+        <item name="themeStrokeWidth">1dp</item>
+
+        <item name="colorRateDefault">@color/rate_default_transparent</item>
+        <item name="colorRateWatched">@color/rate_watched_transparent</item>
+        <item name="colorRateOnHold">@color/rate_on_hold_transparent</item>
+        <item name="colorRateDropped">@color/rate_dropped_transparent</item>
     </style>
 
 </resources>

@@ -150,6 +150,7 @@ class RatesRepositoryImpl @Inject constructor(
                     .flatMapCompletable { count ->
                         //count already increased by 1 in series interactor in updateRate() method so need sync only ANIME_RATE TABLE
                         animeSyncSource.getRate(rate.id!!)
+                                .onErrorResumeNext { getRate(rate.id) }
                                 .flatMapCompletable { animeSyncSource.saveRate(it.copy(episodes = count)) }
                     }
                     .andThen(increment(rate.id!!))

@@ -5,7 +5,6 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-
     <TextView
         android:id="@+id/categoryName"
         android:layout_width="wrap_content"
@@ -14,12 +13,14 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="24dp"
         android:fontFamily="sans-serif-medium"
+        android:textSize="16sp"
         tools:text="Аниме" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/contentRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         tools:itemCount="5"
         tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_favorite"

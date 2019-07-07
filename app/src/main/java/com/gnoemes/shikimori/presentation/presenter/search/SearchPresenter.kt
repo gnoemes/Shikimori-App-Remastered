@@ -36,7 +36,7 @@ class SearchPresenter @Inject constructor(
         }
 
         loadData()
-
+        viewState.selectType(getTypePos(type))
         viewState.setDefaultEmptyText()
     }
 
@@ -113,6 +113,17 @@ class SearchPresenter @Inject constructor(
             3 -> Type.CHARACTER
             4 -> Type.PERSON
             else -> Type.ANIME
+        }
+    }
+
+    private fun getTypePos(type: Type): Int {
+        return when (type) {
+            Type.ANIME -> 0
+            Type.MANGA -> 1
+            Type.RANOBE -> 2
+            Type.CHARACTER -> 3
+            Type.PERSON -> 4
+            else -> 0
         }
     }
 

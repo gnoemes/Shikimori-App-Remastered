@@ -4,6 +4,11 @@ import com.gnoemes.shikimori.entity.user.domain.UserBrief
 import com.gnoemes.shikimori.entity.user.domain.UserStatus
 
 interface UserSource {
+
+    fun getUserId(): Long
+
+    fun setUserId(id: Long)
+
     fun getUser(): UserBrief?
 
     fun setUser(user: UserBrief)

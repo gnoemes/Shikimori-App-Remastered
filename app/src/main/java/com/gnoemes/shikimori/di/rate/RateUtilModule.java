@@ -2,6 +2,8 @@ package com.gnoemes.shikimori.di.rate;
 
 import com.gnoemes.shikimori.presentation.presenter.common.provider.RatingResourceProvider;
 import com.gnoemes.shikimori.presentation.presenter.common.provider.RatingResourceProviderImpl;
+import com.gnoemes.shikimori.presentation.presenter.rates.converter.RateViewModelConverter;
+import com.gnoemes.shikimori.presentation.presenter.rates.converter.RateViewModelConverterImpl;
 import com.gnoemes.shikimori.presentation.presenter.rates.provider.RateResourceProvider;
 import com.gnoemes.shikimori.presentation.presenter.rates.provider.RateResourceProviderImpl;
 
@@ -19,4 +21,8 @@ public interface RateUtilModule {
     @Binds
     @Reusable
     RatingResourceProvider bindRatingResourceProvider(RatingResourceProviderImpl provider);
+
+    @Binds
+    @Reusable
+    RateViewModelConverter bindRateViewModelConverter(RateViewModelConverterImpl converter);
 }

@@ -1,27 +1,35 @@
 package com.gnoemes.shikimori.presentation.view.main
 
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.Handler
+import android.os.IBinder
 import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
+import com.crashlytics.android.Crashlytics
+import com.gnoemes.shikimori.BuildConfig
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.domain.series.SeriesSyncService
 import com.gnoemes.shikimori.entity.app.domain.AnalyticEvent
 import com.gnoemes.shikimori.entity.app.domain.Constants
+import com.gnoemes.shikimori.entity.app.domain.SettingsExtras
 import com.gnoemes.shikimori.entity.main.BottomScreens
 import com.gnoemes.shikimori.presentation.presenter.main.MainPresenter
 import com.gnoemes.shikimori.presentation.view.base.activity.BaseActivity
+import com.gnoemes.shikimori.presentation.view.base.fragment.BottomNavigationProvider
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
+import com.gnoemes.shikimori.presentation.view.base.fragment.TabContainer
 import com.gnoemes.shikimori.presentation.view.bottom.BottomTabContainer
-import com.gnoemes.shikimori.utils.getCurrentTheme
-import com.gnoemes.shikimori.utils.ifNotNull
+import com.gnoemes.shikimori.utils.*
 import com.gnoemes.shikimori.utils.navigation.SupportAppNavigator
-import com.gnoemes.shikimori.utils.visibleIf
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.layout_bottom_bar.*
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder
@@ -30,7 +38,7 @@ import ru.terrakok.cicerone.commands.Command
 import ru.terrakok.cicerone.commands.Replace
 import javax.inject.Inject
 
-class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView, RouterProvider {
+class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView, RouterProvider, BottomNavigationProvider {
 
     @InjectPresenter
     lateinit var mainPresenter: MainPresenter
@@ -40,6 +48,8 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView, RouterPr
 
     @Inject
     lateinit var localNavigatorHolder: NavigatorHolder
+
+    private var seriesSyncService: SeriesSyncService? = null
 
     private val tabs = arrayOf(
             Tab(R.id.tab_rates, BottomScreens.RATES),
@@ -53,6 +63,20 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView, RouterPr
         super.onCreate(savedInstanceState)
         initBottomNav()
         initContainer()
+        if (savedInstanceState == null) syncValues()
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        bindService(Intent(this, SeriesSyncService::class.java), seriesSyncServiceConnection, Context.BIND_AUTO_CREATE)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        seriesSyncService?.let {
+            unbindService(seriesSyncServiceConnection)
+        }
     }
 
     private fun initBottomNav() {
@@ -85,6 +109,29 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView, RouterPr
         ta.commitNow()
     }
 
+    private fun syncValues() {
+        val db = FirebaseFirestore.getInstance()
+
+        db.collection("app")
+                .get()
+                .addOnSuccessListener {
+                    val donationLink = it.documents.firstOrNull()?.data?.get("donationLink") as? String
+                    val version = it.documents.firstOrNull()?.data?.get("lastVersion")
+                    val hasUpdate = BuildConfig.VERSION_NAME.replace(Regex("[^0-9.]"), "") != version
+                    getDefaultSharedPreferences().putBoolean(SettingsExtras.NEW_VERSION_AVAILABLE, hasUpdate)
+                    getDefaultSharedPreferences().putString(SettingsExtras.DONATION_LINK, donationLink)
+                }.addOnFailureListener { Crashlytics.logException(it) }
+    }
+
+    private fun invokeTabRootActionOrClearBackStack(screenKey: String) {
+        val fm = fragmentManager
+        val fragment: Fragment? = fm.findFragmentByTag(screenKey)
+        fragment.ifNotNull {
+            if (it is TabContainer && it.invokeTabRootAction())
+            else (it as RouterProvider).localRouter.backTo(null)
+        }
+    }
+
     private fun clearBackStack(screenKey: String) {
         val fm = fragmentManager
         val fragment: Fragment? = fm.findFragmentByTag(screenKey)
@@ -102,6 +149,25 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView, RouterPr
                 BottomScreens.MAIN -> logEvent(AnalyticEvent.NAVIGATION_BOTTOM_MAIN)
                 BottomScreens.MORE -> logEvent(AnalyticEvent.NAVIGATION_BOTTOM_MORE)
             }
+        }
+    }
+
+    private val seriesSyncServiceConnection = object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            val binder = service as? SeriesSyncService.LocalBinder
+            seriesSyncService = binder?.getService()
+        }
+
+        override fun onServiceDisconnected(name: ComponentName?) {
+
+        }
+    }
+
+    override fun changeTab(screen: String) {
+        val tab = tabs.find { it.screenKey == screen }
+        if (tab != null) {
+            clearBackStack(tab.screenKey)
+            bottomNav.selectedItemId = tab.id
         }
     }
 
@@ -184,11 +250,11 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView, RouterPr
 
     override fun clearMainBackStack() = clearBackStack(BottomScreens.MAIN)
 
-    override fun clearSearchBackStack() = clearBackStack(BottomScreens.SEARCH)
+    override fun searchActionOrClearSearchBackStack() = invokeTabRootActionOrClearBackStack(BottomScreens.SEARCH)
 
     override fun clearCalendarBackStack() = clearBackStack(BottomScreens.CALENDAR)
 
-    override fun clearRatesBackStack() = clearBackStack(BottomScreens.RATES)
+    override fun rateActionOrClearBackStack() = invokeTabRootActionOrClearBackStack(BottomScreens.RATES)
 
 
     data class Tab(

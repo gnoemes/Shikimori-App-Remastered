@@ -55,4 +55,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="-159dp" />
 
+    <include
+        android:id="@+id/authLayout"
+        layout="@layout/layout_profile_auth" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

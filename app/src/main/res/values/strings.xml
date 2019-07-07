@@ -1,13 +1,15 @@
 <resources>
     <string name="app_name">Shikimori App</string>
     <string name="appBarFixScrollingFooterBehavior">com.gnoemes.shikimori.utils.widgets.FixScrollingFooterBehavior</string>
+    <string name="default_notification_channel_id">SHIKIMORI_NOTIFICATION_CHANNEL_ID</string>
     <string name="main_exit_message">Для выхода из программы нажмите кнопку еще раз</string>
 
     <string name="common_rates">Списки</string>
-    <string name="common_calendar">Онгоинги</string>
+    <string name="common_calendar">Календарь</string>
     <string name="common_search">Поиск</string>
     <string name="common_main">Главная</string>
-    <string name="common_more">Еще</string>
+    <string name="common_more">Профиль</string>
+    <string name="common_profile">Профиль</string>
     <string name="common_today">Сегодня</string>
     <string name="common_tomorrow">Завтра</string>
     <string name="common_genre">Жанр</string>
@@ -21,6 +23,7 @@
     <string name="common_error_message_without_pull">Похоже, что у Вас отсуствует интернет-соединение или произошла ошибка.</string>
     <string name="common_description">Описание</string>
     <string name="common_cancel">Отмена</string>
+    <string name="common_cancel_variant">Отменить</string>
     <string name="common_next">Далее</string>
     <string name="common_sign_in">Войти</string>
     <string name="common_sign_up">Регистрация</string>
@@ -37,6 +40,7 @@
     <string name="common_anime">Аниме</string>
     <string name="common_manga">Манга</string>
     <string name="common_ranobe">Ранобэ</string>
+    <string name="common_manga_and_ranobe">Манга и ранобэ</string>
     <string name="common_video">Видео</string>
     <string name="common_empty">Ничего не найдено</string>
     <string name="common_need_auth">Для данного действия необходима авторизация</string>
@@ -68,6 +72,7 @@
     <string name="common_understand">Понятно</string>
     <string name="common_apply">Применить</string>
     <string name="common_ok">ок</string>
+    <string name="common_share">Поделиться</string>
 
     <string name="season_autumn">Осень</string>
     <string name="season_winter">Зима</string>
@@ -85,7 +90,9 @@
     <string name="rate_rereading">Перечитываю</string>
     <string name="rate_readed">Прочитано</string>
     <string name="rate_planned">Запланировано</string>
+    <string name="rate_planned_short">В планах</string>
     <string name="rate_rewatch">Пересматриваю</string>
+    <string name="rate_rewatch_short">Пересмотр</string>
     <string name="rate_completed">Просмотрено</string>
     <string name="rate_on_hold">Отложено</string>
     <string name="rate_dropped">Брошено</string>
@@ -102,13 +109,48 @@
     <string name="rate_dropped_with_count">Брошено (%s)</string>
     <string name="rate_remove">Удалить из списка</string>
     <string name="rate_comment">Комментарий</string>
-    <string name="rate_status">Статус просмотра</string>
+    <string name="rate_status">Список</string>
     <string name="rates_need_auth">Для измения статуса необходимо авторизоваться в приложении</string>
     <string name="rates_title_anime">Редактирование аниме</string>
     <string name="rates_title_manga">Редактирование манги</string>
     <string name="rates_title_anime_add">Добавление аниме</string>
     <string name="rates_title_manga_add">Добавление манги</string>
+    <string name="rate_switch_list">Переключить список</string>
+    <string name="rate_search_empty_title">В этом списке ничего не найдено</string>
+    <string name="rate_search_empty_message">Измените запрос или воспользуйтесь разделом поиска.</string>
+    <string name="rate_pin_max_message">Закрепить можно до трех элементов</string>
+    <string name="rate_swipe_increment">+1</string>
+    <string name="rate_swipe_change">Изменить список</string>
+    <string name="rate_swipe_hold">Отложить</string>
+    <string name="rate_swipe_drop">Бросить</string>
+    <string name="rate_swipe_disabled">Отключено</string>
+    <string name="rate_empty_list">Список пуст</string>
+    <string name="rate_empty_anime">Поиск аниме</string>
+    <string name="rate_empty_manga">Поиск манги</string>
 
+    <string name="rate_message_anime_in_progress">В ожидании просмотра.</string>
+    <string name="rate_message_anime_planned">Запланировано.</string>
+    <string name="rate_message_anime_rewatched">В ожидании перепросмотра.</string>
+    <string name="rate_message_anime_completed">Просмотрено.</string>
+    <string name="rate_message_anime_on_hold">Отложено.</string>
+    <string name="rate_message_anime_drop">Брошено.</string>
+    <string name="rate_message_anime_deleted">Удалено.</string>
+
+    <string name="rate_message_manga_in_progress">В ожидании прочтения.</string>
+    <string name="rate_message_manga_planned">Запланирована.</string>
+    <string name="rate_message_manga_rewatched">В ожидании перечитывания.</string>
+    <string name="rate_message_manga_completed">Прочитана.</string>
+    <string name="rate_message_manga_on_hold">Отложена.</string>
+    <string name="rate_message_manga_drop">Брошена.</string>
+    <string name="rate_message_manga_deleted">Удалена</string>
+
+    <string name="rate_message_ranobe_in_progress">В ожидании прочтения.</string>
+    <string name="rate_message_ranobe_planned">Запланировано.</string>
+    <string name="rate_message_ranobe_rewatched">В ожидании перечитывания.</string>
+    <string name="rate_message_ranobe_completed">Прочитано.</string>
+    <string name="rate_message_ranobe_on_hold">Отложено.</string>
+    <string name="rate_message_ranobe_drop">Брошено.</string>
+    <string name="rate_message_ranobe_deleted">Удалено.</string>
 
     <string name="rating_empty">Нет оценки</string>
     <string name="rating_bad_ass">Хуже некуда</string>
@@ -139,10 +181,19 @@
     <string name="calendar_must_aired">Сейчас на ТВ</string>
     <string name="calendar_my_ongoings">Мои онгоинги</string>
     <string name="calendar_nothing">Ничего не найдено.\n Добавляйте аниме в списки для отслеживания выхода новых серий</string>
+    <string name="calendar_search_hint">Онгоинги и анонсы</string>
+    <string name="calendar_aired_already">Вышедшее сегодня</string>
+    <string name="calendar_season_end">Конец сезона</string>
+    <string name="calendar_empty_title">В ближайший месяц ничего нет</string>
+    <string name="calendar_empty_description">Измените запрос или попробуйте найти более позднюю дату выхода на странице тайтла.</string>
+
     <string name="episodes_format">\n[%s из %s]</string>
     <string name="volumes_format">\n[%s-%s]</string>
     <string name="episode_number">%d эпизод</string>
+    <string name="episode_short">эп.</string>
     <string name="episode_in">через %s</string>
+    <string name="minute_short">мин</string>
+    <string name="hour_short">ч</string>
     <string name="type_pattern">%s (%s эп.), %d мин.</string>
     <string name="type_pattern_manga">%s, %s т. %s гл.</string>
     <string name="type_pattern_without_duration">%s (%s эп.)</string>
@@ -170,6 +221,8 @@
     <string name="person_birthday">Дата рождения:</string>
 
     <string name="type_tv_translatable">TV сериал</string>
+    <string name="type_tv_long_translatable">Сериал</string>
+    <string name="type_tv_short_translatable">TV</string>
     <string name="type_movie_translatable">Фильм</string>
     <string name="type_special_translatable">Спешл</string>
     <string name="type_music_translatable">Клип</string>
@@ -180,25 +233,26 @@
     <string name="type_ona" translatable="false">ONA</string>
 
     <string name="type_manga_translatable">Манга</string>
-    <string name="type_novel_translatable">Новела</string>
+    <string name="type_novel_translatable">Ранобэ</string>
     <string name="type_one_shot_translatable">Ваншот</string>
     <string name="type_doujin_translatable">Додзинси</string>
     <string name="type_manhua_translatable">Маньхуа</string>
     <string name="type_manhwa_translatable">Манхва</string>
 
+    <string name="sort">Сортировка</string>
     <string name="sort_id">По порядку</string>
     <string name="sort_type">По типу</string>
     <string name="sort_date">По дате выхода</string>
     <string name="sort_status">По статусу</string>
-    <string name="sort_episodes">По кол-ву эпизодов</string>
-    <string name="sort_chapters">По кол-ву глав</string>
+    <string name="sort_episodes">По эпизодам</string>
+    <string name="sort_chapters">По главам</string>
     <string name="sort_volumes">По кол-ву томов</string>
-    <string name="sort_episodes_watched">По эпизодам</string>
-    <string name="sort_chapters_readed">По главам</string>
+    <string name="sort_episodes_watched">По прогрессу</string>
+    <string name="sort_chapters_readed">По прогрессу</string>
     <string name="sort_score">По оценке</string>
     <string name="sort_random">Рандом</string>
     <string name="sort_popularity">По популярности</string>
-    <string name="sort_name">По имени</string>
+    <string name="sort_name">По названию</string>
     <string name="sort_rating">По рейтингу</string>
     <string name="rate_drawer_open">rate_drawer_open</string>
     <string name="rate_drawer_close">rate_drawer_close</string>
@@ -281,6 +335,7 @@
     <string name="episode_check_all_previous">Отметить все до</string>
     <string name="episode_search_empty_title">Эпизод не найден</string>
     <string name="episode_search_empty_desc">Неверный запрос или его еще не выложили</string>
+    <string name="episode_opened">Открыт</string>
     <string name="translation_authors">Авторы</string>
     <string name="translation_downloadable">Можно скачать</string>
     <string name="translation_sources">Источники</string>
@@ -294,6 +349,13 @@
     <string name="translation_search_empty_title">Ничего не найдено</string>
     <string name="translation_search_empty_desc">Попробуйте поискать что-нибудь другое</string>
 
+    <string name="series_main_source">Основной</string>
+    <string name="series_alt_source">Альтернативный</string>
+    <string name="series_empty_authors_title">Авторы не найдены</string>
+    <string name="series_empty_authors_description">Попробуйте изменить источник или тип, если смотрите не в одном.</string>
+    <string name="series_empty_episode_title">Эпизод не найден</string>
+    <string name="series_empty_episode_description">Тайтл не вышел или видео не выложили.</string>
+
     <string name="player_web">Веб-плеер</string>
     <string name="player_embedded">Внутренний плеер (BETA)</string>
     <string name="player_external">Внешний плеер</string>
@@ -303,21 +365,34 @@
     <string name="player_hosting_error">Этот хостинг не поддерживается плеером</string>
 
     <string name="profile_write">Написать</string>
+    <string name="profile_message_box">Почта</string>
     <string name="profile_friendship">Дружба</string>
     <string name="profile_ignore">Игнор</string>
     <string name="profile_bans">Баны</string>
+    <string name="profile_history">История</string>
     <string name="profile_about_me">Обо мне</string>
 
-    <string name="profile_rate_anime">Список аниме</string>
-    <string name="profile_rate_manga">Список манги</string>
+    <string name="profile_rate_anime">Аниме</string>
+    <string name="profile_rate_manga">Манга и ранобэ</string>
     <string name="profile_rate_watched">Просмотрено</string>
-    <string name="profile_rate_watching">Смотрю/Планирую</string>
+    <string name="profile_rate_watching">Смотрю / Планирую</string>
     <string name="profile_rate_readed">Прочитано</string>
-    <string name="profile_rate_reading">Читаю/Планирую</string>
+    <string name="profile_rate_reading">Читаю / Планирую</string>
     <string name="profile_rate_dropped">Брошено</string>
+    <string name="profile_auth_title">Вы не вошли в аккаунт</string>
+    <string name="profile_auth_description">Войдите, чтобы все функции стали доступны.</string>
+    <string name="profile_auth_register">Создать аккаунт</string>
 
     <string name="profile_rate_rewatched">Пересмотр</string>
     <string name="profile_rate_reread">Перечитано</string>
+    <string name="profile_score">Оценки</string>
+    <string name="profile_middle_score">Средняя</string>
+    <string name="profile_types">Типы</string>
+    <string name="profile_ratings">Рейтинги</string>
+    <string name="profile_history_format">История %s</string>
+    <string name="profile_statistic">Расширенная статистика</string>
+    <string name="profile_anime_hint">Сайт Шикимори формирует расширенную статистику по спискам «Смотрю», «Пересматриваю» и «Просмотрено».</string>
+    <string name="profile_manga_hint">Сайт Шикимори формирует расширенную статистику по спискам «Читаю», «Перечитываю» и «Прочитано».</string>
 
     <string name="club_free">Свободное обсуждение и вступление</string>
     <string name="club_free_join">Свободное вступление</string>
@@ -405,17 +480,6 @@
         <item>@string/rate_readed_with_count</item>
         <item>@string/rate_on_hold_with_count</item>
         <item>@string/rate_dropped_with_count</item>
-    </string-array>
-
-    <string-array name="anime_rate_sorts">
-        <item>@string/sort_id</item>
-        <item>@string/sort_type</item>
-        <item>@string/sort_date</item>
-        <item>@string/sort_status</item>
-        <item>@string/sort_episodes</item>
-        <item>@string/sort_episodes_watched</item>
-        <item>@string/sort_score</item>
-        <item>@string/sort_random</item>
     </string-array>
 
     <string-array name="search_types">
@@ -533,7 +597,7 @@
         <item>G</item>
         <item>PG</item>
         <item>PG-13</item>
-        <item>R</item>
+        <item>R-17</item>
         <item>R+</item>
         <item>Rx</item>
     </string-array>
@@ -578,6 +642,14 @@
         <item>@string/theme_default</item>
         <item>@string/theme_dark</item>
         <item>@string/theme_amoled</item>
+    </string-array>
+
+    <string-array name="rate_swipe_actions">
+        <item>@string/rate_swipe_increment</item>
+        <item>@string/rate_swipe_change</item>
+        <item>@string/rate_swipe_hold</item>
+        <item>@string/rate_swipe_drop</item>
+        <item>@string/rate_swipe_disabled</item>
     </string-array>
 
 </resources>

@@ -3,9 +3,11 @@ package com.gnoemes.shikimori.data.local.preference.impl
 import android.content.SharedPreferences
 import com.gnoemes.shikimori.data.local.preference.UserSource
 import com.gnoemes.shikimori.di.app.annotations.UserQualifier
+import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.app.domain.SettingsExtras
 import com.gnoemes.shikimori.entity.user.domain.UserBrief
 import com.gnoemes.shikimori.entity.user.domain.UserStatus
+import com.gnoemes.shikimori.utils.putLong
 import com.gnoemes.shikimori.utils.putString
 import com.gnoemes.shikimori.utils.remove
 import com.google.gson.Gson
@@ -16,6 +18,12 @@ class UserSourceImpl @Inject constructor(
         @UserQualifier private val prefs: SharedPreferences,
         private val gson: Gson
 ) : UserSource {
+
+    override fun getUserId(): Long = prefs.getLong(SettingsExtras.USER_ID, Constants.NO_ID)
+
+    override fun setUserId(id: Long) {
+        prefs.putLong(SettingsExtras.USER_ID, id)
+    }
 
     override fun getUser(): UserBrief? {
         return try {

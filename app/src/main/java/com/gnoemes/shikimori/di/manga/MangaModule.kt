@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import com.arellomobile.mvp.MvpPresenter
 import com.gnoemes.shikimori.di.base.modules.BaseChildFragmentModule
 import com.gnoemes.shikimori.di.base.scopes.BottomChildScope
-import com.gnoemes.shikimori.di.rate.RateContainerModule
+import com.gnoemes.shikimori.di.rate.RateModule
 import com.gnoemes.shikimori.di.rate.RateInteractorModule
 import com.gnoemes.shikimori.di.rate.SyncModule
 import com.gnoemes.shikimori.di.related.RelatedModule
@@ -21,7 +21,7 @@ import javax.inject.Named
     MangaRepositoryModule::class,
     MangaUtilModule::class,
     MangaInteractorModule::class,
-    RateContainerModule::class,
+    RateModule::class,
     UserUtilModule::class,
     UserInteractorModule::class,
     RelatedModule::class,

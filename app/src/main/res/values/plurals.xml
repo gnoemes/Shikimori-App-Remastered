@@ -7,6 +7,13 @@
         <item quantity="other">%1$d дней назад</item>
     </plurals>
 
+    <plurals name="days">
+        <item quantity="one">%1$d день</item>
+        <item quantity="few">%1$d дня</item>
+        <item quantity="many">%1$d дней</item>
+        <item quantity="other">%1$d дней</item>
+    </plurals>
+
     <plurals name="weeks_ago">
         <item quantity="one">%1$d неделю назад</item>
         <item quantity="few">%1$d недели назад</item>

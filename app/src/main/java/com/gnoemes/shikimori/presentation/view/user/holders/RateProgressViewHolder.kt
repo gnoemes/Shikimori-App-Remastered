@@ -6,6 +6,7 @@ import android.widget.LinearLayout
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.user.presentation.RateProgressStatus
 import com.gnoemes.shikimori.utils.color
+import com.gnoemes.shikimori.utils.drawable
 import com.gnoemes.shikimori.utils.tint
 import com.gnoemes.shikimori.utils.visibleIf
 import kotlinx.android.synthetic.main.layout_rate_progress.view.*
@@ -16,43 +17,33 @@ class RateProgressViewHolder(
 ) {
 
     init {
-        val progressColor: Int
-        val completedColor: Int
-        val droppedColor: Int = view.context.color(R.color.rate_progress_dropped)
+        val progressColor: Int = view.context.color(R.color.rate_default_dark)
+        val completedColor: Int = view.context.color(R.color.rate_watched_dark)
+        val droppedColor: Int = view.context.color(R.color.rate_dropped_dark)
 
-        val progressText: Int
-        val completedText: Int
-        val droppedText = R.string.profile_rate_dropped
-
-        if (isAnime) {
-            progressColor = view.context.color(R.color.anime_rate_progress_watching)
-            completedColor = view.context.color(R.color.anime_rate_progress_watched)
-            progressText = R.string.profile_rate_watching
-            completedText = R.string.profile_rate_watched
-        } else {
-            progressColor = view.context.color(R.color.manga_rate_progress_reading)
-            completedColor = view.context.color(R.color.manga_rate_progress_readed)
-            progressText = R.string.profile_rate_reading
-            completedText = R.string.profile_rate_readed
-        }
+        val plannedIcon = view.context.drawable(R.drawable.ic_planned)?.apply { tint(progressColor) }
+        val progressIcon = view.context.drawable(R.drawable.ic_play_rate)?.apply { tint(progressColor) }
+        val completedIcon = view.context.drawable(R.drawable.ic_check)?.apply { tint(completedColor) }
+        val droppedIcon = view.context.drawable(R.drawable.ic_close)?.apply { tint(droppedColor) }
 
         with(view) {
-            watchingIndicatorView.tint(progressColor)
-            watchedIndicatorView.tint(completedColor)
-            droppedIndicatorView.tint(droppedColor)
+            plannedCountView.setCompoundDrawablesWithIntrinsicBounds(null, null, plannedIcon, null)
+            watchingCountView.setCompoundDrawablesWithIntrinsicBounds(null, null, progressIcon, null)
+            watchedCountView.setCompoundDrawablesWithIntrinsicBounds(null, null, completedIcon, null)
+            droppedCountView.setCompoundDrawablesWithIntrinsicBounds(null, null, droppedIcon, null)
 
-            firstSection.background = ColorDrawable(completedColor)
+            firstSection.background = ColorDrawable(progressColor)
             secondSection.background = ColorDrawable(progressColor)
-            thirdSection.background = ColorDrawable(droppedColor)
-
-            watchingLabel.setText(progressText)
-            watchedLabel.setText(completedText)
-            droppedLabel.setText(droppedText)
+            thirdSection.background = ColorDrawable(completedColor)
+            fourthSection.background = ColorDrawable(droppedColor)
         }
     }
 
     fun bind(rates: Map<RateProgressStatus, Int>) {
         with(view) {
+            val plannedCount = rates.getValue(RateProgressStatus.PLANNED)
+            plannedCountView.text = "$plannedCount"
+
             val watchedCount = rates.getValue(RateProgressStatus.COMPLETED)
             watchedCountView.text = "$watchedCount"
 
@@ -67,9 +58,10 @@ class RateProgressViewHolder(
             if (sum != 0) {
                 val percents = rates.mapValues { it.value / sum.toDouble() }
 
-                firstSection.changeWeight(percents.getValue(RateProgressStatus.COMPLETED))
+                firstSection.changeWeight(percents.getValue(RateProgressStatus.PLANNED))
                 secondSection.changeWeight(percents.getValue(RateProgressStatus.IN_PROGRESS))
-                thirdSection.changeWeight(percents.getValue(RateProgressStatus.DROPPED))
+                thirdSection.changeWeight(percents.getValue(RateProgressStatus.COMPLETED))
+                fourthSection.changeWeight(percents.getValue(RateProgressStatus.DROPPED))
                 progressContainer.invalidate()
             }
         }

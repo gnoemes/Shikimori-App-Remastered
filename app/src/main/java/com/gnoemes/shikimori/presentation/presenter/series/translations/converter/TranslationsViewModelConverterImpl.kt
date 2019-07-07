@@ -3,10 +3,10 @@ package com.gnoemes.shikimori.presentation.presenter.series.translations.convert
 import android.content.Context
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.series.domain.*
+import com.gnoemes.shikimori.entity.series.presentation.SeriesDownloadItem
 import com.gnoemes.shikimori.entity.series.presentation.TranslationVideo
 import com.gnoemes.shikimori.entity.series.presentation.TranslationViewModel
 import com.gnoemes.shikimori.utils.Utils
-import com.google.gson.Gson
 import java.net.URLEncoder
 import javax.inject.Inject
 
@@ -81,14 +81,12 @@ class TranslationsViewModelConverterImpl @Inject constructor(
         )
     }
 
-    override fun convertTrack(video: Video, track: Track): Pair<String, String> {
-        var title = video.hosting.synonymType
-        //TODO colorspan for quality
-        if (track.quality != "unknown") title += "   ".plus("${track.quality}p")
-        val videoJson = Gson().toJson(video)
-        val action = track.url + "$" + videoJson
-        return Pair(title, action)
-    }
+    override fun convertTrack(video: Video, track: Track): SeriesDownloadItem = SeriesDownloadItem(
+            video.hosting.synonymType,
+            track.quality.let { if (it.isBlank() || it == "unknown")  null else "${it}p"},
+            track.url,
+            video
+    )
 
     private fun convertVideo(t: Translation): TranslationVideo {
 

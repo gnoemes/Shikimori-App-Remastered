@@ -1,43 +1,35 @@
 package com.gnoemes.shikimori.domain.calendar
 
 import com.gnoemes.shikimori.data.repository.calendar.CalendarRepository
-import com.gnoemes.shikimori.data.repository.search.SearchRepository
 import com.gnoemes.shikimori.data.repository.user.UserRepository
-import com.gnoemes.shikimori.domain.search.SearchQueryBuilder
 import com.gnoemes.shikimori.entity.calendar.domain.CalendarItem
-import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.user.domain.UserStatus
 import com.gnoemes.shikimori.utils.applyErrorHandlerAndSchedulers
-import io.reactivex.Observable
 import io.reactivex.Single
 import javax.inject.Inject
 
 class CalendarInteractorImpl @Inject constructor(
         private val userRepository: UserRepository,
-        private val repository: CalendarRepository,
-        private val searchRepository: SearchRepository,
-        private val queryBuilder: SearchQueryBuilder
+        private val repository: CalendarRepository
 ) : CalendarInteractor {
 
     override fun getCalendarData(): Single<List<CalendarItem>> =
-            repository.getData().applyErrorHandlerAndSchedulers()
-
-    override fun getMyCalendarData(): Single<List<CalendarItem>> =
-            Single.fromCallable { userRepository.getUserStatus() }
-                    .filter { it == UserStatus.AUTHORIZED }
-                    .toSingle()
-                    .flatMap { repository.getData() }
-                    .flatMap { items ->
-                        val ids = items.asSequence().map { it.anime.id }.toMutableList()
-                        Observable.concat(
-                                queryBuilder.createMyListQueryFromIds(ids, RateStatus.WATCHING)
-                                        .flatMap { searchRepository.getAnimeList(it) }
-                                        .flatMapObservable { Observable.fromIterable(it) },
-                                queryBuilder.createMyListQueryFromIds(ids, RateStatus.PLANNED)
-                                        .flatMap { searchRepository.getAnimeList(it) }
-                                        .flatMapObservable { Observable.fromIterable(it) })
-                                .toList()
-                                .map { myOngoings -> items.filter { item -> myOngoings.asSequence().map { it.id }.contains(item.anime.id) } }
+            repository.getData()
+                    .flatMap {
+                        if (userRepository.getUserStatus() == UserStatus.AUTHORIZED) mergeWithUserRates(it)
+                        else Single.just(it)
                     }
                     .applyErrorHandlerAndSchedulers()
+
+    private fun mergeWithUserRates(calendar: List<CalendarItem>): Single<List<CalendarItem>> =
+            userRepository.getMyUserId()
+                    .flatMap { repository.getCalendarRates(it) }
+                    .map { rates ->
+                        val animeWithStatus = rates.filter { rate -> calendar.find { it.anime.id == rate.targetId } != null }
+                        calendar.map { item ->
+                                    val rate = animeWithStatus.find { item.anime.id == it.targetId }
+                                    if (rate != null) item.copy(status = rate.status)
+                                    else item
+                                }
+                    }
 }

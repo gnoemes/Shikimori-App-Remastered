@@ -8,21 +8,48 @@ import android.util.Log
 import androidx.annotation.StyleRes
 import androidx.appcompat.view.ContextThemeWrapper
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.entity.app.domain.AscentTheme
 import com.gnoemes.shikimori.entity.app.domain.Constants
+import com.gnoemes.shikimori.entity.app.domain.Theme
 import com.gnoemes.shikimori.entity.app.domain.ThemeExtras
 import org.joda.time.Duration
 import org.joda.time.LocalTime
 
 var Context.getCurrentTheme: Int
-    get() = getThemeSharedPreferences().getInt(ThemeExtras.THEME_KEY, R.style.ShikimoriAppTheme_Default)
+    get() {
+        val themeIndex = getThemeSharedPreferences().getInt(ThemeExtras.THEME_KEY, Theme.DEFAULT.index)
+        return when (Theme.values().find { it.index == themeIndex } ?: Theme.DEFAULT) {
+            Theme.DEFAULT -> R.style.ShikimoriAppTheme_Default
+            Theme.DARK -> R.style.ShikimoriAppTheme_Dark
+            Theme.AMOLED -> R.style.ShikimoriAppTheme_Amoled
+        }
+    }
     set(value) = getThemeSharedPreferences().putInt(ThemeExtras.THEME_KEY, value)
 
 var Context.getCurrentNightTheme: Int
-    get() = getThemeSharedPreferences().getInt(ThemeExtras.NIGHT_THEME_KEY, Constants.NO_ID.toInt())
+    get() {
+        val themeIndex  = getThemeSharedPreferences().getInt(ThemeExtras.NIGHT_THEME_KEY, Constants.NO_ID.toInt())
+        return when(Theme.values().find { it.index == themeIndex } ?: return Constants.NO_ID.toInt()) {
+            Theme.DEFAULT -> R.style.ShikimoriAppTheme_Default
+            Theme.DARK -> R.style.ShikimoriAppTheme_Dark
+            Theme.AMOLED -> R.style.ShikimoriAppTheme_Amoled
+        }
+    }
     set(value) = getThemeSharedPreferences().putInt(ThemeExtras.NIGHT_THEME_KEY, value)
 
 var Context.getCurrentAscentTheme: Int
-    get() = getThemeSharedPreferences().getInt(ThemeExtras.ASCENT_KEY, R.style.AscentStyle_Orange)
+    get() {
+        val themeIndex = getThemeSharedPreferences().getInt(ThemeExtras.ASCENT_KEY, AscentTheme.ORANGE.index)
+        return when (AscentTheme.values().find { it.index == themeIndex } ?: AscentTheme.ORANGE) {
+            AscentTheme.RED -> R.style.AscentStyle_Red
+            AscentTheme.ORANGE -> R.style.AscentStyle_Orange
+            AscentTheme.YELLOW -> R.style.AscentStyle_Yellow
+            AscentTheme.GREEN -> R.style.AscentStyle_Green
+            AscentTheme.CYAN -> R.style.AscentStyle_Cyan
+            AscentTheme.BLUE -> R.style.AscentStyle_Blue
+            AscentTheme.PURPLE -> R.style.AscentStyle_Purple
+        }
+    }
     set(value) = getThemeSharedPreferences().putInt(ThemeExtras.ASCENT_KEY, value)
 
 var Context.getNightThemeStartTime: LocalTime

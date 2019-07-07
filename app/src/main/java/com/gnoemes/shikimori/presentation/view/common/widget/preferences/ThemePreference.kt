@@ -5,6 +5,7 @@ import android.content.res.TypedArray
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.annotation.StyleRes
 import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
@@ -12,6 +13,7 @@ import androidx.transition.Fade
 import androidx.transition.TransitionManager
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.app.domain.Constants
+import com.gnoemes.shikimori.utils.dp
 import com.gnoemes.shikimori.utils.onClick
 import com.gnoemes.shikimori.utils.visibleIf
 import kotlinx.android.synthetic.main.view_theme_preference.view.*
@@ -149,6 +151,7 @@ class ThemePreference @JvmOverloads constructor(context: Context,
         with(parentView) {
             isNightThemePicked.let {
                 nightModeLabel.setText(if (it) R.string.settings_theme_night_mode_schedule_title else R.string.settings_theme_night_mode_title)
+                nightModeLabel.layoutParams = (nightModeLabel.layoutParams as? LinearLayout.LayoutParams)?.apply { bottomMargin = if (it) context.dp(12) else context.dp(24) }
                 TransitionManager.beginDelayedTransition(parentView as ViewGroup, Fade())
                 nightTimeStartContainer.visibleIf { it }
                 nightTimeEndContainer.visibleIf { it }

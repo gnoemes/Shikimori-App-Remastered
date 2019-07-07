@@ -1,10 +1,13 @@
 package com.gnoemes.shikimori.entity.series.presentation
 
-import com.gnoemes.shikimori.entity.common.domain.Image
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 
-class EpisodesNavigationData(
-        animeId: Long,
-        image: Image,
-        name: String,
-        val rateId: Long?
-) : BaseSeriesNavigationData(animeId, image, name)
+
+@Parcelize
+data class EpisodesNavigationData(
+        val animeId: Long,
+        val currentEpisode: Int,
+        val rateId: Long?,
+        val isAlternative: Boolean
+) : Parcelable

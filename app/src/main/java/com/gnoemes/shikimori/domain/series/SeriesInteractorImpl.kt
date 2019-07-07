@@ -1,5 +1,6 @@
 package com.gnoemes.shikimori.domain.series
 
+import com.gnoemes.shikimori.data.repository.progress.AnimeProgressRepository
 import com.gnoemes.shikimori.data.repository.series.shikimori.EpisodeChangesRepository
 import com.gnoemes.shikimori.data.repository.series.shikimori.SeriesRepository
 import com.gnoemes.shikimori.data.repository.user.UserRepository
@@ -20,21 +21,25 @@ class SeriesInteractorImpl @Inject constructor(
         private val repository: SeriesRepository,
         private val ratesInteractor: RatesInteractor,
         private val userRepository: UserRepository,
-        private val changesRepository: EpisodeChangesRepository
+        private val changesRepository: EpisodeChangesRepository,
+        private val progressRepository: AnimeProgressRepository
 ) : SeriesInteractor {
 
-    override fun getEpisodes(id: Long, alternative: Boolean): Single<List<Episode>> = repository.getEpisodes(id, alternative).applyErrorHandlerAndSchedulers()
+    override fun getEpisodes(id: Long, alternative: Boolean): Single<List<Episode>> =
+            repository.getEpisodes(id, alternative)
+                    .map { list -> list.sortedBy { it.index } }
+                    .applyErrorHandlerAndSchedulers()
 
     override fun getTranslations(type: TranslationType, animeId: Long, episodeId: Long, alternative: Boolean): Single<List<Translation>> =
             repository.getTranslations(type, animeId, episodeId, alternative)
                     .applyErrorHandlerAndSchedulers()
 
     override fun getTranslationSettings(animeId: Long): Single<TranslationSetting> =
-            repository.getTranslationSettings(animeId)
+            progressRepository.getTranslationSettings(animeId)
                     .applyErrorHandlerAndSchedulers()
 
     override fun saveTranslationSettings(settings: TranslationSetting): Completable =
-            repository.saveTranslationSettings(settings)
+            progressRepository.saveTranslationSettings(settings)
                     .applyErrorHandlerAndSchedulers()
 
     override fun getVideo(payload: TranslationVideo, alternative: Boolean): Single<Video> =
@@ -68,6 +73,13 @@ class SeriesInteractorImpl @Inject constructor(
                         else Completable.complete()
                     }.applyErrorHandlerAndSchedulers()
 
+    override fun getFirstNotWatchedEpisodeIndex(animeId: Long): Single<Int> =
+            repository.getFirstNotWatchedEpisodeIndex(animeId)
+                    .applyErrorHandlerAndSchedulers()
+
+    override fun getWatchedEpisodesCount(animeId: Long): Single<Int> =
+            repository.getWatchedEpisodesCount(animeId)
+                    .applyErrorHandlerAndSchedulers()
 
     private fun updateRate(animeId: Long, episodeId: Int, rateId: Long, isWatched: Boolean, onlyLocal: Boolean): Completable =
             repository.setEpisodeStatus(animeId, episodeId, isWatched)
@@ -85,8 +97,8 @@ class SeriesInteractorImpl @Inject constructor(
 
     private fun incrementOrCreate(animeId: Long, rateId: Long): Completable {
         return when (rateId) {
-            Constants.NO_ID -> userRepository.getMyUserBrief()
-                    .flatMapCompletable { ratesInteractor.createRate(animeId, Type.ANIME, UserRate(id = rateId, status = RateStatus.WATCHING), it.id) }
+            Constants.NO_ID -> userRepository.getMyUserId()
+                    .flatMapCompletable { ratesInteractor.createRate(animeId, Type.ANIME, UserRate(id = rateId, status = RateStatus.WATCHING), it) }
             else -> ratesInteractor.increment(UserRate(rateId, targetType = Type.ANIME, targetId = animeId))
         }
     }

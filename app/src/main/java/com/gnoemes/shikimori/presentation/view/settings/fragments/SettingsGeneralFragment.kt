@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.os.Environment
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.files.folderChooser
+import com.afollestad.materialdialogs.list.listItems
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.app.domain.SettingsExtras
+import com.gnoemes.shikimori.entity.rates.domain.RateSwipeAction
 import com.gnoemes.shikimori.utils.preference
 import com.gnoemes.shikimori.utils.prefs
 import com.gnoemes.shikimori.utils.putString
@@ -22,6 +24,27 @@ class SettingsGeneralFragment : BaseSettingsFragment() {
         preference(R.string.settings_content_download_folder_key)?.apply {
             updateFolderSummary()
             setOnPreferenceClickListener { checkStoragePermissions();true }
+        }
+
+        preference(SettingsExtras.RATE_SWIPE_TO_LEFT_ACTION)?.apply {
+            summary = getRateActionSummary(prefs().getString(key, RateSwipeAction.INCREMENT.name)!!)
+            setOnPreferenceClickListener { showRateSwipeActionDialog(key); true }
+        }
+
+        preference(SettingsExtras.RATE_SWIPE_TO_RIGHT_ACTION)?.apply {
+            summary = getRateActionSummary(prefs().getString(key, RateSwipeAction.DISABLED.name)!!)
+            setOnPreferenceClickListener { showRateSwipeActionDialog(key); true }
+        }
+    }
+
+    private fun getRateActionSummary(action: String): String {
+        return when (action) {
+            RateSwipeAction.INCREMENT.name -> getString(R.string.rate_swipe_increment)
+            RateSwipeAction.CHANGE.name -> getString(R.string.rate_swipe_change)
+            RateSwipeAction.ON_HOLD.name -> getString(R.string.rate_swipe_hold)
+            RateSwipeAction.DROP.name -> getString(R.string.rate_swipe_drop)
+            RateSwipeAction.DISABLED.name -> getString(R.string.rate_swipe_disabled)
+            else -> getString(R.string.rate_swipe_disabled)
         }
     }
 
@@ -41,6 +64,15 @@ class SettingsGeneralFragment : BaseSettingsFragment() {
                 if (!folder.isNullOrEmpty()) folder
                 else context!!.getString(R.string.settings_content_download_folder_summary)
         preference(SettingsExtras.DOWNLOAD_FOLDER)?.summary = summary
+    }
+
+    private fun showRateSwipeActionDialog(key: String) {
+        MaterialDialog(context!!).show {
+            listItems(R.array.rate_swipe_actions, waitForPositiveButton = false) { dialog, index, text ->
+                preference(key)?.summary = text
+                prefs().putString(key, RateSwipeAction.values()[index].name)
+            }
+        }
     }
 
     private fun showFolderChooserDialog() {

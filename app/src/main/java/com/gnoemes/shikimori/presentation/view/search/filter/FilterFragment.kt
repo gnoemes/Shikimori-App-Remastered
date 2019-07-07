@@ -150,21 +150,8 @@ class FilterFragment : BaseBottomSheetInjectionDialogFragment<FilterPresenter, F
         sortBtn.text = text
     }
 
-    override fun onBackPressed() {
-        dismiss()
-    }
-
     override fun onFiltersAccepted(appliedFilters: HashMap<String, MutableList<FilterItem>>) {
         (targetFragment as? FilterCallback)?.onFiltersSelected(tag, appliedFilters)
         onBackPressed()
-    }
-
-    override fun hideSoftInput() {
-    }
-
-    override fun setTitle(title: String) {
-    }
-
-    override fun setTitle(stringRes: Int) {
     }
 }

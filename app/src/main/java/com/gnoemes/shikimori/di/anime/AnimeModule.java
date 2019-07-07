@@ -1,10 +1,12 @@
 package com.gnoemes.shikimori.di.anime;
 
+import androidx.fragment.app.Fragment;
+
 import com.arellomobile.mvp.MvpPresenter;
 import com.gnoemes.shikimori.di.base.modules.BaseChildFragmentModule;
 import com.gnoemes.shikimori.di.base.scopes.BottomChildScope;
-import com.gnoemes.shikimori.di.rate.RateContainerModule;
 import com.gnoemes.shikimori.di.rate.RateInteractorModule;
+import com.gnoemes.shikimori.di.rate.RateModule;
 import com.gnoemes.shikimori.di.rate.SyncModule;
 import com.gnoemes.shikimori.di.related.RelatedModule;
 import com.gnoemes.shikimori.di.series.SeriesInteractorModule;
@@ -18,7 +20,6 @@ import com.gnoemes.shikimori.presentation.view.anime.AnimeFragment;
 
 import javax.inject.Named;
 
-import androidx.fragment.app.Fragment;
 import dagger.Binds;
 import dagger.Module;
 
@@ -27,7 +28,7 @@ import dagger.Module;
         AnimeUtilModule.class,
         AnimeRepositoryModule.class,
         AnimeInteractorModule.class,
-        RateContainerModule.class,
+        RateModule.class,
         UserUtilModule.class,
         UserInteractorModule.class,
         StudioUtilModule.class,

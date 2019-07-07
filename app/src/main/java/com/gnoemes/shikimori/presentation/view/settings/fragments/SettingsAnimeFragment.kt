@@ -93,7 +93,7 @@ class SettingsAnimeFragment : BaseSettingsFragment() {
                 1 -> prefs().putString(SettingsExtras.TRANSLATION_TYPE, TranslationType.SUB_RU.type)
                 2 -> prefs().putString(SettingsExtras.TRANSLATION_TYPE, TranslationType.RAW.type)
             }
-            preference.summary = text
+            preference.summary = text.firstUpperCase()
         }
     }
 

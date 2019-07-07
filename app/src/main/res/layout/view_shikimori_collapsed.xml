@@ -21,7 +21,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="?selectableItemBackgroundBorderless"
+        android:background="?selectableItemBackground"
         android:padding="4dp"
         android:tint="?attr/colorOnSurface"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -7,6 +7,7 @@ import io.reactivex.Completable
 import io.reactivex.Single
 
 interface UserInteractor {
+    fun getMyUserId(): Single<Long>
 
     fun getMyUserBrief(): Single<UserBrief>
 

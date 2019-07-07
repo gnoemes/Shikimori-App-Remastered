@@ -12,6 +12,8 @@ class UserInteractorImpl @Inject constructor(
         private val repository: UserRepository
 ) : UserInteractor {
 
+    override fun getMyUserId(): Single<Long> = repository.getMyUserId().applyErrorHandlerAndSchedulers()
+
     override fun getMyUserBrief(): Single<UserBrief> = repository.getMyUserBrief().applyErrorHandlerAndSchedulers()
 
     override fun getUserMessages(type: MessageType): Single<List<Message>> = repository.getUserMessages(type).applyErrorHandlerAndSchedulers()
@@ -19,8 +21,8 @@ class UserInteractorImpl @Inject constructor(
     override fun getDetails(id: Long): Single<UserDetails> =
             repository.getDetails(id)
                     .flatMap { detals ->
-                        repository.getMyUserBrief()
-                                .map { detals.copy(isMe = detals.id == it.id) }
+                        repository.getMyUserId()
+                                .map { detals.copy(isMe = detals.id == it) }
                                 .onErrorReturn { detals.copy(isMe = false) }
                     }
                     .applyErrorHandlerAndSchedulers()

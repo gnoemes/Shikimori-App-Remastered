@@ -18,6 +18,7 @@ import com.gnoemes.shikimori.presentation.presenter.search.SearchPresenter
 import com.gnoemes.shikimori.presentation.view.base.adapter.BasePaginationAdapter
 import com.gnoemes.shikimori.presentation.view.base.fragment.BasePaginationFragment
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
+import com.gnoemes.shikimori.presentation.view.base.fragment.TabRootFragment
 import com.gnoemes.shikimori.presentation.view.search.adapter.SearchAdapter
 import com.gnoemes.shikimori.presentation.view.search.filter.FilterCallback
 import com.gnoemes.shikimori.presentation.view.search.filter.FilterFragment
@@ -37,7 +38,7 @@ import kotlinx.android.synthetic.main.layout_progress.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import javax.inject.Inject
 
-class SearchFragment : BasePaginationFragment<SearchItem, SearchPresenter, SearchView>(), SearchView, FilterCallback, HasSupportFragmentInjector {
+class SearchFragment : BasePaginationFragment<SearchItem, SearchPresenter, SearchView>(), SearchView, FilterCallback, HasSupportFragmentInjector, TabRootFragment {
 
     @Inject
     lateinit var imageLoader: ImageLoader
@@ -155,6 +156,10 @@ class SearchFragment : BasePaginationFragment<SearchItem, SearchPresenter, Searc
         }
 
         override fun onQueryTextChange(newText: String?): Boolean = false
+    }
+
+    override fun onTabRootAction() {
+        searchView?.open(true)
     }
 
     ///////////////////////////////////////////////////////////////////////////

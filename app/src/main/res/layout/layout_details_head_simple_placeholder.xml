@@ -17,8 +17,8 @@
 
         <View
             android:id="@+id/imageContainerView"
-            android:layout_width="@dimen/image_calendar_width"
-            android:layout_height="@dimen/image_calendar_height"
+            android:layout_width="@dimen/image_default_width"
+            android:layout_height="@dimen/image_default_height"
             android:background="@color/colorShimmer"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

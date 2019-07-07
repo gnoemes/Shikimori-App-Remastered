@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.di.app.annotations.SettingsQualifier
 import com.gnoemes.shikimori.entity.app.domain.SettingsExtras
+import com.gnoemes.shikimori.entity.rates.domain.RateSwipeAction
 import com.gnoemes.shikimori.entity.series.domain.PlayerType
 import com.gnoemes.shikimori.entity.series.domain.TranslationType
 import com.gnoemes.shikimori.utils.putBoolean
@@ -37,7 +38,8 @@ class SettingsSourceImpl @Inject constructor(
     override var translationType: TranslationType
         get() {
             val type = prefs.getString(SettingsExtras.TRANSLATION_TYPE, "")
-            return TranslationType.values().find { it.isEqualType(type) } ?: TranslationType.VOICE_RU
+            return TranslationType.values().find { it.isEqualType(type) }
+                    ?: TranslationType.VOICE_RU
         }
         set(value) = prefs.putString(SettingsExtras.TRANSLATION_TYPE, value.type)
 
@@ -52,10 +54,6 @@ class SettingsSourceImpl @Inject constructor(
         get() = prefs.getBoolean(SettingsExtras.IS_USE_LOCAL_TRANSLATION_SETTINGS, true)
         set(value) = prefs.putBoolean(SettingsExtras.IS_USE_LOCAL_TRANSLATION_SETTINGS, value)
 
-    override var isMyOngoingPriority: Boolean
-        get() = prefs.getBoolean(SettingsExtras.IS_MY_ONGOINGS_PRIORITY, false)
-        set(value) = prefs.putBoolean(SettingsExtras.IS_MY_ONGOINGS_PRIORITY, value)
-
     override var downloadFolder: String
         get() = prefs.getString(SettingsExtras.DOWNLOAD_FOLDER, "")!!
         set(value) = prefs.putString(SettingsExtras.DOWNLOAD_FOLDER, value)
@@ -63,4 +61,16 @@ class SettingsSourceImpl @Inject constructor(
     override var isExternalBestQuality: Boolean
         get() = prefs.getBoolean(SettingsExtras.IS_BEST_EXTERNAL_QUALITY, false)
         set(value) = prefs.putBoolean(SettingsExtras.IS_BEST_EXTERNAL_QUALITY, value)
+
+    override var rateSwipeToLeftAction: RateSwipeAction
+        get() = prefs.getString(SettingsExtras.RATE_SWIPE_TO_LEFT_ACTION, RateSwipeAction.INCREMENT.name)?.let { action ->
+            RateSwipeAction.values().find { it.name == action } ?: RateSwipeAction.INCREMENT
+        } ?: RateSwipeAction.INCREMENT
+        set(value) = prefs.putString(SettingsExtras.RATE_SWIPE_TO_LEFT_ACTION, value.name)
+
+    override var rateSwipeToRightAction: RateSwipeAction
+        get() = prefs.getString(SettingsExtras.RATE_SWIPE_TO_RIGHT_ACTION, RateSwipeAction.DISABLED.name)?.let { action ->
+            RateSwipeAction.values().find { it.name == action } ?: RateSwipeAction.DISABLED
+        } ?: RateSwipeAction.DISABLED
+        set(value) = prefs.putString(SettingsExtras.RATE_SWIPE_TO_RIGHT_ACTION, value.name)
 }
