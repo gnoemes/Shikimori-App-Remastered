@@ -33,6 +33,24 @@
             tools:text="# 72251" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/nextEpisodeBtn"
+            style="@style/CircleButtonStyle"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            app:backgroundTint="?attr/colorSecondaryTransparent"
+            app:elevation="0dp"
+            app:icon="@drawable/ic_chevron_right"
+            app:iconTint="?attr/colorSecondary"
+            app:layout_constraintBottom_toBottomOf="@+id/episodeChip"
+            app:layout_constraintStart_toEndOf="@+id/episodeChip"
+            app:layout_constraintTop_toTopOf="@+id/episodeChip"
+            app:layout_goneMarginLeft="16dp"
+            app:layout_goneMarginStart="16dp"
+            app:strokeWidth="0dp" />
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/sourceChangeBtn"
             style="@style/CircleButtonStyle"
             android:layout_width="32dp"
@@ -44,7 +62,7 @@
             app:icon="@drawable/ic_source"
             app:iconTint="?attr/colorSecondary"
             app:layout_constraintBottom_toBottomOf="@+id/episodeChip"
-            app:layout_constraintStart_toEndOf="@+id/episodeChip"
+            app:layout_constraintStart_toEndOf="@+id/nextEpisodeBtn"
             app:layout_constraintTop_toTopOf="@+id/episodeChip"
             app:layout_goneMarginLeft="16dp"
             app:layout_goneMarginStart="16dp"

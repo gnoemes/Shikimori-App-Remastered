@@ -154,6 +154,7 @@ class SeriesFragment : BaseFragment<SeriesPresenter, SeriesView>(),
 
         actionBtn.onClick { onSourceSelected(true) }
         fab.onClick { getPresenter().onDiscussionClicked() }
+        nextEpisodeBtn.onClick { getPresenter().onNextEpisode() }
     }
 
     private fun onTypeSelected(newType: TranslationType) {
@@ -171,6 +172,7 @@ class SeriesFragment : BaseFragment<SeriesPresenter, SeriesView>(),
         if (show && !translationBtn.isVisible()) showTypes(false)
         sourceChangeBtn.visibleIf { !show }
         if (episodeChip.isEnabled) episodeChip.visibleIf { !show }
+        if (nextEpisodeBtn.isEnabled) nextEpisodeBtn.visibleIf { !show }
         mainSource.visibleIf { show }
         altSource.visibleIf { show }
     }
@@ -258,13 +260,20 @@ class SeriesFragment : BaseFragment<SeriesPresenter, SeriesView>(),
         episodeChip.text = text
     }
 
+    override fun showNextEpisode(show: Boolean) {
+        nextEpisodeBtn.isEnabled = show
+        nextEpisodeBtn.visibleIf { show }
+    }
+
     override fun hideEpisodeName() {
         episodeChip.isEnabled = false
         episodeChip.gone()
     }
 
     override fun showEpisodeLoading(show: Boolean) {
+        TransitionManager.beginDelayedTransition(motionLayout, Fade())
         if (episodeChip.isEnabled) episodeChip.visibleIf { !show }
+        if (nextEpisodeBtn.isEnabled) nextEpisodeBtn.visibleIf { !show }
         sourceChangeBtn.visibleIf { !show }
     }
 

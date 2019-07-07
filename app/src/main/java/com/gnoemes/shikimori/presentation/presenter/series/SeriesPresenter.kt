@@ -59,7 +59,10 @@ class SeriesPresenter @Inject constructor(
         viewState.setBackground(navigationData.image)
         viewState.setTitle(navigationData.name)
         if (episode != null) viewState.setEpisodeName(episode!!)
-        if (navigationData.episodesAired == 1) viewState.hideEpisodeName()
+        if (navigationData.episodesAired == 1) {
+            viewState.hideEpisodeName()
+            viewState.showNextEpisode(false)
+        }
 
         loadWithEpisode()
         analyzeType(type)
@@ -100,16 +103,17 @@ class SeriesPresenter @Inject constructor(
     fun onRefresh() = loadWithEpisode()
 
     private fun openPriorityEpisode(items: List<Episode>) {
-        episode = items.firstOrNull { !it.isWatched }?.index
-                ?: items.lastOrNull { it.isWatched }?.index
+        if (episode == null) episode = items.firstOrNull { !it.isWatched }?.index ?: items.lastOrNull { it.isWatched }?.index
         episodeId = items.firstOrNull { it.index == episode }?.id
         if (episode != null && episodeId != null) {
-            loadData(episodeId!!)
+            viewState.showNextEpisode(episode != navigationData.episodesAired)
             viewState.setEpisodeName(episode!!)
+            loadData(episodeId!!)
         } else {
             viewState.onHideLoading()
             viewState.showEmptyView()
             viewState.hideEpisodeName()
+            viewState.showNextEpisode(false)
             viewState.hideFab()
         }
     }
@@ -133,6 +137,30 @@ class SeriesPresenter @Inject constructor(
         } else viewState.showData(it)
     }
 
+    fun onNextEpisode() = interactor.getEpisodes(navigationData.animeId, isAlternative)
+            .map { it.take(navigationData.episodesAired) }
+            .doOnSubscribe { viewState.showEpisodeLoading(true) }
+            .doOnSuccess { viewState.showEpisodeLoading(false) }
+            .subscribe(this::loadNextEpisode, this::processErrors)
+            .addToDisposables()
+
+
+    private fun loadNextEpisode(items: List<Episode>) {
+        episode = items.firstOrNull { it.index == episode?.plus(1) }?.index ?: episode
+        episodeId = items.firstOrNull { it.index == episode }?.id
+        if (episode != null && episodeId != null) {
+            viewState.showNextEpisode(episode != navigationData.episodesAired)
+            viewState.setEpisodeName(episode!!)
+            loadData(episodeId!!)
+        } else {
+            viewState.onHideLoading()
+            viewState.showEmptyView()
+            viewState.hideEpisodeName()
+            viewState.showNextEpisode(false)
+            viewState.hideFab()
+        }
+    }
+
     fun onSearchClicked() {
         viewState.showSearchView()
         logEvent(AnalyticEvent.ANIME_TRANSLATIONS_SEARCH_OPENED)
@@ -150,6 +178,7 @@ class SeriesPresenter @Inject constructor(
         this.episode = episode
 
         viewState.setEpisodeName(episode)
+        viewState.showNextEpisode(episode != navigationData.episodesAired)
 
         if (isAlternative != alternative) {
             viewState.changeSource(alternative)
@@ -312,5 +341,4 @@ class SeriesPresenter @Inject constructor(
 
     private fun processDownloadErrors(throwable: Throwable) {
     }
-
 }

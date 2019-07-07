@@ -61,4 +61,6 @@ interface SeriesView : BaseFragmentView {
     fun showEpisodeLoading(show: Boolean)
 
     fun hideEpisodeName()
+
+    fun showNextEpisode(show: Boolean)
 }
