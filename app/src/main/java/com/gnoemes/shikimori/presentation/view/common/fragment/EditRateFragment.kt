@@ -190,12 +190,6 @@ class EditRateFragment : BaseBottomSheetDialogFragment() {
 
     override fun getDialogLayout(): Int = R.layout.fragment_edit_rate
 
-    override val windowBackground: Int by lazy {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) R.drawable.bg_rate_dialog_window
-        else context!!.attr(R.attr.editRateBackground).resourceId
-    }
-
-
     interface RateDialogCallback {
         fun onUpdateRate(rate: UserRate) = Unit
         fun onDeleteRate(id: Long) = Unit

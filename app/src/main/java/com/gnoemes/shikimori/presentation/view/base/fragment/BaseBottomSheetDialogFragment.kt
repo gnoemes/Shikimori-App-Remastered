@@ -84,7 +84,7 @@ abstract class BaseBottomSheetDialogFragment : MvpDialogFragment() {
     }
 
     protected open val windowBackground by lazy {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) R.drawable.bg_bottom_sheet_window
-            else context!!.attr(R.attr.bottomSheetBackground).resourceId
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) R.drawable.bg_rate_dialog_window
+        else context!!.attr(R.attr.editRateBackground).resourceId
     }
 }

@@ -171,16 +171,15 @@
 
     <style name="FilterChipStyle" parent="Widget.MaterialComponents.Chip.Filter">
         <item name="android:textColor">?attr/colorSecondary</item>
-        <item name="chipBackgroundColor">@drawable/selector_filter_chip_background_color</item>
+        <item name="chipBackgroundColor">@color/selector_filter_chip_background_color</item>
+        <item name="chipSurfaceColor">@android:color/transparent</item>
         <item name="chipStrokeColor">@drawable/selector_action_chip_stroke_color</item>
         <item name="chipStrokeWidth">1dp</item>
         <item name="chipIcon">@drawable/ic_minus</item>
         <item name="checkedIconEnabled">false</item>
         <item name="chipIconTint">?attr/colorSecondary</item>
         <item name="rippleColor">@drawable/selector_button_ripple_color</item>
-        <item name="android:outlineAmbientShadowColor" tools:targetApi="p">
-            ?attr/colorSecondaryTransparent
-        </item>
+        <item name="android:outlineAmbientShadowColor" tools:targetApi="p">?attr/colorSecondaryTransparent</item>
     </style>
 
     <style name="EntryChipStyle" parent="Widget.MaterialComponents.Chip.Entry">
