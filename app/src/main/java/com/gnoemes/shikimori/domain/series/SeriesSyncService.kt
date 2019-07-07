@@ -26,6 +26,7 @@ class SeriesSyncService : Service() {
     override fun onCreate() {
         AndroidInjection.inject(this)
         super.onCreate()
+        disposable = CompositeDisposable()
 
         val d =
                 interactor.getChanges()
@@ -49,7 +50,8 @@ class SeriesSyncService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
-        if (disposable?.isDisposed == false) disposable?.dispose()
+        disposable?.clear()
+        disposable = null
     }
 
     inner class LocalBinder : Binder() {
