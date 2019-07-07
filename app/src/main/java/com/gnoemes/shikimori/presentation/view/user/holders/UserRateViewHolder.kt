@@ -2,9 +2,11 @@ package com.gnoemes.shikimori.presentation.view.user.holders
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.Fade
 import androidx.transition.TransitionManager
+import com.afollestad.materialdialogs.MaterialDialog
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.user.presentation.UserProfileAction
@@ -19,7 +21,7 @@ class UserRateViewHolder(
         private val view: View,
         private val isAnime: Boolean,
         private val actionCallback: (UserProfileAction) -> Unit,
-        private val toggleCallback : (Boolean) -> Unit
+        private val toggleCallback: (Boolean) -> Unit
 ) {
 
     private var item: UserRateViewModel? = null
@@ -27,6 +29,9 @@ class UserRateViewHolder(
     private val scoreAdapter by lazy { UserStatisticItemAdapter() }
     private val typesAdapter by lazy { UserStatisticItemAdapter() }
     private val ratingsAdapter by lazy { UserStatisticItemAdapter() }
+
+    private val smallMargin by lazy { view.context.dp(16) }
+    private val bigMargin by lazy { view.context.dp(32) }
 
     init {
         val rateTypeText: Int = if (isAnime) R.string.profile_rate_anime else R.string.profile_rate_manga
@@ -37,6 +42,15 @@ class UserRateViewHolder(
         view.ratingsLayout.headerView.setText(R.string.profile_ratings)
         view.ratingsLayout.visibleIf { isAnime }
         view.arrowBtn.onClick { toggleCallback.invoke(isAnime) }
+
+        view.scoreLayout.headerView.apply { layoutParams = (layoutParams as ConstraintLayout.LayoutParams).apply { topMargin = context.dp(16) } }
+        view.statisticLabel.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_info, 0)
+        view.statisticLabel.onClick {
+            MaterialDialog(view.context).show {
+                title(R.string.profile_statistic)
+                message(res = if (isAnime) R.string.profile_anime_hint else R.string.profile_manga_hint)
+            }
+        }
 
         with(view.scoreLayout.recyclerView) {
             layoutManager = LinearLayoutManager(view.context)
@@ -88,6 +102,7 @@ class UserRateViewHolder(
     private fun updateVisibility(isExpanded: Boolean) {
         if (isExpanded) TransitionManager.beginDelayedTransition(view as ViewGroup, Fade())
         with(view) {
+            divider.layoutParams = (divider.layoutParams as ConstraintLayout.LayoutParams).apply { topMargin = if (isExpanded) bigMargin else smallMargin }
             scoreLayout.visibleIf { isExpanded && item?.scores?.isNotEmpty() ?: false }
             typesLayout.visibleIf { isExpanded && item?.types?.isNotEmpty() ?: false }
             ratingsLayout.visibleIf { isExpanded && item?.ratings?.isNotEmpty() ?: false }
