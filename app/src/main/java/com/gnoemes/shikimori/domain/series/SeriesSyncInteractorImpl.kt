@@ -21,8 +21,15 @@ class SeriesSyncInteractorImpl @Inject constructor(
 
     override fun getChanges(): Observable<List<EpisodeChanges.Changes>> =
             interactor.getEpisodeChanges()
-                    .buffer(interactor.getEpisodeChanges().debounce(Constants.BIG_DEBOUNCE_INTERVAL, TimeUnit.MILLISECONDS))
-                    .map { list -> list.filter { it is EpisodeChanges.Changes }.map { it as EpisodeChanges.Changes } }
+                    .publish {
+                        Log.i("DEVE","$it")
+                        it.buffer(
+                                it.debounce(Constants.BIG_DEBOUNCE_INTERVAL, TimeUnit.MILLISECONDS)
+                                        .takeUntil(it.ignoreElements().toObservable<List<EpisodeChanges>>())
+                        )
+
+                    }
+                    .map { list -> list.filter { it is EpisodeChanges.Changes }.map { it as EpisodeChanges.Changes }.distinct() }
                     .doOnNext { Log.i("DEVE", it.toString()) }
                     .applyErrorHandlerAndSchedulers()
 

@@ -40,6 +40,7 @@ import com.gnoemes.shikimori.presentation.view.rates.RateView
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
@@ -323,18 +324,21 @@ class RatePresenter @Inject constructor(
     private fun onWatchOnline(rateId: Long) {
         val rateItem = items.find { it is Rate && it.id == rateId } as? Rate
         rateItem?.let { rate ->
-            seriesInteractor.getFirstNotWatchedEpisodeIndex(rate.anime?.id!!)
-                    .flatMap { episodeIndex ->
-                        if (episodeIndex <= rate.episodes!!) seriesInteractor.getWatchedEpisodesCount(rate.anime.id)
-                                .map { watchedCount ->
-                                    if (watchedCount < rate.episodes) {
-                                        if (rate.anime.episodesAired != 0 && (rate.episodes + 1 > rate.anime.episodesAired && rate.episodes + 1 > rate.anime.episodes)) rate.anime.episodes
-                                        else rate.episodes + 1
-                                    } else episodeIndex
-                                }
-                        else if (episodeIndex > rate.anime.episodes && rate.anime.episodes != 0) Single.just(rate.anime.episodes)
-                        else Single.just(episodeIndex)
-                    }
+            val animeId = rate.anime?.id!!
+            Single.zip(
+                    seriesInteractor.getWatchedEpisodesCount(animeId),
+                    seriesInteractor.getFirstNotWatchedEpisodeIndex(animeId),
+                    BiFunction { watched: Int, index: Int -> Pair(watched, index) }
+            ).map { info ->
+                if (info.second <= rate.episodes!!)
+                    if (info.first < rate.episodes)
+                        if (rate.anime.episodesAired != 0 && (rate.episodes + 1 > rate.anime.episodesAired && rate.episodes + 1 > rate.anime.episodes)) rate.anime.episodes
+                        else rate.episodes + 1
+                    else info.second
+                else if (info.second > rate.anime.episodes && rate.anime.episodes != 0) rate.anime.episodes
+                else if (info.first > rate.episodes) rate.episodes + 1
+                else info.second
+            }
                     .subscribe({ checkRateWatchProgress(true, rate, it) }, this::processErrors)
                     .addToDisposables()
         }
@@ -343,6 +347,7 @@ class RatePresenter @Inject constructor(
     //TODO add manga
     private fun checkRateWatchProgress(anime: Boolean, rate: Rate, progress: Int) =
             seriesInteractor.getTranslationSettings(rate.anime?.id!!)
+                    .flatMap { ratesInteractor.getRate(rate.id).ignoreElement().andThen(Single.just(it)) }
                     .subscribe({ watchOnlineOrOpenList(rate, it, progress) }, this::processErrors)
                     .addToDisposables()
 
@@ -354,7 +359,7 @@ class RatePresenter @Inject constructor(
         val episodesAired = if (rate.anime?.status == Status.RELEASED) rate.anime.episodes else rate.anime?.episodesAired
         val navigationData = SeriesNavigationData(settings.animeId, rate.anime?.image!!, name, rate.id, episodesAired!!, progress)
         router.navigateTo(Screens.SERIES, navigationData)
-        analyticInteractor.logEvent(AnalyticEvent.NAVIGATION_ANIME_TRANSLATIONS)
+        analyticInteractor.logEvent(AnalyticEvent.NAVIGATION_ANIME_TRANSLATIONS_FROM_RATES)
     }
 
     fun onChangeRateStatus(id: Long, newStatus: RateStatus) {
