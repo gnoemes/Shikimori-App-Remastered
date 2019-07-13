@@ -75,4 +75,8 @@
 
     <include layout="@layout/layout_default_placeholders" />
 
+    <include
+        android:id="@+id/episodesLayout"
+        layout="@layout/layout_series_empty_authors" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

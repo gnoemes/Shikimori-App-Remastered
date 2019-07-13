@@ -16,7 +16,6 @@ import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
 import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResourceProvider
 import com.gnoemes.shikimori.presentation.presenter.series.episodes.converter.EpisodeViewModelConverter
 import com.gnoemes.shikimori.presentation.view.series.episodes.EpisodesView
-import com.gnoemes.shikimori.utils.appendLoadingLogic
 import com.gnoemes.shikimori.utils.clearAndAddAll
 import io.reactivex.Single
 import javax.inject.Inject
@@ -39,8 +38,9 @@ class EpisodesPresenter @Inject constructor(
 
     override fun initData() {
         super.initData()
-        loadData()
+        isAlternativeSource = navigationData.isAlternative
         rateId = navigationData.rateId ?: rateId
+        loadData()
         subscribeToChanges()
 
         viewState.showAlternativeLabel(navigationData.isAlternative)
@@ -71,7 +71,7 @@ class EpisodesPresenter @Inject constructor(
     private fun showData(items: List<EpisodeViewModel>) {
         if (!query.isNullOrBlank() && items.isEmpty()) viewState.showSearchEmpty()
         else if (items.isEmpty()) {
-            viewState.showEmptyView()
+            viewState.showEmptyEpisodesView(true, isAlternativeSource)
             viewState.showContent(false)
         } else viewState.showData(items)
     }
@@ -173,4 +173,13 @@ class EpisodesPresenter @Inject constructor(
                 .subscribe(this::setData, this::processErrors)
                 .addToDisposables()
     }
+
+    fun <T> Single<T>.appendLoadingLogic(viewState: EpisodesView): Single<T> =
+            this.doOnSubscribe { viewState.onShowLoading() }
+                    .doOnSubscribe { viewState.showEmptyEpisodesView(false) }
+                    .doOnSubscribe { viewState.hideNetworkView() }
+                    .doOnSubscribe { viewState.showContent(true) }
+                    .doAfterTerminate { viewState.onHideLoading() }
+                    .doOnEvent { _, _ -> viewState.onHideLoading() }
+                    .doOnSuccess { viewState.showContent(true) }
 }

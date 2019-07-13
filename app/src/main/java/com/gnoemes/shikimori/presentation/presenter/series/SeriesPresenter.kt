@@ -52,7 +52,7 @@ class SeriesPresenter @Inject constructor(
     override fun initData() {
         super.initData()
         type = settingsSource.translationType
-        episode = if (navigationData.episodesAired < navigationData.episode ?: 0) navigationData.episodesAired else navigationData.episode
+        episode = if (navigationData.episodesAired < navigationData.episode ?: 0) navigationData.episodesAired else navigationData.episode ?: 1
         episodeId = episode?.toLong()
         rateId = navigationData.rateId ?: rateId
 
@@ -110,8 +110,7 @@ class SeriesPresenter @Inject constructor(
             viewState.setEpisodeName(episode!!)
             loadData(episodeId!!)
         } else if (navigationData.episodesAired > 0) {
-            if (episode == null) episode = 0
-            episode = episode?.plus(1)
+            if (episode == null) episode = 1
             viewState.setEpisodeName(episode!!)
             viewState.onHideLoading()
             viewState.hideEmptyView()

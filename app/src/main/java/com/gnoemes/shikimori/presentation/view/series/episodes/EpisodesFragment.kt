@@ -28,6 +28,7 @@ import com.gnoemes.shikimori.utils.*
 import com.gnoemes.shikimori.utils.widgets.VerticalSpaceItemDecorator
 import kotlinx.android.synthetic.main.fragment_episodes.*
 import kotlinx.android.synthetic.main.layout_default_placeholders.*
+import kotlinx.android.synthetic.main.layout_series_empty_authors.*
 
 class EpisodesFragment : BaseBottomSheetInjectionDialogFragment<EpisodesPresenter, EpisodesView>(), EpisodesView, ListDialogFragment.DialogCallback {
 
@@ -69,6 +70,7 @@ class EpisodesFragment : BaseBottomSheetInjectionDialogFragment<EpisodesPresente
         }
 
         searchToolbar.addBackButton { presenter.onSearchClosed() }
+        actionBtn.onClick { presenter.onAlternativeSourceClicked() }
 
         with(recyclerView) {
             adapter = this@EpisodesFragment.adapter
@@ -82,6 +84,7 @@ class EpisodesFragment : BaseBottomSheetInjectionDialogFragment<EpisodesPresente
         networkErrorView.callback = { presenter.onRefresh() }
         emptyContentView.gone()
         networkErrorView.gone()
+        episodesLayout.gone()
     }
 
     private fun configureSearchView() {
@@ -160,6 +163,15 @@ class EpisodesFragment : BaseBottomSheetInjectionDialogFragment<EpisodesPresente
         adapter.bindItems(items)
     }
 
+    override fun onHideLoading() = Unit
+
+    override fun showEmptyEpisodesView(show: Boolean, isAlternative: Boolean) {
+        episodesLayout.visibleIf { show }
+        titleView.setText(R.string.episodes_empty_title)
+        descriptionView.setText(R.string.episodes_empty_description)
+        actionBtn.visibleIf { !isAlternative }
+    }
+
     override fun showAlternativeLabel(show: Boolean) {
         if (show) toolbar.setSubtitle(R.string.series_alternative_source)
         else toolbar.subtitle = null
@@ -177,8 +189,7 @@ class EpisodesFragment : BaseBottomSheetInjectionDialogFragment<EpisodesPresente
         }.show(childFragmentManager, "OptionsTag")
     }
 
-    override fun onHideLoading() = Unit
-    override fun showContent(show: Boolean) = Unit
+    override fun showContent(show: Boolean) = recyclerView.visibleIf { show }
 
     override fun showSearchEmpty() {
         val item = SeriesPlaceholderItem(R.string.episode_search_empty_title, R.string.episode_search_empty_desc)
