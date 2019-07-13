@@ -119,7 +119,7 @@
     <string name="settings_about_version_key" translatable="false">VERSION_KEY</string>
 
     <string name="settings_about_send_key" translatable="false">SEND_MAIL_KEY</string>
-    <string name="settings_about_send_title">Написать пожелание</string>
+    <string name="settings_about_send_title">Обратная связь</string>
 
     <string name="settings_about_forum_key" translatable="false">OPEN_FORUM_KEY</string>
     <string name="settings_about_forum_title">Форум на 4PDA</string>
