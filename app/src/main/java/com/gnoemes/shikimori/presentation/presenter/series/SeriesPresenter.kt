@@ -52,13 +52,16 @@ class SeriesPresenter @Inject constructor(
     override fun initData() {
         super.initData()
         type = settingsSource.translationType
-        episode = if (navigationData.episodesAired < navigationData.episode ?: 0) navigationData.episodesAired else navigationData.episode ?: 1
+        episode = if (navigationData.episodesAired < navigationData.episode ?: 0) navigationData.episodesAired else navigationData.episode
         episodeId = episode?.toLong()
         rateId = navigationData.rateId ?: rateId
 
         viewState.setBackground(navigationData.image)
         viewState.setTitle(navigationData.name)
+
         if (episode != null) viewState.setEpisodeName(episode!!)
+        else viewState.showFab(false)
+
         if (navigationData.episodesAired == 1) {
             viewState.hideEpisodeName()
             viewState.showNextEpisode(false)
@@ -109,6 +112,7 @@ class SeriesPresenter @Inject constructor(
             viewState.showNextEpisode(episode != navigationData.episodesAired)
             viewState.setEpisodeName(episode!!)
             loadData(episodeId!!)
+            viewState.showFab(true)
         } else if (navigationData.episodesAired > 0) {
             if (episode == null) episode = 1
             viewState.setEpisodeName(episode!!)
@@ -117,12 +121,13 @@ class SeriesPresenter @Inject constructor(
             viewState.showNextEpisode(episode != navigationData.episodesAired)
             viewState.showEmptyAuthorsView(true, isAlternative)
             viewState.showContent(false)
+            viewState.showFab(true)
         } else {
             viewState.onHideLoading()
             viewState.showEmptyView()
             viewState.hideEpisodeName()
             viewState.showNextEpisode(false)
-            viewState.hideFab()
+            viewState.showFab(false)
         }
     }
 
@@ -160,6 +165,7 @@ class SeriesPresenter @Inject constructor(
             viewState.showNextEpisode(episode != navigationData.episodesAired)
             viewState.setEpisodeName(episode!!)
             loadData(episodeId!!)
+            viewState.showFab(true)
         } else if (navigationData.episodesAired > 0) {
             if (episode == null) episode = 0
             episode = episode?.plus(1)
@@ -169,12 +175,13 @@ class SeriesPresenter @Inject constructor(
             viewState.hideEmptyView()
             viewState.showEmptyAuthorsView(true, isAlternative)
             viewState.showContent(false)
+            viewState.showFab(true)
         } else {
             viewState.onHideLoading()
             viewState.showEmptyView()
             viewState.hideEpisodeName()
             viewState.showNextEpisode(false)
-            viewState.hideFab()
+            viewState.showFab(false)
         }
     }
 
@@ -257,10 +264,12 @@ class SeriesPresenter @Inject constructor(
     }
 
     fun onDiscussionClicked() {
-        logEvent(AnalyticEvent.ANIME_TRANSLATIONS_DISCUSSION)
-        interactor.getTopic(navigationData.animeId, episode!!)
-                .subscribe(this::onTopicClicked, this::onDiscussionNotExist)
-                .addToDisposables()
+        if (episode != null) {
+            logEvent(AnalyticEvent.ANIME_TRANSLATIONS_DISCUSSION)
+            interactor.getTopic(navigationData.animeId, episode!!)
+                    .subscribe(this::onTopicClicked, this::onDiscussionNotExist)
+                    .addToDisposables()
+        }
     }
 
     fun onQueryChanged(newText: String?) {
@@ -353,7 +362,7 @@ class SeriesPresenter @Inject constructor(
 
     private fun onDiscussionNotExist(throwable: Throwable?) {
         router.showSystemMessage(commonResourceProvider.topicNotFound)
-        viewState.hideFab()
+        viewState.showFab(false)
     }
 
     private fun processDownloadErrors(throwable: Throwable) {
