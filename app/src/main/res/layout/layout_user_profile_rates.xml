@@ -146,7 +146,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            android:drawablePadding="8dp"
+            android:drawablePadding="4dp"
             android:gravity="center_vertical"
             android:text="@string/profile_statistic"
             android:textColor="?attr/colorOnSurface"
@@ -154,7 +154,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/divider"
-            tools:drawableEnd="@drawable/ic_info"
+            tools:drawableEnd="@drawable/ic_mini_info"
             tools:drawableTint="?attr/colorOnSurface" />
 
         <ImageButton

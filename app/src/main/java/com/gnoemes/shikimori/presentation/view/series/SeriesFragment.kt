@@ -374,7 +374,7 @@ class SeriesFragment : BaseFragment<SeriesPresenter, SeriesView>(),
     override fun hideNetworkView() = networkErrorView.gone()
     override fun setBackground(image: Image) = imageLoader.setBlurredImage(backgroundImage, image.original, sampling = 2)
     override fun scrollToPosition(position: Int) = recyclerView.scrollToPosition(position)
-    override fun hideFab() = fab.hide()
+    override fun showFab(show: Boolean) = if (show) fab.show() else fab.hide()
     override fun onShowLoading() = progress.visible()
     override fun onHideLoading() = progress.gone()
     override fun onShowLightLoading() = progress.visible()

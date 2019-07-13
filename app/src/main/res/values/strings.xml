@@ -336,6 +336,8 @@
     <string name="episode_search_empty_title">Эпизод не найден</string>
     <string name="episode_search_empty_desc">Неверный запрос или его еще не выложили</string>
     <string name="episode_opened">Открыт</string>
+    <string name="episodes_empty_title">Эпизоды не найдены</string>
+    <string name="episodes_empty_description">В основном источнике ничего нет</string>
     <string name="translation_authors">Авторы</string>
     <string name="translation_downloadable">Можно скачать</string>
     <string name="translation_sources">Источники</string>
@@ -391,8 +393,8 @@
     <string name="profile_ratings">Рейтинги</string>
     <string name="profile_history_format">История %s</string>
     <string name="profile_statistic">Расширенная статистика</string>
-    <string name="profile_anime_hint">Сайт Шикимори формирует расширенную статистику по спискам «Смотрю», «Пересматриваю» и «Просмотрено».</string>
-    <string name="profile_manga_hint">Сайт Шикимори формирует расширенную статистику по спискам «Читаю», «Перечитываю» и «Прочитано».</string>
+    <string name="profile_anime_hint">Формируется по спискам «Смотрю», «Пересматриваю» и «Просмотрено».</string>
+    <string name="profile_manga_hint">Формируется по спискам «Читаю», «Перечитываю» и «Прочитано».</string>
 
     <string name="club_free">Свободное обсуждение и вступление</string>
     <string name="club_free_join">Свободное вступление</string>

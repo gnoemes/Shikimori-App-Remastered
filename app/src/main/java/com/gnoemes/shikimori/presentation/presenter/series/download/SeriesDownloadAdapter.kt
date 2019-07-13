@@ -29,7 +29,7 @@ class SeriesDownloadAdapter(
         private lateinit var item: SeriesDownloadItem
 
         init {
-            itemView.downloadBtn.onClick { callback?.onDownload(item.url, item.video); onAction.invoke() }
+            itemView.episodeContainer.onClick { callback?.onDownload(item.url, item.video); onAction.invoke() }
             itemView.sharingBtn.onClick { callback?.onShare(item.url) }
         }
 

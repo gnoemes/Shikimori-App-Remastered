@@ -33,6 +33,11 @@ class SettingsFragment : BaseSettingsFragment() {
         }
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        listView?.isVerticalScrollBarEnabled = false
+    }
+
     private fun openWeb(url: String) {
         startActivity(Intent(Intent.ACTION_VIEW, url.toUri()))
     }

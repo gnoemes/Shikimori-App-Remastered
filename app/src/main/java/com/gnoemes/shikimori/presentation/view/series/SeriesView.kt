@@ -47,7 +47,7 @@ interface SeriesView : BaseFragmentView {
     @StateStrategyType(SkipStrategy::class)
     fun showQualityChooser(items: List<Pair<String, String>>)
 
-    fun hideFab()
+    fun showFab(show : Boolean)
 
     fun setBackground(image: Image)
 

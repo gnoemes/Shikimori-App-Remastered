@@ -2,5 +2,5 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:color="?attr/colorSecondaryTransparent" android:state_selected="true" />
     <item android:color="?attr/colorSecondaryTransparent" android:state_checked="true" />
-    <item android:color="?attr/colorSurface"/>
+    <item android:color="@android:color/transparent" />
 </selector>

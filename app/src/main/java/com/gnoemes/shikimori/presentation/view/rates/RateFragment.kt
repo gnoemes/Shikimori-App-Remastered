@@ -203,8 +203,8 @@ class RateFragment : BasePaginationFragment<Rate, RatePresenter, RateView>(), Ra
         updateNavColors(RateStatus.WATCHING.ordinal)
         navView.setNavigationItemSelectedListener {
             getPresenter().onChangeStatus(RateStatus.values()[it.itemId])
-            navView.menu.iterator().forEach { item -> item.actionView.isSelected = false }
-            it.actionView.isSelected = true
+            navView.menu.iterator().forEach { item -> item.actionView?.isSelected = false }
+            it.actionView?.isSelected = true
             true
         }
 
