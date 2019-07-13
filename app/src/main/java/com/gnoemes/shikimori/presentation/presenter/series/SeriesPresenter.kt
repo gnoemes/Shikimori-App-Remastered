@@ -109,6 +109,15 @@ class SeriesPresenter @Inject constructor(
             viewState.showNextEpisode(episode != navigationData.episodesAired)
             viewState.setEpisodeName(episode!!)
             loadData(episodeId!!)
+        } else if (navigationData.episodesAired > 0) {
+            if (episode == null) episode = 0
+            episode = episode?.plus(1)
+            viewState.setEpisodeName(episode!!)
+            viewState.onHideLoading()
+            viewState.hideEmptyView()
+            viewState.showNextEpisode(episode != navigationData.episodesAired)
+            viewState.showEmptyAuthorsView(true, isAlternative)
+            viewState.showContent(false)
         } else {
             viewState.onHideLoading()
             viewState.showEmptyView()
@@ -152,6 +161,15 @@ class SeriesPresenter @Inject constructor(
             viewState.showNextEpisode(episode != navigationData.episodesAired)
             viewState.setEpisodeName(episode!!)
             loadData(episodeId!!)
+        } else if (navigationData.episodesAired > 0) {
+            if (episode == null) episode = 0
+            episode = episode?.plus(1)
+            viewState.setEpisodeName(episode!!)
+            viewState.showNextEpisode(episode != navigationData.episodesAired)
+            viewState.onHideLoading()
+            viewState.hideEmptyView()
+            viewState.showEmptyAuthorsView(true, isAlternative)
+            viewState.showContent(false)
         } else {
             viewState.onHideLoading()
             viewState.showEmptyView()
