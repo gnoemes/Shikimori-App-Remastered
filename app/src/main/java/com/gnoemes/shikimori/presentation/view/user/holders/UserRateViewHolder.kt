@@ -44,7 +44,7 @@ class UserRateViewHolder(
         view.arrowBtn.onClick { toggleCallback.invoke(isAnime) }
 
         view.scoreLayout.headerView.apply { layoutParams = (layoutParams as ConstraintLayout.LayoutParams).apply { topMargin = context.dp(16) } }
-        view.statisticLabel.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_info, 0)
+        view.statisticLabel.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_mini_info, 0)
         view.statisticLabel.onClick {
             MaterialDialog(view.context).show {
                 message(res = if (isAnime) R.string.profile_anime_hint else R.string.profile_manga_hint)
