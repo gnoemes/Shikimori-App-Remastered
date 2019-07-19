@@ -70,7 +70,7 @@ class SettingsSourceImpl @Inject constructor(
 
     override var rateSwipeToRightAction: RateSwipeAction
         get() = prefs.getString(SettingsExtras.RATE_SWIPE_TO_RIGHT_ACTION, RateSwipeAction.DISABLED.name)?.let { action ->
-            RateSwipeAction.values().find { it.name == action } ?: RateSwipeAction.DISABLED
-        } ?: RateSwipeAction.DISABLED
+            RateSwipeAction.values().find { it.name == action } ?: RateSwipeAction.CHANGE
+        } ?: RateSwipeAction.CHANGE
         set(value) = prefs.putString(SettingsExtras.RATE_SWIPE_TO_RIGHT_ACTION, value.name)
 }

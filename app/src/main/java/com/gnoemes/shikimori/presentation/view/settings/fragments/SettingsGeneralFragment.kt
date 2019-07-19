@@ -32,7 +32,7 @@ class SettingsGeneralFragment : BaseSettingsFragment() {
         }
 
         preference(SettingsExtras.RATE_SWIPE_TO_RIGHT_ACTION)?.apply {
-            summary = getRateActionSummary(prefs().getString(key, RateSwipeAction.DISABLED.name)!!)
+            summary = getRateActionSummary(prefs().getString(key, RateSwipeAction.CHANGE.name)!!)
             setOnPreferenceClickListener { showRateSwipeActionDialog(key); true }
         }
     }
