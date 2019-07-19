@@ -9,10 +9,13 @@ class ShareResourceProviderImpl @Inject constructor(
 ) : ShareResourceProvider {
 
     override fun getEpisodeShareFormattedMessage(title: String, episode: Int, url: String): String {
-        return "$title \n" +
+        return "[" +
                 String.format(context.getString(R.string.episode_number), episode) +
                 " • " +
-                context.getString(R.string.app_name) + "\n\n" +
+                context.getString(R.string.app_name) +
+                "]" +
+                "\n" +
+                "$title \n\n" +
                 url
     }
 
