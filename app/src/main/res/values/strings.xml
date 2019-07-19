@@ -247,8 +247,9 @@
     <string name="sort_episodes">По эпизодам</string>
     <string name="sort_chapters">По главам</string>
     <string name="sort_volumes">По кол-ву томов</string>
-    <string name="sort_episodes_watched">По прогрессу</string>
-    <string name="sort_chapters_readed">По прогрессу</string>
+    <string name="sort_episodes_watched">По эпизодам</string>
+    <string name="sort_chapters_readed">По главам</string>
+    <string name="sort_progress">По прогрессу</string>
     <string name="sort_score">По оценке</string>
     <string name="sort_random">Рандом</string>
     <string name="sort_popularity">По популярности</string>
