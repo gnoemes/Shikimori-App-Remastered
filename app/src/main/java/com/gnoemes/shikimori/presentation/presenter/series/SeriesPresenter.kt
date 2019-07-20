@@ -49,6 +49,8 @@ class SeriesPresenter @Inject constructor(
     private var selectedDownloadVideo: Video? = null
     private var selectedPlayer: PlayerType? = null
 
+    private var isWatchSession = false
+
     override fun initData() {
         super.initData()
         type = settingsSource.translationType
@@ -62,8 +64,7 @@ class SeriesPresenter @Inject constructor(
         if (episode != null) {
             viewState.setEpisodeName(episode!!)
             viewState.showNextEpisode(episode != navigationData.episodesAired)
-        }
-        else viewState.showFab(false)
+        } else viewState.showFab(false)
 
         if (navigationData.episodesAired == 1) {
             viewState.hideEpisodeName()
@@ -72,6 +73,16 @@ class SeriesPresenter @Inject constructor(
 
         loadWithEpisode()
         analyzeType(type)
+    }
+
+    override fun onViewReattached() {
+        super.onViewReattached()
+
+        if (isWatchSession) {
+            episodeId = null
+            episode = null
+            loadWithEpisode()
+        }
     }
 
     private fun loadWithEpisode() {
@@ -109,8 +120,9 @@ class SeriesPresenter @Inject constructor(
     fun onRefresh() = loadWithEpisode()
 
     private fun openPriorityEpisode(items: List<Episode>) {
-        if (episode == null) episode = items.firstOrNull { !it.isWatched }?.index ?: items.lastOrNull { it.isWatched }?.index
+        if (episode == null) episode = if (!isWatchSession) items.firstOrNull { !it.isWatched }?.index ?: items.lastOrNull { it.isWatched }?.index else items.lastOrNull { it.isWatched }?.index
         episodeId = items.firstOrNull { it.index == episode }?.id
+        isWatchSession = false
         if (episode != null && episodeId != null) {
             viewState.showNextEpisode(episode != navigationData.episodesAired)
             viewState.setEpisodeName(episode!!)
@@ -317,6 +329,7 @@ class SeriesPresenter @Inject constructor(
     override fun openPlayer(playerType: PlayerType, payload: Any?) {
         super.openPlayer(playerType, payload)
 
+        isWatchSession = true
         saveSettingsAndIncrementOptional(playerType != PlayerType.EMBEDDED, selectedVideo)
     }
 
