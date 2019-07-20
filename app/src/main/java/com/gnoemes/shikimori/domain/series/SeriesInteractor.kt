@@ -1,6 +1,5 @@
 package com.gnoemes.shikimori.domain.series
 
-import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.series.domain.*
 import com.gnoemes.shikimori.entity.series.presentation.TranslationVideo
 import io.reactivex.Completable
@@ -18,12 +17,6 @@ interface SeriesInteractor {
     fun saveTranslationSettings(settings : TranslationSetting) : Completable
 
     fun getVideo(payload : TranslationVideo, alternative: Boolean) : Single<Video>
-
-    fun setEpisodeWatched(animeId: Long, episodeId: Int, rateId: Long = Constants.NO_ID, onlyLocal: Boolean): Completable
-
-    fun setEpisodeUnwatched(animeId: Long, episodeId: Int, rateId: Long, onlyLocal: Boolean) : Completable
-
-    fun setEpisodeStatus(animeId: Long, episodeId: Int, rateId: Long, isWatching : Boolean, onlyLocal : Boolean = false) : Completable
 
     fun getEpisodeChanges() : Observable<EpisodeChanges>
 

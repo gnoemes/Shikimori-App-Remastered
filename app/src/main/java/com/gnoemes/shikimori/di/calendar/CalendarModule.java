@@ -7,8 +7,6 @@ import com.gnoemes.shikimori.data.repository.calendar.CalendarRepository;
 import com.gnoemes.shikimori.data.repository.calendar.CalendarRepositoryImpl;
 import com.gnoemes.shikimori.data.repository.calendar.converter.CalendarResponseConverter;
 import com.gnoemes.shikimori.data.repository.calendar.converter.CalendarResponseConverterImpl;
-import com.gnoemes.shikimori.data.repository.common.RateResponseConverter;
-import com.gnoemes.shikimori.data.repository.common.impl.RateResponseConverterImpl;
 import com.gnoemes.shikimori.di.base.modules.BaseChildFragmentModule;
 import com.gnoemes.shikimori.di.base.scopes.BottomScope;
 import com.gnoemes.shikimori.di.search.SearchRepositoryModule;
@@ -47,9 +45,6 @@ public interface CalendarModule {
 
     @Binds
     CalendarViewModelConverter bindCalendarViewModelConverter(CalendarViewModelConverterImpl converter);
-
-    @Binds
-    RateResponseConverter bindRateResponseConverter(RateResponseConverterImpl converter);
 
     @Binds
     @Named(BaseChildFragmentModule.CHILD_FRAGMENT)

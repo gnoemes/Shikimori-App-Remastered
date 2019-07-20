@@ -14,7 +14,6 @@ import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.forum.domain.ForumType
 import com.gnoemes.shikimori.entity.series.domain.*
 import com.gnoemes.shikimori.entity.series.presentation.TranslationVideo
-import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
@@ -73,12 +72,6 @@ class SeriesRepositoryImpl @Inject constructor(
     override fun getTopic(animeId: Long, episodeId: Int): Single<Long> =
             topicApi.getList(1, 1000, ForumType.ANIME_AND_MANGA.type, "Anime", animeId)
                     .map { list -> list.firstOrNull { it.episode?.toIntOrNull() == episodeId }?.id }
-
-    override fun setEpisodeStatus(animeId: Long, episodeId: Int, isWatched: Boolean): Completable =
-            if (isWatched) episodeSource.episodeWatched(animeId, episodeId)
-            else episodeSource.episodeUnWatched(animeId, episodeId)
-
-    override fun isEpisodeWatched(animeId: Long, episodeId: Int): Single<Boolean> = episodeSource.isEpisodeWatched(animeId, episodeId)
 
     override fun getFirstNotWatchedEpisodeIndex(animeId: Long): Single<Int> = episodeSource.getFirstNotWatchedEpisodeIndex(animeId)
 

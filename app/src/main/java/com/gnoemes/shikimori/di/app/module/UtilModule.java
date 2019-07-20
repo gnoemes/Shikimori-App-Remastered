@@ -4,6 +4,16 @@ import android.content.Context;
 
 import com.gnoemes.shikimori.data.repository.club.ClubResponseConverter;
 import com.gnoemes.shikimori.data.repository.club.ClubResponseConverterImpl;
+import com.gnoemes.shikimori.data.repository.common.RateResponseConverter;
+import com.gnoemes.shikimori.data.repository.common.impl.RateResponseConverterImpl;
+import com.gnoemes.shikimori.data.repository.user.converter.FavoriteListResponseConverter;
+import com.gnoemes.shikimori.data.repository.user.converter.FavoriteListResponseConverterImpl;
+import com.gnoemes.shikimori.data.repository.user.converter.MessageResponseConverter;
+import com.gnoemes.shikimori.data.repository.user.converter.MessageResponseConverterImpl;
+import com.gnoemes.shikimori.data.repository.user.converter.UserDetailsResponseConverter;
+import com.gnoemes.shikimori.data.repository.user.converter.UserDetailsResponseConverterImpl;
+import com.gnoemes.shikimori.data.repository.user.converter.UserHistoryConverter;
+import com.gnoemes.shikimori.data.repository.user.converter.UserHistoryConverterImpl;
 import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResourceProvider;
 import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResourceProviderImpl;
 import com.gnoemes.shikimori.presentation.presenter.common.provider.ShareResourceProvider;
@@ -68,4 +78,23 @@ public interface UtilModule {
     @Reusable
     ShareResourceProvider bindShareResourceProvider(ShareResourceProviderImpl provider);
 
+    @Binds
+    @Reusable
+    RateResponseConverter bindRateResponseConverter(RateResponseConverterImpl converter);
+
+    @Binds
+    @Reusable
+    UserDetailsResponseConverter bindUserDetailsResponseConverter(UserDetailsResponseConverterImpl converter);
+
+    @Binds
+    @Reusable
+    UserHistoryConverter bindUserHistoryConverter(UserHistoryConverterImpl converter);
+
+    @Binds
+    @Reusable
+    FavoriteListResponseConverter bindFavoriteListResponseConverter(FavoriteListResponseConverterImpl converter);
+
+    @Binds
+    @Reusable
+    MessageResponseConverter bindMessageResponseConverter(MessageResponseConverterImpl converter);
 }
