@@ -58,7 +58,7 @@ class CalendarFragment : BaseFragment<CalendarPresenter, CalendarView>(), Calend
             adapter = this@CalendarFragment.adapter
             layoutManager = LinearLayoutManager(context).apply { initialPrefetchItemCount = 3 }
             val customSpacing = context.dp(84)
-            addItemDecoration(VerticalSpaceItemDecorator(context.dp(32), true, firstCustomSpacing = customSpacing, lastCustomSpacing = context!!.dp(32)))
+            addItemDecoration(VerticalSpaceItemDecorator(context.dp(20), true, firstCustomSpacing = customSpacing, lastCustomSpacing = context!!.dp(20)))
             setHasFixedSize(true)
         }
 
