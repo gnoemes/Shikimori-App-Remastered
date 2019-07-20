@@ -59,7 +59,10 @@ class SeriesPresenter @Inject constructor(
         viewState.setBackground(navigationData.image)
         viewState.setTitle(navigationData.name)
 
-        if (episode != null) viewState.setEpisodeName(episode!!)
+        if (episode != null) {
+            viewState.setEpisodeName(episode!!)
+            viewState.showNextEpisode(episode != navigationData.episodesAired)
+        }
         else viewState.showFab(false)
 
         if (navigationData.episodesAired == 1) {
