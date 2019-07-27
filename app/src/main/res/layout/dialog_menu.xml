@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -19,10 +20,13 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@android:color/transparent"
             android:fitsSystemWindows="true"
+            app:buttonGravity="top"
+            app:contentInsetStartWithNavigation="0dp"
             app:layout_scrollFlags="snap"
             app:popupTheme="@style/PopupMenuTheme"
             app:title="@string/app_name"
-            app:titleTextAppearance="@style/ToolbarSmallTextAppearance" />
+            app:titleTextAppearance="@style/ToolbarSmallTextAppearance"
+            tools:navigationIcon="@drawable/ic_close" />
 
         <View
             android:layout_width="match_parent"
@@ -32,9 +36,15 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="4dp"
+        app:srcCompat="@drawable/ic_knob" />
+
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navView"
-        android:theme="@style/NavigationDialogMenuStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
@@ -43,6 +53,7 @@
         android:paddingEnd="0dp"
         android:paddingRight="0dp"
         android:paddingBottom="64dp"
+        android:theme="@style/NavigationDialogMenuStyle"
         app:itemIconTint="?attr/colorOnSurface"
         app:itemTextAppearance="@style/MenuTextAppearance"
         app:itemTextColor="?attr/colorOnSurface"

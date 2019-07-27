@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.common.presentation.RateSort
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseBottomSheetDialogFragment
+import com.gnoemes.shikimori.utils.addBackButton
 import com.gnoemes.shikimori.utils.colorStateList
 import com.gnoemes.shikimori.utils.dimenAttr
 import com.gnoemes.shikimori.utils.withArgs
@@ -42,7 +43,10 @@ class RateSortDialog : BaseBottomSheetDialogFragment() {
 
         val sorts = arguments?.getParcelableArray(SORTS_KEY)?.map { it as Sort }!!
 
-        toolbar.setTitle(R.string.sort)
+        with(toolbar) {
+            setTitle(R.string.sort)
+            addBackButton(R.drawable.ic_close) { dismiss() }
+        }
 
         navView.apply {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

@@ -12,6 +12,7 @@ import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseBottomSheetDialogFragment
+import com.gnoemes.shikimori.utils.addBackButton
 import com.gnoemes.shikimori.utils.colorStateList
 import com.gnoemes.shikimori.utils.dimenAttr
 import com.gnoemes.shikimori.utils.withArgs
@@ -53,7 +54,10 @@ class RateStatusDialog : BaseBottomSheetDialogFragment() {
                 .zip(RateStatus.values())
                 .map { Rate(it.second.ordinal, it.second, it.first, currentStatus == it.second, getIcon(it.second), getTintColor(it.second), getSelector(it.second)) }
 
-        toolbar.title = arguments?.getString(TITLE)
+        with(toolbar) {
+            title = arguments?.getString(TITLE)
+            addBackButton(R.drawable.ic_close) { dismiss() }
+        }
 
         navView.apply {
 

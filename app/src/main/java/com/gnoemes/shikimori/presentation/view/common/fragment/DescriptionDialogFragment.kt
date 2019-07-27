@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseBottomSheetDialogFragment
+import com.gnoemes.shikimori.utils.addBackButton
 import com.gnoemes.shikimori.utils.dimenAttr
 import com.gnoemes.shikimori.utils.withArgs
 import kotlinx.android.synthetic.main.dialog_base_bottom_sheet.*
@@ -42,8 +43,7 @@ class DescriptionDialogFragment : BaseBottomSheetDialogFragment() {
 
         with(toolbar) {
             this@DescriptionDialogFragment.title?.let { title = it } ?: setTitle(titleRes)
-            inflateMenu(R.menu.menu_close)
-            setOnMenuItemClickListener { dismiss(); true }
+            addBackButton(R.drawable.ic_close) { dismiss() }
         }
 
         descriptionView.text = text
