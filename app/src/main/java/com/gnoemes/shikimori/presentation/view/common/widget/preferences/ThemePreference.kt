@@ -1,7 +1,6 @@
 package com.gnoemes.shikimori.presentation.view.common.widget.preferences
 
 import android.content.Context
-import android.content.res.TypedArray
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
@@ -38,10 +37,6 @@ class ThemePreference @JvmOverloads constructor(context: Context,
 
     init {
         layoutResource = R.layout.view_theme_preference
-    }
-
-    override fun onGetDefaultValue(a: TypedArray, index: Int): Any {
-        return a.getInt(index, R.style.ShikimoriAppTheme_Default)
     }
 
     override fun onSetInitialValue(defaultValue: Any?) {

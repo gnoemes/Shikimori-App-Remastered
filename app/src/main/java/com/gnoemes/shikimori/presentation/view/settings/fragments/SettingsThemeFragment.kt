@@ -74,7 +74,7 @@ class SettingsThemeFragment : BaseSettingsFragment(), Toolbar.OnMenuItemClickLis
         R.style.ShikimoriAppTheme_Default -> Theme.DEFAULT.index
         R.style.ShikimoriAppTheme_Dark -> Theme.DARK.index
         R.style.ShikimoriAppTheme_Amoled -> Theme.AMOLED.index
-        else -> Theme.DEFAULT.index
+        else -> -1
     }
 
     override fun onDestroy() {
