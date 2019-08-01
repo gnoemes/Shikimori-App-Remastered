@@ -6,13 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="8dp"
+    app:cardElevation="0dp"
     app:cardPreventCornerOverlap="false">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:foreground="?selectableItemBackgroundBorderless"
-        >
+        android:foreground="?selectableItemBackgroundBorderless">
 
         <ImageView
             android:id="@+id/imageView"
