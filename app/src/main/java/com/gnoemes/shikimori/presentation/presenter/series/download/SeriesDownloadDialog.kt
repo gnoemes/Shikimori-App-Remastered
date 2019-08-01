@@ -42,7 +42,6 @@ class SeriesDownloadDialog : BaseBottomSheetDialogFragment() {
 
         with(toolbar) {
             title = arguments?.getString(TITLE_KEY)
-            addBackButton(R.drawable.ic_close) { dismiss() }
         }
 
         val seriesAdapter = SeriesDownloadAdapter(items, (parentFragment as? SeriesDownloadCallback)) { dismiss() }

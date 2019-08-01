@@ -45,7 +45,6 @@ class RateSortDialog : BaseBottomSheetDialogFragment() {
 
         with(toolbar) {
             setTitle(R.string.sort)
-            addBackButton(R.drawable.ic_close) { dismiss() }
         }
 
         navView.apply {
