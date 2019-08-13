@@ -39,20 +39,21 @@
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/searchView"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="24dp"
             android:layout_weight="1"
             android:background="@android:color/transparent"
+            android:visibility="gone"
             app:closeIcon="@null"
             app:iconifiedByDefault="false"
             app:queryBackground="@android:color/transparent"
             app:queryHint="@string/details_character_search_hint"
             app:searchIcon="@null"
+            app:search_animation_duration="0"
             app:search_elevation="0dp"
-            android:visibility="gone"
             app:search_hint_color="?attr/colorTransparentBackground"
             app:search_text_color="?attr/colorOnSurface"
-            app:search_text_size="16sp" />
+            app:search_text_size="20sp" />
 
         <ImageButton
             android:id="@+id/closeBtn"
@@ -60,9 +61,9 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
-            android:visibility="gone"
             android:background="@android:color/transparent"
             android:tint="?attr/colorOnSurface"
+            android:visibility="gone"
             app:srcCompat="@drawable/ic_close" />
 
     </LinearLayout>

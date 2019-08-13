@@ -1,6 +1,7 @@
 package com.gnoemes.shikimori.utils
 
 import android.content.Context
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -16,6 +17,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.utils.widgets.DebouncedOnClickListener
+import com.gnoemes.shikimori.utils.widgets.DebouncedOnMenuClickListener
 import com.google.android.material.snackbar.Snackbar
 
 fun View.visible() {
@@ -38,11 +40,17 @@ inline fun View.visibleIf(block: () -> Boolean) {
     if (block()) visible() else gone()
 }
 
-fun View.onClick(mills : Long = Constants.DEFAULT_DEBOUNCE_INTERVAL, l: (v: View) -> Unit) {
+inline fun View.onClick(mills: Long = Constants.DEFAULT_DEBOUNCE_INTERVAL, crossinline l: (v: View) -> Unit) {
     setOnClickListener(object : DebouncedOnClickListener(mills) {
         override fun onDebouncedClick(v: View?) {
             if (v != null) l.invoke(v)
         }
+    })
+}
+
+inline fun Toolbar.onMenuClick(mills: Long = Constants.DEFAULT_DEBOUNCE_INTERVAL, crossinline l: (item: MenuItem?) -> Boolean) {
+    setOnMenuItemClickListener(object : DebouncedOnMenuClickListener(mills) {
+        override fun onDebouncedClick(v: MenuItem?): Boolean = l.invoke(v)
     })
 }
 

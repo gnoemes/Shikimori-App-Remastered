@@ -20,5 +20,7 @@ sealed class DetailsAction {
     object OpenInBrowser : DetailsAction()
     object Chronology : DetailsAction()
     object ClearHistory : DetailsAction()
+    object AddVideo : DetailsAction()
+    object Share : DetailsAction()
 
 }

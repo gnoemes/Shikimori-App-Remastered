@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.appcompat.widget.SearchView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.transition.Fade
@@ -110,7 +109,7 @@ abstract class BaseDetailsFragment<Presenter : BaseDetailsPresenter<View>, View 
         descriptionHolder = DetailsDescriptionViewHolder(descriptionLayout, getPresenter()::onContentClicked)
 
         with(charactersLayout.searchView) {
-            (this@with as LinearLayoutCompat).layoutTransition = null
+            findViewById<LinearLayout>(R.id.search_bar)?.layoutTransition = null
             setOnCloseListener {
                 getPresenter().onCharacterSearch(null)
                 true
@@ -141,12 +140,14 @@ abstract class BaseDetailsFragment<Presenter : BaseDetailsPresenter<View>, View 
 
         with(charactersLayout) {
             searchBtn.onClick {
-                TransitionManager.beginDelayedTransition(this@with as ViewGroup, Fade())
-                contentLabelView.gone()
-                searchBtn.gone()
-                searchView.visible()
                 searchView.isIconified = false
-                closeBtn.visible()
+                searchView.post {
+                    TransitionManager.beginDelayedTransition(this@with as ViewGroup, Fade())
+                    contentLabelView.gone()
+                    searchBtn.gone()
+                    searchView.visible()
+                    closeBtn.visible()
+                }
             }
             closeBtn.onClick {
                 TransitionManager.beginDelayedTransition(this@with as ViewGroup, Fade())
@@ -154,8 +155,8 @@ abstract class BaseDetailsFragment<Presenter : BaseDetailsPresenter<View>, View 
                 searchBtn.visible()
                 searchView.setQuery("", false)
                 searchView.gone()
-                searchView.isIconified = true
                 closeBtn.gone()
+                searchView.isIconified = true
             }
         }
     }
