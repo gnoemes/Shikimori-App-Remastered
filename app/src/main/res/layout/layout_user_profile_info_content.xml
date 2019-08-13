@@ -182,7 +182,7 @@
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/messageLabel"
         app:rippleColor="?attr/colorSecondaryTransparent"
-        app:strokeColor="@drawable/selector_circle_button_stroke_color"
+        app:strokeColor="@color/selector_circle_button_stroke_color"
         app:strokeWidth="1dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

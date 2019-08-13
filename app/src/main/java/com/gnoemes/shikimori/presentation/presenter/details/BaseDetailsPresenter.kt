@@ -7,10 +7,12 @@ import com.gnoemes.shikimori.entity.common.domain.*
 import com.gnoemes.shikimori.entity.common.presentation.DetailsAction
 import com.gnoemes.shikimori.entity.common.presentation.DetailsContentType
 import com.gnoemes.shikimori.entity.common.presentation.DetailsHeadItem
+import com.gnoemes.shikimori.entity.common.presentation.PlaceholderItem
 import com.gnoemes.shikimori.entity.main.BottomScreens
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.rates.domain.UserRate
 import com.gnoemes.shikimori.entity.roles.domain.Character
+import com.gnoemes.shikimori.entity.roles.domain.Person
 import com.gnoemes.shikimori.entity.search.presentation.SearchNavigationData
 import com.gnoemes.shikimori.entity.search.presentation.SearchPayload
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
@@ -20,6 +22,7 @@ import com.gnoemes.shikimori.presentation.presenter.common.converter.LinkViewMod
 import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResourceProvider
 import com.gnoemes.shikimori.presentation.view.details.BaseDetailsView
 import com.gnoemes.shikimori.utils.appendLightLoadingLogic
+import com.gnoemes.shikimori.utils.clearAndAddAll
 import io.reactivex.Completable
 import io.reactivex.Single
 
@@ -37,6 +40,9 @@ abstract class BaseDetailsPresenter<View : BaseDetailsView>(
     protected var rateId: Long = Constants.NO_ID
     protected var userId: Long = Constants.NO_ID
 
+    protected val characters = mutableListOf<Character>()
+    protected val creators = mutableListOf<Pair<Person, List<String>>>()
+
     override fun initData() {
         loadUser()
         loadData()
@@ -44,7 +50,6 @@ abstract class BaseDetailsPresenter<View : BaseDetailsView>(
 
     override fun onViewReattached() {
         loadDetails()
-                .doOnSuccess { loadOptions() }
                 .subscribe({ viewState.setHeadItem(it) }, this::processErrors)
                 .addToDisposables()
     }
@@ -53,13 +58,9 @@ abstract class BaseDetailsPresenter<View : BaseDetailsView>(
 
     abstract fun loadDetails(): Single<DetailsHeadItem>
 
-    abstract fun loadOptions()
-
     abstract val type: Type
 
-    abstract val characterFactory: (id: Long) -> Single<List<Character>>
-
-    abstract val similarFactory: (id: Long) -> Single<List<LinkedContent>>
+    abstract val characterFactory: (id: Long) -> Single<Roles>
 
     abstract val relatedFactory: (id: Long) -> Single<List<Related>>
 
@@ -70,25 +71,24 @@ abstract class BaseDetailsPresenter<View : BaseDetailsView>(
     protected open fun loadData() =
             loadContent()
                     .doOnSuccess { loadCharacters() }
-                    .doOnSuccess { loadSimilar() }
                     .doOnSuccess { loadRelated() }
                     .subscribe({ viewState.setHeadItem(it) }, this::processErrors)
                     .addToDisposables()
 
     protected open fun loadCharacters() =
             characterFactory.invoke(id)
+                    .doOnSuccess { setCreators(it.persons) }
+                    .map { it.characters }
+                    .doOnSuccess { characters.clearAndAddAll(it) }
                     .map(contentConverter)
                     .subscribe({ viewState.setContentItem(DetailsContentType.CHARACTERS, it) }, this::processErrors)
-
-    protected open fun loadSimilar() =
-            similarFactory.invoke(id)
-                    .map(contentConverter)
-                    .subscribe({ viewState.setContentItem(DetailsContentType.SIMILAR, it) }, this::processErrors)
+                    .addToDisposables()
 
     protected open fun loadRelated() =
             relatedFactory.invoke(id)
                     .map(contentConverter)
                     .subscribe({ viewState.setContentItem(DetailsContentType.RELATED, it) }, this::processErrors)
+                    .addToDisposables()
 
     protected open fun loadLinks() =
             linkFactory.invoke(id)
@@ -98,6 +98,7 @@ abstract class BaseDetailsPresenter<View : BaseDetailsView>(
                         if (it.isNotEmpty()) viewState.showLinks(it)
                         else router.showSystemMessage(resourceProvider.emptyMessage)
                     }, this::processErrors)
+                    .addToDisposables()
 
     protected open fun loadChronology() =
             chronologyFactory.invoke(id)
@@ -107,12 +108,17 @@ abstract class BaseDetailsPresenter<View : BaseDetailsView>(
                         if (it.isNotEmpty()) viewState.showChronology(it)
                         else router.showSystemMessage(resourceProvider.emptyMessage)
                     }, this::processErrors)
+                    .addToDisposables()
 
     protected open fun loadUser() =
             userInteractor.getMyUserId()
                     .doOnSuccess { userId = it }
                     .subscribe({}, this::processUserErrors)
                     .addToDisposables()
+
+    protected open fun setCreators(creators: List<Pair<Person, List<String>>>) {
+        this.creators.clearAndAddAll(creators)
+    }
 
     protected open fun createRate(rate: UserRate?, newStatus: RateStatus? = null) {
         if (userId != Constants.NO_ID) {
@@ -159,6 +165,7 @@ abstract class BaseDetailsPresenter<View : BaseDetailsView>(
             is DetailsAction.Screenshots -> onScreenshotsClicked()
             is DetailsAction.Discussion -> onOpenDiscussion()
             is DetailsAction.StudioClicked -> onStudioClicked(action.id)
+            is DetailsAction.RateStatusDialog -> onStatusDialog()
         }
     }
 
@@ -174,10 +181,19 @@ abstract class BaseDetailsPresenter<View : BaseDetailsView>(
         router.navigateTo(BottomScreens.SEARCH, SearchNavigationData(SearchPayload(studioId = id), Type.ANIME))
     }
 
-    protected open fun onChangeRateStatus(newStatus: RateStatus) {
+    open fun onChangeRateStatus(newStatus: RateStatus) {
         when (rateId) {
             Constants.NO_ID -> createRate(null, newStatus)
             else -> changeRateStatus(newStatus)
+        }
+    }
+
+    open fun onCharacterSearch(newText: String?) {
+        if (newText.isNullOrBlank()) viewState.setContentItem(DetailsContentType.CHARACTERS, contentConverter.apply(characters))
+        else {
+            val searchItems : MutableList<Any> = characters.filter { it.name.contains(newText, true) || it.nameRu?.contains(newText, true) ?: false }.toMutableList()
+            if (searchItems.isEmpty()) searchItems.add(PlaceholderItem())
+            viewState.setContentItem(DetailsContentType.CHARACTERS, contentConverter.apply(searchItems))
         }
     }
 
@@ -203,6 +219,9 @@ abstract class BaseDetailsPresenter<View : BaseDetailsView>(
     protected open fun onEditRate() {
     }
 
+    protected open fun onStatusDialog() {
+    }
+
     protected open fun processUserErrors(throwable: Throwable) {
         throwable.printStackTrace()
     }
@@ -213,5 +232,6 @@ abstract class BaseDetailsPresenter<View : BaseDetailsView>(
                 .subscribe({ }, this@BaseDetailsPresenter::processErrors)
                 .addToDisposables()
     }
+
 
 }

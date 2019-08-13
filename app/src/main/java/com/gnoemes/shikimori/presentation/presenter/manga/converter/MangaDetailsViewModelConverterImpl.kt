@@ -5,45 +5,117 @@ import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.entity.common.domain.Status
 import com.gnoemes.shikimori.entity.common.domain.Type
-import com.gnoemes.shikimori.entity.common.presentation.DetailsDescriptionItem
-import com.gnoemes.shikimori.entity.common.presentation.DetailsHeadItem
-import com.gnoemes.shikimori.entity.common.presentation.DetailsOptionsItem
+import com.gnoemes.shikimori.entity.common.presentation.*
 import com.gnoemes.shikimori.entity.manga.domain.MangaDetails
 import com.gnoemes.shikimori.entity.manga.domain.MangaType
+import com.gnoemes.shikimori.entity.roles.domain.Person
 import com.gnoemes.shikimori.presentation.presenter.common.converter.BBCodesTextProcessor
+import com.gnoemes.shikimori.utils.color
+import com.gnoemes.shikimori.utils.colorSpan
 import com.gnoemes.shikimori.utils.date.DateTimeConverter
 import com.gnoemes.shikimori.utils.nullIfEmpty
-import com.gnoemes.shikimori.utils.unknownIfZero
 import javax.inject.Inject
 
 class MangaDetailsViewModelConverterImpl @Inject constructor(
         private val context: Context,
         private val settings: SettingsSource,
-        private val converter: DateTimeConverter,
+        private val dateTimeConverter: DateTimeConverter,
         private val textProcessor: BBCodesTextProcessor
 ) : MangaDetailsViewModelConverter {
 
-    override fun convertHead(it: MangaDetails): DetailsHeadItem {
+    override fun convertHead(it: MangaDetails, isGuest: Boolean): DetailsHeadItem {
         val name = if (!settings.isRussianNaming) it.name else it.nameRu.nullIfEmpty() ?: it.name
-        val nameSecond = if (!settings.isRussianNaming) it.nameRu ?: it.name else it.name
-
-        val season = converter.convertAnimeSeasonToString(it.dateAired)
-        val type = convertType(it.type, it.volumes, it.chapters)
-        val status = convertStatus(it.status)
 
         return DetailsHeadItem(
-                Type.ANIME,
+                Type.MANGA,
                 name,
-                nameSecond,
                 it.image,
-                type,
-                season,
-                status,
-                null,
                 it.score,
-                it.genres,
-                null
+                it.userRate?.status,
+                isGuest
         )
+    }
+
+    override fun convertInfo(it: MangaDetails, creators: List<Pair<Person, List<String>>>): DetailsInfoItem {
+        val nameSecond = if (!settings.isRussianNaming) it.nameRu ?: it.name else it.name
+
+        val tags = mutableListOf<DetailsTagItem>()
+
+        it.genres.forEach {
+            tags.add(DetailsTagItem(it.animeId.toLong(), DetailsTagItem.TagType.GENRE, it.russianName, it))
+        }
+
+        val info = mutableListOf<Any>()
+
+        //ongoing or anons indicator
+        if (it.status == Status.ANONS || it.status == Status.ONGOING) {
+            val color = if (it.status == Status.ONGOING) R.color.status_ongoing else R.color.status_anons
+            val description = convertStatus(it.status).colorSpan(context.color(color))
+
+            info.add(InfoItem(description, context.getString(R.string.common_status)))
+        }
+
+        //release date (or next episode date for ongoings)
+        if (it.status == Status.ANONS && it.dateAired != null) {
+            val description = it.dateAired.toString("dd MMMM yyyy")
+            val category = context.getString(R.string.details_release_date)
+            info.add(InfoItem(description, category))
+        } else if (it.status == Status.ONGOING && it.dateAired != null) {
+            val description = dateTimeConverter.convertAnimeSeasonToString(it.dateAired)
+            val category = context.getString(R.string.details_release_date)
+            info.add(InfoItem(description, category))
+        } else if (it.dateReleased != null && it.dateAired != null) {
+            val description = "${it.dateAired.year} - ${it.dateReleased.year}"
+            val category = context.getString(R.string.details_released_manga)
+            info.add(InfoItem(description, category))
+        }
+
+        //type
+        run {
+            val description = getLocalizedType(it.type)
+            val category = context.getString(R.string.common_type)
+            info.add(InfoItem(description, category))
+        }
+
+        //volumes
+        if (it.volumes != 0) {
+            val description = it.volumes.toString()
+            val category = context.getString(R.string.common_volumes)
+            info.add(InfoItem(description, category))
+        }
+
+        //chapters
+        if (it.chapters != 0) {
+            val description = it.chapters.toString()
+            val category = context.getString(R.string.common_chapters)
+            info.add(InfoItem(description, category))
+        }
+
+        creators
+                .asSequence()
+                .filter { it.second.contains("Art") || it.second.contains("Story") || it.second.contains("Story & Art") }
+                .sortedByDescending { it.second.contains("Story") }
+                .forEach {
+                    val description = it.first.nameRu ?: it.first.name
+                    val category = it.second.firstOrNull { role -> role == "Art" || role == "Story" || role == "Story & Art" }?.let { convertRole(it) }
+                    if (category != null) {
+                        info.add(InfoClickableItem(it.first.id, it.first.linkedType, description, category))
+                    }
+                }
+
+        return DetailsInfoItem(nameSecond, tags, info)
+    }
+
+    override fun getActions(): DetailsActionItem {
+        val actions = DetailsActionType.values().toList()
+        return DetailsActionItem(actions)
+    }
+
+    private fun convertRole(it: String): String? = when (it) {
+        "Art" -> context.getString(R.string.person_art)
+        "Story" -> context.getString(R.string.person_story)
+        "Story & Art" -> context.getString(R.string.person_story_and_art)
+        else -> null
     }
 
     private fun convertStatus(status: Status): String {
@@ -53,12 +125,6 @@ class MangaDetailsViewModelConverterImpl @Inject constructor(
             Status.RELEASED -> context.getString(R.string.status_released)
             else -> context.getString(R.string.error_no_data)
         }
-    }
-
-    private fun convertType(type: MangaType, volumes: Int, chapters: Int): String {
-        val typeText = getLocalizedType(type)
-        val format = context.getString(R.string.type_pattern_manga)
-        return String.format(format, typeText, volumes.unknownIfZero(), chapters.unknownIfZero())
     }
 
     private fun getLocalizedType(type: MangaType): String {
@@ -71,17 +137,6 @@ class MangaDetailsViewModelConverterImpl @Inject constructor(
             MangaType.ONE_SHOT -> context.getString(R.string.type_one_shot_translatable)
             MangaType.UNKNOWN -> ""
         }
-    }
-
-    override fun convertOptions(it: MangaDetails, isGuest: Boolean): DetailsOptionsItem {
-        return DetailsOptionsItem(
-                it.userRate?.status,
-                false,
-                isGuest,
-                context.getString(R.string.details_read_online),
-                context.getString(R.string.common_chronology_read
-                )
-        )
     }
 
     override fun convertDescriptionItem(description: String?): DetailsDescriptionItem {

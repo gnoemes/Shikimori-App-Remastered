@@ -8,46 +8,141 @@ import com.gnoemes.shikimori.entity.anime.domain.AnimeType
 import com.gnoemes.shikimori.entity.common.domain.AgeRating
 import com.gnoemes.shikimori.entity.common.domain.Status
 import com.gnoemes.shikimori.entity.common.domain.Type
-import com.gnoemes.shikimori.entity.common.presentation.DetailsDescriptionItem
-import com.gnoemes.shikimori.entity.common.presentation.DetailsHeadItem
-import com.gnoemes.shikimori.entity.common.presentation.DetailsOptionsItem
+import com.gnoemes.shikimori.entity.common.presentation.*
+import com.gnoemes.shikimori.entity.roles.domain.Person
 import com.gnoemes.shikimori.presentation.presenter.common.converter.BBCodesTextProcessor
+import com.gnoemes.shikimori.utils.color
+import com.gnoemes.shikimori.utils.colorSpan
 import com.gnoemes.shikimori.utils.date.DateTimeConverter
 import com.gnoemes.shikimori.utils.nullIfEmpty
-import com.gnoemes.shikimori.utils.unknownIfZero
+import org.joda.time.DateTime
+import org.joda.time.Duration
+import org.joda.time.Interval
 import javax.inject.Inject
 
 class AnimeDetailsViewModelConverterImpl @Inject constructor(
         private val context: Context,
         private val settings: SettingsSource,
-        private val converter: DateTimeConverter,
+        private val dateTimeConverter: DateTimeConverter,
         private val textProcessor: BBCodesTextProcessor
 ) : AnimeDetailsViewModelConverter {
 
-    override fun convertHead(it: AnimeDetails): DetailsHeadItem {
+    override fun convertHead(it: AnimeDetails, isGuest: Boolean): DetailsHeadItem {
 
         val name = if (!settings.isRussianNaming) it.name else it.nameRu.nullIfEmpty() ?: it.name
-        val nameSecond = if (!settings.isRussianNaming) it.nameRu ?: it.name else it.name
 
-        val type = convertType(it.type, it.episodes, it.duration)
-        val season = converter.convertAnimeSeasonToString(it.dateAired)
-        val status = convertStatus(it.status)
-
-        val rating = convertRating(it.ageRating)
 
         return DetailsHeadItem(
                 Type.ANIME,
                 name,
-                nameSecond,
                 it.image,
-                type,
-                season,
-                status,
-                rating,
                 it.score,
-                it.genres,
-                it.studios.firstOrNull()
+                it.userRate?.status,
+                isGuest
         )
+    }
+
+    override fun convertInfo(it: AnimeDetails, creators: List<Pair<Person, List<String>>>): DetailsInfoItem {
+        val nameSecond = if (!settings.isRussianNaming) it.nameRu ?: it.name else it.name
+
+        val tags = mutableListOf<DetailsTagItem>()
+
+        it.studios.firstOrNull()?.let {
+            tags.add(DetailsTagItem(it.id, DetailsTagItem.TagType.STUDIO, it.name, it))
+        }
+
+        it.genres.forEach {
+            tags.add(DetailsTagItem(it.animeId.toLong(), DetailsTagItem.TagType.GENRE, it.russianName, it))
+        }
+
+        val info = mutableListOf<Any>()
+
+        //ongoing or anons indicator
+        if (it.status == Status.ANONS || it.status == Status.ONGOING) {
+            val color = if (it.status == Status.ONGOING) R.color.status_ongoing else R.color.status_anons
+            val description = convertStatus(it.status).colorSpan(context.color(color))
+
+            info.add(InfoItem(description, context.getString(R.string.common_status)))
+        }
+
+        //release date (or next episode date for ongoings)
+        if (it.status == Status.ANONS && it.dateAired != null) {
+            val description = it.dateAired.toString("dd MMMM yyyy")
+            val category = context.getString(R.string.details_release_date)
+            info.add(InfoItem(description, category))
+        } else if (it.status == Status.ONGOING && it.nextEpisodeDate != null) {
+            val duration = Interval(DateTime.now(), it.nextEpisodeDate).toDuration()
+            val description =
+                    when {
+                        duration.standardHours == 0L -> duration.toMinutes()
+                        duration.standardDays == 0L -> duration.toHoursAndMinutes()
+                        else -> duration.toDays()
+                    }
+            val category = String.format(context.getString(R.string.details_release_episode_format), it.episodesAired + 1)
+            info.add(InfoItem(description, category))
+        } else if (it.dateReleased != null) {
+            val description = dateTimeConverter.convertAnimeSeasonToString(it.dateReleased)
+            val category = context.getString(R.string.details_released)
+            info.add(InfoItem(description, category))
+        }
+
+        //type
+        run {
+            val description = getLocalizedType(it.type)
+            val category = context.getString(R.string.common_type)
+            info.add(InfoItem(description, category))
+        }
+
+        //episodes
+        if (it.episodes > 1 || (it.status == Status.ONGOING && it.episodes == 0)) {
+            val category = context.getString(R.string.common_episodes)
+            if (it.status == Status.ONGOING) {
+                val description = "${it.episodesAired}/" + if (it.episodes == 0) "-" else it.episodes.toString()
+                info.add(InfoItem(description, category))
+            } else {
+                val description = it.episodes.toString()
+                info.add(InfoItem(description, category))
+            }
+        }
+
+        //duration
+        if (it.duration != 0) {
+            val description = Duration.standardMinutes(it.duration.toLong()).let {
+                if (it.standardHours == 0L) it.toMinutes()
+                else it.toHoursAndMinutes()
+            }
+            val category = context.getString(R.string.details_episode_duration)
+            info.add(InfoItem(description, category))
+        }
+
+        //age rating
+        if (it.ageRating != AgeRating.NONE) {
+            val description = convertRating(it.ageRating)
+            if (description != null) {
+                val category = context.getString(R.string.common_age_rating)
+                info.add(InfoItem(description, category))
+            }
+        }
+
+        //creators
+        creators
+                .asSequence()
+                .filter { it.second.contains("Director") || it.second.contains("Original Creator") }
+                .sortedByDescending { it.second.contains("Director") }
+                .forEach {
+                    val description = it.first.nameRu ?: it.first.name
+                    val category = it.second.firstOrNull { role -> role == "Director" || role == "Original Creator" }?.let { convertRole(it) }
+                    if (category != null) {
+                        info.add(InfoClickableItem(it.first.id, it.first.linkedType, description, category))
+                    }
+                }
+
+        return DetailsInfoItem(nameSecond, tags, info)
+    }
+
+    override fun getActions(): DetailsActionItem {
+        val actions = DetailsActionType.values().toList()
+        return DetailsActionItem(actions)
     }
 
     override fun convertDescriptionItem(description: String?): DetailsDescriptionItem {
@@ -55,15 +150,10 @@ class AnimeDetailsViewModelConverterImpl @Inject constructor(
         return DetailsDescriptionItem(processedText)
     }
 
-    override fun convertOptions(it: AnimeDetails, isGuest: Boolean): DetailsOptionsItem {
-        return DetailsOptionsItem(
-                it.userRate?.status,
-                true,
-                isGuest,
-                context.getString(R.string.details_watch_online),
-                context.getString(R.string.common_chronology
-                )
-        )
+    private fun convertRole(it: String): String? = when (it) {
+        "Director" -> context.getString(R.string.person_director)
+        "Original Creator" -> context.getString(R.string.person_original_creator)
+        else -> null
     }
 
     private fun convertStatus(status: Status): String {
@@ -75,9 +165,16 @@ class AnimeDetailsViewModelConverterImpl @Inject constructor(
         }
     }
 
-    private fun convertType(type: AnimeType, episodes: Int, duration: Int): String {
-        return String.format(context.getString(R.string.type_pattern), type.type.toUpperCase(),
-                episodes.unknownIfZero(), duration)
+    private fun getLocalizedType(type: AnimeType): String {
+        return when (type) {
+            AnimeType.TV -> context.getString(R.string.type_tv_short_translatable)
+            AnimeType.OVA -> context.getString(R.string.type_ova)
+            AnimeType.ONA -> context.getString(R.string.type_ona)
+            AnimeType.MUSIC -> context.getString(R.string.type_music_translatable)
+            AnimeType.MOVIE -> context.getString(R.string.type_movie_translatable)
+            AnimeType.SPECIAL -> context.getString(R.string.type_special_translatable)
+            else -> context.getString(R.string.type_tv_short_translatable)
+        }
     }
 
     private fun convertRating(ageRating: AgeRating): String? {
@@ -87,4 +184,9 @@ class AnimeDetailsViewModelConverterImpl @Inject constructor(
                 .find { it.second == ageRating }
                 ?.first
     }
+
+    private fun Duration.toMinutes(): String = "${standardMinutes % 60} ${context.getString(R.string.minute_short)}"
+    private fun Duration.toHoursAndMinutes(): String = "$standardHours ${context.getString(R.string.hour_short)} ${toMinutes()}"
+    private fun Duration.toDays(): String = context.resources.getQuantityString(R.plurals.days, standardDays.toInt(), standardDays)
+
 }

@@ -13,7 +13,7 @@ import com.gnoemes.shikimori.entity.common.domain.*
 import com.gnoemes.shikimori.entity.common.presentation.DetailsContentType
 import com.gnoemes.shikimori.entity.common.presentation.DetailsHeadItem
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
-import com.gnoemes.shikimori.entity.roles.domain.Character
+import com.gnoemes.shikimori.entity.roles.domain.Person
 import com.gnoemes.shikimori.entity.series.presentation.SeriesNavigationData
 import com.gnoemes.shikimori.presentation.presenter.anime.converter.AnimeDetailsViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.common.converter.DetailsContentViewModelConverter
@@ -22,12 +22,13 @@ import com.gnoemes.shikimori.presentation.presenter.common.converter.LinkViewMod
 import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResourceProvider
 import com.gnoemes.shikimori.presentation.presenter.details.BaseDetailsPresenter
 import com.gnoemes.shikimori.presentation.view.anime.AnimeView
+import com.gnoemes.shikimori.utils.appendLightLoadingLogic
 import com.gnoemes.shikimori.utils.appendLoadingLogic
 import io.reactivex.Single
 import javax.inject.Inject
 
 @InjectViewState
-class AnimePresenter @Inject constructor(
+open class AnimePresenter @Inject constructor(
         private val animeInteractor: AnimeInteractor,
         private val relatedInteractor: RelatedInteractor,
         private val viewModelConverter: AnimeDetailsViewModelConverter,
@@ -51,20 +52,19 @@ class AnimePresenter @Inject constructor(
                         if (showLoading) Single.just(it).appendLoadingLogic(viewState)
                         else Single.just(it)
                     }
+                    .doOnSuccess { loadInfo() }
+                    .doOnSuccess { loadActions() }
                     .doOnSuccess { loadVideo() }
                     .doOnSuccess { loadDescription() }
-                    .doOnSuccess { loadOptions() }
+                    .doOnSuccess { loadScreenshots() }
 
     override fun loadDetails(): Single<DetailsHeadItem> =
             animeInteractor.getDetails(id)
                     .doOnSuccess { currentAnime = it; rateId = it.userRate?.id ?: Constants.NO_ID }
-                    .map { viewModelConverter.convertHead(it) }
+                    .map { viewModelConverter.convertHead(it, userId == Constants.NO_ID) }
 
-    override val characterFactory: (id: Long) -> Single<List<Character>>
+    override val characterFactory: (id: Long) -> Single<Roles>
         get() = { animeInteractor.getRoles(it) }
-
-    override val similarFactory: (id: Long) -> Single<List<LinkedContent>>
-        get() = { animeInteractor.getSimilar(it).map { it.map { it as LinkedContent } } }
 
     override val relatedFactory: (id: Long) -> Single<List<Related>>
         get() = { relatedInteractor.getAnime(it) }
@@ -75,6 +75,10 @@ class AnimePresenter @Inject constructor(
     override val chronologyFactory: (id: Long) -> Single<List<FranchiseNode>>
         get() = { animeInteractor.getFranchiseNodes(it) }
 
+    private fun loadInfo() {
+        val item = viewModelConverter.convertInfo(currentAnime, creators)
+        viewState.setInfoItem(item)
+    }
 
     private fun loadVideo() {
         val items = currentAnime.videos ?: emptyList()
@@ -86,9 +90,22 @@ class AnimePresenter @Inject constructor(
         viewState.setDescriptionItem(descriptionItem)
     }
 
-    override fun loadOptions() {
-        val optionsItem = viewModelConverter.convertOptions(currentAnime, userId == Constants.NO_ID)
-        viewState.setOptionsItem(optionsItem)
+    private fun loadActions() {
+        val item = viewModelConverter.getActions()
+        viewState.setActionItem(item)
+    }
+
+    private fun loadScreenshots() =
+            animeInteractor.getScreenshots(id)
+                    .appendLightLoadingLogic(viewState)
+                    .map(contentConverter)
+                    .subscribe({viewState.setContentItem(DetailsContentType.SCREENSHOTS, it)}, this::processErrors)
+                    .addToDisposables()
+
+    override fun setCreators(creators: List<Pair<Person, List<String>>>) {
+        super.setCreators(creators)
+        val item = viewModelConverter.convertInfo(currentAnime, creators)
+        viewState.setInfoItem(item)
     }
 
     override fun onOpenDiscussion() {
@@ -140,6 +157,12 @@ class AnimePresenter @Inject constructor(
                 ?: currentAnime.name else currentAnime.name
         viewState.showRateDialog(title, currentAnime.userRate)
         logEvent(AnalyticEvent.RATE_DIALOG)
+    }
+
+    override fun onStatusDialog() {
+        val title = if (settingsSource.isRussianNaming) currentAnime.nameRu
+                ?: currentAnime.name else currentAnime.name
+        viewState.showStatusDialog(id, title, currentAnime.userRate?.status, true)
     }
 
     override fun onScreenshotsClicked() {

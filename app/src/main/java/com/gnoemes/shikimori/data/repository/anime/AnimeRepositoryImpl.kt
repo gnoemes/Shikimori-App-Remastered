@@ -5,15 +5,15 @@ import com.gnoemes.shikimori.data.local.db.EpisodeDbSource
 import com.gnoemes.shikimori.data.network.AnimeApi
 import com.gnoemes.shikimori.data.repository.anime.converter.AnimeDetailsResponseConverter
 import com.gnoemes.shikimori.data.repository.common.AnimeResponseConverter
-import com.gnoemes.shikimori.data.repository.common.CharacterResponseConverter
 import com.gnoemes.shikimori.data.repository.common.FranchiseResponseConverter
 import com.gnoemes.shikimori.data.repository.common.LinkResponseConverter
+import com.gnoemes.shikimori.data.repository.common.RolesResponseConverter
 import com.gnoemes.shikimori.entity.anime.domain.Anime
 import com.gnoemes.shikimori.entity.anime.domain.AnimeDetails
 import com.gnoemes.shikimori.entity.anime.domain.Screenshot
 import com.gnoemes.shikimori.entity.common.domain.FranchiseNode
 import com.gnoemes.shikimori.entity.common.domain.Link
-import com.gnoemes.shikimori.entity.roles.domain.Character
+import com.gnoemes.shikimori.entity.common.domain.Roles
 import com.gnoemes.shikimori.utils.appendHostIfNeed
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -27,7 +27,7 @@ class AnimeRepositoryImpl @Inject constructor(
         private val animeConverter: AnimeResponseConverter,
         private val franchiseConverter: FranchiseResponseConverter,
         private val detailsConverter: AnimeDetailsResponseConverter,
-        private val characterConverter: CharacterResponseConverter
+        private val rolesConverter: RolesResponseConverter
 ) : AnimeRepository {
 
     override fun getDetails(id: Long): Single<AnimeDetails> =
@@ -35,9 +35,9 @@ class AnimeRepositoryImpl @Inject constructor(
                     .map(detailsConverter)
                     .flatMap { syncRate(it).toSingleDefault(it) }
 
-    override fun getRoles(id: Long): Single<List<Character>> =
+    override fun getRoles(id: Long): Single<Roles> =
             api.getRoles(id)
-                    .map { characterConverter.convertRoles(it) }
+                    .map(rolesConverter)
 
     override fun getLinks(id: Long): Single<List<Link>> =
             api.getLinks(id)

@@ -30,6 +30,7 @@ class AnimeDetailsResponseConverterImpl @Inject constructor(
             t.episodesAired,
             t.dateAired,
             t.dateReleased,
+            t.nextEpisodeDate,
             t.namesEnglish,
             t.namesJapanese,
             t.ageRating,

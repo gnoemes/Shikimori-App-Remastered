@@ -4,8 +4,7 @@ import com.gnoemes.shikimori.entity.common.domain.Image
 
 data class ContentItem(
         val name: String,
-        val typeText: String?,
         val image: Image,
-        val description: String?,
+        val description: CharSequence?,
         val raw : Any
 )

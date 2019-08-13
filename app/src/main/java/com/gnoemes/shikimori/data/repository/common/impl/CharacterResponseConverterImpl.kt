@@ -2,7 +2,6 @@ package com.gnoemes.shikimori.data.repository.common.impl
 
 import com.gnoemes.shikimori.data.repository.common.CharacterResponseConverter
 import com.gnoemes.shikimori.data.repository.common.ImageResponseConverter
-import com.gnoemes.shikimori.entity.common.data.RolesResponse
 import com.gnoemes.shikimori.entity.roles.data.CharacterResponse
 import com.gnoemes.shikimori.entity.roles.domain.Character
 import com.gnoemes.shikimori.utils.appendHostIfNeed
@@ -13,14 +12,7 @@ class CharacterResponseConverterImpl @Inject constructor(
 ) : CharacterResponseConverter {
 
     override fun apply(list: List<CharacterResponse?>): List<Character> =
-            list.map { convertResponse(it)!! }
-
-    override fun convertRoles(roles: List<RolesResponse?>): List<Character> =
-            roles.asSequence()
-                    .filter { it?.character != null }
-                    .sortedBy { it?.character?.nameRu }
-                    .sortedByDescending { it?.roles?.contains("Main") }
-                    .map { convertResponse(it?.character)!! }.toList()
+            list.mapNotNull { convertResponse(it) }
 
     override fun convertResponse(it: CharacterResponse?): Character? {
         if (it == null) {

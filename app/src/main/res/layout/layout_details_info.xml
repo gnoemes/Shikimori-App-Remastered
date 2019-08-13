@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/colorSurface">
+
+    <include
+        android:id="@+id/infoContent"
+        layout="@layout/layout_details_info_content"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <include
+        android:id="@+id/infoPlaceholder"
+        layout="@layout/layout_details_info_placeholder"
+        android:visibility="visible"
+        tools:visibility="gone" />
+
+</FrameLayout>

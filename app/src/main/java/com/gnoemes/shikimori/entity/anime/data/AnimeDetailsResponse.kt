@@ -21,6 +21,7 @@ data class AnimeDetailsResponse(
         @field:SerializedName("episodes") val episodes: Int,
         @field:SerializedName("episodes_aired") val episodesAired: Int,
         @field:SerializedName("aired_on") val dateAired: DateTime?,
+        @field:SerializedName("next_episode_at") val nextEpisodeDate: DateTime?,
         @field:SerializedName("released_on") val dateReleased: DateTime?,
         @field:SerializedName("english") val namesEnglish: List<String?>?,
         @field:SerializedName("japanese") val namesJapanese: List<String?>?,

@@ -11,7 +11,7 @@ import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.common.domain.*
 import com.gnoemes.shikimori.entity.common.presentation.DetailsHeadItem
 import com.gnoemes.shikimori.entity.manga.domain.MangaDetails
-import com.gnoemes.shikimori.entity.roles.domain.Character
+import com.gnoemes.shikimori.entity.roles.domain.Person
 import com.gnoemes.shikimori.presentation.presenter.common.converter.DetailsContentViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.common.converter.FranchiseNodeViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.common.converter.LinkViewModelConverter
@@ -51,26 +51,20 @@ class MangaPresenter @Inject constructor(
                         if (showLoading) Single.just(it).appendLoadingLogic(viewState)
                         else Single.just(it)
                     }
+                    .doOnSuccess { loadInfo() }
+                    .doOnSuccess { loadActions() }
                     .doOnSuccess { loadDescription() }
-                    .doOnSuccess { loadOptions() }
 
     override fun loadDetails(): Single<DetailsHeadItem> =
             (if (isRanobe) ranobeInteractor.getDetails(id)
             else mangaInteractor.getDetails(id))
                     .doOnSuccess { currentManga = it; rateId = it.userRate?.id ?: Constants.NO_ID }
-                    .map { detailsConverter.convertHead(it) }
+                    .map { detailsConverter.convertHead(it, userId == Constants.NO_ID) }
 
-    override val characterFactory: (id: Long) -> Single<List<Character>>
+    override val characterFactory: (id: Long) -> Single<Roles>
         get() = {
             (if (isRanobe) ranobeInteractor.getRoles(it)
             else mangaInteractor.getRoles(it))
-        }
-
-    override val similarFactory: (id: Long) -> Single<List<LinkedContent>>
-        get() = {
-            (if (isRanobe) ranobeInteractor.getSimilar(it)
-            else mangaInteractor.getSimilar(it))
-                    .map { it.map { it as LinkedContent } }
         }
 
     override val relatedFactory: (id: Long) -> Single<List<Related>>
@@ -91,15 +85,26 @@ class MangaPresenter @Inject constructor(
             else mangaInteractor.getFranchiseNodes(it))
         }
 
+    private fun loadInfo() {
+        val item = detailsConverter.convertInfo(currentManga, creators)
+        viewState.setInfoItem(item)
+    }
+
+    private fun loadActions() {
+        val item = detailsConverter.getActions()
+        viewState.setActionItem(item)
+    }
 
     private fun loadDescription() {
         val descriptionItem = detailsConverter.convertDescriptionItem(currentManga.description)
         viewState.setDescriptionItem(descriptionItem)
     }
 
-    override fun loadOptions() {
-        val optionsItem = detailsConverter.convertOptions(currentManga, userId == Constants.NO_ID)
-        viewState.setOptionsItem(optionsItem)
+
+    override fun setCreators(creators: List<Pair<Person, List<String>>>) {
+        super.setCreators(creators)
+        val item = detailsConverter.convertInfo(currentManga, creators)
+        viewState.setInfoItem(item)
     }
 
     override fun onOpenDiscussion() {
@@ -111,6 +116,12 @@ class MangaPresenter @Inject constructor(
         val title = if (settingsSource.isRussianNaming) currentManga.nameRu
                 ?: currentManga.name else currentManga.name
         viewState.showRateDialog(title, currentManga.userRate)
+    }
+
+    override fun onStatusDialog() {
+        val title = if (settingsSource.isRussianNaming) currentManga.nameRu
+                ?: currentManga.name else currentManga.name
+        viewState.showStatusDialog(id, title, currentManga.userRate?.status, false)
     }
 
     override fun onOpenInBrowser() = onOpenWeb(currentManga.url)

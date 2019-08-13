@@ -30,7 +30,7 @@
     <string name="common_sign_as_guest">Войти как гость</string>
     <string name="common_characters">Персонажи</string>
     <string name="common_character">Персонаж</string>
-    <string name="common_chronology">Порядок просмотра</string>
+    <string name="common_chronology">Хронология</string>
     <string name="common_chronology_read">Порядок чтения</string>
     <string name="common_similar">Похожие</string>
     <string name="common_related">Связанные</string>
@@ -47,6 +47,7 @@
     <string name="common_episodes">Эпизоды</string>
     <string name="common_save">Сохранить</string>
     <string name="common_delete">Удалить</string>
+    <string name="common_volumes">Тома</string>
     <string name="common_chapters">Главы</string>
     <string name="common_open_in_browser">Открыть в браузере</string>
     <string name="common_source">Источник</string>
@@ -73,6 +74,7 @@
     <string name="common_apply">Применить</string>
     <string name="common_ok">ок</string>
     <string name="common_share">Поделиться</string>
+    <string name="common_statistic">Статистика</string>
 
     <string name="season_autumn">Осень</string>
     <string name="season_winter">Зима</string>
@@ -205,6 +207,14 @@
     <string name="details_studio">Студия:</string>
     <string name="details_watch_online">Смотреть онлайн</string>
     <string name="details_read_online">Читать онлайн</string>
+    <string name="details_release_date">Дата выхода</string>
+    <string name="details_released">Вышло</string>
+    <string name="details_released_manga">Издано</string>
+    <string name="details_release_episode_format">До %s эпизода</string>
+    <string name="details_episode_duration">Время эпизода</string>
+    <string name="details_screenshots">Кадры</string>
+    <string name="details_character_search_hint">Введите имя персонажа…</string>
+    <string name="details_character_search_empty">¯ \\ _ (ツ) _ / ¯\n\nПерсонаж не найден</string>
 
     <string name="opening">Опенинг</string>
     <string name="ending">Эндинг</string>
@@ -219,6 +229,11 @@
     <string name="person_best_works">Лучшие работы</string>
     <string name="person_best_roles">Лучшие роли</string>
     <string name="person_birthday">Дата рождения:</string>
+    <string name="person_director">Режиссер</string>
+    <string name="person_original_creator">Автор оригинала</string>
+    <string name="person_art">Рисовка</string>
+    <string name="person_story">Сюжет</string>
+    <string name="person_story_and_art">Сюжет и рисовка</string>
 
     <string name="type_tv_translatable">TV сериал</string>
     <string name="type_tv_long_translatable">Сериал</string>

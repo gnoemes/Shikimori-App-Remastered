@@ -20,11 +20,11 @@ import kotlinx.android.synthetic.main.dialog_menu.*
 class RateStatusDialog : BaseBottomSheetDialogFragment() {
 
     companion object {
-        fun newInstance(id: Long, title: String, currentStatus: RateStatus, isAnime: Boolean) = RateStatusDialog().withArgs {
+        fun newInstance(id: Long, title: String, currentStatus: RateStatus?, isAnime: Boolean) = RateStatusDialog().withArgs {
             putLong(ID, id)
             putString(TITLE, title)
             putBoolean(IS_ANIME, isAnime)
-            putInt(CURRENT_STATUS, currentStatus.ordinal)
+            putInt(CURRENT_STATUS, currentStatus?.ordinal ?: 0)
         }
 
         private const val ID = "ID"
