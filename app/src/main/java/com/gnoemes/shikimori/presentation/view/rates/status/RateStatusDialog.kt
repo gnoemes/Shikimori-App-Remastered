@@ -24,7 +24,7 @@ class RateStatusDialog : BaseBottomSheetDialogFragment() {
             putLong(ID, id)
             putString(TITLE, title)
             putBoolean(IS_ANIME, isAnime)
-            putInt(CURRENT_STATUS, currentStatus?.ordinal ?: 0)
+            putInt(CURRENT_STATUS, currentStatus?.ordinal ?: -1)
         }
 
         private const val ID = "ID"
@@ -47,23 +47,28 @@ class RateStatusDialog : BaseBottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val isAnime = arguments?.getBoolean(IS_ANIME) != false
-        val currentStatus = RateStatus.values()[arguments?.getInt(CURRENT_STATUS) ?: 0]
-
-        val items = context!!.resources.getStringArray(if (isAnime) R.array.anime_rate_stasuses else R.array.manga_rate_stasuses)
-                .zip(RateStatus.values())
-                .map { Rate(it.second.ordinal, it.second, it.first, currentStatus == it.second, getIcon(it.second), getTintColor(it.second), getSelector(it.second)) }
 
         with(toolbar) {
             title = arguments?.getString(TITLE)
         }
 
+        val index = arguments?.getInt(CURRENT_STATUS) ?: -1
+
+        val currentStatus = RateStatus.values().getOrNull(index)
+
+        val items = context!!.resources.getStringArray(if (isAnime) R.array.anime_rate_stasuses else R.array.manga_rate_stasuses)
+                .zip(RateStatus.values())
+                .map { Rate(it.second.ordinal, it.second, it.first, currentStatus == it.second, getIcon(it.second), getTintColor(it.second), getSelector(it.second)) }
+
         navView.apply {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                val item = items.first { it.isSelected }
-                itemTextColor = context.colorStateList(item.tint)
-                itemIconTintList = context.colorStateList(item.tint)
-                setItemBackgroundResource(item.selector)
+                val item = items.firstOrNull { it.isSelected }
+                if (item != null) {
+                    itemTextColor = context.colorStateList(item.tint)
+                    itemIconTintList = context.colorStateList(item.tint)
+                    setItemBackgroundResource(item.selector)
+                }
             }
 
             setNavigationItemSelectedListener { menu ->
@@ -78,9 +83,9 @@ class RateStatusDialog : BaseBottomSheetDialogFragment() {
                     add(0, it.id, it.id, it.text)
                     findItem(it.id)?.setIcon(it.icon)
                 }
-                val checkedId = items.find { it.isSelected }?.id ?: 0
+                val checkedId = items.find { it.isSelected }?.id ?: -1
                 setGroupCheckable(0, true, true)
-                setCheckedItem(checkedId)
+                if (checkedId != -1) setCheckedItem(checkedId)
             }
         }
     }

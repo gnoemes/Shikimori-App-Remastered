@@ -16,6 +16,7 @@ import com.gnoemes.shikimori.entity.search.presentation.SearchNavigationData
 import com.gnoemes.shikimori.entity.series.presentation.EmbeddedPlayerNavigationData
 import com.gnoemes.shikimori.entity.series.presentation.EpisodesNavigationData
 import com.gnoemes.shikimori.entity.series.presentation.SeriesNavigationData
+import com.gnoemes.shikimori.entity.similar.domain.SimilarNavigationData
 import com.gnoemes.shikimori.entity.user.presentation.UserHistoryNavigationData
 import com.gnoemes.shikimori.presentation.view.anime.AnimeFragment
 import com.gnoemes.shikimori.presentation.view.auth.AuthActivity
@@ -34,6 +35,7 @@ import com.gnoemes.shikimori.presentation.view.series.SeriesFragment
 import com.gnoemes.shikimori.presentation.view.series.episodes.EpisodesFragment
 import com.gnoemes.shikimori.presentation.view.settings.SettingsActivity
 import com.gnoemes.shikimori.presentation.view.shikimorimain.ShikimoriMainFragment
+import com.gnoemes.shikimori.presentation.view.similar.SimilarFragment
 import com.gnoemes.shikimori.presentation.view.topic.details.TopicFragment
 import com.gnoemes.shikimori.presentation.view.topic.list.TopicListFragment
 import com.gnoemes.shikimori.presentation.view.user.UserFragment
@@ -62,6 +64,7 @@ object RouteHolder {
             Screens.USER_CLUBS -> UserClubsFragment.newInstance(data as Long)
             Screens.USER_HISTORY -> UserHistoryFragment.newInstance(data as UserHistoryNavigationData)
             Screens.USER_FAVORITES -> FavoritesFragment.newInstance(data as Long)
+            Screens.SIMILAR -> SimilarFragment.newInstance(data as SimilarNavigationData)
             else -> null
         }
     }

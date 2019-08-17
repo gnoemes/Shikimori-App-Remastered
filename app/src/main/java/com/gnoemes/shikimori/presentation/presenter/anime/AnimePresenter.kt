@@ -15,6 +15,7 @@ import com.gnoemes.shikimori.entity.common.presentation.DetailsHeadItem
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.roles.domain.Person
 import com.gnoemes.shikimori.entity.series.presentation.SeriesNavigationData
+import com.gnoemes.shikimori.entity.similar.domain.SimilarNavigationData
 import com.gnoemes.shikimori.presentation.presenter.anime.converter.AnimeDetailsViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.common.converter.DetailsContentViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.common.converter.FranchiseNodeViewModelConverter
@@ -132,6 +133,11 @@ open class AnimePresenter @Inject constructor(
     override fun onChronology() {
         super.onChronology()
         logEvent(AnalyticEvent.ANIME_DETAILS_CHRONOLOGY)
+    }
+
+    override fun onSimilarClicked() {
+        val data = SimilarNavigationData(currentAnime.id, Type.ANIME)
+        router.navigateTo(Screens.SIMILAR, data)
     }
 
     override fun onLinks() {

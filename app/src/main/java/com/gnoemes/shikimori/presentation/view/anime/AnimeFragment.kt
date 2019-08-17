@@ -16,6 +16,7 @@ import com.gnoemes.shikimori.presentation.view.common.fragment.EditRateFragment
 import com.gnoemes.shikimori.presentation.view.common.fragment.ListDialogFragment
 import com.gnoemes.shikimori.presentation.view.common.holders.DetailsContentViewHolder
 import com.gnoemes.shikimori.presentation.view.details.BaseDetailsFragment
+import com.gnoemes.shikimori.utils.onClick
 import com.gnoemes.shikimori.utils.onMenuClick
 import com.gnoemes.shikimori.utils.withArgs
 import kotlinx.android.synthetic.main.fragment_details.*
@@ -63,6 +64,11 @@ class AnimeFragment : BaseDetailsFragment<AnimePresenter, AnimeView>(), AnimeVie
             put(DetailsContentType.CHARACTERS, DetailsContentViewHolder(charactersLayout, charactersAdapter, true))
             put(DetailsContentType.SCREENSHOTS, DetailsContentViewHolder(screenshotsLayout, screenshotsAdapter))
             put(DetailsContentType.RELATED, DetailsContentViewHolder(relatedLayout, relatedAdapter))
+        }
+
+        with(actionBtn) {
+            setImageResource(R.drawable.ic_play_arrow_filled)
+            onClick { getPresenter().onAction(DetailsAction.WatchOnline()) }
         }
     }
 

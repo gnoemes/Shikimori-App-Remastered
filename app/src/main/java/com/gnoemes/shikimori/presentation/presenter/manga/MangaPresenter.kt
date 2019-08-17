@@ -12,6 +12,7 @@ import com.gnoemes.shikimori.entity.common.domain.*
 import com.gnoemes.shikimori.entity.common.presentation.DetailsHeadItem
 import com.gnoemes.shikimori.entity.manga.domain.MangaDetails
 import com.gnoemes.shikimori.entity.roles.domain.Person
+import com.gnoemes.shikimori.entity.similar.domain.SimilarNavigationData
 import com.gnoemes.shikimori.presentation.presenter.common.converter.DetailsContentViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.common.converter.FranchiseNodeViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.common.converter.LinkViewModelConverter
@@ -110,6 +111,12 @@ class MangaPresenter @Inject constructor(
     override fun onOpenDiscussion() {
         currentManga.topicId?.let { onTopicClicked(it) }
                 ?: router.showSystemMessage(resourceProvider.topicNotFound)
+    }
+
+    override fun onSimilarClicked() {
+        super.onSimilarClicked()
+        val data = SimilarNavigationData(currentManga.id, Type.MANGA)
+        router.navigateTo(Screens.SIMILAR, data)
     }
 
     override fun onEditRate() {

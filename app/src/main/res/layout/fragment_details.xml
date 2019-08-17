@@ -74,4 +74,14 @@
 
     <include layout="@layout/layout_collapsing_toolbar" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/actionBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:tint="?attr/colorOnSecondary" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

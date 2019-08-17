@@ -10,6 +10,7 @@ import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.rates.domain.Rate
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.rates.domain.UserRate
+import com.gnoemes.shikimori.utils.firstUpperCase
 import io.reactivex.Completable
 import io.reactivex.Single
 import javax.inject.Inject
@@ -34,6 +35,10 @@ class RatesRepositoryImpl @Inject constructor(
                     .map(converter)
                     .onErrorResumeNext { if (it is NoSuchElementException) Single.just(emptyList()) else Single.error(it) }
                     .doOnSuccess { if (it.isNotEmpty() && page > 1) it.toMutableList().removeAt(0) }
+
+    override fun getUserRates(id: Long, targetId: Long?, target: Type?, statuses: String?, page: Int, limit: Int): Single<List<UserRate>> =
+            api.getUserRates(id, targetId, target?.name?.toLowerCase()?.firstUpperCase(), statuses, page, limit)
+                    .map { list -> list.mapNotNull { converter.convertUserRateResponse(targetId, it) } }
 
     override fun createRate(id: Long, type: Type, rate: UserRate, userId: Long): Completable =
             when (type) {

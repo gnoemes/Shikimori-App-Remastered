@@ -68,6 +68,7 @@ class MangaFragment : BaseDetailsFragment<MangaPresenter, MangaView>(), MangaVie
             put(DetailsContentType.RELATED, DetailsContentViewHolder(relatedLayout, relatedAdapter))
         }
 
+        actionBtn.gone()
     }
 
     override fun dialogItemIdCallback(tag: String?, id: Long) {

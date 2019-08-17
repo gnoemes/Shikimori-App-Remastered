@@ -188,6 +188,7 @@
     <string name="calendar_season_end">Конец сезона</string>
     <string name="calendar_empty_title">В ближайший месяц ничего нет</string>
     <string name="calendar_empty_description">Измените запрос или попробуйте найти более позднюю дату выхода на странице тайтла.</string>
+    <string name="similar_empty_description">Ничего не найдено</string>
 
     <string name="episodes_format">\n[%s из %s]</string>
     <string name="volumes_format">\n[%s-%s]</string>

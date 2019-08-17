@@ -166,7 +166,12 @@ abstract class BaseDetailsPresenter<View : BaseDetailsView>(
             is DetailsAction.Discussion -> onOpenDiscussion()
             is DetailsAction.StudioClicked -> onStudioClicked(action.id)
             is DetailsAction.RateStatusDialog -> onStatusDialog()
+            is DetailsAction.Similar -> onSimilarClicked()
         }
+    }
+
+    protected open fun onSimilarClicked() {
+
     }
 
     protected open fun onChronology() {

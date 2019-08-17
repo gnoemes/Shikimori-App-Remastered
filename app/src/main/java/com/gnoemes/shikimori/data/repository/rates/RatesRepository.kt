@@ -1,5 +1,6 @@
 package com.gnoemes.shikimori.data.repository.rates
 
+import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.rates.domain.Rate
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
@@ -13,9 +14,11 @@ interface RatesRepository {
 
     fun getMangaRates(id: Long, page: Int, limit: Int, rateStatus: RateStatus): Single<List<Rate>>
 
-    fun syncRate(id : Long) : Completable
+    fun getUserRates(id: Long, targetId: Long? = null, target: Type? = null, statuses: String? = null, page: Int = 1, limit: Int = Constants.MAX_LIMIT): Single<List<UserRate>>
 
-    fun syncRate(rate : UserRate) : Completable
+    fun syncRate(id: Long): Completable
+
+    fun syncRate(rate: UserRate): Completable
 
     fun deleteRate(id: Long): Completable
 
