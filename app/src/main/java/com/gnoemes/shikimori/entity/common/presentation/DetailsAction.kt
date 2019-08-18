@@ -11,6 +11,7 @@ sealed class DetailsAction {
     data class StudioClicked(val id: Long) : DetailsAction()
     data class WatchOnline(val id: Long? = null) : DetailsAction()
     data class Screenshots(val pos: Int) : DetailsAction()
+    data class Link(val url: String, val share: Boolean) : DetailsAction()
     object EditRate : DetailsAction()
     object RateStatusDialog : DetailsAction()
     object Links : DetailsAction()

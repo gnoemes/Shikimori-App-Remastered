@@ -1,6 +1,8 @@
 package com.gnoemes.shikimori.utils
 
 import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.drawable.Drawable
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
@@ -74,9 +76,6 @@ fun SwipeRefreshLayout.hideRefresh() {
     isRefreshing = false
 }
 
-@ColorInt
-fun View.color(@ColorRes colorRes: Int): Int = context.color(colorRes)
-
 fun ImageView.tintWithRes(@ColorRes colorRes: Int) = tint(context.color(colorRes))
 
 fun ImageView.tint(@ColorInt colorInt: Int) = setColorFilter(colorInt)
@@ -107,6 +106,16 @@ fun Snackbar.floatingStyle(context: Context, @DimenRes margins: Int = R.dimen.sn
     this.view.background = context.drawable(background)
     return this
 }
+
+fun View.drawable(@DrawableRes drawableResId: Int): Drawable? = context.drawable(drawableResId)
+
+fun View.colorStateList(@ColorRes colorRes: Int): ColorStateList = context.colorStateList(colorRes)
+
+fun View.dp(dp: Int): Int = context.dp(dp)
+
+@ColorInt
+fun View.color(@ColorRes colorRes: Int): Int = context.color(colorRes)
+
 
 
 

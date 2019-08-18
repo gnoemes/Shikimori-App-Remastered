@@ -12,6 +12,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.transition.Fade
 import androidx.transition.TransitionManager
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.entity.common.domain.Link
 import com.gnoemes.shikimori.entity.common.presentation.*
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.rates.domain.UserRate
@@ -22,6 +23,7 @@ import com.gnoemes.shikimori.presentation.view.common.adapter.ActionAdapter
 import com.gnoemes.shikimori.presentation.view.common.adapter.InfoAdapter
 import com.gnoemes.shikimori.presentation.view.common.adapter.TagAdapter
 import com.gnoemes.shikimori.presentation.view.common.fragment.EditRateFragment
+import com.gnoemes.shikimori.presentation.view.common.fragment.LinkDialogFragment
 import com.gnoemes.shikimori.presentation.view.common.fragment.ListDialogFragment
 import com.gnoemes.shikimori.presentation.view.common.holders.*
 import com.gnoemes.shikimori.presentation.view.rates.status.RateStatusDialog
@@ -34,7 +36,7 @@ import kotlinx.android.synthetic.main.layout_details_content_with_search.view.*
 import javax.inject.Inject
 
 abstract class BaseDetailsFragment<Presenter : BaseDetailsPresenter<View>, View : BaseDetailsView> : BaseFragment<Presenter, View>(),
-        BaseDetailsView, ListDialogFragment.DialogCallback, ListDialogFragment.DialogIdCallback, EditRateFragment.RateDialogCallback, RateStatusDialog.RateStatusCallback {
+        BaseDetailsView, ListDialogFragment.DialogCallback, ListDialogFragment.DialogIdCallback, EditRateFragment.RateDialogCallback, RateStatusDialog.RateStatusCallback, LinkDialogFragment.LinkCallback {
 
     @Inject
     lateinit var imageLoader: ImageLoader
@@ -177,6 +179,10 @@ abstract class BaseDetailsFragment<Presenter : BaseDetailsPresenter<View>, View 
         getPresenter().onChangeRateStatus(newStatus)
     }
 
+    override fun onLinkAction(action: DetailsAction.Link) {
+        getPresenter().onAction(action)
+    }
+
     override fun onDestroyView() {
         appBarLayout.removeOnOffsetChangedListener(onOffsetChangedListener)
         super.onDestroyView()
@@ -219,12 +225,9 @@ abstract class BaseDetailsFragment<Presenter : BaseDetailsPresenter<View>, View 
         contentHolders[type]?.bind(type, item)
     }
 
-    override fun showLinks(it: List<Pair<String, String>>) {
-        val dialog = ListDialogFragment.newInstance()
-        dialog.apply {
-            setTitle(R.string.common_links)
-            setItems(it)
-        }.show(childFragmentManager, "LinksTag")
+    override fun showLinks(it: List<Link>) {
+        val dialog = LinkDialogFragment.newInstance(it)
+        dialog.show(childFragmentManager, "LinksTag")
     }
 
     override fun showStatusDialog(id: Long, name: String, currentStatus: RateStatus?, isAnime: Boolean) {

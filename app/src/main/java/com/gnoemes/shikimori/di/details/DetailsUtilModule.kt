@@ -10,10 +10,6 @@ interface DetailsUtilModule {
 
     @Binds
     @Reusable
-    fun bindLinkViewModelConverter(converter: LinkViewModelConverterImpl): LinkViewModelConverter
-
-    @Binds
-    @Reusable
     fun bindFranchiseNodeViewModelConverter(converter: FranchiseNodeViewModelConverterImpl): FranchiseNodeViewModelConverter
 
     @Binds

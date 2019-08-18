@@ -2,6 +2,7 @@ package com.gnoemes.shikimori.presentation.view.details
 
 import com.arellomobile.mvp.viewstate.strategy.SkipStrategy
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
+import com.gnoemes.shikimori.entity.common.domain.Link
 import com.gnoemes.shikimori.entity.common.presentation.*
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.rates.domain.UserRate
@@ -26,7 +27,7 @@ interface BaseDetailsView : BaseFragmentView {
     fun showStatusDialog(id : Long, name : String, currentStatus: RateStatus?, isAnime : Boolean)
 
     @StateStrategyType(SkipStrategy::class)
-    fun showLinks(it: List<Pair<String, String>>)
+    fun showLinks(it: List<Link>)
 
     @StateStrategyType(SkipStrategy::class)
     fun showChronology(it: List<Pair<String, String>>)

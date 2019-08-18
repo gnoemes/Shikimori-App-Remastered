@@ -18,11 +18,11 @@ import com.gnoemes.shikimori.entity.search.presentation.SearchPayload
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
 import com.gnoemes.shikimori.presentation.presenter.common.converter.DetailsContentViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.common.converter.FranchiseNodeViewModelConverter
-import com.gnoemes.shikimori.presentation.presenter.common.converter.LinkViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResourceProvider
 import com.gnoemes.shikimori.presentation.view.details.BaseDetailsView
 import com.gnoemes.shikimori.utils.appendLightLoadingLogic
 import com.gnoemes.shikimori.utils.clearAndAddAll
+import com.gnoemes.shikimori.utils.firstUpperCase
 import io.reactivex.Completable
 import io.reactivex.Single
 
@@ -30,7 +30,6 @@ abstract class BaseDetailsPresenter<View : BaseDetailsView>(
         protected val ratesInteractor: RatesInteractor,
         protected val userInteractor: UserInteractor,
         protected val resourceProvider: CommonResourceProvider,
-        protected val linkConverter: LinkViewModelConverter,
         protected val nodeConverter: FranchiseNodeViewModelConverter,
         protected val contentConverter: DetailsContentViewModelConverter
 ) : BaseNetworkPresenter<View>() {
@@ -93,7 +92,7 @@ abstract class BaseDetailsPresenter<View : BaseDetailsView>(
     protected open fun loadLinks() =
             linkFactory.invoke(id)
                     .appendLightLoadingLogic(viewState)
-                    .map(linkConverter)
+                    .map{ links -> links.map { it.copy(name = it.name!!.replace("_", " ").firstUpperCase()!!) }}
                     .subscribe({
                         if (it.isNotEmpty()) viewState.showLinks(it)
                         else router.showSystemMessage(resourceProvider.emptyMessage)
@@ -154,6 +153,7 @@ abstract class BaseDetailsPresenter<View : BaseDetailsView>(
     open fun onAction(action: DetailsAction) {
         when (action) {
             is DetailsAction.Links -> onLinks()
+            is DetailsAction.Link -> onLink(action.url, action.share)
             is DetailsAction.Chronology -> onChronology()
             is DetailsAction.WatchOnline -> onWatchOnline()
             is DetailsAction.EditRate -> onEditRate()
@@ -168,6 +168,11 @@ abstract class BaseDetailsPresenter<View : BaseDetailsView>(
             is DetailsAction.RateStatusDialog -> onStatusDialog()
             is DetailsAction.Similar -> onSimilarClicked()
         }
+    }
+
+    private fun onLink(url: String, share: Boolean) {
+        val screen = if (share) Screens.SHARE else Screens.WEB
+        router.navigateTo(screen, url)
     }
 
     protected open fun onSimilarClicked() {
@@ -196,7 +201,7 @@ abstract class BaseDetailsPresenter<View : BaseDetailsView>(
     open fun onCharacterSearch(newText: String?) {
         if (newText.isNullOrBlank()) viewState.setContentItem(DetailsContentType.CHARACTERS, contentConverter.apply(characters))
         else {
-            val searchItems : MutableList<Any> = characters.filter { it.name.contains(newText, true) || it.nameRu?.contains(newText, true) ?: false }.toMutableList()
+            val searchItems: MutableList<Any> = characters.filter { it.name.contains(newText, true) || it.nameRu?.contains(newText, true) ?: false }.toMutableList()
             if (searchItems.isEmpty()) searchItems.add(PlaceholderItem())
             viewState.setContentItem(DetailsContentType.CHARACTERS, contentConverter.apply(searchItems))
         }
