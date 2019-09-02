@@ -42,7 +42,6 @@
 
         <item name="colorOnPrimary">@color/default_colorOnPrimary</item>
         <item name="colorOnPrimarySecondary">@color/default_colorOnPrimarySecondary</item>
-        <item name="colorOnPrimaryDisabled">@color/default_colorOnPrimaryDisabled</item>
         <item name="colorOnSecondary">@color/default_colorOnSecondary</item>
         <item name="colorOnSurface">@color/default_colorOnSurface</item>
         <item name="colorOnBackground">@color/default_colorOnBackground</item>
@@ -88,7 +87,6 @@
 
         <item name="colorOnPrimary">@color/dark_colorOnPrimary</item>
         <item name="colorOnPrimarySecondary">@color/dark_colorOnPrimarySecondary</item>
-        <item name="colorOnPrimaryDisabled">@color/dark_colorOnPrimaryDisabled</item>
         <item name="colorOnSecondary">@color/dark_colorOnSecondary</item>
         <item name="colorOnSurface">@color/dark_colorOnSurface</item>
         <item name="colorOnBackground">@color/dark_colorOnBackground</item>
@@ -134,7 +132,6 @@
 
         <item name="colorOnPrimary">@color/amoled_colorOnPrimary</item>
         <item name="colorOnPrimarySecondary">@color/amoled_colorOnPrimarySecondary</item>
-        <item name="colorOnPrimaryDisabled">@color/amoled_colorOnPrimaryDisabled</item>
         <item name="colorOnSecondary">@color/amoled_colorOnSecondary</item>
         <item name="colorOnSurface">@color/amoled_colorOnSurface</item>
         <item name="colorOnBackground">@color/amoled_colorOnBackground</item>

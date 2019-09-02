@@ -89,6 +89,7 @@ dependencies {
     implementation 'androidx.fragment:fragment:' + versions.androidxFragment
     implementation 'androidx.preference:preference:' + versions.androidxPrefs
     implementation 'androidx.core:core-ktx:' + versions.ktx
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:' + versions.androidx
     implementation 'com.google.android.material:material:' + versions.material
     implementation 'androidx.palette:palette:' + versions.androidx
 
