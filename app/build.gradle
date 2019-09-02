@@ -127,7 +127,6 @@ dependencies {
     implementation 'com.google.android:flexbox:' + versions.flexbox
     implementation 'com.infideap.drawerbehavior:drawer-behavior:' + versions.drawerBehavior
     implementation 'com.facebook.shimmer:shimmer:' + versions.shimmer
-    implementation 'com.lapism:searchview:' + versions.searchView
     implementation 'de.hdodenhof:circleimageview:' + versions.circleImageView
     implementation 'ru.superjob:kotlin-permissions:' + versions.kotlinPermissions
 

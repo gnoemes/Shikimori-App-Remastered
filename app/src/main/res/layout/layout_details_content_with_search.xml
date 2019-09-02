@@ -48,12 +48,7 @@
             app:iconifiedByDefault="false"
             app:queryBackground="@android:color/transparent"
             app:queryHint="@string/details_character_search_hint"
-            app:searchIcon="@null"
-            app:search_animation_duration="0"
-            app:search_elevation="0dp"
-            app:search_hint_color="?attr/colorTransparentBackground"
-            app:search_text_color="?attr/colorOnSurface"
-            app:search_text_size="20sp" />
+            app:searchIcon="@null" />
 
         <ImageButton
             android:id="@+id/closeBtn"

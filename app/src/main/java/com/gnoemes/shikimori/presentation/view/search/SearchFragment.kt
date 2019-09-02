@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
-import com.gnoemes.shikimori.entity.app.domain.AnalyticEvent
 import com.gnoemes.shikimori.entity.app.domain.AppExtras
 import com.gnoemes.shikimori.entity.common.domain.FilterItem
 import com.gnoemes.shikimori.entity.common.domain.Type
@@ -25,8 +24,6 @@ import com.gnoemes.shikimori.presentation.view.search.filter.FilterFragment
 import com.gnoemes.shikimori.utils.*
 import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.gnoemes.shikimori.utils.widgets.GridItemDecorator
-import com.lapism.searchview.SearchView.VERSION_MARGINS_MENU_ITEM
-import com.lapism.searchview.SearchView.VERSION_MENU_ITEM
 import com.santalu.widget.ReSpinner
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -75,7 +72,6 @@ class SearchFragment : BasePaginationFragment<SearchItem, SearchPresenter, Searc
     }
 
     private var spinner: ReSpinner? = null
-    private var searchView: com.lapism.searchview.SearchView? = null
 
     private val searchAdapter by lazy { SearchAdapter(imageLoader, getPresenter()::onContentClicked).apply { if (!hasObservers()) setHasStableIds(true) } }
 
@@ -95,29 +91,10 @@ class SearchFragment : BasePaginationFragment<SearchItem, SearchPresenter, Searc
         spinner?.setOnItemClickListener { _, _, position, _ -> getPresenter().onTypeChanged(position) }
         spinner?.background = spinner?.background?.apply { tint(context!!.colorAttr(R.attr.colorOnPrimary)) }
 
-        searchView = com.lapism.searchview.SearchView(context)
-                .apply {
-                    setNavigationIcon(context.themeDrawable(R.drawable.ic_arrow_back, R.attr.colorOnPrimary))
-                    setHint(R.string.common_search)
-                    setShadow(false)
-                    setVoice(false)
-                    version = VERSION_MENU_ITEM
-                    setVersionMargins(VERSION_MARGINS_MENU_ITEM)
-                    shouldHideOnKeyboardClose = true
-                    shouldClearOnClose = true
-                    setOnOpenCloseListener(searchViewOpenListener)
-                    setOnQueryTextListener(searchViewQueryListener)
-                }
-
         toolbar?.apply {
             title = null
             addView(spinner)
-            addView(searchView)
             inflateMenu(R.menu.menu_search)
-            setOnMenuItemClickListener {
-                searchView?.open(true, it)
-                true
-            }
         }
 
         with(recyclerView) {
@@ -132,34 +109,7 @@ class SearchFragment : BasePaginationFragment<SearchItem, SearchPresenter, Searc
         fab.setOnClickListener { getPresenter().onFilterClicked() }
 
     }
-
-    private val searchViewOpenListener = object : com.lapism.searchview.SearchView.OnOpenCloseListener {
-        override fun onOpen(): Boolean {
-            getPresenter().logEvent(AnalyticEvent.SEARCH_SEARCH_OPENED)
-            spinner?.gone()
-            toolbar?.menu?.getItem(0)?.isVisible = false
-            return false
-        }
-
-        override fun onClose(): Boolean {
-            spinner?.visible()
-            toolbar?.menu?.getItem(0)?.isVisible = true
-            return false
-        }
-    }
-
-    private val searchViewQueryListener = object : com.lapism.searchview.SearchView.OnQueryTextListener {
-        override fun onQueryTextSubmit(query: String?): Boolean {
-            getPresenter().onQuerySearch(query)
-            searchView?.close(true)
-            return false
-        }
-
-        override fun onQueryTextChange(newText: String?): Boolean = false
-    }
-
     override fun onTabRootAction() {
-        searchView?.open(true)
     }
 
     ///////////////////////////////////////////////////////////////////////////
