@@ -7,6 +7,7 @@ import com.gnoemes.shikimori.entity.common.domain.AgeRating
 import com.gnoemes.shikimori.entity.common.domain.Status
 import com.gnoemes.shikimori.entity.rates.data.UserRateResponse
 import com.gnoemes.shikimori.entity.studio.StudioResponse
+import com.gnoemes.shikimori.entity.user.data.StatisticResponse
 import com.google.gson.annotations.SerializedName
 import org.joda.time.DateTime
 
@@ -35,7 +36,9 @@ data class AnimeDetailsResponse(
         @field:SerializedName("genres") val genres: List<GenreResponse>,
         @field:SerializedName("user_rate") val userRate: UserRateResponse?,
         @field:SerializedName("videos") val videoResponses: List<AnimeVideoResponse>?,
-        @field:SerializedName("studios") val studioResponses: List<StudioResponse>?
+        @field:SerializedName("studios") val studioResponses: List<StudioResponse>?,
+        @field:SerializedName("rates_scores_stats") val rateScoresStats : List<StatisticResponse>,
+        @field:SerializedName("rates_statuses_stats") val rateStatusesStats : List<StatisticResponse>
 ) {
 
     val status: Status

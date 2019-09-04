@@ -6,6 +6,8 @@ import com.gnoemes.shikimori.entity.common.presentation.DetailsHeadItem
 import com.gnoemes.shikimori.entity.common.presentation.DetailsInfoItem
 import com.gnoemes.shikimori.entity.manga.domain.MangaDetails
 import com.gnoemes.shikimori.entity.roles.domain.Person
+import com.gnoemes.shikimori.entity.user.domain.Statistic
+import com.gnoemes.shikimori.entity.user.presentation.UserStatisticItem
 
 interface MangaDetailsViewModelConverter {
 
@@ -16,4 +18,8 @@ interface MangaDetailsViewModelConverter {
     fun convertDescriptionItem(description: String?): DetailsDescriptionItem
 
     fun getActions() : DetailsActionItem
+
+    fun convertScores(t: List<Statistic>): List<UserStatisticItem>
+
+    fun convertStatuses(t: List<Statistic>): List<UserStatisticItem>
 }

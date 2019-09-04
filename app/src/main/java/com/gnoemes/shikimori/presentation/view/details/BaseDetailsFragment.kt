@@ -16,6 +16,7 @@ import com.gnoemes.shikimori.entity.common.domain.Link
 import com.gnoemes.shikimori.entity.common.presentation.*
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.rates.domain.UserRate
+import com.gnoemes.shikimori.entity.user.presentation.UserStatisticItem
 import com.gnoemes.shikimori.presentation.presenter.common.provider.RatingResourceProvider
 import com.gnoemes.shikimori.presentation.presenter.details.BaseDetailsPresenter
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragment
@@ -25,6 +26,7 @@ import com.gnoemes.shikimori.presentation.view.common.adapter.TagAdapter
 import com.gnoemes.shikimori.presentation.view.common.fragment.EditRateFragment
 import com.gnoemes.shikimori.presentation.view.common.fragment.LinkDialogFragment
 import com.gnoemes.shikimori.presentation.view.common.fragment.ListDialogFragment
+import com.gnoemes.shikimori.presentation.view.common.fragment.StatisticDialogFragment
 import com.gnoemes.shikimori.presentation.view.common.holders.*
 import com.gnoemes.shikimori.presentation.view.rates.status.RateStatusDialog
 import com.gnoemes.shikimori.utils.*
@@ -236,5 +238,9 @@ abstract class BaseDetailsFragment<Presenter : BaseDetailsPresenter<View>, View 
         dialog.show(childFragmentManager, "StatusDialog")
     }
 
-
+    override fun showStatistic(title: String, scores: List<UserStatisticItem>, rates: List<UserStatisticItem>) {
+        hideSoftInput()
+        val dialog = StatisticDialogFragment.newInstance(title, scores, rates)
+        dialog.show(childFragmentManager, "StatisticDialog")
+    }
 }

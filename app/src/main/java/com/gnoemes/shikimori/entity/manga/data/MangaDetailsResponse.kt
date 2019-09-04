@@ -5,6 +5,7 @@ import com.gnoemes.shikimori.entity.common.data.ImageResponse
 import com.gnoemes.shikimori.entity.common.domain.Status
 import com.gnoemes.shikimori.entity.manga.domain.MangaType
 import com.gnoemes.shikimori.entity.rates.data.UserRateResponse
+import com.gnoemes.shikimori.entity.user.data.StatisticResponse
 import com.google.gson.annotations.SerializedName
 import org.joda.time.DateTime
 
@@ -28,7 +29,9 @@ data class MangaDetailsResponse(
         @field:SerializedName("favoured") val favoured: Boolean,
         @field:SerializedName("topic_id") val topicId: Long?,
         @field:SerializedName("genres") val genres: List<GenreResponse>,
-        @field:SerializedName("user_rate") val userRate: UserRateResponse?
+        @field:SerializedName("user_rate") val userRate: UserRateResponse?,
+        @field:SerializedName("rates_scores_stats") val rateScoresStats : List<StatisticResponse>,
+        @field:SerializedName("rates_statuses_stats") val rateStatusesStats : List<StatisticResponse>
 ) {
 
     val status: Status

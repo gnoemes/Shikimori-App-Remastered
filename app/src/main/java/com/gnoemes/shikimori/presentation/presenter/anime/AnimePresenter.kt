@@ -16,6 +16,8 @@ import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.roles.domain.Person
 import com.gnoemes.shikimori.entity.series.presentation.SeriesNavigationData
 import com.gnoemes.shikimori.entity.similar.domain.SimilarNavigationData
+import com.gnoemes.shikimori.entity.user.domain.Statistic
+import com.gnoemes.shikimori.entity.user.presentation.UserStatisticItem
 import com.gnoemes.shikimori.presentation.presenter.anime.converter.AnimeDetailsViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.common.converter.DetailsContentViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.common.converter.FranchiseNodeViewModelConverter
@@ -24,7 +26,9 @@ import com.gnoemes.shikimori.presentation.presenter.details.BaseDetailsPresenter
 import com.gnoemes.shikimori.presentation.view.anime.AnimeView
 import com.gnoemes.shikimori.utils.appendLightLoadingLogic
 import com.gnoemes.shikimori.utils.appendLoadingLogic
+import com.gnoemes.shikimori.utils.applySingleSchedulers
 import io.reactivex.Single
+import io.reactivex.functions.BiFunction
 import javax.inject.Inject
 
 @InjectViewState
@@ -98,7 +102,7 @@ open class AnimePresenter @Inject constructor(
             animeInteractor.getScreenshots(id)
                     .appendLightLoadingLogic(viewState)
                     .map(contentConverter)
-                    .subscribe({viewState.setContentItem(DetailsContentType.SCREENSHOTS, it)}, this::processErrors)
+                    .subscribe({ viewState.setContentItem(DetailsContentType.SCREENSHOTS, it) }, this::processErrors)
                     .addToDisposables()
 
     override fun setCreators(creators: List<Pair<Person, List<String>>>) {
@@ -157,15 +161,11 @@ open class AnimePresenter @Inject constructor(
     }
 
     override fun onEditRate() {
-        val title = if (settingsSource.isRussianNaming) currentAnime.nameRu
-                ?: currentAnime.name else currentAnime.name
         viewState.showRateDialog(title, currentAnime.userRate)
         logEvent(AnalyticEvent.RATE_DIALOG)
     }
 
     override fun onStatusDialog() {
-        val title = if (settingsSource.isRussianNaming) currentAnime.nameRu
-                ?: currentAnime.name else currentAnime.name
         viewState.showStatusDialog(id, title, currentAnime.userRate?.status, true)
     }
 
@@ -176,4 +176,19 @@ open class AnimePresenter @Inject constructor(
     override fun onClearHistory() {
 
     }
+
+    override fun onStatisticClicked() {
+        Single.zip(Single.just(currentAnime.rateScoresStats), Single.just(currentAnime.rateStatusesStats), BiFunction<List<Statistic>, List<Statistic>, Pair<List<UserStatisticItem>, List<UserStatisticItem>>> { t1, t2 ->
+            val scores = viewModelConverter.convertScores(t1)
+            val statuses = viewModelConverter.convertStatuses(t2)
+            Pair(scores, statuses)
+        })
+                .applySingleSchedulers()
+                .subscribe({ viewState.showStatistic(title, it.first, it.second) }, this::processErrors)
+                .addToDisposables()
+    }
+
+    private val title: String
+        get() = if (settingsSource.isRussianNaming) currentAnime.nameRu
+                ?: currentAnime.name else currentAnime.name
 }

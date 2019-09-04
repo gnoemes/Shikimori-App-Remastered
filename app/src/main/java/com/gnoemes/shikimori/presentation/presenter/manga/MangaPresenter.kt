@@ -13,6 +13,8 @@ import com.gnoemes.shikimori.entity.common.presentation.DetailsHeadItem
 import com.gnoemes.shikimori.entity.manga.domain.MangaDetails
 import com.gnoemes.shikimori.entity.roles.domain.Person
 import com.gnoemes.shikimori.entity.similar.domain.SimilarNavigationData
+import com.gnoemes.shikimori.entity.user.domain.Statistic
+import com.gnoemes.shikimori.entity.user.presentation.UserStatisticItem
 import com.gnoemes.shikimori.presentation.presenter.common.converter.DetailsContentViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.common.converter.FranchiseNodeViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResourceProvider
@@ -20,7 +22,9 @@ import com.gnoemes.shikimori.presentation.presenter.details.BaseDetailsPresenter
 import com.gnoemes.shikimori.presentation.presenter.manga.converter.MangaDetailsViewModelConverter
 import com.gnoemes.shikimori.presentation.view.manga.MangaView
 import com.gnoemes.shikimori.utils.appendLoadingLogic
+import com.gnoemes.shikimori.utils.applySingleSchedulers
 import io.reactivex.Single
+import io.reactivex.functions.BiFunction
 import javax.inject.Inject
 
 @InjectViewState
@@ -118,20 +122,31 @@ class MangaPresenter @Inject constructor(
     }
 
     override fun onEditRate() {
-        val title = if (settingsSource.isRussianNaming) currentManga.nameRu
-                ?: currentManga.name else currentManga.name
         viewState.showRateDialog(title, currentManga.userRate)
     }
 
     override fun onStatusDialog() {
-        val title = if (settingsSource.isRussianNaming) currentManga.nameRu
-                ?: currentManga.name else currentManga.name
         viewState.showStatusDialog(id, title, currentManga.userRate?.status, false)
     }
 
     override fun onOpenInBrowser() = onOpenWeb(currentManga.url)
 
+    override fun onStatisticClicked() {
+        Single.zip(Single.just(currentManga.rateScoresStats), Single.just(currentManga.rateStatusesStats), BiFunction<List<Statistic>, List<Statistic>, Pair<List<UserStatisticItem>, List<UserStatisticItem>>> { t1, t2 ->
+            val scores = detailsConverter.convertScores(t1)
+            val statuses = detailsConverter.convertStatuses(t2)
+            Pair(scores, statuses)
+        })
+                .applySingleSchedulers()
+                .subscribe({ viewState.showStatistic(title, it.first, it.second) }, this::processErrors)
+                .addToDisposables()
+    }
+
     override fun onWatchOnline() {
         //TODO chapters screen
     }
+
+    private val title: String
+        get() = if (settingsSource.isRussianNaming) currentManga.nameRu
+                ?: currentManga.name else currentManga.name
 }

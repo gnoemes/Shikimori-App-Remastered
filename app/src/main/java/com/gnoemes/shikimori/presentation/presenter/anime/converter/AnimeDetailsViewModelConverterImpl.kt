@@ -10,6 +10,8 @@ import com.gnoemes.shikimori.entity.common.domain.Status
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.common.presentation.*
 import com.gnoemes.shikimori.entity.roles.domain.Person
+import com.gnoemes.shikimori.entity.user.domain.Statistic
+import com.gnoemes.shikimori.entity.user.presentation.UserStatisticItem
 import com.gnoemes.shikimori.presentation.presenter.common.converter.BBCodesTextProcessor
 import com.gnoemes.shikimori.utils.color
 import com.gnoemes.shikimori.utils.colorSpan
@@ -143,6 +145,35 @@ class AnimeDetailsViewModelConverterImpl @Inject constructor(
     override fun getActions(): DetailsActionItem {
         val actions = DetailsActionType.values().toList()
         return DetailsActionItem(actions)
+    }
+
+    override fun convertScores(t: List<Statistic>): List<UserStatisticItem> {
+        val sum = t.sumBy { it.value }
+
+        return t
+                .asSequence()
+                .map { UserStatisticItem(it.name, it.value, it.value / sum.toFloat()) }
+                .sortedByDescending { it.category.toInt() }
+                .toMutableList()
+    }
+
+    override fun convertStatuses(t: List<Statistic>): List<UserStatisticItem> {
+        val items = mutableListOf(
+                Pair("Watching|Смотрю", UserStatisticItem(context.getString(R.string.rate_watching), 0, 0f)),
+                Pair("Planned to Watch|Запланировано", UserStatisticItem(context.getString(R.string.rate_planned), 0, 0f)),
+                Pair("Completed|Просмотрено", UserStatisticItem(context.getString(R.string.rate_completed), 0, 0f)),
+                Pair("On Hold|Отложено", UserStatisticItem(context.getString(R.string.rate_on_hold), 0, 0f)),
+                Pair("Dropped|Брошено", UserStatisticItem(context.getString(R.string.rate_dropped), 0, 0f))
+        )
+
+        val sum = t.sumBy { it.value }
+
+        return items
+                .mapNotNull { pair ->
+                    val item = t.find { pair.first.split("|").contains(it.name) }
+                    if (item != null) pair.second.copy(count = item.value, progress = item.value / sum.toFloat())
+                    else null
+                }
     }
 
     override fun convertDescriptionItem(description: String?): DetailsDescriptionItem {

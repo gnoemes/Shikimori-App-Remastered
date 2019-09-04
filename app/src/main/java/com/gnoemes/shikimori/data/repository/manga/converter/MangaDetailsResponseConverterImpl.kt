@@ -5,6 +5,8 @@ import com.gnoemes.shikimori.data.repository.common.ImageResponseConverter
 import com.gnoemes.shikimori.data.repository.common.RateResponseConverter
 import com.gnoemes.shikimori.entity.manga.data.MangaDetailsResponse
 import com.gnoemes.shikimori.entity.manga.domain.MangaDetails
+import com.gnoemes.shikimori.entity.user.data.StatisticResponse
+import com.gnoemes.shikimori.entity.user.domain.Statistic
 import com.gnoemes.shikimori.utils.appendHostIfNeed
 import javax.inject.Inject
 
@@ -32,6 +34,11 @@ class MangaDetailsResponseConverterImpl @Inject constructor(
             t.favoured,
             t.topicId,
             genreConverter.apply(t.genres),
-            rateConverter.convertUserRateResponse(t.id, t.userRate)
+            rateConverter.convertUserRateResponse(t.id, t.userRate),
+            t.rateScoresStats.map { convertStatistic(it) },
+            t.rateStatusesStats.map { convertStatistic(it) }
     )
+
+    private fun convertStatistic(it: StatisticResponse): Statistic = Statistic(it.name, it.value)
+
 }
