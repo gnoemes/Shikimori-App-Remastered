@@ -54,6 +54,7 @@
         android:paddingRight="0dp"
         android:paddingBottom="64dp"
         android:theme="@style/NavigationDialogMenuStyle"
+        app:elevation="0dp"
         app:itemIconTint="?attr/colorOnSurface"
         app:itemTextAppearance="@style/MenuTextAppearance"
         app:itemTextColor="?attr/colorOnSurface"

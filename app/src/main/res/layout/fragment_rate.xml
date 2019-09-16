@@ -95,6 +95,7 @@
         android:paddingEnd="12dp"
         android:paddingRight="12dp"
         android:theme="@style/RateNavigationMenuStyle"
+        app:elevation="0dp"
         app:itemIconTint="?attr/colorOnPrimary"
         app:itemTextColor="?attr/colorOnPrimary" />
 
