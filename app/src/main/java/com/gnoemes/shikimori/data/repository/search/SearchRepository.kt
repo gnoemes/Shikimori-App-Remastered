@@ -1,6 +1,8 @@
 package com.gnoemes.shikimori.data.repository.search
 
 import com.gnoemes.shikimori.entity.anime.domain.Anime
+import com.gnoemes.shikimori.entity.common.domain.LinkedContent
+import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.manga.domain.Manga
 import com.gnoemes.shikimori.entity.roles.domain.Character
 import com.gnoemes.shikimori.entity.roles.domain.Person
@@ -17,4 +19,6 @@ interface SearchRepository {
     fun getCharacterList(queryMap: Map<String, String>): Single<List<Character>>
 
     fun getPersonList(queryMap: Map<String, String>): Single<List<Person>>
+
+    fun getList(type : Type, queryMap: Map<String, String>) : Single<List<LinkedContent>>
 }

@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.app.domain.AppExtras
 import com.gnoemes.shikimori.entity.auth.AuthType
+import com.gnoemes.shikimori.entity.chronology.ChronologyNavigationData
+import com.gnoemes.shikimori.entity.common.domain.CommonNavigationData
 import com.gnoemes.shikimori.entity.common.domain.Screens
 import com.gnoemes.shikimori.entity.forum.domain.ForumType
 import com.gnoemes.shikimori.entity.main.BottomScreens
@@ -16,12 +18,12 @@ import com.gnoemes.shikimori.entity.search.presentation.SearchNavigationData
 import com.gnoemes.shikimori.entity.series.presentation.EmbeddedPlayerNavigationData
 import com.gnoemes.shikimori.entity.series.presentation.EpisodesNavigationData
 import com.gnoemes.shikimori.entity.series.presentation.SeriesNavigationData
-import com.gnoemes.shikimori.entity.similar.domain.SimilarNavigationData
 import com.gnoemes.shikimori.entity.user.presentation.UserHistoryNavigationData
 import com.gnoemes.shikimori.presentation.view.anime.AnimeFragment
 import com.gnoemes.shikimori.presentation.view.auth.AuthActivity
 import com.gnoemes.shikimori.presentation.view.calendar.CalendarFragment
 import com.gnoemes.shikimori.presentation.view.character.CharacterFragment
+import com.gnoemes.shikimori.presentation.view.chronology.ChronologyFragment
 import com.gnoemes.shikimori.presentation.view.clubs.UserClubsFragment
 import com.gnoemes.shikimori.presentation.view.favorites.FavoritesFragment
 import com.gnoemes.shikimori.presentation.view.friends.FriendsFragment
@@ -64,7 +66,8 @@ object RouteHolder {
             Screens.USER_CLUBS -> UserClubsFragment.newInstance(data as Long)
             Screens.USER_HISTORY -> UserHistoryFragment.newInstance(data as UserHistoryNavigationData)
             Screens.USER_FAVORITES -> FavoritesFragment.newInstance(data as Long)
-            Screens.SIMILAR -> SimilarFragment.newInstance(data as SimilarNavigationData)
+            Screens.SIMILAR -> SimilarFragment.newInstance(data as CommonNavigationData)
+            Screens.CHRONOLOGY -> ChronologyFragment.newInstance(data as ChronologyNavigationData)
             else -> null
         }
     }

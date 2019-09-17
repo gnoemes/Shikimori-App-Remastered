@@ -6,9 +6,9 @@ import com.gnoemes.shikimori.domain.similar.SimilarInteractor
 import com.gnoemes.shikimori.domain.user.UserInteractor
 import com.gnoemes.shikimori.entity.app.domain.AnalyticEvent
 import com.gnoemes.shikimori.entity.app.domain.Constants
+import com.gnoemes.shikimori.entity.common.domain.CommonNavigationData
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
-import com.gnoemes.shikimori.entity.similar.domain.SimilarNavigationData
 import com.gnoemes.shikimori.entity.similar.presentation.SimilarViewModel
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
 import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResourceProvider
@@ -28,7 +28,7 @@ class SimilarPresenter @Inject constructor(
         private val resourceProvider: CommonResourceProvider
 ) : BaseNetworkPresenter<SimilarView>() {
 
-    lateinit var navigationData: SimilarNavigationData
+    lateinit var navigationData: CommonNavigationData
 
     private val items = mutableListOf<SimilarViewModel>()
 

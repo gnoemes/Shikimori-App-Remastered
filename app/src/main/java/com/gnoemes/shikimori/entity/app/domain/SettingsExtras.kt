@@ -47,4 +47,6 @@ object SettingsExtras {
     ////////////////////////////////////////////////////////////////////////
     const val NEW_VERSION_AVAILABLE = "NEW_VERSION_AVAILABLE"
     const val DONATION_LINK = "DONATION_LINK"
+
+    const val CHRONOLOGY_TYPE = "CHRONOLOGY_TYPE"
 }

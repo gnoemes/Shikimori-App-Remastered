@@ -75,6 +75,7 @@
     <string name="common_ok">ок</string>
     <string name="common_share">Поделиться</string>
     <string name="common_statistic">Статистика</string>
+    <string name="common_web_version">Веб-версия</string>
 
     <string name="season_autumn">Осень</string>
     <string name="season_winter">Зима</string>
@@ -430,6 +431,18 @@
     <string name="theme_default">Стандартная тема</string>
     <string name="theme_dark">Темная тема</string>
     <string name="theme_amoled">Amoled тема</string>
+
+    <string name="chronology_prequel">Начало истории</string>
+    <string name="chronology_sequel">Продолжение</string>
+    <string name="chronology_other">Прочее</string>
+    <string name="chronology_summary">Обобщение</string>
+    <string name="chronology_side_story">Другая история</string>
+    <string name="chronology_alternative_setting">Альтернативная история</string>
+    <string name="chronology_alternative_version">Альтернативная версия</string>
+    <string name="chronology_parent_story">Изначальная история</string>
+    <string name="chronology_type">Вид хронологии</string>
+    <string name="chronology_type_main">Основная история</string>
+    <string name="chronology_type_linked">Ответления</string>
 
     <string-array name="rate_types">
         <item>@string/common_anime</item>

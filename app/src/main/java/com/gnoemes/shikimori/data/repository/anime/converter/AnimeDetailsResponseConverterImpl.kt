@@ -40,6 +40,7 @@ class AnimeDetailsResponseConverterImpl @Inject constructor(
             t.duration,
             t.description,
             t.descriptionHtml,
+            t.franchise,
             t.favoured,
             t.topicId,
             genreConverter.apply(t.genres),

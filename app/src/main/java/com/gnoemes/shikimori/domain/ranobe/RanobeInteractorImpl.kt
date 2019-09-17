@@ -1,7 +1,6 @@
 package com.gnoemes.shikimori.domain.ranobe
 
 import com.gnoemes.shikimori.data.repository.ranobe.RanobeRepository
-import com.gnoemes.shikimori.entity.common.domain.FranchiseNode
 import com.gnoemes.shikimori.entity.common.domain.Link
 import com.gnoemes.shikimori.entity.common.domain.Roles
 import com.gnoemes.shikimori.entity.manga.domain.Manga
@@ -21,7 +20,5 @@ class RanobeInteractorImpl @Inject constructor(
     override fun getLinks(id: Long): Single<List<Link>> = repository.getLinks(id).applyErrorHandlerAndSchedulers()
 
     override fun getSimilar(id: Long): Single<List<Manga>> = repository.getSimilar(id).applyErrorHandlerAndSchedulers()
-
-    override fun getFranchiseNodes(id: Long): Single<List<FranchiseNode>> = repository.getFranchiseNodes(id).applyErrorHandlerAndSchedulers()
 
 }

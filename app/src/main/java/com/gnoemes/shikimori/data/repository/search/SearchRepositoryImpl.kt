@@ -9,6 +9,8 @@ import com.gnoemes.shikimori.data.repository.common.CharacterResponseConverter
 import com.gnoemes.shikimori.data.repository.common.MangaResponseConverter
 import com.gnoemes.shikimori.data.repository.common.PersonResponseConverter
 import com.gnoemes.shikimori.entity.anime.domain.Anime
+import com.gnoemes.shikimori.entity.common.domain.LinkedContent
+import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.manga.domain.Manga
 import com.gnoemes.shikimori.entity.roles.domain.Character
 import com.gnoemes.shikimori.entity.roles.domain.Person
@@ -45,4 +47,16 @@ class SearchRepositoryImpl @Inject constructor(
     override fun getPersonList(queryMap: Map<String, String>): Single<List<Person>> =
             rolesApi.getPersonList(queryMap)
                     .map(personResponseConverter)
+
+    override fun getList(type: Type, queryMap: Map<String, String>): Single<List<LinkedContent>> =
+            (when (type) {
+                Type.ANIME -> getAnimeList(queryMap)
+                Type.MANGA -> getMangaList(queryMap)
+                Type.RANOBE -> getRanobeList(queryMap)
+                Type.CHARACTER -> getCharacterList(queryMap)
+                Type.PERSON -> getCharacterList(queryMap)
+                else -> Single.error(IllegalArgumentException("$type search is not supported"))
+            })
+                    .map { it }
+
 }

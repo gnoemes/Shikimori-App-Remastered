@@ -1,6 +1,5 @@
 package com.gnoemes.shikimori.domain.manga
 
-import com.gnoemes.shikimori.entity.common.domain.FranchiseNode
 import com.gnoemes.shikimori.entity.common.domain.Link
 import com.gnoemes.shikimori.entity.common.domain.Roles
 import com.gnoemes.shikimori.entity.manga.domain.Manga
@@ -16,7 +15,4 @@ interface MangaInteractor {
     fun getLinks(id: Long): Single<List<Link>>
 
     fun getSimilar(id: Long): Single<List<Manga>>
-
-    fun getFranchiseNodes(id: Long): Single<List<FranchiseNode>>
-
 }

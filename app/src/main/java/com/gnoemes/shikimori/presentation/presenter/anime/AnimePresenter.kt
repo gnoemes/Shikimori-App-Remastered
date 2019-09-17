@@ -9,13 +9,13 @@ import com.gnoemes.shikimori.domain.user.UserInteractor
 import com.gnoemes.shikimori.entity.anime.domain.AnimeDetails
 import com.gnoemes.shikimori.entity.app.domain.AnalyticEvent
 import com.gnoemes.shikimori.entity.app.domain.Constants
+import com.gnoemes.shikimori.entity.chronology.ChronologyNavigationData
 import com.gnoemes.shikimori.entity.common.domain.*
 import com.gnoemes.shikimori.entity.common.presentation.DetailsContentType
 import com.gnoemes.shikimori.entity.common.presentation.DetailsHeadItem
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.entity.roles.domain.Person
 import com.gnoemes.shikimori.entity.series.presentation.SeriesNavigationData
-import com.gnoemes.shikimori.entity.similar.domain.SimilarNavigationData
 import com.gnoemes.shikimori.entity.user.domain.Statistic
 import com.gnoemes.shikimori.entity.user.presentation.UserStatisticItem
 import com.gnoemes.shikimori.presentation.presenter.anime.converter.AnimeDetailsViewModelConverter
@@ -75,9 +75,6 @@ open class AnimePresenter @Inject constructor(
     override val linkFactory: (id: Long) -> Single<List<Link>>
         get() = { animeInteractor.getLinks(it) }
 
-    override val chronologyFactory: (id: Long) -> Single<List<FranchiseNode>>
-        get() = { animeInteractor.getFranchiseNodes(it) }
-
     private fun loadInfo() {
         val item = viewModelConverter.convertInfo(currentAnime, creators)
         viewState.setInfoItem(item)
@@ -134,11 +131,13 @@ open class AnimePresenter @Inject constructor(
 
     override fun onChronology() {
         super.onChronology()
+        val data = ChronologyNavigationData(id, type, currentAnime.franchise)
+        router.navigateTo(Screens.CHRONOLOGY, data)
         logEvent(AnalyticEvent.ANIME_DETAILS_CHRONOLOGY)
     }
 
     override fun onSimilarClicked() {
-        val data = SimilarNavigationData(currentAnime.id, Type.ANIME)
+        val data = CommonNavigationData(currentAnime.id, Type.ANIME)
         router.navigateTo(Screens.SIMILAR, data)
     }
 

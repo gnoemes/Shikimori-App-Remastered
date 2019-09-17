@@ -35,6 +35,7 @@ object Screens {
     const val USER_CLUBS = "USER_CLUBS"
     const val USER_FAVORITES = "USER_FAVORITES"
     const val SIMILAR = "SIMILAR"
+    const val CHRONOLOGY = "CHRONOLOGY"
 
     ////////////////////////////////////////////////////////////////////////
     // Players

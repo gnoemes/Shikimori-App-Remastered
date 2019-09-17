@@ -31,14 +31,15 @@ data class AnimeDetailsResponse(
         @field:SerializedName("duration") val duration: Int,
         @field:SerializedName("description") val description: String?,
         @field:SerializedName("description_html") val descriptionHtml: String,
+        @field:SerializedName("franchise") val franchise: String?,
         @field:SerializedName("favoured") val favoured: Boolean,
         @field:SerializedName("topic_id") val topicId: Long?,
         @field:SerializedName("genres") val genres: List<GenreResponse>,
         @field:SerializedName("user_rate") val userRate: UserRateResponse?,
         @field:SerializedName("videos") val videoResponses: List<AnimeVideoResponse>?,
         @field:SerializedName("studios") val studioResponses: List<StudioResponse>?,
-        @field:SerializedName("rates_scores_stats") val rateScoresStats : List<StatisticResponse>,
-        @field:SerializedName("rates_statuses_stats") val rateStatusesStats : List<StatisticResponse>
+        @field:SerializedName("rates_scores_stats") val rateScoresStats: List<StatisticResponse>,
+        @field:SerializedName("rates_statuses_stats") val rateStatusesStats: List<StatisticResponse>
 ) {
 
     val status: Status

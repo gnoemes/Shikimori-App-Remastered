@@ -65,8 +65,6 @@ abstract class BaseDetailsPresenter<View : BaseDetailsView>(
 
     abstract val linkFactory: (id: Long) -> Single<List<Link>>
 
-    abstract val chronologyFactory: (id: Long) -> Single<List<FranchiseNode>>
-
     protected open fun loadData() =
             loadContent()
                     .doOnSuccess { loadCharacters() }
@@ -92,19 +90,9 @@ abstract class BaseDetailsPresenter<View : BaseDetailsView>(
     protected open fun loadLinks() =
             linkFactory.invoke(id)
                     .appendLightLoadingLogic(viewState)
-                    .map{ links -> links.map { it.copy(name = it.name!!.replace("_", " ").firstUpperCase()!!) }}
+                    .map { links -> links.map { it.copy(name = it.name!!.replace("_", " ").firstUpperCase()!!) } }
                     .subscribe({
                         if (it.isNotEmpty()) viewState.showLinks(it)
-                        else router.showSystemMessage(resourceProvider.emptyMessage)
-                    }, this::processErrors)
-                    .addToDisposables()
-
-    protected open fun loadChronology() =
-            chronologyFactory.invoke(id)
-                    .appendLightLoadingLogic(viewState)
-                    .map(nodeConverter)
-                    .subscribe({
-                        if (it.isNotEmpty()) viewState.showChronology(it)
                         else router.showSystemMessage(resourceProvider.emptyMessage)
                     }, this::processErrors)
                     .addToDisposables()
@@ -185,7 +173,7 @@ abstract class BaseDetailsPresenter<View : BaseDetailsView>(
     }
 
     protected open fun onChronology() {
-        loadChronology()
+
     }
 
     protected open fun onLinks() {

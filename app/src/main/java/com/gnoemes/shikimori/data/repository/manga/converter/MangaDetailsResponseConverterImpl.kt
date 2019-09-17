@@ -31,6 +31,7 @@ class MangaDetailsResponseConverterImpl @Inject constructor(
             t.score,
             t.description,
             t.descriptionHtml,
+            t.franchise,
             t.favoured,
             t.topicId,
             genreConverter.apply(t.genres),

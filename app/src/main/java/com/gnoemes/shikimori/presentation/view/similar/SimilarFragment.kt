@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.entity.common.domain.CommonNavigationData
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
-import com.gnoemes.shikimori.entity.similar.domain.SimilarNavigationData
 import com.gnoemes.shikimori.presentation.presenter.similar.SimilarPresenter
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragment
 import com.gnoemes.shikimori.presentation.view.base.fragment.RouterProvider
@@ -37,7 +37,7 @@ class SimilarFragment : BaseFragment<SimilarPresenter, SimilarView>(), SimilarVi
     }
 
     companion object {
-        fun newInstance(data: SimilarNavigationData) = SimilarFragment().withArgs { putParcelable(DATA_KEY, data) }
+        fun newInstance(data: CommonNavigationData) = SimilarFragment().withArgs { putParcelable(DATA_KEY, data) }
         private const val DATA_KEY = "DATA_KEY"
     }
 

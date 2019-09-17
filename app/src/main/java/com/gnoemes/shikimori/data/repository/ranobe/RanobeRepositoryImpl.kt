@@ -7,7 +7,7 @@ import com.gnoemes.shikimori.data.repository.common.LinkResponseConverter
 import com.gnoemes.shikimori.data.repository.common.MangaResponseConverter
 import com.gnoemes.shikimori.data.repository.common.RolesResponseConverter
 import com.gnoemes.shikimori.data.repository.manga.converter.MangaDetailsResponseConverter
-import com.gnoemes.shikimori.entity.common.domain.FranchiseNode
+import com.gnoemes.shikimori.entity.common.domain.Franchise
 import com.gnoemes.shikimori.entity.common.domain.Link
 import com.gnoemes.shikimori.entity.common.domain.Roles
 import com.gnoemes.shikimori.entity.manga.domain.Manga
@@ -39,10 +39,9 @@ class RanobeRepositoryImpl @Inject constructor(
 
     override fun getSimilar(id: Long): Single<List<Manga>> = api.getSimilar(id).map(mangaConverter)
 
-    override fun getFranchiseNodes(id: Long): Single<List<FranchiseNode>> =
+    override fun getFranchise(id: Long): Single<Franchise> =
             api.getFranchise(id)
                     .map(franchiseConverter)
-                    .map { list -> list.sortedBy { it.date.millis } }
 
     private fun syncRate(details: MangaDetails): Completable =
             Single.fromCallable { details }

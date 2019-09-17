@@ -22,6 +22,7 @@ data class MangaDetails(
         val score: Double,
         val description: String?,
         val descriptionHtml: String,
+        val franchise : String?,
         val favoured: Boolean,
         val topicId: Long?,
         val genres: List<Genre>,

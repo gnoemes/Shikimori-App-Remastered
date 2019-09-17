@@ -12,7 +12,6 @@ import com.gnoemes.shikimori.entity.common.domain.*
 import com.gnoemes.shikimori.entity.common.presentation.DetailsHeadItem
 import com.gnoemes.shikimori.entity.manga.domain.MangaDetails
 import com.gnoemes.shikimori.entity.roles.domain.Person
-import com.gnoemes.shikimori.entity.similar.domain.SimilarNavigationData
 import com.gnoemes.shikimori.entity.user.domain.Statistic
 import com.gnoemes.shikimori.entity.user.presentation.UserStatisticItem
 import com.gnoemes.shikimori.presentation.presenter.common.converter.DetailsContentViewModelConverter
@@ -82,12 +81,6 @@ class MangaPresenter @Inject constructor(
             else mangaInteractor.getLinks(it))
         }
 
-    override val chronologyFactory: (id: Long) -> Single<List<FranchiseNode>>
-        get() = {
-            (if (isRanobe) ranobeInteractor.getFranchiseNodes(it)
-            else mangaInteractor.getFranchiseNodes(it))
-        }
-
     private fun loadInfo() {
         val item = detailsConverter.convertInfo(currentManga, creators)
         viewState.setInfoItem(item)
@@ -117,7 +110,7 @@ class MangaPresenter @Inject constructor(
 
     override fun onSimilarClicked() {
         super.onSimilarClicked()
-        val data = SimilarNavigationData(currentManga.id, Type.MANGA)
+        val data = CommonNavigationData(currentManga.id, Type.MANGA)
         router.navigateTo(Screens.SIMILAR, data)
     }
 

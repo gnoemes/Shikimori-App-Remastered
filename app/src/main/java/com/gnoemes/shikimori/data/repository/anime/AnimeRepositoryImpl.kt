@@ -11,7 +11,7 @@ import com.gnoemes.shikimori.data.repository.common.RolesResponseConverter
 import com.gnoemes.shikimori.entity.anime.domain.Anime
 import com.gnoemes.shikimori.entity.anime.domain.AnimeDetails
 import com.gnoemes.shikimori.entity.anime.domain.Screenshot
-import com.gnoemes.shikimori.entity.common.domain.FranchiseNode
+import com.gnoemes.shikimori.entity.common.domain.Franchise
 import com.gnoemes.shikimori.entity.common.domain.Link
 import com.gnoemes.shikimori.entity.common.domain.Roles
 import com.gnoemes.shikimori.utils.appendHostIfNeed
@@ -47,10 +47,9 @@ class AnimeRepositoryImpl @Inject constructor(
             api.getSimilar(id)
                     .map(animeConverter)
 
-    override fun getFranchiseNodes(id: Long): Single<List<FranchiseNode>> =
+    override fun getFranchise(id: Long): Single<Franchise> =
             api.getFranchise(id)
                     .map(franchiseConverter)
-                    .map { list -> list.sortedBy { it.date.millis } }
 
     override fun getScreenshots(id: Long): Single<List<Screenshot>> =
             api.getScreenshots(id)

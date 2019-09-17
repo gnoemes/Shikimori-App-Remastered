@@ -26,12 +26,13 @@ data class MangaDetailsResponse(
         @field:SerializedName("score") val score: Double,
         @field:SerializedName("description") val description: String?,
         @field:SerializedName("description_html") val descriptionHtml: String,
+        @field:SerializedName("franchise") val franchise: String?,
         @field:SerializedName("favoured") val favoured: Boolean,
         @field:SerializedName("topic_id") val topicId: Long?,
         @field:SerializedName("genres") val genres: List<GenreResponse>,
         @field:SerializedName("user_rate") val userRate: UserRateResponse?,
-        @field:SerializedName("rates_scores_stats") val rateScoresStats : List<StatisticResponse>,
-        @field:SerializedName("rates_statuses_stats") val rateStatusesStats : List<StatisticResponse>
+        @field:SerializedName("rates_scores_stats") val rateScoresStats: List<StatisticResponse>,
+        @field:SerializedName("rates_statuses_stats") val rateStatusesStats: List<StatisticResponse>
 ) {
 
     val status: Status
