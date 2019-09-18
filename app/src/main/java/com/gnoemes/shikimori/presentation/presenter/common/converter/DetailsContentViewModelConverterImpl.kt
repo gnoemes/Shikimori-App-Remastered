@@ -55,7 +55,7 @@ class DetailsContentViewModelConverterImpl @Inject constructor(
 
     private fun convertScreenshot(it: Screenshot): FrameItem {
         val image = Image(it.original, it.preview, null, null)
-        return FrameItem(image,null, null, it)
+        return FrameItem(image, null, null, it)
     }
 
     private fun convertWork(it: Work): ContentItem {
@@ -91,7 +91,24 @@ class DetailsContentViewModelConverterImpl @Inject constructor(
     private fun convertRelated(it: Related): ContentItem {
         val isAnime = it.type == Type.ANIME
 
-        val name = it.relationRu ?: it.relation
+        val relations = mutableListOf(
+                Pair("Adaptation", context.getString(R.string.chronology_adaptation)),
+                Pair("Prequel", context.getString(R.string.chronology_prequel)),
+                Pair("Side Story", context.getString(R.string.chronology_side_story)),
+                Pair("Sequel", context.getString(R.string.chronology_sequel)),
+                Pair("Sequel", context.getString(R.string.chronology_sequel)),
+                Pair("Alternative Setting", context.getString(R.string.chronology_alternative_setting)),
+                Pair("Alternative Version", context.getString(R.string.chronology_alternative_version)),
+                Pair("Other", context.getString(R.string.chronology_other)),
+                Pair("Summary", context.getString(R.string.chronology_summary)),
+                Pair("Full Story", context.getString(R.string.chronology_parent_story)),
+                Pair("Parent Story", context.getString(R.string.chronology_parent_story)),
+                Pair("Character", context.getString(R.string.common_character))
+        )
+
+        val name = relations.find { pair -> pair.first.contains(it.relation, true) }?.second
+                ?: it.relationRu
+                ?: it.relation
         val description = SpannableStringBuilder((if (isAnime) getLocalizedType(it.anime!!.type) else getLocalizedType(it.manga!!.type)).toUpperCase())
 
         val divider = "  •  ".colorSpan(dividerColor)

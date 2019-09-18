@@ -15,7 +15,6 @@ import com.gnoemes.shikimori.entity.roles.domain.Person
 import com.gnoemes.shikimori.entity.user.domain.Statistic
 import com.gnoemes.shikimori.entity.user.presentation.UserStatisticItem
 import com.gnoemes.shikimori.presentation.presenter.common.converter.DetailsContentViewModelConverter
-import com.gnoemes.shikimori.presentation.presenter.common.converter.FranchiseNodeViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResourceProvider
 import com.gnoemes.shikimori.presentation.presenter.details.BaseDetailsPresenter
 import com.gnoemes.shikimori.presentation.presenter.manga.converter.MangaDetailsViewModelConverter
@@ -36,9 +35,8 @@ class MangaPresenter @Inject constructor(
         ratesInteractor: RatesInteractor,
         userInteractor: UserInteractor,
         resourceProvider: CommonResourceProvider,
-        nodeConverter: FranchiseNodeViewModelConverter,
         contentConverter: DetailsContentViewModelConverter
-) : BaseDetailsPresenter<MangaView>(ratesInteractor, userInteractor, resourceProvider, nodeConverter, contentConverter) {
+) : BaseDetailsPresenter<MangaView>(ratesInteractor, userInteractor, resourceProvider, contentConverter) {
 
     var isRanobe: Boolean = false
 

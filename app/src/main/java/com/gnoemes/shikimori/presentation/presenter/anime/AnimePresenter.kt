@@ -20,7 +20,6 @@ import com.gnoemes.shikimori.entity.user.domain.Statistic
 import com.gnoemes.shikimori.entity.user.presentation.UserStatisticItem
 import com.gnoemes.shikimori.presentation.presenter.anime.converter.AnimeDetailsViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.common.converter.DetailsContentViewModelConverter
-import com.gnoemes.shikimori.presentation.presenter.common.converter.FranchiseNodeViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResourceProvider
 import com.gnoemes.shikimori.presentation.presenter.details.BaseDetailsPresenter
 import com.gnoemes.shikimori.presentation.view.anime.AnimeView
@@ -40,9 +39,8 @@ open class AnimePresenter @Inject constructor(
         ratesInteractor: RatesInteractor,
         userInteractor: UserInteractor,
         resourceProvider: CommonResourceProvider,
-        nodeConverter: FranchiseNodeViewModelConverter,
         contentConverter: DetailsContentViewModelConverter
-) : BaseDetailsPresenter<AnimeView>(ratesInteractor, userInteractor, resourceProvider, nodeConverter, contentConverter) {
+) : BaseDetailsPresenter<AnimeView>(ratesInteractor, userInteractor, resourceProvider, contentConverter) {
 
     private lateinit var currentAnime: AnimeDetails
 

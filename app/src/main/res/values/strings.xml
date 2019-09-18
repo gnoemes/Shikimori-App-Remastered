@@ -440,6 +440,7 @@
     <string name="chronology_alternative_setting">Альтернативная история</string>
     <string name="chronology_alternative_version">Альтернативная версия</string>
     <string name="chronology_parent_story">Изначальная история</string>
+    <string name="chronology_adaptation">Адаптация</string>
     <string name="chronology_type">Вид хронологии</string>
     <string name="chronology_type_main">Основная история</string>
     <string name="chronology_type_linked">Ответления</string>

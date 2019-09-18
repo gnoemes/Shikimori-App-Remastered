@@ -17,7 +17,6 @@ import com.gnoemes.shikimori.entity.search.presentation.SearchNavigationData
 import com.gnoemes.shikimori.entity.search.presentation.SearchPayload
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
 import com.gnoemes.shikimori.presentation.presenter.common.converter.DetailsContentViewModelConverter
-import com.gnoemes.shikimori.presentation.presenter.common.converter.FranchiseNodeViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResourceProvider
 import com.gnoemes.shikimori.presentation.view.details.BaseDetailsView
 import com.gnoemes.shikimori.utils.appendLightLoadingLogic
@@ -30,7 +29,6 @@ abstract class BaseDetailsPresenter<View : BaseDetailsView>(
         protected val ratesInteractor: RatesInteractor,
         protected val userInteractor: UserInteractor,
         protected val resourceProvider: CommonResourceProvider,
-        protected val nodeConverter: FranchiseNodeViewModelConverter,
         protected val contentConverter: DetailsContentViewModelConverter
 ) : BaseNetworkPresenter<View>() {
 
