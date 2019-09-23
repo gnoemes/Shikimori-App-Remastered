@@ -206,6 +206,7 @@
         <item name="strokeWidth">1dp</item>
         <item name="cornerRadius">4dp</item>
         <item name="rippleColor">?attr/colorDivider</item>
+        <item name="android:letterSpacing" tools:targetApi="lollipop">0.03</item>
     </style>
 
     <style name="OutlinedButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Icon">
@@ -220,6 +221,7 @@
         <item name="strokeWidth">1dp</item>
         <item name="cornerRadius">4dp</item>
         <item name="rippleColor">?attr/colorSecondaryTransparent</item>
+        <item name="android:letterSpacing" tools:targetApi="lollipop">0.03</item>
     </style>
 
     <style name="BackDropCardStyle" parent="Widget.MaterialComponents.CardView">

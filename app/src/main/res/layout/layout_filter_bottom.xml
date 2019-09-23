@@ -43,6 +43,7 @@
                 android:layout_weight="1"
                 android:fontFamily="sans-serif"
                 android:layoutDirection="rtl"
+                android:letterSpacing="0.03"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
                 android:textAllCaps="false"
