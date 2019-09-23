@@ -95,7 +95,7 @@ class ChronologyInteratorImpl @Inject constructor(
 
                 when (type) {
                     ChronologyType.MAIN -> getRootBranch(franchise.relations, current)
-                    ChronologyType.LINKED_DIRECTLY -> franchise.relations.filter { it.sourceId == id }
+                    ChronologyType.LINKED_DIRECTLY -> franchise.relations.filter { it.sourceId == id && it.relation !in arrayOf(RelationType.PREQUEL, RelationType.SEQUEL) }
                 }
             })
                     .forEach { relation ->
@@ -112,55 +112,6 @@ class ChronologyInteratorImpl @Inject constructor(
                             ))
                         }
                     }
-
-
-//            linkedItems
-//                    .sortedBy {
-//                        when (it) {
-//                            is Anime -> it.dateAired?.millis
-//                            is Manga -> it.dateAired?.millis
-//                            else -> 0
-//                        }
-//                    }
-//                    .forEach { item ->
-//
-//                        val relation =
-//                                if (item.linkedId == id)
-//                                    franchise
-//                                            .relations
-//                                            .firstOrNull { it.targetId == id && it.relation == RelationType.SEQUEL }
-//                                            ?.relation
-//                                            ?: franchise
-//                                                    .relations
-//                                                    .firstOrNull { it.targetId == id && it.relation == RelationType.PREQUEL }
-//                                                    ?.relation
-//                                            ?: franchise
-//                                                    .relations
-//                                                    .firstOrNull { it.targetId == id }
-//                                                    ?.relation
-//                                                    ?.let {
-//                                                        if (it in arrayOf(RelationType.ALTERNATIVE_VERSION, RelationType.ALTERNATIVE_SETTING)) RelationType.PREQUEL
-//                                                        else it
-//                                                    }
-//                                else franchise
-//                                        .relations
-//                                        .filter { it.sourceId == id }
-//                                        .firstOrNull { it.targetId == item.linkedId }
-//                                        ?.relation
-//
-//                        val rate = rates.find { item.linkedId == it.targetId }
-//
-//                        if (relation != null) {
-//                            items.add(ChronologyItem(
-//                                    item.linkedId,
-//                                    rate?.id,
-//                                    item,
-//                                    relation,
-//                                    rate?.status
-//                            ))
-//                        }
-//                    }
-
 
             return@BiFunction items
                     .sortedBy {
