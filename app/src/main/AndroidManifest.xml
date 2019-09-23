@@ -78,16 +78,24 @@
         </receiver>
 
         <service
-            android:name=".domain.series.SeriesSyncService"
-            android:exported="false" />
-
-        <service
             android:name=".domain.app.NotificationsService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            tools:replace="android:authorities">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"
+                tools:replace="android:resource" />
+        </provider>
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"

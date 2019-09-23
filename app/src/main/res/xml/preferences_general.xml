@@ -60,4 +60,16 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory
+        android:title="@string/settings_system_options"
+        app:iconSpaceReserved="false">
+
+        <Preference
+            android:key="@string/settings_backup"
+            android:layout="@layout/layout_preference"
+            android:title="@string/settings_backup_title"
+            app:iconSpaceReserved="false" />
+
+    </PreferenceCategory>
+
 </PreferenceScreen>

@@ -445,6 +445,21 @@
     <string name="chronology_type_main">Основная история</string>
     <string name="chronology_type_linked">Ответления</string>
 
+    <string name="backup_save">Сохранение</string>
+    <string name="backup_saved">Сохранено</string>
+    <string name="backup_write_error">Не удалось создать файл</string>
+    <string name="backup_read_error">Не удалось открыть файл</string>
+    <string name="backup_on_cloud">На облако</string>
+    <string name="backup_on_device">На устройство</string>
+    <string name="backup_share">Поделиться</string>
+    <string name="backup_from_cloud">С облака</string>
+    <string name="backup_from_device">С устройства</string>
+    <string name="backup_download">Восстановление</string>
+    <string name="backup_empty_file">Настройки приложения не найдены</string>
+    <string name="backup_read_success">Настройки успешно восстановлены</string>
+    <string name="backup_found_title">Восстановление</string>
+    <string name="backup_found_message">Найден файл настроек приложения</string>
+
     <string-array name="rate_types">
         <item>@string/common_anime</item>
         <item>@string/common_manga</item>

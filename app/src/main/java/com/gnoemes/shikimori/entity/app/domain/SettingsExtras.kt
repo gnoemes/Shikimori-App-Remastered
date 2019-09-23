@@ -23,6 +23,7 @@ object SettingsExtras {
     const val IS_BEST_EXTERNAL_QUALITY = "IS_BEST_EXTERNAL_QUALITY"
     const val RATE_SWIPE_TO_LEFT_ACTION = "RATE_SWIPE_TO_LEFT_ACTION"
     const val RATE_SWIPE_TO_RIGHT_ACTION = "RATE_SWIPE_TO_RIGHT_ACTION"
+    const val BACKUP_SETTINGS = "BACKUP_SETTINGS"
 
     ////////////////////////////////////////////////////////////////////////
     // NOTIFICATIONS
@@ -49,4 +50,6 @@ object SettingsExtras {
     const val DONATION_LINK = "DONATION_LINK"
 
     const val CHRONOLOGY_TYPE = "CHRONOLOGY_TYPE"
+    const val SORT_KEY_PART = "rate_sort"
+    const val ORDER_KEY_PART = "rate_order"
 }

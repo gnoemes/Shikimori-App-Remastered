@@ -150,4 +150,8 @@
 
     <string name="settings_donation_title">Поддержать разработчика</string>
     <string name="settings_donation_message"><![CDATA[Приложение является <b>неофициальным.</b> Материальная поддержка мотивирует и позволяет оплатить сервер.]]></string>
+
+    <string name="settings_system_options">Программные опции</string>
+    <string name="settings_backup">BACKUP_SETTINGS</string>
+    <string name="settings_backup_title">Бэкап настроек</string>
 </resources>

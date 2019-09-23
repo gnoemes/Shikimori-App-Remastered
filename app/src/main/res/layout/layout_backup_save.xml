@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginRight="16dp"
+    app:cardBackgroundColor="?attr/colorDialogSurface"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="0dp"
+    app:cardMaxElevation="0dp"
+    app:strokeColor="?attr/colorDivider"
+    app:strokeWidth="1dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/backup_save"
+            android:textColor="?attr/colorOnSurface"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="?attr/colorDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/cloudBtn"
+            style="@style/CircleButtonStyle"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="24dp"
+            app:icon="@drawable/ic_cloud_upload"
+            app:layout_constraintEnd_toStartOf="@+id/deviceBtn"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+        <TextView
+            android:id="@+id/cloudLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="24dp"
+            android:text="@string/backup_on_cloud"
+            android:textAllCaps="true"
+            android:textColor="?attr/colorOnPrimarySecondary"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/cloudBtn"
+            app:layout_constraintStart_toStartOf="@+id/cloudBtn"
+            app:layout_constraintTop_toBottomOf="@+id/cloudBtn"
+            app:layout_constraintVertical_bias="0" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/deviceBtn"
+            style="@style/CircleButtonStyle"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:icon="@drawable/ic_local_storage"
+            app:layout_constraintEnd_toStartOf="@+id/shareBtn"
+            app:layout_constraintStart_toEndOf="@+id/cloudBtn"
+            app:layout_constraintTop_toTopOf="@+id/cloudBtn" />
+
+        <TextView
+            android:id="@+id/deviceLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/backup_on_device"
+            android:textAllCaps="true"
+            android:textColor="?attr/colorOnPrimarySecondary"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="@+id/deviceBtn"
+            app:layout_constraintStart_toStartOf="@+id/deviceBtn"
+            app:layout_constraintTop_toBottomOf="@+id/deviceBtn" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/shareBtn"
+            style="@style/CircleButtonStyle"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginRight="40dp"
+            app:icon="@drawable/ic_sharing"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/deviceBtn"
+            app:layout_constraintTop_toTopOf="@+id/cloudBtn" />
+
+        <TextView
+            android:id="@+id/shareLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/backup_share"
+            android:textAllCaps="true"
+            android:textColor="?attr/colorOnPrimarySecondary"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="@+id/shareBtn"
+            app:layout_constraintStart_toStartOf="@+id/shareBtn"
+            app:layout_constraintTop_toBottomOf="@+id/shareBtn" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

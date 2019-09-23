@@ -23,7 +23,7 @@ class SettingsGeneralFragment : BaseSettingsFragment() {
 
         preference(R.string.settings_content_download_folder_key)?.apply {
             updateFolderSummary()
-            setOnPreferenceClickListener { checkStoragePermissions();true }
+            setOnPreferenceClickListener { checkStoragePermissions { showFolderChooserDialog() };true }
         }
 
         preference(SettingsExtras.RATE_SWIPE_TO_LEFT_ACTION)?.apply {
@@ -34,6 +34,15 @@ class SettingsGeneralFragment : BaseSettingsFragment() {
         preference(SettingsExtras.RATE_SWIPE_TO_RIGHT_ACTION)?.apply {
             summary = getRateActionSummary(prefs().getString(key, RateSwipeAction.CHANGE.name)!!)
             setOnPreferenceClickListener { showRateSwipeActionDialog(key); true }
+        }
+
+        preference(SettingsExtras.BACKUP_SETTINGS)?.apply {
+            setOnPreferenceClickListener {
+                checkStoragePermissions {
+                    BackupDialog().show(childFragmentManager, "BackupDialog")
+                }
+                true
+            }
         }
     }
 
@@ -48,10 +57,10 @@ class SettingsGeneralFragment : BaseSettingsFragment() {
         }
     }
 
-    private fun checkStoragePermissions() {
+    private fun checkStoragePermissions(onAccepted: () -> Unit) {
         KotlinPermissions.with(activity!!)
                 .permissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
-                .onAccepted { showFolderChooserDialog() }
+                .onAccepted { onAccepted.invoke() }
                 .ask()
     }
 
