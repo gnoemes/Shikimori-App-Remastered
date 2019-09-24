@@ -81,7 +81,7 @@ abstract class BaseDetailsFragment<Presenter : BaseDetailsPresenter<View>, View 
     protected open val contentHolders = HashMap<DetailsContentType, DetailsContentViewHolder>()
 
     protected open val tagAdapter by lazy { TagAdapter(getPresenter()::onAction) }
-    protected open val infoAdapter by lazy { InfoAdapter(getPresenter()::onContentClicked) }
+    protected open val infoAdapter by lazy { InfoAdapter(getPresenter()::onContentClicked, imageLoader) }
     protected open val actionAdapter by lazy { ActionAdapter(getPresenter()::onAction) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): android.view.View? {

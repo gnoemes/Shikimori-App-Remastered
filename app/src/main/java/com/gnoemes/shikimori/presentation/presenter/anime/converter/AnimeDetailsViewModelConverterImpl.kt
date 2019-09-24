@@ -110,8 +110,11 @@ class AnimeDetailsViewModelConverterImpl @Inject constructor(
         //duration
         if (it.duration != 0) {
             val description = Duration.standardMinutes(it.duration.toLong()).let {
-                if (it.standardHours == 0L) it.toMinutes()
-                else it.toHoursAndMinutes()
+                when {
+                    it.standardHours == 0L -> it.toMinutes()
+                    it.standardMinutes % 60 == 0L -> it.toHours()
+                    else -> it.toHoursAndMinutes()
+                }
             }
             val category = context.getString(R.string.details_episode_duration)
             info.add(InfoItem(description, category))
@@ -135,7 +138,7 @@ class AnimeDetailsViewModelConverterImpl @Inject constructor(
                     val description = it.first.nameRu ?: it.first.name
                     val category = it.second.firstOrNull { role -> role == "Director" || role == "Original Creator" }?.let { convertRole(it) }
                     if (category != null) {
-                        info.add(InfoClickableItem(it.first.id, it.first.linkedType, description, category))
+                        info.add(InfoClickableItem(it.first.id, it.first.linkedType, description, it.first.image, category))
                     }
                 }
 
@@ -217,6 +220,7 @@ class AnimeDetailsViewModelConverterImpl @Inject constructor(
     }
 
     private fun Duration.toMinutes(): String = "${standardMinutes % 60} ${context.getString(R.string.minute_short)}"
+    private fun Duration.toHours(): String = "$standardHours ${context.getString(R.string.hour_short)}"
     private fun Duration.toHoursAndMinutes(): String = "$standardHours ${context.getString(R.string.hour_short)} ${toMinutes()}"
     private fun Duration.toDays(): String = context.resources.getQuantityString(R.plurals.days, standardDays.toInt(), standardDays)
 

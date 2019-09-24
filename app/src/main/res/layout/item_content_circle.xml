@@ -12,6 +12,8 @@
         android:id="@+id/imageView"
         android:layout_width="@dimen/image_profile_big_width"
         android:layout_height="@dimen/image_profile_big_height"
+        app:civ_border_color="?attr/colorDivider"
+        app:civ_border_width="1dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

@@ -3,6 +3,7 @@ package com.gnoemes.shikimori.utils
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
@@ -100,7 +101,12 @@ fun Snackbar.floatingStyle(context: Context, @DimenRes margins: Int = R.dimen.sn
     val params = this.view.layoutParams as ViewGroup.MarginLayoutParams
     val margin = context.dimen(margins).toInt()
     params.setMargins(margin, margin, margin, margin)
-    this.view.findViewById<Button>(R.id.snackbar_action)?.isAllCaps = false
+    this.view.findViewById<Button>(R.id.snackbar_action)?.run {
+        isAllCaps = false
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            letterSpacing = 0.03f
+        }
+    }
     this.view.findViewById<TextView>(R.id.snackbar_text)?.setTextColor(context.color(R.color.player_controls))
     this.view.layoutParams = params
     this.view.background = context.drawable(background)

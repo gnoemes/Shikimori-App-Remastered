@@ -6,13 +6,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.common.presentation.InfoClickableItem
+import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.gnoemes.shikimori.utils.inflate
 import com.gnoemes.shikimori.utils.onClick
+import com.gnoemes.shikimori.utils.visibleIf
 import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
 import kotlinx.android.synthetic.main.item_details_info_clickable.view.*
 
 class InfoClickableAdapterDelegate(
-        private val navigationCallback: (Type, Long) -> Unit
+        private val navigationCallback: (Type, Long) -> Unit,
+        private val imageLoader: ImageLoader
 ) : AbsListItemAdapterDelegate<InfoClickableItem, Any, InfoClickableAdapterDelegate.ViewHolder>() {
 
     override fun isForViewType(item: Any, items: MutableList<Any>, position: Int): Boolean =
@@ -38,6 +41,9 @@ class InfoClickableAdapterDelegate(
             with(itemView) {
                 infoView.text = item.description
                 categoryView.text = item.category
+                imageLoader.setCircleImage(imageView, item.image?.preview)
+
+                imageView.visibleIf { item.image != null }
             }
         }
 

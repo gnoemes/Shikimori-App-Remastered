@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     style="@style/CircleButtonStyle"
-    android:layout_width="@dimen/image_profile_width"
-    android:layout_height="@dimen/image_profile_height"
+    android:layout_width="@dimen/image_profile_big_width"
+    android:layout_height="@dimen/image_profile_big_width"
     android:ellipsize="end"
     android:fontFamily="sans-serif-medium"
     android:maxLines="1"
+    app:cornerRadius="40dp"
     tools:text="+45">
 
 

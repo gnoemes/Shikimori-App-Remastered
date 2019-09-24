@@ -101,7 +101,7 @@ class MangaDetailsViewModelConverterImpl @Inject constructor(
                     val description = it.first.nameRu ?: it.first.name
                     val category = it.second.firstOrNull { role -> role == "Art" || role == "Story" || role == "Story & Art" }?.let { convertRole(it) }
                     if (category != null) {
-                        info.add(InfoClickableItem(it.first.id, it.first.linkedType, description, category))
+                        info.add(InfoClickableItem(it.first.id, it.first.linkedType, description, it.first.image, category))
                     }
                 }
 

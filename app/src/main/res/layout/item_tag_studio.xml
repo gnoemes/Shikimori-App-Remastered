@@ -9,6 +9,8 @@
     android:maxLines="1"
     android:stateListAnimator="@null"
     android:textColor="?attr/colorOnSurface"
+    android:padding="5dp"
+    app:chipMinHeight="24dp"
     app:chipStrokeColor="@color/selector_divider_to_secondary"
     app:ensureMinTouchTargetSize="false"
-    tools:text="smotretanime.ru" />
+    tools:text="J.C.Staff" />

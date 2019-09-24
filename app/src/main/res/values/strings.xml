@@ -33,7 +33,7 @@
     <string name="common_chronology">Хронология</string>
     <string name="common_chronology_read">Порядок чтения</string>
     <string name="common_similar">Похожие</string>
-    <string name="common_related">Связанные</string>
+    <string name="common_related">Связанное</string>
     <string name="common_links">Ссылки</string>
     <string name="common_discussion">Обсуждение</string>
     <string name="common_seyu">Сэйю</string>
@@ -443,7 +443,7 @@
     <string name="chronology_adaptation">Адаптация</string>
     <string name="chronology_type">Вид хронологии</string>
     <string name="chronology_type_main">Основная история</string>
-    <string name="chronology_type_linked">Ответления</string>
+    <string name="chronology_type_linked">Ответвления от истории</string>
 
     <string name="backup_save">Сохранение</string>
     <string name="backup_saved">Сохранено</string>

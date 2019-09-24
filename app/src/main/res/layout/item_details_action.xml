@@ -8,7 +8,7 @@
     android:layout_marginTop="8dp"
     android:layout_marginBottom="8dp"
     app:cardBackgroundColor="?attr/colorSurface"
-    app:cardCornerRadius="4dp"
+    app:cardCornerRadius="8dp"
     app:cardElevation="0dp"
     app:rippleColor="?attr/colorDivider"
     app:strokeColor="?attr/colorDivider"
@@ -39,7 +39,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:fontFamily="sans-serif-medium"
             android:textColor="?attr/colorOnPrimarySecondary"
             android:textSize="10sp"
             tools:text="Хронология" />

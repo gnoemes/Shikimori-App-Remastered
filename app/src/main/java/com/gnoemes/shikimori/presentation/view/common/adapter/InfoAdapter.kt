@@ -3,15 +3,17 @@ package com.gnoemes.shikimori.presentation.view.common.adapter
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.common.presentation.InfoClickableItem
 import com.gnoemes.shikimori.entity.common.presentation.InfoItem
+import com.gnoemes.shikimori.utils.images.ImageLoader
 
 class InfoAdapter(
-        navigationCallback: (Type, Long) -> Unit
+        navigationCallback: (Type, Long) -> Unit,
+        imageLoader: ImageLoader
 ) : BaseAdapter<Any>() {
 
     init {
         delegatesManager.apply {
             addDelegate(InfoAdapterDelegate())
-            addDelegate(InfoClickableAdapterDelegate(navigationCallback))
+            addDelegate(InfoClickableAdapterDelegate(navigationCallback, imageLoader))
         }
     }
 

@@ -8,5 +8,7 @@
     android:layout_height="wrap_content"
     android:maxLines="1"
     android:stateListAnimator="@null"
+    android:padding="5dp"
+    app:chipMinHeight="24dp"
     app:ensureMinTouchTargetSize="false"
-    tools:text="smotretanime.ru" />
+    tools:text="Экшен" />
