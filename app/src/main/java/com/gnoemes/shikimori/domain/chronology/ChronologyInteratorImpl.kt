@@ -74,11 +74,6 @@ class ChronologyInteratorImpl @Inject constructor(
                     .sortedByDescending { it.weight }
                     .filter { it.sourceId == id }
                     .toMutableList()
-                    .let {
-                        val rootSelf = franchise.relations.sortedByDescending { it.weight }.find { it.targetId == id }
-                        if (rootSelf != null) it.add(rootSelf)
-                        it
-                    }
             else {
                 var current = enterNode.copy()
                 val relatedNodes = franchise

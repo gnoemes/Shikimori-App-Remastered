@@ -23,6 +23,9 @@ class DetailsHeadViewHolder(
         with(view.headContent) {
             editRateBtn.onClick { callback.invoke(DetailsAction.EditRate) }
             statusRateBtn.onClick { callback.invoke(DetailsAction.RateStatusDialog) }
+
+            ratingView.setEmptyDrawable(context.drawable(R.drawable.ic_small_star_empty)?.apply { tint(context!!.colorAttr(R.attr.colorOnPrimarySecondary)) })
+            ratingView.setFilledDrawable(context.drawable(R.drawable.ic_small_star_filled)?.apply { tint(context!!.colorAttr(R.attr.colorSecondary)) })
         }
     }
 
