@@ -70,8 +70,12 @@ class ChronologyPresenter @Inject constructor(
         val scrollPos = if (items.isEmpty()) it.indexOfFirst { item -> item.id == data.id } else 0
 
         items.clearAndAddAll(it)
-        if (it.isEmpty()) viewState.showEmptyView()
+        if (it.isEmpty()) {
+            viewState.showEmptyView()
+            viewState.showContent(false)
+        }
         else {
+            viewState.showContent(true)
             viewState.showData(it)
             viewState.scrollTo(scrollPos)
         }

@@ -36,12 +36,12 @@ class ChronologyInteratorImpl @Inject constructor(
 
     override fun getMangas(id: Long, franchiseName: String?, type: ChronologyType): Single<List<ChronologyItem>> =
             mangaRepository.getFranchise(id)
-                    .searchFranchiseItemsAndMergeWithRates(id, franchiseName, Type.ANIME, type)
+                    .searchFranchiseItemsAndMergeWithRates(id, franchiseName, Type.MANGA, type)
                     .applyErrorHandlerAndSchedulers()
 
     override fun getRanobes(id: Long, franchiseName: String?, type: ChronologyType): Single<List<ChronologyItem>> =
             ranobeRepository.getFranchise(id)
-                    .searchFranchiseItemsAndMergeWithRates(id, franchiseName, Type.ANIME, type)
+                    .searchFranchiseItemsAndMergeWithRates(id, franchiseName, Type.RANOBE, type)
                     .applyErrorHandlerAndSchedulers()
 
     private fun Single<Franchise>.searchFranchiseItemsAndMergeWithRates(id: Long, franchiseName: String?, type: Type, chronologyType: ChronologyType) =

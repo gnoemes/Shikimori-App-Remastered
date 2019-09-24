@@ -1,6 +1,7 @@
 package com.gnoemes.shikimori.presentation.presenter.anime.converter
 
 import com.gnoemes.shikimori.entity.anime.domain.AnimeDetails
+import com.gnoemes.shikimori.entity.common.domain.Status
 import com.gnoemes.shikimori.entity.common.presentation.DetailsActionItem
 import com.gnoemes.shikimori.entity.common.presentation.DetailsDescriptionItem
 import com.gnoemes.shikimori.entity.common.presentation.DetailsHeadItem
@@ -17,7 +18,7 @@ interface AnimeDetailsViewModelConverter {
 
     fun convertInfo(it: AnimeDetails, creators: List<Pair<Person, List<String>>>) : DetailsInfoItem
 
-    fun getActions() : DetailsActionItem
+    fun getActions(status : Status) : DetailsActionItem
 
     fun convertScores(t: List<Statistic>): List<UserStatisticItem>
 

@@ -145,8 +145,11 @@ class AnimeDetailsViewModelConverterImpl @Inject constructor(
         return DetailsInfoItem(nameSecond, tags, info)
     }
 
-    override fun getActions(): DetailsActionItem {
-        val actions = DetailsActionType.values().toList()
+    override fun getActions(status: Status): DetailsActionItem {
+        val actions = DetailsActionType.values().toMutableList()
+
+        if (status == Status.ANONS) actions.remove(DetailsActionType.SIMILAR)
+
         return DetailsActionItem(actions)
     }
 

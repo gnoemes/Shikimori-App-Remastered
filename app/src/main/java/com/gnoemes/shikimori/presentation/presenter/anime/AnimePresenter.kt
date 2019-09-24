@@ -89,7 +89,7 @@ open class AnimePresenter @Inject constructor(
     }
 
     private fun loadActions() {
-        val item = viewModelConverter.getActions()
+        val item = viewModelConverter.getActions(currentAnime.status)
         viewState.setActionItem(item)
     }
 

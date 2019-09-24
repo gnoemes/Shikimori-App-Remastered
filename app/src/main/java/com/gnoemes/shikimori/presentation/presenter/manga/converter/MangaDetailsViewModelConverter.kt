@@ -1,5 +1,6 @@
 package com.gnoemes.shikimori.presentation.presenter.manga.converter
 
+import com.gnoemes.shikimori.entity.common.domain.Status
 import com.gnoemes.shikimori.entity.common.presentation.DetailsActionItem
 import com.gnoemes.shikimori.entity.common.presentation.DetailsDescriptionItem
 import com.gnoemes.shikimori.entity.common.presentation.DetailsHeadItem
@@ -17,7 +18,7 @@ interface MangaDetailsViewModelConverter {
 
     fun convertDescriptionItem(description: String?): DetailsDescriptionItem
 
-    fun getActions() : DetailsActionItem
+    fun getActions(status : Status) : DetailsActionItem
 
     fun convertScores(t: List<Statistic>): List<UserStatisticItem>
 
