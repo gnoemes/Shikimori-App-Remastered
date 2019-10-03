@@ -67,6 +67,8 @@
             android:supportsPictureInPicture="true"
             android:theme="@style/ShikimoriAppTheme.Player" />
 
+        <activity android:name=".presentation.view.screenshots.ScreenshotsActivity" />
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="49adb365d3d365dabad78f3110d69bd84e717eea" />

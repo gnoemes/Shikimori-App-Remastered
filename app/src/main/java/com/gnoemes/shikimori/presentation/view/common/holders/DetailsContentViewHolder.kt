@@ -11,7 +11,10 @@ import com.gnoemes.shikimori.utils.dp
 import com.gnoemes.shikimori.utils.gone
 import com.gnoemes.shikimori.utils.visible
 import com.gnoemes.shikimori.utils.widgets.HorizontalSpaceItemDecorator
-import kotlinx.android.synthetic.main.layout_details_content.view.*
+import kotlinx.android.synthetic.main.layout_details_content.view.contentLabelView
+import kotlinx.android.synthetic.main.layout_details_content.view.contentRecyclerView
+import kotlinx.android.synthetic.main.layout_details_content.view.progressBar
+import kotlinx.android.synthetic.main.layout_details_content_with_search.view.*
 
 class DetailsContentViewHolder(
         private val view: View,
@@ -56,6 +59,7 @@ class DetailsContentViewHolder(
         with(view) {
             contentLabelView.setText(stringRes)
             adapter.bindItems(item.items)
+            if (withSearch) searchBtn.visible()
             progressBar.gone()
             contentRecyclerView.visible()
         }

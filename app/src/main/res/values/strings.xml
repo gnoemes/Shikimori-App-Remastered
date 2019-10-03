@@ -76,6 +76,7 @@
     <string name="common_share">Поделиться</string>
     <string name="common_statistic">Статистика</string>
     <string name="common_web_version">Веб-версия</string>
+    <string name="common_count_format">%d из %d</string>
 
     <string name="season_autumn">Осень</string>
     <string name="season_winter">Зима</string>

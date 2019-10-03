@@ -7,6 +7,8 @@ import com.gnoemes.shikimori.domain.rates.RatesInteractor
 import com.gnoemes.shikimori.domain.related.RelatedInteractor
 import com.gnoemes.shikimori.domain.user.UserInteractor
 import com.gnoemes.shikimori.entity.anime.domain.AnimeDetails
+import com.gnoemes.shikimori.entity.anime.domain.Screenshot
+import com.gnoemes.shikimori.entity.anime.domain.ScreenshotsNavigationData
 import com.gnoemes.shikimori.entity.app.domain.AnalyticEvent
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.chronology.ChronologyNavigationData
@@ -26,6 +28,7 @@ import com.gnoemes.shikimori.presentation.view.anime.AnimeView
 import com.gnoemes.shikimori.utils.appendLightLoadingLogic
 import com.gnoemes.shikimori.utils.appendLoadingLogic
 import com.gnoemes.shikimori.utils.applySingleSchedulers
+import com.gnoemes.shikimori.utils.clearAndAddAll
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import javax.inject.Inject
@@ -43,6 +46,8 @@ open class AnimePresenter @Inject constructor(
 ) : BaseDetailsPresenter<AnimeView>(ratesInteractor, userInteractor, resourceProvider, contentConverter) {
 
     private lateinit var currentAnime: AnimeDetails
+
+    private val screenshots = mutableListOf<Screenshot>()
 
     override val type: Type
         get() = Type.ANIME
@@ -95,6 +100,7 @@ open class AnimePresenter @Inject constructor(
 
     private fun loadScreenshots() =
             animeInteractor.getScreenshots(id)
+                    .doOnSuccess { screenshots.clearAndAddAll(it) }
                     .appendLightLoadingLogic(viewState)
                     .map(contentConverter)
                     .subscribe({ viewState.setContentItem(DetailsContentType.SCREENSHOTS, it) }, this::processErrors)
@@ -166,8 +172,9 @@ open class AnimePresenter @Inject constructor(
         viewState.showStatusDialog(id, title, currentAnime.userRate?.status, true)
     }
 
-    override fun onScreenshotsClicked() {
-
+    override fun onScreenshotsClicked(pos: Int) {
+        val data = ScreenshotsNavigationData(pos, screenshots)
+        router.navigateTo(Screens.SCREENSHOTS, data)
     }
 
     override fun onClearHistory() {

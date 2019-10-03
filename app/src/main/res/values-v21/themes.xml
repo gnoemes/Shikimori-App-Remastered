@@ -152,4 +152,18 @@
         <item name="colorRateDropped">@color/rate_dropped_transparent</item>
     </style>
 
+    <style name="ShikimoriAppTheme.Screenshots" parent="ShikimoriAppTheme.Base">
+        <item name="colorPrimary">@color/amoled_colorPrimary</item>
+        <item name="colorPrimaryDark">@color/amoled_colorPrimaryVariant</item>
+        <item name="colorSecondary">@color/default_colorSecondary</item>
+        <item name="android:colorBackground">@android:color/transparent</item>
+
+        <item name="colorOnPrimary">@color/amoled_colorOnPrimary</item>
+        <item name="colorControlHighlight">@color/amoled_colorRipple</item>
+        <item name="android:statusBarColor">@color/player_surface</item>
+        <item name="android:navigationBarColor">@color/player_surface</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
+    </style>
+
 </resources>

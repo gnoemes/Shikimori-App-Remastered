@@ -22,6 +22,7 @@ object Screens {
     const val WEB = "WEB"
     const val SETTINGS = "SETTINGS"
     const val SHARE = "SHARE"
+    const val SCREENSHOTS = "SCREENSHOTS"
 
     ////////////////////////////////////////////////////////////////////////
     // Other

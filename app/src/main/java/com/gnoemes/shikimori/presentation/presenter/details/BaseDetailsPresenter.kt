@@ -148,7 +148,7 @@ abstract class BaseDetailsPresenter<View : BaseDetailsView>(
             is DetailsAction.Video -> onOpenWeb(action.url)
             is DetailsAction.GenreClicked -> onGenreClicked(action.genre)
             is DetailsAction.ChangeRateStatus -> onChangeRateStatus(action.newStatus)
-            is DetailsAction.Screenshots -> onScreenshotsClicked()
+            is DetailsAction.Screenshots -> onScreenshotsClicked(action.pos)
             is DetailsAction.Discussion -> onOpenDiscussion()
             is DetailsAction.StudioClicked -> onStudioClicked(action.id)
             is DetailsAction.RateStatusDialog -> onStatusDialog()
@@ -205,7 +205,7 @@ abstract class BaseDetailsPresenter<View : BaseDetailsView>(
     protected open fun onOpenDiscussion() {
     }
 
-    protected open fun onScreenshotsClicked() {
+    protected open fun onScreenshotsClicked(pos: Int) {
     }
 
     protected open fun onClearHistory() {

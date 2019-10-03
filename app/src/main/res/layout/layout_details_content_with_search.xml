@@ -35,7 +35,9 @@
             android:layout_marginRight="16dp"
             android:background="@android:color/transparent"
             android:tint="?attr/colorOnSurface"
-            app:srcCompat="@drawable/ic_search" />
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_search"
+            tools:visibility="visible" />
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/searchView"

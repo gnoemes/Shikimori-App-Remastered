@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class Screenshot(
-        val original: String?,
-        val preview: String?
+data class ScreenshotsNavigationData(
+        val selected: Int,
+        val items: List<Screenshot>
 ) : Parcelable
