@@ -34,6 +34,8 @@ class RateResponseConverterImpl @Inject constructor(
                 it.chapters,
                 it.volumes,
                 it.rewatches,
+                it.createdDateTime,
+                it.updatedDateTime,
                 animeConverter.convertResponse(it.anime),
                 mangaConverter.convertResponse(it.manga)
         )

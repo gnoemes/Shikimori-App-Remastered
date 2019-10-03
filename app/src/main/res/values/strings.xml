@@ -261,6 +261,8 @@
     <string name="sort_id">По порядку</string>
     <string name="sort_type">По типу</string>
     <string name="sort_date">По дате выхода</string>
+    <string name="sort_date_added">По дате добавления</string>
+    <string name="sort_date_updated">По дате обновления</string>
     <string name="sort_status">По статусу</string>
     <string name="sort_episodes">По эпизодам</string>
     <string name="sort_chapters">По главам</string>

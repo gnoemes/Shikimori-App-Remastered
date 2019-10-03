@@ -4,6 +4,7 @@ import com.gnoemes.shikimori.entity.anime.data.AnimeResponse
 import com.gnoemes.shikimori.entity.manga.data.MangaResponse
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.google.gson.annotations.SerializedName
+import org.joda.time.DateTime
 
 data class RateResponse(
         @field:SerializedName("id") val id: Long,
@@ -15,6 +16,8 @@ data class RateResponse(
         @field:SerializedName("chapters") val chapters: Int?,
         @field:SerializedName("volumes") val volumes: Int?,
         @field:SerializedName("rewatches") val rewatches: Int?,
+        @field:SerializedName("created_at") val createdDateTime : DateTime?,
+        @field:SerializedName("updated_at") val updatedDateTime : DateTime?,
         @field:SerializedName("anime") val anime: AnimeResponse?,
         @field:SerializedName("manga") val manga: MangaResponse?
 )

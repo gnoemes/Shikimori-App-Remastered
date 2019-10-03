@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.common.presentation.RateSort
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseBottomSheetDialogFragment
-import com.gnoemes.shikimori.utils.addBackButton
 import com.gnoemes.shikimori.utils.colorStateList
 import com.gnoemes.shikimori.utils.dimenAttr
 import com.gnoemes.shikimori.utils.withArgs
@@ -59,7 +58,7 @@ class RateSortDialog : BaseBottomSheetDialogFragment() {
             }
             menu.apply {
                 val checkedId = sorts.find { it.isSelected }?.type?.order ?: 0
-                sorts.forEach { add(0, it.type.order, it.type.order, it.text) }
+                sorts.forEachIndexed { index, sort -> add(0, sort.type.order, index, sort.text) }
                 setGroupCheckable(0, true, true)
                 setCheckedItem(checkedId)
             }
