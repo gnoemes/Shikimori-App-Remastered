@@ -53,7 +53,8 @@ class BackupDialog : BaseBottomSheetDialogFragment() {
 
         with(toolbar) {
             setTitle(R.string.settings_backup_title)
-            addBackButton(R.drawable.ic_close) { dismiss() }
+            inflateMenu(R.menu.menu_close)
+            onMenuClick { dismiss(); true }
         }
 
         saveLayout.cloudBtn.onClick {

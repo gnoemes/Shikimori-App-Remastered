@@ -10,6 +10,7 @@
     android:stateListAnimator="@null"
     android:textColor="?attr/colorOnSurface"
     android:padding="5dp"
+    android:textSize="12sp"
     app:chipMinHeight="24dp"
     app:chipStrokeColor="@color/selector_divider_to_secondary"
     app:ensureMinTouchTargetSize="false"
