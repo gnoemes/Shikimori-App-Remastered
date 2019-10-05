@@ -13,6 +13,7 @@ data class Manga(
         val image: Image,
         val url: String,
         val type: MangaType,
+        val score : Double?,
         val status: Status,
         val volumes: Int,
         val chapters: Int,

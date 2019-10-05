@@ -11,6 +11,7 @@ data class SimilarViewModel(
         val title: String,
         val description: CharSequence,
         val image: Image,
+        val score : Double?,
         val status: RateStatus?,
         val isGuest : Boolean
 )

@@ -14,6 +14,7 @@ data class AnimeResponse(
         @field:SerializedName("image") val image: ImageResponse,
         @field:SerializedName("url") val url: String,
         @field:SerializedName("kind") private val _type: AnimeType?,
+        @field:SerializedName("score") val score : Double?,
         @field:SerializedName("status") private val _status: Status?,
         @field:SerializedName("episodes") val episodes: Int,
         @field:SerializedName("episodes_aired") val episodesAired: Int,

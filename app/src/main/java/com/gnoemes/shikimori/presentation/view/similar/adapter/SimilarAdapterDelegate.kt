@@ -43,6 +43,10 @@ class SimilarAdapterDelegate(
                 nameView.text = item.title
                 descriptionView.text = item.description
                 statusRateBtn.visibleIf { !item.isGuest }
+                scoreView.text = item.score?.toString()
+
+                scoreView.visibleIf { item.score != null }
+                starImage.visibleIf { item.score != null }
 
 
                 val iconAndColors = when (item.status) {

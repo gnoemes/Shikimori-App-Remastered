@@ -91,6 +91,7 @@ class SimilarViewModelConverterImpl @Inject constructor(
                 name,
                 builder,
                 it.anime.image,
+                it.anime.score,
                 it.status,
                 isGuest
         )
@@ -153,6 +154,7 @@ class SimilarViewModelConverterImpl @Inject constructor(
                 name,
                 builder,
                 it.manga.image,
+                it.manga.score,
                 it.status,
                 isGuest
         )
