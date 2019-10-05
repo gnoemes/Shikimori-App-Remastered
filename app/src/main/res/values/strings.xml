@@ -462,6 +462,9 @@
     <string name="backup_read_success">Настройки успешно восстановлены</string>
     <string name="backup_found_title">Восстановление</string>
     <string name="backup_found_message">Найден файл настроек приложения</string>
+    <string name="backup_cloud_upload_error">Не удалось отправить файл на облако</string>
+    <string name="backup_cloud_upload_success">Настройки успешно отправлены</string>
+    <string name="backup_cloud_download_error">Не удалось загрузить настройки</string>
 
     <string-array name="rate_types">
         <item>@string/common_anime</item>

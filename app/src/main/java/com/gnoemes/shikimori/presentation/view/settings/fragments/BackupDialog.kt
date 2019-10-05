@@ -5,6 +5,7 @@ import android.content.ClipData
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.view.View
@@ -21,6 +22,7 @@ import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseBottomSheetDialogFragment
 import com.gnoemes.shikimori.utils.*
 import com.gnoemes.shikimori.utils.network.MapDeserializerDoubleAsIntFix
+import com.google.firebase.storage.FirebaseStorage
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
@@ -28,6 +30,8 @@ import com.kotlinpermissions.KotlinPermissions
 import kotlinx.android.synthetic.main.dialog_backup.*
 import kotlinx.android.synthetic.main.dialog_base_bottom_sheet.*
 import kotlinx.android.synthetic.main.layout_backup_save.view.*
+import org.joda.time.DateTime
+import org.joda.time.Days
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
@@ -35,9 +39,13 @@ import java.io.IOException
 
 class BackupDialog : BaseBottomSheetDialogFragment() {
 
+    private val firebase by lazy { FirebaseStorage.getInstance() }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         peekHeight = context.dimenAttr(android.R.attr.actionBarSize)
+
+        checkCloudBackup(context)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -48,9 +56,19 @@ class BackupDialog : BaseBottomSheetDialogFragment() {
             addBackButton(R.drawable.ic_close) { dismiss() }
         }
 
+        saveLayout.cloudBtn.onClick {
+            val userId = getUserId(it.context)
+            if (userId == Constants.NO_ID) Toast.makeText(it.context, R.string.common_need_auth, Toast.LENGTH_LONG).show()
+            else uploadToCloud(userId, createBackupPrivate())
+        }
         saveLayout.deviceBtn.onClick { writeFileToPublic(createBackupPrivate()) }
         saveLayout.shareBtn.onClick { shareBackup() }
         downloadLayout.deviceBtn.onClick { findBackupLocal() }
+        downloadLayout.cloudBtn.onClick {
+            val userId = getUserId(it.context)
+            if (userId == Constants.NO_ID) Toast.makeText(it.context, R.string.common_need_auth, Toast.LENGTH_LONG).show()
+            else downloadFromCloud(userId)
+        }
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -101,6 +119,49 @@ class BackupDialog : BaseBottomSheetDialogFragment() {
                 Toast.makeText(context, R.string.backup_write_error, Toast.LENGTH_LONG).show()
             }
         }
+    }
+
+    private fun uploadToCloud(userId: Long, file: File) {
+        firebase.reference.child("backups/$userId/${Constants.BACKUP_FILE_NAME}").putFile(Uri.fromFile(file))
+                .addOnFailureListener {
+                    Toast.makeText(context, R.string.backup_cloud_upload_error, Toast.LENGTH_LONG).show()
+                    it.printStackTrace()
+                }
+                .addOnSuccessListener {
+                    Toast.makeText(context, R.string.backup_cloud_upload_success, Toast.LENGTH_LONG).show()
+                    val dateMills = it.metadata?.creationTimeMillis
+                    if (dateMills != null) {
+                        val dateTime = DateTime(dateMills)
+                        setCloudBackupDate(dateTime)
+                    }
+                }
+    }
+
+    private fun downloadFromCloud(userId: Long) {
+        val tempFile = File(context!!.filesDir, "cloud-" + Constants.BACKUP_FILE_NAME)
+        firebase.reference.child("backups/$userId/${Constants.BACKUP_FILE_NAME}")
+                .getFile(tempFile)
+                .addOnSuccessListener { readBackup(tempFile) }
+                .addOnFailureListener {
+                    it.printStackTrace()
+                    Toast.makeText(context, R.string.backup_cloud_download_error, Toast.LENGTH_LONG).show()
+                }
+    }
+
+    private fun checkCloudBackup(context: Context) {
+        val userId = getUserId(context)
+        if (userId == Constants.NO_ID) return
+
+        firebase.reference.child("backups/$userId/${Constants.BACKUP_FILE_NAME}")
+                .metadata
+                .addOnSuccessListener {
+                    val dateMills = it?.creationTimeMillis
+                    if (dateMills != null) {
+                        val dateTime = DateTime(dateMills)
+                        setCloudBackupDate(dateTime)
+                    }
+                }
+                .addOnFailureListener { it.printStackTrace() }
     }
 
     private fun findBackupLocal() {
@@ -239,6 +300,18 @@ class BackupDialog : BaseBottomSheetDialogFragment() {
         shareChooser.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION
 
         startActivity(shareChooser)
+    }
+
+    private fun setCloudBackupDate(date: DateTime) {
+        val days = Math.abs(Days.daysBetween(DateTime.now(), date).days)
+        val text = if (days == 0) context!!.getString(R.string.common_today) else
+            context!!.resources.getQuantityString(R.plurals.days_ago, days, days)
+        downloadLayout.cloudLabel.text = text
+    }
+
+    private fun getUserId(context: Context): Long {
+        return context.getSharedPreferences("user_preferences", Context.MODE_PRIVATE)?.getLong(SettingsExtras.USER_ID, Constants.NO_ID)
+                ?: Constants.NO_ID
     }
 
     //TODO reflection?

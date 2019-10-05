@@ -139,6 +139,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:' + versions.firebase
     implementation 'com.google.firebase:firebase-messaging:' + versions.firebaseMessaging
     implementation 'com.google.firebase:firebase-firestore:' + versions.firebaseFirestore
+    implementation 'com.google.firebase:firebase-storage:' + versions.firebaseStorage
 
     implementation('com.crashlytics.sdk.android:crashlytics:' + versions.crashlytics) {
         transitive = true
