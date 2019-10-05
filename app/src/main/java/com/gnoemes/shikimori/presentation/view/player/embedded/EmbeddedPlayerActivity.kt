@@ -362,7 +362,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         private val isSlideControl by lazy { settingsSource.isForwardRewindSlide }
         private val isZoomProportional by lazy { settingsSource.isZoomProportional }
 
-        private val speedRates = listOf(0.25f, 0.5f, 1f, 1.5f, 2f)
+        private val speedRates = listOf(0.25f, 0.5f, 1f, 1.25f, 1.5f, 2f)
         private var controlsInAction: Boolean = false
 
         private val connector: MediaSessionConnector
