@@ -13,7 +13,8 @@ import com.gnoemes.shikimori.utils.images.TouchImageTargetView
 class ScreenshotPagerAdapter(
         val items: List<Screenshot>,
         private val uiVisibilityCallback: () -> Unit,
-        private val swipeDismissCallback: () -> Unit
+        private val swipeCallback: () -> Unit,
+        private val dismissCallback: () -> Unit
 ) : PagerAdapter() {
 
     override fun getCount(): Int = items.size
@@ -45,9 +46,8 @@ class ScreenshotPagerAdapter(
 
     private val swipeListener = object : TouchImageView.OnTouchImageViewListener {
         override fun onMove() = Unit
-        override fun onSwipe() {
-            swipeDismissCallback.invoke()
-        }
+        override fun onDismiss() = dismissCallback.invoke()
+        override fun onSwipe() = swipeCallback.invoke()
     }
 
     private val tapListener = object : GestureDetector.OnDoubleTapListener {

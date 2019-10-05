@@ -62,7 +62,7 @@ class ScreenshotsActivity : MvpActivity() {
 
         if (intent != null) {
             val data: ScreenshotsNavigationData = intent.getParcelableExtra(SCREENSHOTS_DATA_KEY)
-            adapter = ScreenshotPagerAdapter(data.items, this::toggleUI, this::onSwipe)
+            adapter = ScreenshotPagerAdapter(data.items, this::toggleUI, this::onSwipe, this::onDismiss)
             itemCount = data.items.size
             val pos = savedInstanceState?.getInt(CURRENT_PAGE, data.selected) ?: data.selected
             viewpager.adapter = this@ScreenshotsActivity.adapter
@@ -85,7 +85,12 @@ class ScreenshotsActivity : MvpActivity() {
     }
 
     private fun onSwipe() {
+        hideUi(false)
+    }
+
+    private fun onDismiss() {
         finish()
+        overridePendingTransition(0, 0)
     }
 
     private fun share(url: String?) {
@@ -125,7 +130,7 @@ class ScreenshotsActivity : MvpActivity() {
     }
 
 
-    private fun hideUi() {
+    private fun hideUi(animate : Boolean = true) {
         window.decorView.systemUiVisibility = (
                 // Set the content to appear under the system bars so that the
                 // content doesn't resize when the system bars hide and show.
@@ -138,7 +143,7 @@ class ScreenshotsActivity : MvpActivity() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) it or View.SYSTEM_UI_FLAG_IMMERSIVE
             else it
         }
-        TransitionManager.beginDelayedTransition(coordinator, Fade().apply { duration = 110 })
+        if (animate) TransitionManager.beginDelayedTransition(coordinator, Fade().apply { duration = 110 })
         appBarLayout.gone()
     }
 

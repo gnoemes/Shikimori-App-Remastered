@@ -1008,6 +1008,8 @@ public class TouchImageView extends AppCompatImageView {
     public interface OnTouchImageViewListener {
         void onMove();
 
+        void onDismiss();
+
         void onSwipe();
     }
 
@@ -1023,6 +1025,8 @@ public class TouchImageView extends AppCompatImageView {
         // Remember last point position for dragging
         //
         private PointF last = new PointF();
+
+        private int DELTA_LIMIT = 100;
 
         // Allows us to know if we should use MotionEvent.ACTION_MOVE
         private boolean tracking = false;
@@ -1045,32 +1049,37 @@ public class TouchImageView extends AppCompatImageView {
                         last.set(curr);
                         if (fling != null)
                             fling.cancelFling();
-//                        if (isZoomed())
-                            setState(State.DRAG);
+                        setState(State.DRAG);
 //                        else {
 //                            setState(State.DISMISS);
 //                            Rect hitRect = new Rect();
 //                            getHitRect(hitRect);
 //                            if (hitRect.contains((int) event.getX(), (int) event.getY())) {
 //                                tracking = true;
-//                                startY = event.getY();
-//                            }
-//                        }
+                        startY = event.getY();
                         break;
 
                     case MotionEvent.ACTION_MOVE:
-                        if (state == State.DRAG) {
+                        float delta = Math.abs(curr.y - startY);
+                        if (!isZoomed() && delta > DELTA_LIMIT || state == State.DISMISS) {
+                            tracking = true;
+                            setState(State.DISMISS);
+                            float translateTo = getY() + event.getY() - startY;
+                            if (translateTo < 0) translateTo += DELTA_LIMIT;
+                            else if (translateTo > 0) translateTo -= DELTA_LIMIT;
+                            setTranslationY(translateTo);
+
+                            if (touchImageViewListener != null) {
+                                touchImageViewListener.onSwipe();
+                            }
+                        } else if (state == State.DRAG) {
                             float deltaX = curr.x - last.x;
                             float deltaY = curr.y - last.y;
-                            float fixTransX = getFixDragTrans(deltaX, viewWidth, getImageWidth());
                             float fixTransY = getFixDragTrans(deltaY, viewHeight, getImageHeight());
+                            float fixTransX = getFixDragTrans(deltaX, viewWidth, getImageWidth());
                             matrix.postTranslate(fixTransX, fixTransY);
                             fixTrans();
                             last.set(curr.x, curr.y);
-                        } else if (state == State.DISMISS) {
-                            if (tracking) {
-                                setTranslationY(getY() + event.getY() - startY);
-                            }
                         }
                         break;
 
@@ -1127,7 +1136,7 @@ public class TouchImageView extends AppCompatImageView {
                 .start();
 
         if (touchImageViewListener != null && animateTo != 0) {
-            touchImageViewListener.onSwipe();
+            touchImageViewListener.onDismiss();
         }
     }
 
