@@ -51,7 +51,7 @@ class AnimeFragment : BaseDetailsFragment<AnimePresenter, AnimeView>(), AnimeVie
             onMenuClick {
                 when (it?.itemId) {
                     R.id.item_rate -> getPresenter().onAction(DetailsAction.RateStatusDialog)
-                    R.id.item_add_video -> getPresenter().onAction(DetailsAction.AddVideo)
+//                    R.id.item_add_video -> getPresenter().onAction(DetailsAction.AddVideo)
                     R.id.item_web -> getPresenter().onAction(DetailsAction.OpenInBrowser)
                     R.id.item_share -> getPresenter().onAction(DetailsAction.Share)
                 }
