@@ -10,6 +10,8 @@
     app:cardBackgroundColor="?attr/colorSurface"
     app:cardCornerRadius="8dp"
     app:cardElevation="0dp"
+    app:cardMaxElevation="0dp"
+    app:cardPreventCornerOverlap="false"
     app:rippleColor="?attr/colorDivider"
     app:strokeColor="?attr/colorDivider"
     app:strokeWidth="1dp">
