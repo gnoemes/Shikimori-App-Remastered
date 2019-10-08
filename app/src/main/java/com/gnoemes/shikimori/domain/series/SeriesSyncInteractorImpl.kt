@@ -1,6 +1,10 @@
 package com.gnoemes.shikimori.domain.series
 
 import android.util.Log
+import com.gnoemes.shikimori.data.local.preference.SettingsSource
+import com.gnoemes.shikimori.data.repository.series.shikimori.EpisodeChangesRepository
+import com.gnoemes.shikimori.data.repository.series.shikimori.SeriesSyncRepository
+import com.gnoemes.shikimori.data.repository.user.UserRepository
 import com.gnoemes.shikimori.domain.rates.RatesInteractor
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.common.domain.Type
@@ -15,14 +19,26 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class SeriesSyncInteractorImpl @Inject constructor(
-        private val interactor: SeriesInteractor,
-        private val ratesInteractor: RatesInteractor
+        private val repository: SeriesSyncRepository,
+        private val changesRepository: EpisodeChangesRepository,
+        private val userRepository: UserRepository,
+        private val ratesInteractor: RatesInteractor,
+        private val settingsSource: SettingsSource
 ) : SeriesSyncInteractor {
 
+    override fun startSync(): Completable = getChanges()
+            .switchMapCompletable {
+                if (it.firstOrNull()?.rateId == Constants.NO_ID && settingsSource.isAutoStatus || it.isNotEmpty() && it.none { it.rateId == Constants.NO_ID })
+                        syncEpisodes (it)
+                                .onErrorResumeNext { sendChanges(EpisodeChanges.Error(it)) }
+                                .andThen(sendChanges(EpisodeChanges.Success))
+                else Completable.complete()
+            }
+
     override fun getChanges(): Observable<List<EpisodeChanges.Changes>> =
-            interactor.getEpisodeChanges()
+            changesRepository.getEpisodesChanges()
                     .publish {
-                        Log.i("DEVE","$it")
+                        Log.i("DEVE", "$it")
                         it.buffer(
                                 it.debounce(Constants.BIG_DEBOUNCE_INTERVAL, TimeUnit.MILLISECONDS)
                                         .takeUntil(it.ignoreElements().toObservable<List<EpisodeChanges>>())
@@ -33,7 +49,7 @@ class SeriesSyncInteractorImpl @Inject constructor(
                     .doOnNext { Log.i("DEVE", it.toString()) }
                     .applyErrorHandlerAndSchedulers()
 
-    override fun sendChanges(changes: EpisodeChanges): Completable = interactor.sendEpisodeChanges(changes)
+    override fun sendChanges(changes: EpisodeChanges): Completable = changesRepository.sendEpisodeChanges(changes)
 
     override fun syncEpisodes(changes: List<EpisodeChanges.Changes>): Completable =
             (if (changes.size == 1) syncIterable(changes)
@@ -46,12 +62,54 @@ class SeriesSyncInteractorImpl @Inject constructor(
             (if (rateId == Constants.NO_ID) ratesInteractor.createRateWithResult(animeId, Type.ANIME, RateStatus.WATCHING)
             else Single.just(UserRate(rateId, targetId = animeId, targetType = Type.ANIME)))
                     .flatMap { rate ->
-                        interactor.getWatchedEpisodesCount(animeId)
+                        repository.getWatchedEpisodesCount(animeId)
                                 .map { rate.copy(episodes = it) }
                     }
                     .flatMapCompletable { ratesInteractor.updateRate(it) }
 
     private fun syncIterable(changes: List<EpisodeChanges.Changes>, onlyLocal: Boolean = false): Completable =
             Observable.fromIterable(changes)
-                    .flatMapCompletable { interactor.setEpisodeStatus(it.animeId, it.episodeIndex, it.rateId, it.isWatched, onlyLocal) }
+                    .flatMapCompletable { setEpisodeStatus(it.animeId, it.episodeIndex, it.rateId, it.isWatched, onlyLocal) }
+
+    override fun setEpisodeStatus(animeId: Long, episodeId: Int, rateId: Long, isWatching: Boolean, onlyLocal: Boolean): Completable {
+        return if (isWatching) setEpisodeWatched(animeId, episodeId, rateId, onlyLocal)
+        else setEpisodeUnwatched(animeId, episodeId, rateId, onlyLocal)
+    }
+
+    override fun setEpisodeWatched(animeId: Long, episodeId: Int, rateId: Long, onlyLocal: Boolean): Completable =
+            repository.isEpisodeWatched(animeId, episodeId)
+                    .flatMapCompletable {
+                        if (!it) updateRate(animeId, episodeId, rateId, true, onlyLocal)
+                        else Completable.complete()
+                    }
+                    .applyErrorHandlerAndSchedulers()
+
+    override fun setEpisodeUnwatched(animeId: Long, episodeId: Int, rateId: Long, onlyLocal: Boolean): Completable =
+            repository.isEpisodeWatched(animeId, episodeId)
+                    .flatMapCompletable {
+                        if (it) updateRate(animeId, episodeId, rateId, false, onlyLocal)
+                        else Completable.complete()
+                    }.applyErrorHandlerAndSchedulers()
+
+    private fun updateRate(animeId: Long, episodeId: Int, rateId: Long, isWatched: Boolean, onlyLocal: Boolean): Completable =
+            repository.setEpisodeStatus(animeId, episodeId, isWatched)
+                    .andThen(
+                            if (!onlyLocal) {
+                                if (isWatched) incrementOrCreate(animeId, rateId)
+                                else decrement(rateId)
+                            } else Completable.complete()
+                    )
+
+    private fun decrement(rateId: Long): Completable {
+        return ratesInteractor.getRate(rateId)
+                .flatMapCompletable { ratesInteractor.decrement(it) }
+    }
+
+    private fun incrementOrCreate(animeId: Long, rateId: Long): Completable {
+        return when (rateId) {
+            Constants.NO_ID -> userRepository.getMyUserId()
+                    .flatMapCompletable { ratesInteractor.createRate(animeId, Type.ANIME, UserRate(id = rateId, status = RateStatus.WATCHING), it) }
+            else -> ratesInteractor.increment(UserRate(rateId, targetType = Type.ANIME, targetId = animeId))
+        }
+    }
 }

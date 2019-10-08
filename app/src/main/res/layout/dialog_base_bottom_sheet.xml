@@ -20,10 +20,11 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@android:color/transparent"
             android:fitsSystemWindows="true"
+            app:contentInsetStartWithNavigation="0dp"
             app:layout_scrollFlags="snap"
-            app:titleTextAppearance="@style/ToolbarSmallTextAppearance"
             app:popupTheme="@style/PopupMenuTheme"
-            app:title="@string/app_name" />
+            app:title="@string/app_name"
+            app:titleTextAppearance="@style/ToolbarSmallTextAppearance" />
 
         <View
             android:layout_width="match_parent"
@@ -32,12 +33,19 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="4dp"
+        app:srcCompat="@drawable/ic_knob" />
+
     <FrameLayout
         android:id="@+id/fragment_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
         android:layout_marginBottom="64dp"
+        android:fitsSystemWindows="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

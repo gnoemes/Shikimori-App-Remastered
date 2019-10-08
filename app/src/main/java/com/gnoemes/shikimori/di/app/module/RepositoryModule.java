@@ -1,5 +1,13 @@
 package com.gnoemes.shikimori.di.app.module;
 
+import com.gnoemes.shikimori.data.local.db.AnimeRateSyncDbSource;
+import com.gnoemes.shikimori.data.local.db.ChapterDbSource;
+import com.gnoemes.shikimori.data.local.db.EpisodeDbSource;
+import com.gnoemes.shikimori.data.local.db.MangaRateSyncDbSource;
+import com.gnoemes.shikimori.data.local.db.impl.AnimeRateSyncDbSourceImpl;
+import com.gnoemes.shikimori.data.local.db.impl.ChapterDbSourceImpl;
+import com.gnoemes.shikimori.data.local.db.impl.EpisodeDbSourceImpl;
+import com.gnoemes.shikimori.data.local.db.impl.MangaRateSyncDbSourceImpl;
 import com.gnoemes.shikimori.data.local.services.DownloadSource;
 import com.gnoemes.shikimori.data.local.services.impl.DownloadManagerSourceImpl;
 import com.gnoemes.shikimori.data.repository.app.AnalyticRepository;
@@ -20,6 +28,8 @@ import com.gnoemes.shikimori.data.repository.rates.RatesRepository;
 import com.gnoemes.shikimori.data.repository.rates.RatesRepositoryImpl;
 import com.gnoemes.shikimori.data.repository.series.shikimori.EpisodeChangesRepository;
 import com.gnoemes.shikimori.data.repository.series.shikimori.EpisodeChangesRepositoryImpl;
+import com.gnoemes.shikimori.data.repository.series.shikimori.SeriesSyncRepository;
+import com.gnoemes.shikimori.data.repository.series.shikimori.SeriesSyncRepositoryImpl;
 import com.gnoemes.shikimori.data.repository.user.UserRepository;
 import com.gnoemes.shikimori.data.repository.user.UserRepositoryImpl;
 
@@ -76,4 +86,23 @@ public interface RepositoryModule {
     @Singleton
     TaskRepository bindTaskRepository(TaskRepostioryImpl repostiory);
 
+    @Binds
+    @Singleton
+    SeriesSyncRepository bindSeriesSyncRepository(SeriesSyncRepositoryImpl repository);
+
+    @Binds
+    @Singleton
+    EpisodeDbSource bindEpisodeDbSource(EpisodeDbSourceImpl source);
+
+    @Binds
+    @Singleton
+    ChapterDbSource bindChapterDbSource(ChapterDbSourceImpl source);
+
+    @Binds
+    @Singleton
+    AnimeRateSyncDbSource bindAnimeRateSyncDbSource(AnimeRateSyncDbSourceImpl source);
+
+    @Binds
+    @Reusable
+    MangaRateSyncDbSource bindMangaRateSyncDbSource(MangaRateSyncDbSourceImpl source);
 }

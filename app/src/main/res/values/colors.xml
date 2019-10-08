@@ -126,7 +126,7 @@
     <color name="colorSecondary_purple">#e358fb</color>
     <color name="colorSecondary_purple_transparent">#1fe358fb</color>
 
-    <color name="status_anons">#ff0034</color>
+    <color name="status_anons">#ff2d58</color>
     <color name="status_ongoing">#0088ff</color>
 
 </resources>

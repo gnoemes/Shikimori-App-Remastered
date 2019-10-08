@@ -42,4 +42,6 @@ public interface DateTimeResourceProvider {
     String getHoursAgoString(int hours);
 
     String getMinutesAgoString(int minutes);
+
+    String getMonthString(int month);
 }

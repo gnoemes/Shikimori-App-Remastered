@@ -3,10 +3,6 @@ package com.gnoemes.shikimori.presentation.view.player.embedded
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.PictureInPictureParams
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.content.res.Configuration
@@ -14,7 +10,6 @@ import android.graphics.drawable.Drawable
 import android.media.AudioManager
 import android.os.Build
 import android.os.Bundle
-import android.os.IBinder
 import android.provider.Settings
 import android.support.v4.media.session.MediaSessionCompat
 import android.text.SpannableStringBuilder
@@ -29,7 +24,6 @@ import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.data.local.preference.PlayerSettingsSource
-import com.gnoemes.shikimori.domain.series.SeriesSyncService
 import com.gnoemes.shikimori.entity.app.domain.AppExtras
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.series.domain.Track
@@ -76,8 +70,6 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
 
     @Inject
     lateinit var settingsSource: PlayerSettingsSource
-
-    private var seriesSyncService: SeriesSyncService? = null
 
     companion object {
         const val CONTROLLER_HIDE_DELAY = 3500L
@@ -156,16 +148,12 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
 
     override fun onStart() {
         super.onStart()
-        bindService(Intent(this, SeriesSyncService::class.java), seriesSyncServiceConnection, Context.BIND_AUTO_CREATE)
         controller.onStart()
     }
 
     override fun onStop() {
         super.onStop()
         controller.onStop()
-        seriesSyncService?.let {
-            unbindService(seriesSyncServiceConnection)
-        }
     }
 
     override fun onDestroy() {
@@ -283,17 +271,6 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         paramChangesView.visible()
     }
 
-    private val seriesSyncServiceConnection = object : ServiceConnection {
-        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-            val binder = service as? SeriesSyncService.LocalBinder
-            seriesSyncService = binder?.getService()
-        }
-
-        override fun onServiceDisconnected(name: ComponentName?) {
-
-        }
-    }
-
     ///////////////////////////////////////////////////////////////////////////
     // GETTERS
     ///////////////////////////////////////////////////////////////////////////
@@ -385,7 +362,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         private val isSlideControl by lazy { settingsSource.isForwardRewindSlide }
         private val isZoomProportional by lazy { settingsSource.isZoomProportional }
 
-        private val speedRates = listOf(0.25f, 0.5f, 1f, 1.5f, 2f)
+        private val speedRates = listOf(0.25f, 0.5f, 1f, 1.25f, 1.5f, 2f)
         private var controlsInAction: Boolean = false
 
         private val connector: MediaSessionConnector

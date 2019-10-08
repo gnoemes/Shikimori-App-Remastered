@@ -1,8 +1,11 @@
 package com.gnoemes.shikimori.presentation.view.search
 
+import android.os.Build
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.arellomobile.mvp.presenter.InjectPresenter
@@ -25,8 +28,6 @@ import com.gnoemes.shikimori.presentation.view.search.filter.FilterFragment
 import com.gnoemes.shikimori.utils.*
 import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.gnoemes.shikimori.utils.widgets.GridItemDecorator
-import com.lapism.searchview.SearchView.VERSION_MARGINS_MENU_ITEM
-import com.lapism.searchview.SearchView.VERSION_MENU_ITEM
 import com.santalu.widget.ReSpinner
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -74,8 +75,8 @@ class SearchFragment : BasePaginationFragment<SearchItem, SearchPresenter, Searc
         fun newInstance(data: SearchNavigationData?) = SearchFragment().withArgs { putParcelable(AppExtras.ARGUMENT_SEARCH_DATA, data) }
     }
 
+    private var searchView: androidx.appcompat.widget.SearchView? = null
     private var spinner: ReSpinner? = null
-    private var searchView: com.lapism.searchview.SearchView? = null
 
     private val searchAdapter by lazy { SearchAdapter(imageLoader, getPresenter()::onContentClicked).apply { if (!hasObservers()) setHasStableIds(true) } }
 
@@ -95,30 +96,37 @@ class SearchFragment : BasePaginationFragment<SearchItem, SearchPresenter, Searc
         spinner?.setOnItemClickListener { _, _, position, _ -> getPresenter().onTypeChanged(position) }
         spinner?.background = spinner?.background?.apply { tint(context!!.colorAttr(R.attr.colorOnPrimary)) }
 
-        searchView = com.lapism.searchview.SearchView(context)
-                .apply {
-                    setNavigationIcon(context.themeDrawable(R.drawable.ic_arrow_back, R.attr.colorOnPrimary))
-                    setHint(R.string.common_search)
-                    setShadow(false)
-                    setVoice(false)
-                    version = VERSION_MENU_ITEM
-                    setVersionMargins(VERSION_MARGINS_MENU_ITEM)
-                    shouldHideOnKeyboardClose = true
-                    shouldClearOnClose = true
-                    setOnOpenCloseListener(searchViewOpenListener)
-                    setOnQueryTextListener(searchViewQueryListener)
-                }
-
         toolbar?.apply {
             title = null
             addView(spinner)
-            addView(searchView)
             inflateMenu(R.menu.menu_search)
-            setOnMenuItemClickListener {
-                searchView?.open(true, it)
-                true
+        }
+
+        searchView = LayoutInflater.from(context).inflate(R.layout.layout_search_view, null) as? androidx.appcompat.widget.SearchView
+
+        toolbar.menu.findItem(R.id.item_search).actionView = searchView
+        searchView?.run {
+
+            setOnQueryTextListener(searchViewQueryListener)
+            setOnSearchClickListener {
+                getPresenter().logEvent(AnalyticEvent.SEARCH_SEARCH_OPENED)
+            }
+            setOnCloseListener {
+                return@setOnCloseListener true
+            }
+            findViewById<androidx.appcompat.widget.SearchView.SearchAutoComplete>(R.id.search_src_text)?.apply {
+                setPadding(0, 0, context.dp(8), 0)
+                setHintTextColor(context.colorStateList(context.attr(R.attr.colorOnPrimarySecondary).resourceId))
+            }
+            findViewById<LinearLayout>(R.id.search_edit_frame)?.apply {
+                layoutParams = (layoutParams as? LinearLayout.LayoutParams)?.apply {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                        marginStart = 0
+                    }; leftMargin = 0
+                }
             }
         }
+
 
         with(recyclerView) {
             val spanCount = context.calculateColumns(R.dimen.image_search_width)
@@ -130,36 +138,20 @@ class SearchFragment : BasePaginationFragment<SearchItem, SearchPresenter, Searc
         }
 
         fab.setOnClickListener { getPresenter().onFilterClicked() }
-
     }
 
-    private val searchViewOpenListener = object : com.lapism.searchview.SearchView.OnOpenCloseListener {
-        override fun onOpen(): Boolean {
-            getPresenter().logEvent(AnalyticEvent.SEARCH_SEARCH_OPENED)
-            spinner?.gone()
-            toolbar?.menu?.getItem(0)?.isVisible = false
-            return false
-        }
-
-        override fun onClose(): Boolean {
-            spinner?.visible()
-            toolbar?.menu?.getItem(0)?.isVisible = true
-            return false
-        }
+    override fun onTabRootAction() {
+        toolbar.menu.findItem(R.id.item_search)?.expandActionView()
     }
 
-    private val searchViewQueryListener = object : com.lapism.searchview.SearchView.OnQueryTextListener {
+    private val searchViewQueryListener = object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
             getPresenter().onQuerySearch(query)
-            searchView?.close(true)
+            toolbar.menu.findItem(R.id.item_search)?.collapseActionView()
             return false
         }
 
         override fun onQueryTextChange(newText: String?): Boolean = false
-    }
-
-    override fun onTabRootAction() {
-        searchView?.open(true)
     }
 
     ///////////////////////////////////////////////////////////////////////////

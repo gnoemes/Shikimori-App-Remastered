@@ -7,14 +7,19 @@ import com.gnoemes.shikimori.entity.common.presentation.DetailsContentItem
 import com.gnoemes.shikimori.entity.common.presentation.DetailsContentType
 import com.gnoemes.shikimori.presentation.view.common.adapter.StartSnapHelper
 import com.gnoemes.shikimori.presentation.view.common.adapter.content.ContentAdapter
+import com.gnoemes.shikimori.utils.dp
 import com.gnoemes.shikimori.utils.gone
 import com.gnoemes.shikimori.utils.visible
 import com.gnoemes.shikimori.utils.widgets.HorizontalSpaceItemDecorator
-import kotlinx.android.synthetic.main.layout_details_content.view.*
+import kotlinx.android.synthetic.main.layout_details_content.view.contentLabelView
+import kotlinx.android.synthetic.main.layout_details_content.view.contentRecyclerView
+import kotlinx.android.synthetic.main.layout_details_content.view.progressBar
+import kotlinx.android.synthetic.main.layout_details_content_with_search.view.*
 
 class DetailsContentViewHolder(
         private val view: View,
-        private val adapter: ContentAdapter
+        private val adapter: ContentAdapter,
+        private val withSearch : Boolean= false
 ) {
 
     init {
@@ -28,9 +33,7 @@ class DetailsContentViewHolder(
             adapter = this@DetailsContentViewHolder.adapter.apply { if (!hasObservers()) setHasStableIds(true) }
             layoutManager = LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false).apply { initialPrefetchItemCount = 3 }
             setHasFixedSize(true)
-            val spacing = resources.getDimension(R.dimen.margin_small).toInt()
-            val firstItemSpacing = resources.getDimension(R.dimen.margin_biggest).toInt()
-            addItemDecoration(HorizontalSpaceItemDecorator(spacing, firstItemSpacing))
+            addItemDecoration(HorizontalSpaceItemDecorator(context.dp(if (withSearch) 16 else 8), context.dp(16)))
         }
     }
 
@@ -50,11 +53,13 @@ class DetailsContentViewHolder(
             DetailsContentType.SEYUS -> R.string.common_seyu
             DetailsContentType.WORKS -> R.string.person_best_works
             DetailsContentType.ROLES -> R.string.person_best_roles
+            DetailsContentType.SCREENSHOTS -> R.string.details_screenshots
         }
 
         with(view) {
             contentLabelView.setText(stringRes)
             adapter.bindItems(item.items)
+            if (withSearch) searchBtn.visible()
             progressBar.gone()
             contentRecyclerView.visible()
         }

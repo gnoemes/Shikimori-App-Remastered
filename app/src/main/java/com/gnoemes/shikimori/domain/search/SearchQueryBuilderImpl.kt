@@ -66,6 +66,21 @@ class SearchQueryBuilderImpl @Inject constructor() : SearchQueryBuilder {
         return Single.just(queryMap)
     }
 
+    override fun createQueryFromFranchise(franchise: String, searchQuery: String?, page: Int, limit: Int): Single<Map<String, String>> {
+        val queryMap = ArrayMap<String, String>()
+
+        if (!TextUtils.isEmpty(searchQuery)) {
+            queryMap[SearchConstants.SEARCH] = searchQuery
+        }
+
+        if (franchise.isNotEmpty()) {
+            queryMap[SearchConstants.FRANCHISE] = franchise
+            queryMap[SearchConstants.PAGE] = page.toString()
+            queryMap[SearchConstants.LIMIT] = limit.toString()
+        }
+        return Single.just(queryMap)
+    }
+
     private fun getDefaultRequest(page: Int, limit: Int): MutableMap<String, String> {
         val queryMap = ArrayMap<String, String>()
         queryMap[SearchConstants.PAGE] = page.toString()

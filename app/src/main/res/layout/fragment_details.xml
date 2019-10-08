@@ -10,16 +10,25 @@
     <ImageView
         android:id="@+id/backgroundImage"
         android:layout_width="match_parent"
-        android:layout_height="420dp"
+        android:layout_height="517dp"
+        android:fitsSystemWindows="true"
         android:scaleType="centerCrop"
         tools:srcCompat="@drawable/test_preview2" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="420dp"
+        android:layout_gravity="bottom"
+        android:background="?attr/colorSurface" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="-240dp"
+        android:layout_marginTop="-337dp"
         android:fillViewport="true"
+        android:overScrollMode="never"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
@@ -28,39 +37,42 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <include
-                android:id="@+id/headLayout"
-                layout="@layout/layout_details_head" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="336dp" />
 
             <include
-                android:id="@+id/optionsLayout"
-                layout="@layout/layout_details_options" />
+                android:id="@+id/infoLayout"
+                layout="@layout/layout_details_info" />
+
+            <include
+                android:id="@+id/actionLayout"
+                layout="@layout/layout_details_action" />
 
             <include
                 android:id="@+id/descriptionLayout"
                 layout="@layout/layout_details_description" />
 
             <include
-                android:id="@+id/videoLayout"
+                android:id="@+id/relatedLayout"
                 layout="@layout/layout_details_content" />
 
             <include
                 android:id="@+id/charactersLayout"
+                layout="@layout/layout_details_content_with_search" />
+
+            <include
+                android:id="@+id/screenshotsLayout"
                 layout="@layout/layout_details_content" />
 
             <include
-                android:id="@+id/similarLayout"
-                layout="@layout/layout_details_content" />
-
-            <include
-                android:id="@+id/relatedLayout"
+                android:id="@+id/videoLayout"
                 layout="@layout/layout_details_content" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:background="?attr/colorSurface"
-                />
+                android:background="?attr/colorSurface" />
 
         </LinearLayout>
 
@@ -68,5 +80,15 @@
     </androidx.core.widget.NestedScrollView>
 
     <include layout="@layout/layout_collapsing_toolbar" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/actionBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:tint="?attr/colorOnSecondary" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

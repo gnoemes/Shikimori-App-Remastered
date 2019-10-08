@@ -24,6 +24,7 @@ class MangaResponseConverterImpl @Inject constructor(
                 imageConverter.convertResponse(it.image),
                 it.url.appendHostIfNeed(),
                 it.type,
+                it.score,
                 it.status,
                 it.volumes,
                 it.chapters,

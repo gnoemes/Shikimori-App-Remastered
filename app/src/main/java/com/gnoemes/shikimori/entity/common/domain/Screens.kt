@@ -22,6 +22,7 @@ object Screens {
     const val WEB = "WEB"
     const val SETTINGS = "SETTINGS"
     const val SHARE = "SHARE"
+    const val SCREENSHOTS = "SCREENSHOTS"
 
     ////////////////////////////////////////////////////////////////////////
     // Other
@@ -34,6 +35,8 @@ object Screens {
     const val USER_FRIENDS = "USER_FRIENDS"
     const val USER_CLUBS = "USER_CLUBS"
     const val USER_FAVORITES = "USER_FAVORITES"
+    const val SIMILAR = "SIMILAR"
+    const val CHRONOLOGY = "CHRONOLOGY"
 
     ////////////////////////////////////////////////////////////////////////
     // Players

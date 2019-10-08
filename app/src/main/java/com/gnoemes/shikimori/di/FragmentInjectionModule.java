@@ -4,6 +4,7 @@ import com.gnoemes.shikimori.di.anime.AnimeModule;
 import com.gnoemes.shikimori.di.base.scopes.BottomChildScope;
 import com.gnoemes.shikimori.di.calendar.CalendarModule;
 import com.gnoemes.shikimori.di.character.CharacterModule;
+import com.gnoemes.shikimori.di.chronology.ChronologyModule;
 import com.gnoemes.shikimori.di.club.UserClubsModule;
 import com.gnoemes.shikimori.di.favorites.FavoritesModule;
 import com.gnoemes.shikimori.di.friends.FriendsModule;
@@ -16,6 +17,7 @@ import com.gnoemes.shikimori.di.search.SearchModule;
 import com.gnoemes.shikimori.di.series.EpisodeModule;
 import com.gnoemes.shikimori.di.series.SeriesModule;
 import com.gnoemes.shikimori.di.shikimorimain.ShikimoriMainModule;
+import com.gnoemes.shikimori.di.similar.SimilarModule;
 import com.gnoemes.shikimori.di.topic.details.TopicModule;
 import com.gnoemes.shikimori.di.topic.list.TopicListModule;
 import com.gnoemes.shikimori.di.user.UserModule;
@@ -23,6 +25,7 @@ import com.gnoemes.shikimori.di.userhistory.UserHistoryModule;
 import com.gnoemes.shikimori.presentation.view.anime.AnimeFragment;
 import com.gnoemes.shikimori.presentation.view.calendar.CalendarFragment;
 import com.gnoemes.shikimori.presentation.view.character.CharacterFragment;
+import com.gnoemes.shikimori.presentation.view.chronology.ChronologyFragment;
 import com.gnoemes.shikimori.presentation.view.clubs.UserClubsFragment;
 import com.gnoemes.shikimori.presentation.view.favorites.FavoritesFragment;
 import com.gnoemes.shikimori.presentation.view.friends.FriendsFragment;
@@ -37,6 +40,7 @@ import com.gnoemes.shikimori.presentation.view.search.filter.seasons.FilterSeaso
 import com.gnoemes.shikimori.presentation.view.series.SeriesFragment;
 import com.gnoemes.shikimori.presentation.view.series.episodes.EpisodesFragment;
 import com.gnoemes.shikimori.presentation.view.shikimorimain.ShikimoriMainFragment;
+import com.gnoemes.shikimori.presentation.view.similar.SimilarFragment;
 import com.gnoemes.shikimori.presentation.view.topic.details.TopicFragment;
 import com.gnoemes.shikimori.presentation.view.topic.list.TopicListFragment;
 import com.gnoemes.shikimori.presentation.view.user.UserFragment;
@@ -128,4 +132,12 @@ public interface FragmentInjectionModule {
     @BottomChildScope
     @ContributesAndroidInjector(modules = SeriesModule.class)
     SeriesFragment seriesFragment();
+
+    @BottomChildScope
+    @ContributesAndroidInjector(modules = SimilarModule.class)
+    SimilarFragment similarFragment();
+
+    @BottomChildScope
+    @ContributesAndroidInjector(modules = ChronologyModule.class)
+    ChronologyFragment chronologyFragment();
 }

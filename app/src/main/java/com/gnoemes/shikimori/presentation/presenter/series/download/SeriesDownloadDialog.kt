@@ -8,6 +8,7 @@ import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.series.domain.Video
 import com.gnoemes.shikimori.entity.series.presentation.SeriesDownloadItem
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseBottomSheetDialogFragment
+import com.gnoemes.shikimori.utils.addBackButton
 import com.gnoemes.shikimori.utils.dimenAttr
 import com.gnoemes.shikimori.utils.dp
 import com.gnoemes.shikimori.utils.widgets.VerticalSpaceItemDecorator
@@ -41,8 +42,6 @@ class SeriesDownloadDialog : BaseBottomSheetDialogFragment() {
 
         with(toolbar) {
             title = arguments?.getString(TITLE_KEY)
-            inflateMenu(R.menu.menu_close)
-            setOnMenuItemClickListener { dismiss(); true }
         }
 
         val seriesAdapter = SeriesDownloadAdapter(items, (parentFragment as? SeriesDownloadCallback)) { dismiss() }

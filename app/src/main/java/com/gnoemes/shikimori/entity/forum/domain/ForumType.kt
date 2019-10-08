@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 enum class ForumType(val type : String) {
     @field:SerializedName("all") ALL("all"),
-    @field:SerializedName("news") NEWS("news"),
+    @field:SerializedName("news", alternate = ["News"]) NEWS("news"),
     @field:SerializedName("animanga") ANIME_AND_MANGA("animanga"),
     @field:SerializedName("vn") VISUAL_NOVELS("vn") ,
     @field:SerializedName("games") GAMES("games"),

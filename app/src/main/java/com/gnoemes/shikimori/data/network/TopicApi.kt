@@ -23,4 +23,10 @@ interface TopicApi {
     @GET("/api/forums")
     fun getForums(): Single<List<ForumResponse>>
 
+    @GET("/api/animes/{id}/topics")
+    fun getAnimeEpisodeTopic(
+            @Path("id") id: Long,
+            @Query("episode") episode: Int
+    ): Single<List<TopicResponse>>
+
 }

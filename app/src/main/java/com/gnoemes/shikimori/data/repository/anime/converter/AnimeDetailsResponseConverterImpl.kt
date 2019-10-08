@@ -8,6 +8,8 @@ import com.gnoemes.shikimori.entity.anime.data.AnimeDetailsResponse
 import com.gnoemes.shikimori.entity.anime.data.AnimeVideoResponse
 import com.gnoemes.shikimori.entity.anime.domain.AnimeDetails
 import com.gnoemes.shikimori.entity.anime.domain.AnimeVideo
+import com.gnoemes.shikimori.entity.user.data.StatisticResponse
+import com.gnoemes.shikimori.entity.user.domain.Statistic
 import com.gnoemes.shikimori.utils.appendHostIfNeed
 import javax.inject.Inject
 
@@ -30,6 +32,7 @@ class AnimeDetailsResponseConverterImpl @Inject constructor(
             t.episodesAired,
             t.dateAired,
             t.dateReleased,
+            t.nextEpisodeDate,
             t.namesEnglish,
             t.namesJapanese,
             t.ageRating,
@@ -37,13 +40,18 @@ class AnimeDetailsResponseConverterImpl @Inject constructor(
             t.duration,
             t.description,
             t.descriptionHtml,
+            t.franchise,
             t.favoured,
             t.topicId,
             genreConverter.apply(t.genres),
             rateResponseConverter.convertUserRateResponse(t.id, t.userRate),
             convertVideos(t.videoResponses),
-            studioConverter.apply(t.studioResponses ?: emptyList())
+            studioConverter.apply(t.studioResponses ?: emptyList()),
+            t.rateScoresStats.map { convertStatistic(it) },
+            t.rateStatusesStats.map { convertStatistic(it) }
     )
+
+    private fun convertStatistic(it: StatisticResponse): Statistic = Statistic(it.name, it.value)
 
     private fun convertVideos(videoResponses: List<AnimeVideoResponse>?): List<AnimeVideo>? {
         if (videoResponses == null) {

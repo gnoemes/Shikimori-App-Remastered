@@ -19,7 +19,7 @@ android {
         nameOptions {
             versionMajor 0
             versionMinor 8
-            versionPatch 4
+            versionPatch 5
             versionBuild 2
         }
         codeOptions {
@@ -89,6 +89,7 @@ dependencies {
     implementation 'androidx.fragment:fragment:' + versions.androidxFragment
     implementation 'androidx.preference:preference:' + versions.androidxPrefs
     implementation 'androidx.core:core-ktx:' + versions.ktx
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:' + versions.androidx
     implementation 'com.google.android.material:material:' + versions.material
     implementation 'androidx.palette:palette:' + versions.androidx
 
@@ -127,7 +128,6 @@ dependencies {
     implementation 'com.google.android:flexbox:' + versions.flexbox
     implementation 'com.infideap.drawerbehavior:drawer-behavior:' + versions.drawerBehavior
     implementation 'com.facebook.shimmer:shimmer:' + versions.shimmer
-    implementation 'com.lapism:searchview:' + versions.searchView
     implementation 'de.hdodenhof:circleimageview:' + versions.circleImageView
     implementation 'ru.superjob:kotlin-permissions:' + versions.kotlinPermissions
 
@@ -139,6 +139,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:' + versions.firebase
     implementation 'com.google.firebase:firebase-messaging:' + versions.firebaseMessaging
     implementation 'com.google.firebase:firebase-firestore:' + versions.firebaseFirestore
+    implementation 'com.google.firebase:firebase-storage:' + versions.firebaseStorage
 
     implementation('com.crashlytics.sdk.android:crashlytics:' + versions.crashlytics) {
         transitive = true

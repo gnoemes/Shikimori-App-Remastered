@@ -1,22 +1,36 @@
 package com.gnoemes.shikimori.presentation.presenter.main
 
 import com.arellomobile.mvp.InjectViewState
+import com.crashlytics.android.Crashlytics
+import com.gnoemes.shikimori.domain.series.SeriesSyncInteractor
 import com.gnoemes.shikimori.entity.main.BottomScreens
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNavigationPresenter
 import com.gnoemes.shikimori.presentation.view.main.MainView
+import io.reactivex.disposables.CompositeDisposable
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
 @InjectViewState
 class MainPresenter @Inject constructor(
-        private val _router: Router
+        private val _router: Router,
+        private val interactor: SeriesSyncInteractor
 ) : BaseNavigationPresenter<MainView>() {
+
+    private var disposable: CompositeDisposable = CompositeDisposable()
 
     override val router: Router
         get() = _router
 
     override fun initData() {
         onTabItemSelected(BottomScreens.RATES)
+        startEpisodesSync()
+    }
+
+    private fun startEpisodesSync() {
+        val d =
+                interactor.startSync()
+                        .subscribe({}, { Crashlytics.logException(it) })
+        disposable.add(d)
     }
 
     fun onTabItemReselected(screenKey: String) {
@@ -42,5 +56,9 @@ class MainPresenter @Inject constructor(
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
 
+        disposable.clear()
+    }
 }

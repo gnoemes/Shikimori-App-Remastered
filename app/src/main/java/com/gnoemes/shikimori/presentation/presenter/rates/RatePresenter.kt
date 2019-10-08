@@ -420,6 +420,8 @@ class RatePresenter @Inject constructor(
         when (sort) {
             is RateSort.Id -> sortAndShow { it.idSort() }
             is RateSort.DateAired -> sortAndShow { it.dateAiredSort() }
+            is RateSort.DateCreated -> sortAndShow { it.dateCreatedSort() }
+            is RateSort.DateUpdated -> sortAndShow { it.dateUpdatedSort() }
             is RateSort.Episodes -> sortAndShow { it.episodesSort() }
             is RateSort.Progress -> sortAndShow { it.episodesWatchedSort() }
             is RateSort.Type -> sortAndShow { it.typeSort() }
@@ -506,6 +508,12 @@ class RatePresenter @Inject constructor(
                 if (it.type == Type.ANIME) it.anime?.dateAired
                 else it.manga?.dateAired
             }
+
+    private fun MutableList<Any>.dateCreatedSort(): MutableList<Any> =
+            this.sortRateBySelectorAndAddItem { it.createdDateTime }
+
+    private fun MutableList<Any>.dateUpdatedSort(): MutableList<Any> =
+            this.sortRateBySelectorAndAddItem { it.updatedDateTime }
 
     private fun MutableList<Any>.episodesSort(): MutableList<Any> =
             this.sortRateBySelectorAndAddItem {

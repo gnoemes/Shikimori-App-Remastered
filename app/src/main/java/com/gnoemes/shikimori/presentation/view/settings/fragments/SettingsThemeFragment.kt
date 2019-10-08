@@ -53,7 +53,7 @@ class SettingsThemeFragment : BaseSettingsFragment(), Toolbar.OnMenuItemClickLis
     private fun saveTheme() {
         prefs().putInt(ThemeExtras.THEME_KEY, getTheme(themePreference.getTheme()))
         prefs().putInt(ThemeExtras.ASCENT_KEY, getAscentTheme(ascentPreference.getAscentStyle()))
-        prefs().putInt(ThemeExtras.NIGHT_THEME_KEY, themePreference.getNightTheme())
+        prefs().putInt(ThemeExtras.NIGHT_THEME_KEY, getTheme(themePreference.getNightTheme()))
         prefs().putInt(ThemeExtras.NIGHT_THEME_START_KEY, themePreference.getNightModeStartTime())
         prefs().putInt(ThemeExtras.NIGHT_THEME_END_KEY, themePreference.getNightModeEndTime())
         activity?.onBackPressed()
@@ -74,7 +74,7 @@ class SettingsThemeFragment : BaseSettingsFragment(), Toolbar.OnMenuItemClickLis
         R.style.ShikimoriAppTheme_Default -> Theme.DEFAULT.index
         R.style.ShikimoriAppTheme_Dark -> Theme.DARK.index
         R.style.ShikimoriAppTheme_Amoled -> Theme.AMOLED.index
-        else -> Theme.DEFAULT.index
+        else -> -1
     }
 
     override fun onDestroy() {

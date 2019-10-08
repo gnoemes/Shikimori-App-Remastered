@@ -32,6 +32,7 @@
 -dontwarn kotlinx.atomicfu.**
 -dontnote android.net.http.**
 -dontnote org.apache.http.**
+-dontwarn com.google.android.material.snackbar.**
 
 -keep class org.jsoup.**
 -keep class android.support.v4.app.** { *; }

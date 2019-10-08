@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.appbar.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/appBarLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -11,26 +12,30 @@
         android:id="@+id/collapsingToolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
         android:background="@android:color/transparent"
+        android:fitsSystemWindows="true"
         app:contentScrim="@android:color/transparent"
         app:layout_scrollFlags="scroll|exitUntilCollapsed"
-        app:titleEnabled="false"
-        >
+        app:titleEnabled="false">
 
-        <FrameLayout
-            android:id="@+id/collapsingContent"
+        <ImageView
+            android:id="@+id/headGradient"
             android:layout_width="match_parent"
-            android:layout_height="240dp"
-            android:background="@android:color/transparent"
-            android:fitsSystemWindows="true" />
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            android:tint="?attr/colorSurface"
+            app:srcCompat="@drawable/details_head_background_gradient" />
+
+        <include
+            android:id="@+id/headLayout"
+            layout="@layout/layout_details_head" />
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
+            style="@style/ToolbarStyle"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@android:color/transparent"
-            style="@style/ToolbarStyle"
             app:layout_collapseMode="pin"
             app:popupTheme="@style/PopupMenuTheme"
             app:title="@string/app_name" />

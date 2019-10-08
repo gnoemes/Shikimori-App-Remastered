@@ -12,7 +12,7 @@ ext.versions = [
         androidx          : '1.0.0',
         androidxFragment  : '1.1.0-alpha03',
         androidxPrefs     : '1.1.0-alpha02',
-        material          : '1.1.0-alpha05',
+        material          : '1.1.0-alpha09',
         ktx               : '1.1.0-alpha04',
 
         dagger            : '2.19',
@@ -29,14 +29,13 @@ ext.versions = [
         jodaDateTime      : '2.9.9.3',
         moxy              : '1.5.5',
         materialDialogs   : '2.8.1',
-        glide             : '4.8.0',
+        glide             : '4.10.0',
         spinKit           : '1.1.0',
         reSpinner         : '1.0.5',
         adapterDelegate   : '4.0.0',
         flexbox           : '1.1.0',
         drawerBehavior    : '0.0.5',
         shimmer           : '0.3.0',
-        searchView        : '4.0',
         circleImageView   : '2.2.0',
         kotlinPermissions : '1.0.3',
 
@@ -54,6 +53,9 @@ ext.versions = [
 
         firebaseMessaging : '19.0.1',
         firebaseFirestore : '20.1.0',
+        firebaseStorage   : '19.1.0',
 
-        multidex          : '2.0.1'
+        multidex          : '2.0.1',
+        slidr             : '2.1.0',
+        subscaleImage     : '3.10.0'
 ]

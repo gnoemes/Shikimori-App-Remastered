@@ -17,6 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:cardElevation="0dp"
         app:strokeColor="?attr/colorDivider"
         app:strokeWidth="1dp">
 
@@ -103,7 +104,7 @@
         android:id="@+id/descriptionView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="3dp"
         android:ellipsize="end"
         android:gravity="center_horizontal"
         android:includeFontPadding="false"

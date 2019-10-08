@@ -4,10 +4,12 @@ import android.content.SharedPreferences
 import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.di.app.annotations.SettingsQualifier
 import com.gnoemes.shikimori.entity.app.domain.SettingsExtras
+import com.gnoemes.shikimori.entity.chronology.ChronologyType
 import com.gnoemes.shikimori.entity.rates.domain.RateSwipeAction
 import com.gnoemes.shikimori.entity.series.domain.PlayerType
 import com.gnoemes.shikimori.entity.series.domain.TranslationType
 import com.gnoemes.shikimori.utils.putBoolean
+import com.gnoemes.shikimori.utils.putInt
 import com.gnoemes.shikimori.utils.putString
 import javax.inject.Inject
 
@@ -69,8 +71,14 @@ class SettingsSourceImpl @Inject constructor(
         set(value) = prefs.putString(SettingsExtras.RATE_SWIPE_TO_LEFT_ACTION, value.name)
 
     override var rateSwipeToRightAction: RateSwipeAction
-        get() = prefs.getString(SettingsExtras.RATE_SWIPE_TO_RIGHT_ACTION, RateSwipeAction.DISABLED.name)?.let { action ->
-            RateSwipeAction.values().find { it.name == action } ?: RateSwipeAction.DISABLED
-        } ?: RateSwipeAction.DISABLED
+        get() = prefs.getString(SettingsExtras.RATE_SWIPE_TO_RIGHT_ACTION, RateSwipeAction.CHANGE.name)?.let { action ->
+            RateSwipeAction.values().find { it.name == action } ?: RateSwipeAction.CHANGE
+        } ?: RateSwipeAction.CHANGE
         set(value) = prefs.putString(SettingsExtras.RATE_SWIPE_TO_RIGHT_ACTION, value.name)
+
+    override var chronologyType: ChronologyType
+        get() = prefs.getInt(SettingsExtras.CHRONOLOGY_TYPE, ChronologyType.MAIN.ordinal).let { type ->
+            ChronologyType.values().find { it.ordinal == type } ?: ChronologyType.MAIN
+        }
+        set(value) = prefs.putInt(SettingsExtras.CHRONOLOGY_TYPE, value.ordinal)
 }

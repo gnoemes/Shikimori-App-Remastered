@@ -59,8 +59,7 @@ class CalendarPresenter @Inject constructor(
             convertAndSet(items)
         } else {
             val searchItems = items.filter {
-                it.anime.name.contains(query ?: "", true)
-                        || it.anime.nameRu?.contains(query ?: "", true) != false
+                it.anime.name.contains(query ?: "", true) || it.anime.nameRu?.contains(query ?: "", true) ?: false
             }
             convertAndSet(searchItems)
         }

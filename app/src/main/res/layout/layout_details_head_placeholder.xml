@@ -12,140 +12,54 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <Space
-            android:id="@+id/spaceMock"
-            android:layout_width="0dp"
-            android:layout_height="150dp"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/imageContainerView"
+            android:layout_width="@dimen/image_details_poster_width"
+            android:layout_height="@dimen/image_details_poster_height"
+            android:layout_marginTop="?attr/actionBarSize"
+            app:cardBackgroundColor="@color/colorShimmer"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="0dp"
+            app:cardPreventCornerOverlap="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-
-        <TextView
-            android:id="@+id/ageRatingViewMock"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="2dp"
-            android:background="@color/colorShimmer"
-            android:padding="2dp"
-            android:text="18+"
-            android:textColor="@android:color/transparent"
-            android:textSize="10sp"
-            app:layout_constraintBottom_toTopOf="@+id/nameViewMock"
-            app:layout_constraintStart_toStartOf="@+id/nameViewMock"
-            tools:ignore="SmallSp"
-            tools:visibility="visible" />
-
-        <TextView
-            android:id="@+id/nameViewMock"
-            style="@style/TextHeadlineStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@color/colorShimmer"
-            android:text="Алиса или Алиса: Брат-си"
-            android:textColor="@android:color/transparent"
-            android:textSize="22sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spaceMock" />
-
-        <RatingBar
-            android:id="@+id/ratingViewMock"
-            style="?attr/ratingBarStyleSmall"
+        <com.willy.ratingbar.ScaleRatingBar
+            android:id="@+id/ratingView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:isIndicator="true"
-            android:numStars="5"
-            android:stepSize="0.1"
-            android:textColor="@android:color/transparent"
+            app:layout_constraintEnd_toEndOf="@+id/imageContainerView"
             app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="@+id/nameViewMock"
-            app:layout_constraintTop_toBottomOf="@+id/nameViewMock" />
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/imageContainerViewMock"
-            android:layout_width="@dimen/image_details_width"
-            android:layout_height="@dimen/image_details_height"
-            app:cardBackgroundColor="@color/colorShimmer"
-            app:cardCornerRadius="4dp"
-            android:layout_marginTop="8dp"
-            app:cardPreventCornerOverlap="false"
-            app:layout_constraintStart_toStartOf="@+id/nameViewMock"
-            app:layout_constraintTop_toBottomOf="@+id/ratingViewMock" />
+            app:layout_constraintStart_toStartOf="@+id/imageContainerView"
+            app:layout_constraintTop_toBottomOf="@+id/imageContainerView"
+            app:srb_drawableEmpty="@drawable/ic_small_star_empty"
+            app:srb_drawableFilled="@drawable/ic_small_star_filled"
+            app:srb_isIndicator="true"
+            app:srb_numStars="5"
+            app:srb_starPadding="0dp"
+            app:srb_stepSize="0.1"
+            tools:srb_rating="3.5" />
 
         <TextView
-            android:id="@+id/nameSecondViewMock"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:background="@color/colorShimmer"
-            android:text="Alice or Alice: Siscon "
-            android:textColor="@android:color/transparent"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageContainerViewMock"
-            app:layout_constraintTop_toTopOf="@+id/imageContainerViewMock" />
-
-        <TextView
-            android:id="@+id/typeViewMock"
+            android:id="@+id/nameView"
+            style="@style/TextHeadlineStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
             android:background="@color/colorShimmer"
-            android:text="Тип: TV (24 эп.), 26 мин."
+            android:gravity="center"
+            android:text="Ванпанчмен"
             android:textColor="@android:color/transparent"
-            app:layout_constraintStart_toStartOf="@+id/nameSecondViewMock"
-            app:layout_constraintTop_toBottomOf="@+id/nameSecondViewMock" />
-
-        <TextView
-            android:id="@+id/seasonViewMock"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:background="@color/colorShimmer"
-            android:text="Сезон: Лето 2018"
-            android:textColor="@android:color/transparent"
-            app:layout_constraintStart_toStartOf="@+id/typeViewMock"
-            app:layout_constraintTop_toBottomOf="@+id/typeViewMock" />
-
-        <TextView
-            android:id="@+id/statusViewMock"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:background="@color/colorShimmer"
-
-            android:text="Статус: Онгоинг"
-            android:textColor="@android:color/transparent"
-            app:layout_constraintStart_toStartOf="@+id/seasonViewMock"
-            app:layout_constraintTop_toBottomOf="@+id/seasonViewMock" />
-
-        <TextView
-            android:id="@+id/studioViewMock"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:background="@color/colorShimmer"
-            android:text="Студия: Bones"
-            android:textColor="@android:color/transparent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/statusViewMock"
-            app:layout_constraintTop_toBottomOf="@+id/statusViewMock" />
-
-        <TextView
-            android:id="@+id/genresMock"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@color/colorShimmer"
-            android:text="Студия: Bones"
-            android:textColor="@android:color/transparent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageContainerViewMock" />
+            app:layout_constraintTop_toBottomOf="@+id/ratingView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

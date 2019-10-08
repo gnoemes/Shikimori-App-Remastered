@@ -8,5 +8,6 @@ data class UserHistoryViewModel(
         val action : String,
         val actionDateString : String,
         val actionDateTime : DateTime,
+        val targetName : String?,
         val target : LinkedContent?
 )

@@ -30,10 +30,10 @@
     <string name="common_sign_as_guest">Войти как гость</string>
     <string name="common_characters">Персонажи</string>
     <string name="common_character">Персонаж</string>
-    <string name="common_chronology">Порядок просмотра</string>
+    <string name="common_chronology">Хронология</string>
     <string name="common_chronology_read">Порядок чтения</string>
     <string name="common_similar">Похожие</string>
-    <string name="common_related">Связанные</string>
+    <string name="common_related">Связанное</string>
     <string name="common_links">Ссылки</string>
     <string name="common_discussion">Обсуждение</string>
     <string name="common_seyu">Сэйю</string>
@@ -47,8 +47,9 @@
     <string name="common_episodes">Эпизоды</string>
     <string name="common_save">Сохранить</string>
     <string name="common_delete">Удалить</string>
+    <string name="common_volumes">Тома</string>
     <string name="common_chapters">Главы</string>
-    <string name="common_open_in_browser">Открыть в браузере</string>
+    <string name="common_open_in_browser">Открыть веб-версию</string>
     <string name="common_source">Источник</string>
     <string name="common_person">Человек</string>
     <string name="common_roles">Роли</string>
@@ -73,6 +74,9 @@
     <string name="common_apply">Применить</string>
     <string name="common_ok">ок</string>
     <string name="common_share">Поделиться</string>
+    <string name="common_statistic">Статистика</string>
+    <string name="common_web_version">Веб-версия</string>
+    <string name="common_count_format">%d из %d</string>
 
     <string name="season_autumn">Осень</string>
     <string name="season_winter">Зима</string>
@@ -186,6 +190,7 @@
     <string name="calendar_season_end">Конец сезона</string>
     <string name="calendar_empty_title">В ближайший месяц ничего нет</string>
     <string name="calendar_empty_description">Измените запрос или попробуйте найти более позднюю дату выхода на странице тайтла.</string>
+    <string name="similar_empty_description">Ничего не найдено</string>
 
     <string name="episodes_format">\n[%s из %s]</string>
     <string name="volumes_format">\n[%s-%s]</string>
@@ -205,6 +210,14 @@
     <string name="details_studio">Студия:</string>
     <string name="details_watch_online">Смотреть онлайн</string>
     <string name="details_read_online">Читать онлайн</string>
+    <string name="details_release_date">Дата выхода</string>
+    <string name="details_released">Вышло</string>
+    <string name="details_released_manga">Издано</string>
+    <string name="details_release_episode_format">До %s эпизода</string>
+    <string name="details_episode_duration">Время эпизода</string>
+    <string name="details_screenshots">Кадры</string>
+    <string name="details_character_search_hint">Введите имя персонажа…</string>
+    <string name="details_character_search_empty">¯ \\ _ (ツ) _ / ¯\n\nПерсонаж не найден</string>
 
     <string name="opening">Опенинг</string>
     <string name="ending">Эндинг</string>
@@ -219,6 +232,11 @@
     <string name="person_best_works">Лучшие работы</string>
     <string name="person_best_roles">Лучшие роли</string>
     <string name="person_birthday">Дата рождения:</string>
+    <string name="person_director">Режиссер</string>
+    <string name="person_original_creator">Автор оригинала</string>
+    <string name="person_art">Рисовка</string>
+    <string name="person_story">Сюжет</string>
+    <string name="person_story_and_art">Сюжет и рисовка</string>
 
     <string name="type_tv_translatable">TV сериал</string>
     <string name="type_tv_long_translatable">Сериал</string>
@@ -243,12 +261,15 @@
     <string name="sort_id">По порядку</string>
     <string name="sort_type">По типу</string>
     <string name="sort_date">По дате выхода</string>
+    <string name="sort_date_added">По дате добавления</string>
+    <string name="sort_date_updated">По дате обновления</string>
     <string name="sort_status">По статусу</string>
     <string name="sort_episodes">По эпизодам</string>
     <string name="sort_chapters">По главам</string>
     <string name="sort_volumes">По кол-ву томов</string>
-    <string name="sort_episodes_watched">По прогрессу</string>
-    <string name="sort_chapters_readed">По прогрессу</string>
+    <string name="sort_episodes_watched">По эпизодам</string>
+    <string name="sort_chapters_readed">По главам</string>
+    <string name="sort_progress">По прогрессу</string>
     <string name="sort_score">По оценке</string>
     <string name="sort_random">Рандом</string>
     <string name="sort_popularity">По популярности</string>
@@ -357,6 +378,7 @@
     <string name="series_empty_authors_description">Попробуйте изменить источник или тип, если смотрите не в одном.</string>
     <string name="series_empty_episode_title">Эпизод не найден</string>
     <string name="series_empty_episode_description">Тайтл не вышел или видео не выложили.</string>
+    <string name="series_add_video">Добавить видео</string>
 
     <string name="player_web">Веб-плеер</string>
     <string name="player_embedded">Внутренний плеер (BETA)</string>
@@ -412,6 +434,51 @@
     <string name="theme_default">Стандартная тема</string>
     <string name="theme_dark">Темная тема</string>
     <string name="theme_amoled">Amoled тема</string>
+
+    <string name="chronology_prequel">Начало истории</string>
+    <string name="chronology_sequel">Продолжение</string>
+    <string name="chronology_other">Прочее</string>
+    <string name="chronology_summary">Обобщение</string>
+    <string name="chronology_side_story">Другая история</string>
+    <string name="chronology_alternative_setting">Альтернативная история</string>
+    <string name="chronology_alternative_version">Альтернативная версия</string>
+    <string name="chronology_parent_story">Изначальная история</string>
+    <string name="chronology_adaptation">Адаптация</string>
+    <string name="chronology_type">Вид хронологии</string>
+    <string name="chronology_type_main">Основная история</string>
+    <string name="chronology_type_linked">Ответвления от истории</string>
+    <string name="chronology_type_all">Все в подряд</string>
+
+    <string name="backup_save">Сохранение</string>
+    <string name="backup_saved">Сохранено</string>
+    <string name="backup_write_error">Не удалось создать файл</string>
+    <string name="backup_read_error">Не удалось открыть файл</string>
+    <string name="backup_on_cloud">На облако</string>
+    <string name="backup_on_device">На устройство</string>
+    <string name="backup_share">Поделиться</string>
+    <string name="backup_from_cloud">С облака</string>
+    <string name="backup_from_device">С устройства</string>
+    <string name="backup_download">Восстановление</string>
+    <string name="backup_empty_file">Настройки приложения не найдены</string>
+    <string name="backup_read_success">Настройки успешно восстановлены</string>
+    <string name="backup_found_title">Восстановление</string>
+    <string name="backup_found_message">Найден файл настроек приложения</string>
+    <string name="backup_cloud_upload_error">Не удалось отправить файл на облако</string>
+    <string name="backup_cloud_upload_success">Настройки успешно отправлены</string>
+    <string name="backup_cloud_download_error">Не удалось загрузить настройки</string>
+
+    <string name="month_jan_short">янв</string>
+    <string name="month_feb_short">фев</string>
+    <string name="month_mar_short">мар</string>
+    <string name="month_apr_short">апр</string>
+    <string name="month_may_short">май</string>
+    <string name="month_jun_short">июн</string>
+    <string name="month_jul_short">июл</string>
+    <string name="month_aug_short">авг</string>
+    <string name="month_sep_short">сен</string>
+    <string name="month_oct_short">окт</string>
+    <string name="month_nov_short">ноя</string>
+    <string name="month_dec_short">дек</string>
 
     <string-array name="rate_types">
         <item>@string/common_anime</item>
@@ -636,6 +703,7 @@
         <item>0.25x</item>
         <item>0.5x</item>
         <item>1x</item>
+        <item>1.25x</item>
         <item>1.5x</item>
         <item>2x</item>
     </string-array>

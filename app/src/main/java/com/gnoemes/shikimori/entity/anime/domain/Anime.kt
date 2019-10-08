@@ -13,6 +13,7 @@ data class Anime(
         val image: Image,
         val url: String,
         val type: AnimeType,
+        val score : Double?,
         val status: Status,
         val episodes: Int,
         val episodesAired: Int,

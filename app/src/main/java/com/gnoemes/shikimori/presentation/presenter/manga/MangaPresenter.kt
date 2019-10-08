@@ -7,20 +7,24 @@ import com.gnoemes.shikimori.domain.ranobe.RanobeInteractor
 import com.gnoemes.shikimori.domain.rates.RatesInteractor
 import com.gnoemes.shikimori.domain.related.RelatedInteractor
 import com.gnoemes.shikimori.domain.user.UserInteractor
+import com.gnoemes.shikimori.entity.app.domain.AnalyticEvent
 import com.gnoemes.shikimori.entity.app.domain.Constants
+import com.gnoemes.shikimori.entity.chronology.ChronologyNavigationData
 import com.gnoemes.shikimori.entity.common.domain.*
 import com.gnoemes.shikimori.entity.common.presentation.DetailsHeadItem
 import com.gnoemes.shikimori.entity.manga.domain.MangaDetails
-import com.gnoemes.shikimori.entity.roles.domain.Character
+import com.gnoemes.shikimori.entity.roles.domain.Person
+import com.gnoemes.shikimori.entity.user.domain.Statistic
+import com.gnoemes.shikimori.entity.user.presentation.UserStatisticItem
 import com.gnoemes.shikimori.presentation.presenter.common.converter.DetailsContentViewModelConverter
-import com.gnoemes.shikimori.presentation.presenter.common.converter.FranchiseNodeViewModelConverter
-import com.gnoemes.shikimori.presentation.presenter.common.converter.LinkViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResourceProvider
 import com.gnoemes.shikimori.presentation.presenter.details.BaseDetailsPresenter
 import com.gnoemes.shikimori.presentation.presenter.manga.converter.MangaDetailsViewModelConverter
 import com.gnoemes.shikimori.presentation.view.manga.MangaView
 import com.gnoemes.shikimori.utils.appendLoadingLogic
+import com.gnoemes.shikimori.utils.applySingleSchedulers
 import io.reactivex.Single
+import io.reactivex.functions.BiFunction
 import javax.inject.Inject
 
 @InjectViewState
@@ -33,10 +37,8 @@ class MangaPresenter @Inject constructor(
         ratesInteractor: RatesInteractor,
         userInteractor: UserInteractor,
         resourceProvider: CommonResourceProvider,
-        linkConverter: LinkViewModelConverter,
-        nodeConverter: FranchiseNodeViewModelConverter,
         contentConverter: DetailsContentViewModelConverter
-) : BaseDetailsPresenter<MangaView>(ratesInteractor, userInteractor, resourceProvider, linkConverter, nodeConverter, contentConverter) {
+) : BaseDetailsPresenter<MangaView>(ratesInteractor, userInteractor, resourceProvider, contentConverter) {
 
     var isRanobe: Boolean = false
 
@@ -51,26 +53,20 @@ class MangaPresenter @Inject constructor(
                         if (showLoading) Single.just(it).appendLoadingLogic(viewState)
                         else Single.just(it)
                     }
+                    .doOnSuccess { loadInfo() }
+                    .doOnSuccess { loadActions() }
                     .doOnSuccess { loadDescription() }
-                    .doOnSuccess { loadOptions() }
 
     override fun loadDetails(): Single<DetailsHeadItem> =
             (if (isRanobe) ranobeInteractor.getDetails(id)
             else mangaInteractor.getDetails(id))
                     .doOnSuccess { currentManga = it; rateId = it.userRate?.id ?: Constants.NO_ID }
-                    .map { detailsConverter.convertHead(it) }
+                    .map { detailsConverter.convertHead(it, userId == Constants.NO_ID) }
 
-    override val characterFactory: (id: Long) -> Single<List<Character>>
+    override val characterFactory: (id: Long) -> Single<Roles>
         get() = {
             (if (isRanobe) ranobeInteractor.getRoles(it)
             else mangaInteractor.getRoles(it))
-        }
-
-    override val similarFactory: (id: Long) -> Single<List<LinkedContent>>
-        get() = {
-            (if (isRanobe) ranobeInteractor.getSimilar(it)
-            else mangaInteractor.getSimilar(it))
-                    .map { it.map { it as LinkedContent } }
         }
 
     override val relatedFactory: (id: Long) -> Single<List<Related>>
@@ -85,21 +81,25 @@ class MangaPresenter @Inject constructor(
             else mangaInteractor.getLinks(it))
         }
 
-    override val chronologyFactory: (id: Long) -> Single<List<FranchiseNode>>
-        get() = {
-            (if (isRanobe) ranobeInteractor.getFranchiseNodes(it)
-            else mangaInteractor.getFranchiseNodes(it))
-        }
+    private fun loadInfo() {
+        val item = detailsConverter.convertInfo(currentManga, creators)
+        viewState.setInfoItem(item)
+    }
 
+    private fun loadActions() {
+        val item = detailsConverter.getActions(currentManga.status)
+        viewState.setActionItem(item)
+    }
 
     private fun loadDescription() {
         val descriptionItem = detailsConverter.convertDescriptionItem(currentManga.description)
         viewState.setDescriptionItem(descriptionItem)
     }
 
-    override fun loadOptions() {
-        val optionsItem = detailsConverter.convertOptions(currentManga, userId == Constants.NO_ID)
-        viewState.setOptionsItem(optionsItem)
+    override fun setCreators(creators: List<Pair<Person, List<String>>>) {
+        super.setCreators(creators)
+        val item = detailsConverter.convertInfo(currentManga, creators)
+        viewState.setInfoItem(item)
     }
 
     override fun onOpenDiscussion() {
@@ -107,15 +107,49 @@ class MangaPresenter @Inject constructor(
                 ?: router.showSystemMessage(resourceProvider.topicNotFound)
     }
 
+    override fun onSimilarClicked() {
+        super.onSimilarClicked()
+        val data = CommonNavigationData(currentManga.id, Type.MANGA)
+        router.navigateTo(Screens.SIMILAR, data)
+    }
+
     override fun onEditRate() {
-        val title = if (settingsSource.isRussianNaming) currentManga.nameRu
-                ?: currentManga.name else currentManga.name
         viewState.showRateDialog(title, currentManga.userRate)
+    }
+
+    override fun onStatusDialog() {
+        viewState.showStatusDialog(id, title, currentManga.userRate?.status, false)
+    }
+
+    override fun onChronology() {
+        super.onChronology()
+        val data = ChronologyNavigationData(id, type, currentManga.franchise)
+        router.navigateTo(Screens.CHRONOLOGY, data)
+        logEvent(AnalyticEvent.ANIME_DETAILS_CHRONOLOGY)
     }
 
     override fun onOpenInBrowser() = onOpenWeb(currentManga.url)
 
+    override fun onShareClicked() {
+        router.navigateTo(Screens.SHARE, currentManga.url)
+    }
+
+    override fun onStatisticClicked() {
+        Single.zip(Single.just(currentManga.rateScoresStats), Single.just(currentManga.rateStatusesStats), BiFunction<List<Statistic>, List<Statistic>, Pair<List<UserStatisticItem>, List<UserStatisticItem>>> { t1, t2 ->
+            val scores = detailsConverter.convertScores(t1)
+            val statuses = detailsConverter.convertStatuses(t2)
+            Pair(scores, statuses)
+        })
+                .applySingleSchedulers()
+                .subscribe({ viewState.showStatistic(title, it.first, it.second) }, this::processErrors)
+                .addToDisposables()
+    }
+
     override fun onWatchOnline() {
         //TODO chapters screen
     }
+
+    private val title: String
+        get() = if (settingsSource.isRussianNaming) currentManga.nameRu
+                ?: currentManga.name else currentManga.name
 }

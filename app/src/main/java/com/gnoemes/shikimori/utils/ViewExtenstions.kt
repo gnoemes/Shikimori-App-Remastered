@@ -1,6 +1,10 @@
 package com.gnoemes.shikimori.utils
 
 import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.drawable.Drawable
+import android.os.Build
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -16,6 +20,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.utils.widgets.DebouncedOnClickListener
+import com.gnoemes.shikimori.utils.widgets.DebouncedOnMenuClickListener
 import com.google.android.material.snackbar.Snackbar
 
 fun View.visible() {
@@ -38,11 +43,17 @@ inline fun View.visibleIf(block: () -> Boolean) {
     if (block()) visible() else gone()
 }
 
-fun View.onClick(mills : Long = Constants.DEFAULT_DEBOUNCE_INTERVAL, l: (v: View) -> Unit) {
+inline fun View.onClick(mills: Long = Constants.DEFAULT_DEBOUNCE_INTERVAL, crossinline l: (v: View) -> Unit) {
     setOnClickListener(object : DebouncedOnClickListener(mills) {
         override fun onDebouncedClick(v: View?) {
             if (v != null) l.invoke(v)
         }
+    })
+}
+
+inline fun Toolbar.onMenuClick(mills: Long = Constants.DEFAULT_DEBOUNCE_INTERVAL, crossinline l: (item: MenuItem?) -> Boolean) {
+    setOnMenuItemClickListener(object : DebouncedOnMenuClickListener(mills) {
+        override fun onDebouncedClick(v: MenuItem?): Boolean = l.invoke(v)
     })
 }
 
@@ -65,9 +76,6 @@ fun SwipeRefreshLayout.showRefresh() {
 fun SwipeRefreshLayout.hideRefresh() {
     isRefreshing = false
 }
-
-@ColorInt
-fun View.color(@ColorRes colorRes: Int): Int = context.color(colorRes)
 
 fun ImageView.tintWithRes(@ColorRes colorRes: Int) = tint(context.color(colorRes))
 
@@ -93,12 +101,27 @@ fun Snackbar.floatingStyle(context: Context, @DimenRes margins: Int = R.dimen.sn
     val params = this.view.layoutParams as ViewGroup.MarginLayoutParams
     val margin = context.dimen(margins).toInt()
     params.setMargins(margin, margin, margin, margin)
-    this.view.findViewById<Button>(R.id.snackbar_action)?.isAllCaps = false
+    this.view.findViewById<Button>(R.id.snackbar_action)?.run {
+        isAllCaps = false
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            letterSpacing = 0.03f
+        }
+    }
     this.view.findViewById<TextView>(R.id.snackbar_text)?.setTextColor(context.color(R.color.player_controls))
     this.view.layoutParams = params
     this.view.background = context.drawable(background)
     return this
 }
+
+fun View.drawable(@DrawableRes drawableResId: Int): Drawable? = context.drawable(drawableResId)
+
+fun View.colorStateList(@ColorRes colorRes: Int): ColorStateList = context.colorStateList(colorRes)
+
+fun View.dp(dp: Int): Int = context.dp(dp)
+
+@ColorInt
+fun View.color(@ColorRes colorRes: Int): Int = context.color(colorRes)
+
 
 
 

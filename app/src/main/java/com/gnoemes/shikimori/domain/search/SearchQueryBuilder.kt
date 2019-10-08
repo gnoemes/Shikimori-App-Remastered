@@ -12,4 +12,6 @@ interface SearchQueryBuilder {
     fun createQueryFromIds(ids: MutableCollection<Long>, searchQuery: String? = null, page: Int = 1, limit: Int = Constants.MAX_LIMIT): Single<Map<String, String>>
 
     fun createMyListQueryFromIds(ids: MutableCollection<Long>, status: RateStatus, searchQuery: String? = null, page: Int = 1, limit: Int = Constants.MAX_LIMIT): Single<Map<String, String>>
+
+    fun createQueryFromFranchise(franchise : String, searchQuery: String? = null, page : Int = 1, limit: Int = Constants.MAX_LIMIT) : Single<Map<String, String>>
 }

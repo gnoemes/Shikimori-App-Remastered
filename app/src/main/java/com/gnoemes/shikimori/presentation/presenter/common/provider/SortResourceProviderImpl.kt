@@ -12,8 +12,10 @@ class SortResourceProviderImpl @Inject constructor(
     override fun getAnimeRateSorts(): List<Pair<RateSort, String>> =
             listOf(
                     Pair(RateSort.Name, context.getString(R.string.sort_name)),
-                    Pair(RateSort.Progress, context.getString(R.string.sort_episodes_watched)),
+                    Pair(RateSort.Progress, context.getString(R.string.sort_progress)),
                     Pair(RateSort.DateAired, context.getString(R.string.sort_date)),
+                    Pair(RateSort.DateCreated, context.getString(R.string.sort_date_added)),
+                    Pair(RateSort.DateUpdated, context.getString(R.string.sort_date_updated)),
                     Pair(RateSort.Score, context.getString(R.string.sort_score)),
                     Pair(RateSort.Episodes, context.getString(R.string.sort_episodes))
             )
@@ -21,8 +23,10 @@ class SortResourceProviderImpl @Inject constructor(
     override fun getMangaRateSorts(): List<Pair<RateSort, String>> =
             listOf(
                     Pair(RateSort.Name, context.getString(R.string.sort_name)),
-                    Pair(RateSort.Progress, context.getString(R.string.sort_chapters_readed)),
+                    Pair(RateSort.Progress, context.getString(R.string.sort_progress)),
                     Pair(RateSort.DateAired, context.getString(R.string.sort_date)),
+                    Pair(RateSort.DateCreated, context.getString(R.string.sort_date_added)),
+                    Pair(RateSort.DateUpdated, context.getString(R.string.sort_date_updated)),
                     Pair(RateSort.Score, context.getString(R.string.sort_score)),
                     Pair(RateSort.Episodes, context.getString(R.string.sort_chapters))
             )

@@ -7,6 +7,7 @@ import com.gnoemes.shikimori.entity.common.domain.AgeRating
 import com.gnoemes.shikimori.entity.common.domain.Status
 import com.gnoemes.shikimori.entity.rates.data.UserRateResponse
 import com.gnoemes.shikimori.entity.studio.StudioResponse
+import com.gnoemes.shikimori.entity.user.data.StatisticResponse
 import com.google.gson.annotations.SerializedName
 import org.joda.time.DateTime
 
@@ -21,6 +22,7 @@ data class AnimeDetailsResponse(
         @field:SerializedName("episodes") val episodes: Int,
         @field:SerializedName("episodes_aired") val episodesAired: Int,
         @field:SerializedName("aired_on") val dateAired: DateTime?,
+        @field:SerializedName("next_episode_at") val nextEpisodeDate: DateTime?,
         @field:SerializedName("released_on") val dateReleased: DateTime?,
         @field:SerializedName("english") val namesEnglish: List<String?>?,
         @field:SerializedName("japanese") val namesJapanese: List<String?>?,
@@ -29,12 +31,15 @@ data class AnimeDetailsResponse(
         @field:SerializedName("duration") val duration: Int,
         @field:SerializedName("description") val description: String?,
         @field:SerializedName("description_html") val descriptionHtml: String,
+        @field:SerializedName("franchise") val franchise: String?,
         @field:SerializedName("favoured") val favoured: Boolean,
         @field:SerializedName("topic_id") val topicId: Long?,
         @field:SerializedName("genres") val genres: List<GenreResponse>,
         @field:SerializedName("user_rate") val userRate: UserRateResponse?,
         @field:SerializedName("videos") val videoResponses: List<AnimeVideoResponse>?,
-        @field:SerializedName("studios") val studioResponses: List<StudioResponse>?
+        @field:SerializedName("studios") val studioResponses: List<StudioResponse>?,
+        @field:SerializedName("rates_scores_stats") val rateScoresStats: List<StatisticResponse>,
+        @field:SerializedName("rates_statuses_stats") val rateStatusesStats: List<StatisticResponse>
 ) {
 
     val status: Status

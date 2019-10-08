@@ -30,7 +30,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:rippleColor="@drawable/selector_button_ripple_color"
+            app:rippleColor="@color/selector_button_ripple_color"
             tools:targetApi="lollipop"
             tools:text="# 72251" />
 

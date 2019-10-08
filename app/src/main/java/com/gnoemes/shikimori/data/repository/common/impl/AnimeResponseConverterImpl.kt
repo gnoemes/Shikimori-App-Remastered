@@ -24,6 +24,7 @@ class AnimeResponseConverterImpl @Inject constructor(
                 imageConverter.convertResponse(response.image),
                 response.url.appendHostIfNeed(),
                 response.type,
+                response.score,
                 response.status,
                 response.episodes,
                 response.episodesAired,

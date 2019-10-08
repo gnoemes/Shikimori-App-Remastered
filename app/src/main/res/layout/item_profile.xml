@@ -2,8 +2,8 @@
 <de.hdodenhof.circleimageview.CircleImageView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/imageView"
-    android:layout_width="@dimen/image_profile_width"
-    android:layout_height="@dimen/image_profile_height"
+    android:layout_width="@dimen/image_profile_big_width"
+    android:layout_height="@dimen/image_profile_big_width"
     android:src="@drawable/avatar_test"
     app:civ_border_color="?attr/colorDivider"
     app:civ_border_width="1dp" />

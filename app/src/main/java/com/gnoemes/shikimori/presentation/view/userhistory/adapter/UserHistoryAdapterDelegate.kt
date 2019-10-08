@@ -21,7 +21,6 @@ import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
 import kotlinx.android.synthetic.main.item_user_history.view.*
 
 
-
 class UserHistoryAdapterDelegate(
         private val imageLoader: ImageLoader,
         private val callback: (Type, Long) -> Unit
@@ -48,7 +47,7 @@ class UserHistoryAdapterDelegate(
         fun bind(item: UserHistoryViewModel) {
             this.item = item
             with(itemView) {
-                targetNameView.text = item.target?.linkedName
+                targetNameView.text = item.targetName
                 actionView.text = Html.fromHtml(item.action)
                 dateView.text = item.actionDateString
 

@@ -106,4 +106,6 @@ class DateTimeConverterImpl @Inject constructor(
             }
         }
     }
+
+    override fun convertShortMonth(dateTime: DateTime): String = resourceProvider.getMonthString(dateTime.monthOfYear)
 }

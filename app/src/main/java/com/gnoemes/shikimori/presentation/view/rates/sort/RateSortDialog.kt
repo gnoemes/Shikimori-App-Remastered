@@ -42,7 +42,9 @@ class RateSortDialog : BaseBottomSheetDialogFragment() {
 
         val sorts = arguments?.getParcelableArray(SORTS_KEY)?.map { it as Sort }!!
 
-        toolbar.setTitle(R.string.sort)
+        with(toolbar) {
+            setTitle(R.string.sort)
+        }
 
         navView.apply {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -56,7 +58,7 @@ class RateSortDialog : BaseBottomSheetDialogFragment() {
             }
             menu.apply {
                 val checkedId = sorts.find { it.isSelected }?.type?.order ?: 0
-                sorts.forEach { add(0, it.type.order, it.type.order, it.text) }
+                sorts.forEachIndexed { index, sort -> add(0, sort.type.order, index, sort.text) }
                 setGroupCheckable(0, true, true)
                 setCheckedItem(checkedId)
             }
