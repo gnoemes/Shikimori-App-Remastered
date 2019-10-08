@@ -120,7 +120,7 @@ class SeriesPresenter @Inject constructor(
     fun onRefresh() = loadWithEpisode()
 
     private fun openPriorityEpisode(items: List<Episode>) {
-        if (episode == null) episode = if (!isWatchSession) items.firstOrNull { !it.isWatched }?.index ?: items.lastOrNull { it.isWatched }?.index else items.lastOrNull { it.isWatched }?.index
+        if (episode == null) episode = if (!isWatchSession) items.firstOrNull { !it.isWatched }?.index ?: items.lastOrNull { it.isWatched }?.index else items.lastOrNull { it.isWatched }?.index ?: items.firstOrNull()?.index
         episodeId = items.firstOrNull { it.index == episode }?.id
         isWatchSession = false
         if (episode != null && episodeId != null) {

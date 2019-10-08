@@ -28,10 +28,10 @@ class SeriesSyncInteractorImpl @Inject constructor(
 
     override fun startSync(): Completable = getChanges()
             .switchMapCompletable {
-                if (it.isNotEmpty() || (it.firstOrNull()?.rateId == Constants.NO_ID && settingsSource.isAutoStatus))
-                    syncEpisodes(it)
-                            .onErrorResumeNext { sendChanges(EpisodeChanges.Error(it)) }
-                            .andThen(sendChanges(EpisodeChanges.Success))
+                if (it.firstOrNull()?.rateId == Constants.NO_ID && settingsSource.isAutoStatus || it.isNotEmpty() && it.none { it.rateId == Constants.NO_ID })
+                        syncEpisodes (it)
+                                .onErrorResumeNext { sendChanges(EpisodeChanges.Error(it)) }
+                                .andThen(sendChanges(EpisodeChanges.Success))
                 else Completable.complete()
             }
 
