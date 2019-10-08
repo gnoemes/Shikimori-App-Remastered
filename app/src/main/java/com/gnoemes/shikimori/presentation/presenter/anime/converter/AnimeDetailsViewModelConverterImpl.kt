@@ -69,7 +69,7 @@ class AnimeDetailsViewModelConverterImpl @Inject constructor(
 
         //release date (or next episode date for ongoings)
         if (it.status == Status.ANONS && it.dateAired != null) {
-            val description = it.dateAired.toString("dd MMMM yyyy")
+            val description = it.dateAired.toString("dd MMM yyyy")
             val category = context.getString(R.string.details_release_date)
             info.add(InfoItem(description, category))
         } else if (it.status == Status.ONGOING && it.nextEpisodeDate != null) {
@@ -82,10 +82,27 @@ class AnimeDetailsViewModelConverterImpl @Inject constructor(
                     }
             val category = String.format(context.getString(R.string.details_release_episode_format), it.episodesAired + 1)
             info.add(InfoItem(description, category))
-        } else if (it.dateReleased != null) {
-            val description = dateTimeConverter.convertAnimeSeasonToString(it.dateReleased)
-            val category = context.getString(R.string.details_released)
+        } else if (it.dateAired != null && it.dateReleased != null) {
+
+            val description = if (it.dateAired.year == it.dateReleased.year) {
+                "${it.dateAired.toString("dd MMM")} - ${it.dateReleased.toString("dd MMM YYYY")}"
+            } else {
+                "${it.dateAired.toString("dd MMM YYYY")} - ${it.dateReleased.toString("dd MMM YYYY")}"
+            }
+            val category = context.getString(R.string.details_release_date)
             info.add(InfoItem(description, category))
+        } else {
+            if (it.dateAired != null) {
+                val description = dateTimeConverter.convertAnimeSeasonToString(it.dateAired)
+                val category = context.getString(R.string.details_release_date)
+                info.add(InfoItem(description, category))
+            }
+
+            if (it.dateReleased != null) {
+                val description = dateTimeConverter.convertAnimeSeasonToString(it.dateReleased)
+                val category = context.getString(R.string.details_released)
+                info.add(InfoItem(description, category))
+            }
         }
 
         //type
