@@ -66,6 +66,7 @@ class ChronologyTypeDialog : BaseBottomSheetDialogFragment() {
     private fun getTypeText(it: ChronologyType): CharSequence? = when (it) {
         ChronologyType.MAIN -> context?.getString(R.string.chronology_type_main)
         ChronologyType.LINKED_DIRECTLY -> context?.getString(R.string.chronology_type_linked)
+        ChronologyType.ALL -> context?.getString(R.string.chronology_type_all)
     }
 
 

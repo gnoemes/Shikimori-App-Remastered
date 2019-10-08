@@ -21,7 +21,7 @@ class ChronologyAdapter(
     }
 
     override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean = when {
-        oldItem is ChronologyViewModel && newItem is ChronologyViewModel -> oldItem.id == newItem.id
+        oldItem is ChronologyViewModel && newItem is ChronologyViewModel -> oldItem == newItem
         else -> false
     }
 }

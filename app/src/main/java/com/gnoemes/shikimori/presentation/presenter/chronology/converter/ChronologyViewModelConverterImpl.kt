@@ -104,19 +104,19 @@ class ChronologyViewModelConverterImpl @Inject constructor(
         )
     }
 
-    private fun getRelation(relation: RelationType): String = context.getString(
+    private fun getRelation(relation: RelationType): String =
             when (relation) {
-                RelationType.PREQUEL -> R.string.chronology_prequel
-                RelationType.SEQUEL -> R.string.chronology_sequel
-                RelationType.SUMMARY -> R.string.chronology_summary
-                RelationType.FULL_STORY -> R.string.chronology_parent_story
-                RelationType.PARENT_STORY -> R.string.chronology_parent_story
-                RelationType.ALTERNATIVE_VERSION -> R.string.chronology_alternative_version
-                RelationType.ALTERNATIVE_SETTING -> R.string.chronology_alternative_setting
-                RelationType.SIDE_STORY -> R.string.chronology_side_story
-                RelationType.OTHER -> R.string.chronology_other
+                RelationType.PREQUEL -> context.getString(R.string.chronology_prequel)
+                RelationType.SEQUEL -> context.getString(R.string.chronology_sequel)
+                RelationType.SUMMARY -> context.getString(R.string.chronology_summary)
+                RelationType.FULL_STORY -> context.getString(R.string.chronology_parent_story)
+                RelationType.PARENT_STORY -> context.getString(R.string.chronology_parent_story)
+                RelationType.ALTERNATIVE_VERSION -> context.getString(R.string.chronology_alternative_version)
+                RelationType.ALTERNATIVE_SETTING -> context.getString(R.string.chronology_alternative_setting)
+                RelationType.SIDE_STORY -> context.getString(R.string.chronology_side_story)
+                RelationType.OTHER -> context.getString(R.string.chronology_other)
+                RelationType.NONE -> ""
             }
-    )
 
     private fun convertManga(it: MangaWithStatus, relationType: RelationType, isGuest: Boolean): ChronologyViewModel {
         val name = if (settings.isRussianNaming) it.manga.nameRu ?: it.manga.name else it.manga.name

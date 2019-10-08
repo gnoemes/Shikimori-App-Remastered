@@ -21,4 +21,6 @@ enum class RelationType {
     OTHER,
     @SerializedName("full_story")
     FULL_STORY,
+
+    NONE
 }

@@ -62,6 +62,7 @@ class ChronologyInteratorImpl @Inject constructor(
                     .flatMap { id -> rateRepository.getUserRates(id, target = type) }
             else Single.just(emptyList())
 
+    //TODO refactor
     private val converter = { id: Long, franchise: Franchise, type: ChronologyType ->
         BiFunction<List<LinkedContent>, List<UserRate>, List<ChronologyItem>> { linkedItems, rates ->
             val items = mutableListOf<ChronologyItem>()
@@ -91,20 +92,37 @@ class ChronologyInteratorImpl @Inject constructor(
                 when (type) {
                     ChronologyType.MAIN -> getRootBranch(franchise.relations, current)
                     ChronologyType.LINKED_DIRECTLY -> franchise.relations.filter { it.sourceId == id && it.relation !in arrayOf(RelationType.PREQUEL, RelationType.SEQUEL) }
+                    ChronologyType.ALL -> franchise.nodes
                 }
             })
+                    //TODO refactor
                     .forEach { relation ->
-                        val item = linkedItems.find { it.linkedId == relation.targetId }
-                        val rate = rates.find { item?.linkedId == it.targetId }
+                        if (relation is FranchiseRelation) {
+                            val item = linkedItems.find { it.linkedId == relation.targetId }
+                            val rate = rates.find { item?.linkedId == it.targetId }
 
-                        if (item != null) {
-                            items.add(ChronologyItem(
-                                    item.linkedId,
-                                    rate?.id,
-                                    item,
-                                    relation.relation,
-                                    rate?.status
-                            ))
+                            if (item != null) {
+                                items.add(ChronologyItem(
+                                        item.linkedId,
+                                        rate?.id,
+                                        item,
+                                        relation.relation,
+                                        rate?.status
+                                ))
+                            }
+                        } else if (relation is FranchiseNode) {
+                            val item = linkedItems.find { it.linkedId == relation.id }
+                            val rate = rates.find { item?.linkedId == it.targetId }
+
+                            if (item != null) {
+                                items.add(ChronologyItem(
+                                        item.linkedId,
+                                        rate?.id,
+                                        item,
+                                        RelationType.NONE,
+                                        rate?.status
+                                ))
+                            }
                         }
                     }
 
