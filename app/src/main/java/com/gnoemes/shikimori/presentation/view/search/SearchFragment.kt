@@ -110,12 +110,8 @@ class SearchFragment : BasePaginationFragment<SearchItem, SearchPresenter, Searc
             setOnQueryTextListener(searchViewQueryListener)
             setOnSearchClickListener {
                 getPresenter().logEvent(AnalyticEvent.SEARCH_SEARCH_OPENED)
-//                spinner?.gone()
-//                toolbar?.menu?.getItem(0)?.isVisible = false
             }
             setOnCloseListener {
-//                spinner?.visible()
-//                toolbar?.menu?.getItem(0)?.isVisible = true
                 return@setOnCloseListener true
             }
             findViewById<androidx.appcompat.widget.SearchView.SearchAutoComplete>(R.id.search_src_text)?.apply {
@@ -145,22 +141,17 @@ class SearchFragment : BasePaginationFragment<SearchItem, SearchPresenter, Searc
     }
 
     override fun onTabRootAction() {
-//        searchView?.isIconified = false
         toolbar.menu.findItem(R.id.item_search)?.expandActionView()
     }
 
     private val searchViewQueryListener = object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
             getPresenter().onQuerySearch(query)
-//            searchView?.isIconified = false
             toolbar.menu.findItem(R.id.item_search)?.collapseActionView()
             return false
         }
 
-        override fun onQueryTextChange(newText: String?): Boolean {
-            if (newText.isNullOrBlank()) getPresenter().onQuerySearch(newText)
-            return false
-        }
+        override fun onQueryTextChange(newText: String?): Boolean = false
     }
 
     ///////////////////////////////////////////////////////////////////////////
