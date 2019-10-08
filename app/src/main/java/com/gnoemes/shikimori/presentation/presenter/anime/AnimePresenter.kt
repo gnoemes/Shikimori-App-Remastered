@@ -152,6 +152,10 @@ open class AnimePresenter @Inject constructor(
 
     override fun onOpenInBrowser() = onOpenWeb(currentAnime.url)
 
+    override fun onShareClicked() {
+        router.navigateTo(Screens.SHARE, currentAnime.url)
+    }
+
     override fun onWatchOnline() {
         val data = SeriesNavigationData(id,
                 currentAnime.image,

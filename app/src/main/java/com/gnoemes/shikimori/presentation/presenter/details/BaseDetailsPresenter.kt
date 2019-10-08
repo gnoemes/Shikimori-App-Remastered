@@ -154,12 +154,17 @@ abstract class BaseDetailsPresenter<View : BaseDetailsView>(
             is DetailsAction.RateStatusDialog -> onStatusDialog()
             is DetailsAction.Similar -> onSimilarClicked()
             is DetailsAction.Statistic -> onStatisticClicked()
+            is DetailsAction.Share -> onShareClicked()
         }
     }
 
     private fun onLink(url: String, share: Boolean) {
         val screen = if (share) Screens.SHARE else Screens.WEB
         router.navigateTo(screen, url)
+    }
+
+    protected open fun onShareClicked() {
+
     }
 
     protected open fun onStatisticClicked() {

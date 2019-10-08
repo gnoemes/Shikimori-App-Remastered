@@ -130,6 +130,10 @@ class MangaPresenter @Inject constructor(
 
     override fun onOpenInBrowser() = onOpenWeb(currentManga.url)
 
+    override fun onShareClicked() {
+        router.navigateTo(Screens.SHARE, currentManga.url)
+    }
+
     override fun onStatisticClicked() {
         Single.zip(Single.just(currentManga.rateScoresStats), Single.just(currentManga.rateStatusesStats), BiFunction<List<Statistic>, List<Statistic>, Pair<List<UserStatisticItem>, List<UserStatisticItem>>> { t1, t2 ->
             val scores = detailsConverter.convertScores(t1)
