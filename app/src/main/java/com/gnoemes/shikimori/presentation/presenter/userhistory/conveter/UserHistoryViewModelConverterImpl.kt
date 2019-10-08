@@ -1,5 +1,8 @@
 package com.gnoemes.shikimori.presentation.presenter.userhistory.conveter
 
+import com.gnoemes.shikimori.data.local.preference.SettingsSource
+import com.gnoemes.shikimori.entity.anime.domain.Anime
+import com.gnoemes.shikimori.entity.manga.domain.Manga
 import com.gnoemes.shikimori.entity.user.domain.UserHistory
 import com.gnoemes.shikimori.entity.user.presentation.UserHistoryHeaderViewModel
 import com.gnoemes.shikimori.entity.user.presentation.UserHistoryViewModel
@@ -9,6 +12,7 @@ import org.joda.time.*
 import javax.inject.Inject
 
 class UserHistoryViewModelConverterImpl @Inject constructor(
+        private val settings: SettingsSource,
         private val utils: DateTimeUtils,
         private val dateConverter: DateTimeConverter
 ) : UserHistoryViewModelConverter {
@@ -16,13 +20,22 @@ class UserHistoryViewModelConverterImpl @Inject constructor(
     override fun apply(t: List<UserHistory>): List<UserHistoryViewModel> =
             t.map { convertHistory(it) }
 
-    private fun convertHistory(it: UserHistory): UserHistoryViewModel = UserHistoryViewModel(
-            it.id,
-            it.description,
-            dateConverter.convertDateAgoToString(it.dateCreated),
-            it.dateCreated,
-            it.target
-    )
+    private fun convertHistory(it: UserHistory): UserHistoryViewModel {
+        val name = if (it.target is Anime) {
+            if (settings.isRussianNaming) it.target.nameRu ?: it.target.name else it.target.name
+        } else  {
+            if (settings.isRussianNaming) (it.target as Manga).nameRu ?: it.target.name else it.target?.linkedName
+        }
+
+       return UserHistoryViewModel(
+                it.id,
+                it.description,
+                dateConverter.convertDateAgoToString(it.dateCreated),
+                it.dateCreated,
+                name,
+                it.target
+        )
+    }
 
     //TODO refactor?
     override fun groupItems(items: List<UserHistoryViewModel>): List<Any> {
