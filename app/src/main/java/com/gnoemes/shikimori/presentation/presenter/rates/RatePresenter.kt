@@ -331,7 +331,7 @@ class RatePresenter @Inject constructor(
                     BiFunction { watched: Int, index: Int -> Pair(watched, index) }
             ).map { info ->
                 if (info.second <= rate.episodes!!)
-                    if (info.first <= rate.episodes)
+                    if (info.first < rate.episodes)
                         if (rate.anime.episodesAired != 0 && (rate.episodes + 1 > rate.anime.episodesAired && rate.episodes + 1 > rate.anime.episodes)) rate.anime.episodes
                         else rate.episodes + 1
                     else info.second
