@@ -1,9 +1,9 @@
 package com.gnoemes.shikimori.utils.network
 
+import android.annotation.SuppressLint
 import com.gnoemes.shikimori.data.local.preference.UserSource
 import com.gnoemes.shikimori.data.repository.app.AuthorizationRepository
 import com.gnoemes.shikimori.data.repository.app.TokenRepository
-import com.gnoemes.shikimori.entity.app.domain.HttpStatusCode
 import com.gnoemes.shikimori.entity.app.domain.Token
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -30,16 +30,16 @@ class AuthHolder @Inject constructor(
                 .flatMapCompletable { tokenRepository.saveToken(it) }
     }
 
+    @SuppressLint("CheckResult")
     fun refresh() {
-        val d = updateToken().subscribe({}, this::processErrors)
-    }
-
-    private fun processErrors(throwable: Throwable) {
-        if (throwable is HttpException) {
-            if (throwable.code() == HttpStatusCode.UNAUTHORISED) {
+        try {
+            updateToken().blockingGet()
+        } catch (e: Exception) {
+            if (e is HttpException && e.code() == 400) {
                 userRepository.clearUser()
                 tokenRepository.saveToken(null).subscribe()
             }
         }
     }
+
 }
