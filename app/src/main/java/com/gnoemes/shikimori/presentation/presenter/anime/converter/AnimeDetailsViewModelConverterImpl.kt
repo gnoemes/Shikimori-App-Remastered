@@ -69,7 +69,7 @@ class AnimeDetailsViewModelConverterImpl @Inject constructor(
 
         //release date (or next episode date for ongoings)
         if (it.status == Status.ANONS && it.dateAired != null) {
-            val description = it.dateAired.toString("dd MMM yyyy")
+            val description = it.dateAired.toTitleDate()
             val category = context.getString(R.string.details_release_date)
             info.add(InfoItem(description, category))
         } else if (it.status == Status.ONGOING && it.nextEpisodeDate != null) {
@@ -85,9 +85,9 @@ class AnimeDetailsViewModelConverterImpl @Inject constructor(
         } else if (it.dateAired != null && it.dateReleased != null) {
 
             val description = if (it.dateAired.year == it.dateReleased.year) {
-                "${it.dateAired.toString("dd MMM")} - ${it.dateReleased.toString("dd MMM YYYY")}"
+                "${it.dateAired.toString("dd ${dateTimeConverter.convertShortMonth(it.dateAired)}")} - ${it.dateReleased.toTitleDate()}"
             } else {
-                "${it.dateAired.toString("dd MMM YYYY")} - ${it.dateReleased.toString("dd MMM YYYY")}"
+                "${it.dateAired.toTitleDate()} - ${it.dateReleased.toTitleDate()}"
             }
             val category = context.getString(R.string.details_release_date)
             info.add(InfoItem(description, category))
@@ -244,4 +244,5 @@ class AnimeDetailsViewModelConverterImpl @Inject constructor(
     private fun Duration.toHoursAndMinutes(): String = "$standardHours ${context.getString(R.string.hour_short)} ${toMinutes()}"
     private fun Duration.toDays(): String = context.resources.getQuantityString(R.plurals.days, standardDays.toInt(), standardDays)
 
+    private fun DateTime.toTitleDate() = this.toString("dd ${dateTimeConverter.convertShortMonth(this)} yyyy")
 }

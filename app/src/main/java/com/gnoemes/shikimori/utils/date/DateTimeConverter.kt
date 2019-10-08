@@ -15,4 +15,6 @@ interface DateTimeConverter {
     fun convertHistoryDateToString(actionDate: DateTime): String
 
     fun convertDateAgoToString(actionDate: DateTime): String
+
+    fun convertShortMonth(dateTime: DateTime) : String
 }

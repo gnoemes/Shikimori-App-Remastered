@@ -466,6 +466,19 @@
     <string name="backup_cloud_upload_success">Настройки успешно отправлены</string>
     <string name="backup_cloud_download_error">Не удалось загрузить настройки</string>
 
+    <string name="month_jan_short">янв</string>
+    <string name="month_feb_short">фев</string>
+    <string name="month_mar_short">мар</string>
+    <string name="month_apr_short">апр</string>
+    <string name="month_may_short">май</string>
+    <string name="month_jun_short">июн</string>
+    <string name="month_jul_short">июл</string>
+    <string name="month_aug_short">авг</string>
+    <string name="month_sep_short">сен</string>
+    <string name="month_oct_short">окт</string>
+    <string name="month_nov_short">ноя</string>
+    <string name="month_dec_short">дек</string>
+
     <string-array name="rate_types">
         <item>@string/common_anime</item>
         <item>@string/common_manga</item>
