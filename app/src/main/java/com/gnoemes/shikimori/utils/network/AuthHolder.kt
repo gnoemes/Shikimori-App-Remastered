@@ -32,14 +32,14 @@ class AuthHolder @Inject constructor(
 
     @SuppressLint("CheckResult")
     fun refresh() {
-        try {
-            updateToken().blockingGet()
-        } catch (e: Exception) {
-            if (e is HttpException && e.code() == 400) {
-                userRepository.clearUser()
-                tokenRepository.saveToken(null).subscribe()
-            }
-        }
+        updateToken()
+                .subscribe({}, {
+                    if (it is HttpException) {
+                        userRepository.clearUser()
+                        tokenRepository.saveToken(null).blockingGet()
+                    }
+                })
+
     }
 
 }

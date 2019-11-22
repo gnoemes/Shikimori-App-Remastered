@@ -46,6 +46,7 @@ class UserSourceImpl @Inject constructor(
 
     override fun clearUser() {
         prefs.remove(SettingsExtras.USER_BRIEF)
+        prefs.remove(SettingsExtras.USER_ID)
         setUserStatus(UserStatus.GUEST)
     }
 
