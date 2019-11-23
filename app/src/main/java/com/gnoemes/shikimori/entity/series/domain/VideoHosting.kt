@@ -12,8 +12,8 @@ enum class VideoHosting(
     SIBNET("sibnet", "sibnet.ru"),
     @SerializedName("sovetromantica.com", alternate = ["sovetromantica"])
     SOVET_ROMANTICA("sovetromantica", "sovetromantica.com"),
-    @SerializedName("smotretanime.ru", alternate = ["smotretanime"])
-    SMOTRET_ANIME("smotretanime", "smotretanime.ru"),
+    @SerializedName("smotretanime.ru", alternate = ["smotretanime", "smotret-anime.online"])
+    SMOTRET_ANIME("smotretanime", "smotret-anime.online"),
     @SerializedName("ok.ru", alternate = ["ok"])
     OK("ok", "ok.ru"),
     @SerializedName("mail.ru", alternate = ["mail"])
