@@ -51,7 +51,7 @@ class SeriesRepositoryImpl @Inject constructor(
                     .map(translationConverter)
 
     override fun getVideo(payload: TranslationVideo, alternative: Boolean): Single<Video> =
-            (if (alternative) source.getVideoAlternative(payload.videoId)
+            (if (alternative) source.getVideoAlternative(payload.videoId, payload.animeId, payload.episodeIndex.toLong())
             else source.getVideo(
                     payload.animeId,
                     payload.episodeIndex,

@@ -35,5 +35,6 @@ class LocalAnimeSourceImpl @Inject constructor(
 
     override fun getTranslationsAlternative(animeId: Long, episodeId: Long, type: String): Single<List<TranslationResponse>> = api.getTranslationsAlternative(animeId, episodeId, type)
 
-    override fun getVideoAlternative(translationId: Long): Single<VideoResponse> = api.getVideoAlternative(translationId)
+    override fun getVideoAlternative(translationId: Long, animeId: Long, episodeIndex : Long): Single<VideoResponse> = api.getVideoAlternative(translationId)
+            .map { it.copy(animeId = animeId, episodeId = episodeIndex) }
 }

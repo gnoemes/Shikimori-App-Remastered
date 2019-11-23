@@ -7,15 +7,13 @@ import com.gnoemes.shikimori.entity.series.domain.VideoHosting
 
 object Utils {
 
-    fun isHostingSupports(hosting: VideoHosting, includeDownload: Boolean = false): Boolean {
+    fun isHostingSupports(hosting: VideoHosting): Boolean {
         val supports = mutableListOf(
                 VideoHosting.SIBNET,
                 VideoHosting.VK,
-                VideoHosting.SOVET_ROMANTICA
+                VideoHosting.SOVET_ROMANTICA,
+                VideoHosting.SMOTRET_ANIME
         )
-
-        //need subscription
-        if (includeDownload) supports.add(VideoHosting.SMOTRET_ANIME)
 
         return supports.contains(hosting)
     }

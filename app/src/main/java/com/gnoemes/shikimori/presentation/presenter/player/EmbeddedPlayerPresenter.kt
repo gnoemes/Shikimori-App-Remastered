@@ -6,6 +6,7 @@ import com.gnoemes.shikimori.domain.series.SeriesInteractor
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.series.domain.EpisodeChanges
 import com.gnoemes.shikimori.entity.series.domain.Video
+import com.gnoemes.shikimori.entity.series.domain.VideoHosting
 import com.gnoemes.shikimori.entity.series.presentation.EmbeddedPlayerNavigationData
 import com.gnoemes.shikimori.entity.series.presentation.TranslationVideo
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
@@ -42,7 +43,7 @@ class EmbeddedPlayerPresenter @Inject constructor(
     }
 
     private fun loadVideo(payload: TranslationVideo) {
-        interactor.getVideo(payload, false)
+        interactor.getVideo(payload, payload.videoHosting == VideoHosting.SMOTRET_ANIME)
                 .appendLoadingLogic(viewState)
                 .subscribe({ updateVideo(it) }, this::processErrors)
                 .addToDisposables()
