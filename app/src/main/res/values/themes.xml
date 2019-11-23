@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="ShikimoriAppTheme.Base" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="Platform.Theme.Shikimori" parent="Theme.MaterialComponents.DayNight.NoActionBar"/>
+
+    <style name="ShikimoriAppTheme.Base" parent="Platform.Theme.Shikimori">
         <item name="textAppearanceHeadline6">@style/ToolbarTextAppearance</item>
 
         <item name="md_corner_radius">8dp</item>
@@ -11,6 +13,7 @@
         <item name="drawerArrowStyle">@style/DrawerIconStyle</item>
         <item name="toolbarNavigationButtonStyle">@style/Toolbar.Button.Navigation.Tinted</item>
         <item name="actionOverflowButtonStyle">@style/Toolbar.Button.Overflow.Tinted</item>
+        <item name="android:listDivider">@drawable/list_divider</item>
 
         <item name="themeStrokeWidth">0dp</item>
     </style>
@@ -85,6 +88,10 @@
 
         <item name="bottomSheetBackground">@drawable/bg_bottom_sheet_window_default</item>
         <item name="editRateBackground">@drawable/bg_rate_dialog_window_default</item>
+
+        <item name="colorStatusBar">@color/default_colorStatusBar</item>
+        <item name="colorNavigationBar">@color/default_colorStatusBar</item>
+        <item name="lightStatusBar">true</item>
     </style>
 
     <style name="ShikimoriAppTheme.Dark" parent="ShikimoriAppTheme.Base">
@@ -130,6 +137,10 @@
 
         <item name="bottomSheetBackground">@drawable/bg_bottom_sheet_window_dark</item>
         <item name="editRateBackground">@drawable/bg_rate_dialog_window_dark</item>
+
+        <item name="colorStatusBar">@color/dark_colorStatusBar</item>
+        <item name="colorNavigationBar">@color/dark_colorStatusBar</item>
+        <item name="lightStatusBar">false</item>
     </style>
 
     <style name="ShikimoriAppTheme.Amoled" parent="ShikimoriAppTheme.Base">
@@ -177,6 +188,10 @@
 
         <item name="bottomSheetBackground">@drawable/bg_bottom_sheet_window_amoled</item>
         <item name="editRateBackground">@drawable/bg_rate_dialog_window_amoled</item>
+
+        <item name="colorStatusBar">@color/amoled_colorStatusBar</item>
+        <item name="colorNavigationBar">@color/amoled_colorPrimary</item>
+        <item name="lightStatusBar">false</item>
     </style>
 
     <style name="AscentStyle" />

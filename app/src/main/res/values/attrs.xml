@@ -9,6 +9,10 @@
     <attr name="colorRateMenuBackground" format="reference" />
     <attr name="colorRateDialog" format="color" />
 
+    <attr name="colorStatusBar" format="color" />
+    <attr name="colorNavigationBar" format="color" />
+    <attr name="lightStatusBar" format="boolean" />
+
     <attr name="dialogCustomBackground" format="reference" />
     <attr name="bottomSheetBackground" format="reference" />
     <attr name="editRateBackground" format="reference" />
