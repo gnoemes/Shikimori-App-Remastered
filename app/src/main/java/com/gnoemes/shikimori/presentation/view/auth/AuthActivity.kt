@@ -204,10 +204,9 @@ class AuthActivity : BaseActivity<AuthPresenter, AuthView>(), AuthView {
                     Toast.makeText(applicationContext, "Авторизация на вашей версии Android временно не возможна", Toast.LENGTH_LONG).show()
                     onBackPressed()
                 }
+                webView.gone()
+                progressBar.visible()
             }
-
-            webView.gone()
-            progressBar.visible()
         }
 
         private fun processCode(html: String) {
