@@ -30,6 +30,8 @@ import com.gnoemes.shikimori.data.repository.series.shikimori.EpisodeChangesRepo
 import com.gnoemes.shikimori.data.repository.series.shikimori.EpisodeChangesRepositoryImpl;
 import com.gnoemes.shikimori.data.repository.series.shikimori.SeriesSyncRepository;
 import com.gnoemes.shikimori.data.repository.series.shikimori.SeriesSyncRepositoryImpl;
+import com.gnoemes.shikimori.data.repository.series.smotretanime.Anime365TokenSource;
+import com.gnoemes.shikimori.data.repository.series.smotretanime.Anime365TokenSourceImpl;
 import com.gnoemes.shikimori.data.repository.user.UserRepository;
 import com.gnoemes.shikimori.data.repository.user.UserRepositoryImpl;
 
@@ -105,4 +107,8 @@ public interface RepositoryModule {
     @Binds
     @Reusable
     MangaRateSyncDbSource bindMangaRateSyncDbSource(MangaRateSyncDbSourceImpl source);
+
+    @Binds
+    @Singleton
+    Anime365TokenSource bindAnime365TokenSource(Anime365TokenSourceImpl source);
 }

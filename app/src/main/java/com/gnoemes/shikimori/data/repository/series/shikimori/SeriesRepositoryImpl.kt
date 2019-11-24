@@ -10,6 +10,7 @@ import com.gnoemes.shikimori.data.repository.series.shikimori.converter.EpisodeR
 import com.gnoemes.shikimori.data.repository.series.shikimori.converter.TranslationResponseConverter
 import com.gnoemes.shikimori.data.repository.series.shikimori.converter.VideoResponseConverter
 import com.gnoemes.shikimori.data.repository.series.shikimori.converter.VkVideoConverter
+import com.gnoemes.shikimori.data.repository.series.smotretanime.Anime365TokenSource
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.series.domain.*
 import com.gnoemes.shikimori.entity.series.presentation.TranslationVideo
@@ -22,6 +23,7 @@ class SeriesRepositoryImpl @Inject constructor(
         private val api: VideoApi,
         private val topicApi: TopicApi,
         private val source: AnimeSource,
+        private val tokenSource: Anime365TokenSource,
         private val converter: EpisodeResponseConverter,
         private val translationConverter: TranslationResponseConverter,
         private val videoConverter: VideoResponseConverter,
@@ -51,7 +53,7 @@ class SeriesRepositoryImpl @Inject constructor(
                     .map(translationConverter)
 
     override fun getVideo(payload: TranslationVideo, alternative: Boolean): Single<Video> =
-            (if (alternative) source.getVideoAlternative(payload.videoId, payload.animeId, payload.episodeIndex.toLong())
+            (if (alternative) source.getVideoAlternative(payload.videoId, payload.animeId, payload.episodeIndex.toLong(), tokenSource.getToken())
             else source.getVideo(
                     payload.animeId,
                     payload.episodeIndex,

@@ -1,6 +1,7 @@
 package com.gnoemes.shikimori.presentation.view.player.web
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -14,6 +15,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.app.domain.AppExtras
+import com.gnoemes.shikimori.entity.app.domain.SettingsExtras
 import com.gnoemes.shikimori.presentation.view.base.activity.BaseThemedActivity
 import com.gnoemes.shikimori.utils.widgets.VideoWebChromeClient
 import kotlinx.android.synthetic.main.activity_web_player.*
@@ -23,6 +25,10 @@ class WebPlayerActivity : BaseThemedActivity() {
 
     private lateinit var chromeClient: VideoWebChromeClient
     private lateinit var webView: WebView
+
+    companion object {
+        private val ANIME_365_REGEX = "https?://(?:www\\.)?smotret-anime\\.online/".toRegex()
+    }
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,8 +63,14 @@ class WebPlayerActivity : BaseThemedActivity() {
 
         if (intent != null) {
             val url = intent.getStringExtra(AppExtras.ARGUMENT_URL)
-            if (!url.isNullOrBlank()) webView.loadUrl(url)
-            else showError()
+            if (!url.isNullOrBlank()) {
+                val prefs = getSharedPreferences("user_preferences", Context.MODE_PRIVATE)
+                val token = prefs.getString(SettingsExtras.ANIME_365_TOKEN, null)
+
+                if (url.matches(ANIME_365_REGEX) && !token.isNullOrBlank()) webView.loadUrl("$url?access_token=$token")
+                else webView.loadUrl(url)
+
+            } else showError()
         } else onBackPressed()
 
     }
@@ -81,7 +93,7 @@ class WebPlayerActivity : BaseThemedActivity() {
         showMessage(text)
     }
 
-    private fun showMessage(text : String) {
+    private fun showMessage(text: String) {
         Toast.makeText(this, text, Toast.LENGTH_LONG).show()
     }
 

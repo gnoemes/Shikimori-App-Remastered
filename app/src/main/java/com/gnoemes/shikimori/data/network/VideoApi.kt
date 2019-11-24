@@ -43,7 +43,10 @@ interface VideoApi {
     ) : Single<VkResponse>
 
     @GET("/api/anime/alternative/translation/{id}")
-    fun getVideoAlternative(@Path("id") translationId: Long): Single<VideoResponse>
+    fun getVideoAlternative(
+            @Path("id") translationId: Long,
+            @Query("accessToken") accessToken : String? = null
+    ): Single<VideoResponse>
 
     @GET("/api/anime/{animeId}/{episodeId}/topic")
     fun getTopic(@Path("animeId") animeId : Long,

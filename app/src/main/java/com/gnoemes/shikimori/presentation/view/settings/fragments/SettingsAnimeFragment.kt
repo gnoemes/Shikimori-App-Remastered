@@ -1,9 +1,11 @@
 package com.gnoemes.shikimori.presentation.view.settings.fragments
 
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.text.InputType
 import androidx.preference.Preference
+import androidx.preference.SwitchPreference
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.WhichButton
 import com.afollestad.materialdialogs.actions.setActionButtonEnabled
@@ -13,6 +15,7 @@ import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.app.domain.SettingsExtras
 import com.gnoemes.shikimori.entity.series.domain.PlayerType
 import com.gnoemes.shikimori.entity.series.domain.TranslationType
+import com.gnoemes.shikimori.presentation.view.auth.AuthActivity
 import com.gnoemes.shikimori.utils.*
 
 class SettingsAnimeFragment : BaseSettingsFragment() {
@@ -61,6 +64,40 @@ class SettingsAnimeFragment : BaseSettingsFragment() {
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             preference(SettingsExtras.PLAYER_IS_AUTO_PIP)?.isVisible = false
+        }
+
+        (preference(R.string.settings_anime_365_key) as? SwitchPreference)?.apply {
+            val userPrefs = context.getSharedPreferences("user_preferences", Context.MODE_PRIVATE)
+            val token = userPrefs.getString(SettingsExtras.ANIME_365_TOKEN, null)
+
+            prefs().putBoolean(key, !token.isNullOrBlank())
+            if (!isChecked) intent = AuthActivity.anime365Auth(context)
+
+            setOnPreferenceChangeListener { preference, newValue ->
+                if (newValue !is Boolean) return@setOnPreferenceChangeListener false
+                intent = null
+
+                if (!newValue) {
+                    userPrefs.remove(SettingsExtras.ANIME_365_TOKEN)
+                    return@setOnPreferenceChangeListener true
+                } else {
+                    preference.intent = AuthActivity.anime365Auth(context)
+                }
+
+                return@setOnPreferenceChangeListener false
+            }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        (preference(R.string.settings_anime_365_key) as? SwitchPreference)?.apply {
+            val userPrefs = context.getSharedPreferences("user_preferences", Context.MODE_PRIVATE)
+            val token = userPrefs.getString(SettingsExtras.ANIME_365_TOKEN, null)
+
+            prefs().putBoolean(key, !token.isNullOrBlank())
+            isChecked = !token.isNullOrBlank()
         }
     }
 

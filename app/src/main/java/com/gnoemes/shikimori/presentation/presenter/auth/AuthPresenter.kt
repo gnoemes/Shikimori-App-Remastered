@@ -12,13 +12,13 @@ class AuthPresenter @Inject constructor(
         private val interactor: AuthInteractor
 ) : BaseNetworkPresenter<AuthView>() {
 
-    //Todo mb wizard?
-    lateinit var authType: AuthType
+    var authType: AuthType? = null
 
     override fun initData() {
         when (authType) {
             AuthType.SIGN_IN -> viewState.onSignIn()
             AuthType.SIGN_UP -> viewState.onSignUp()
+            else -> viewState.onAnime365()
         }
     }
 

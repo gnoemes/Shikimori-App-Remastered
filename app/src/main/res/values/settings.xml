@@ -154,4 +154,9 @@
     <string name="settings_system_options">Программные опции</string>
     <string name="settings_backup">BACKUP_SETTINGS</string>
     <string name="settings_backup_title">Бэкап настроек</string>
+
+    <string name="settings_anime_365_key">ANIME_365</string>
+    <string name="settings_anime_365_title">Вход в Anime 365</string>
+    <string name="settings_anime_365_summary">Смотрите с подпиской через любой плеер</string>
+    <string name="settings_anime_365_success">Anime 365 теперь доступен, проверьте источники в списке авторов</string>
 </resources>

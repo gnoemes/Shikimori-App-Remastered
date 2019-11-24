@@ -8,20 +8,22 @@ import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
 import android.webkit.WebResourceRequest
-import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.Toast
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.gnoemes.shikimori.BuildConfig
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.app.domain.AppExtras
 import com.gnoemes.shikimori.entity.app.domain.Constants
+import com.gnoemes.shikimori.entity.app.domain.SettingsExtras
 import com.gnoemes.shikimori.entity.auth.AuthType
 import com.gnoemes.shikimori.presentation.presenter.auth.AuthPresenter
 import com.gnoemes.shikimori.presentation.view.base.activity.BaseActivity
 import com.gnoemes.shikimori.utils.gone
 import com.gnoemes.shikimori.utils.ifNotNull
+import com.gnoemes.shikimori.utils.putString
 import com.gnoemes.shikimori.utils.visible
 import kotlinx.android.synthetic.main.activity_auth.*
 import ru.terrakok.cicerone.Navigator
@@ -29,6 +31,7 @@ import ru.terrakok.cicerone.NavigatorHolder
 import java.util.regex.Pattern
 import javax.inject.Inject
 
+//TODO split screens/refactor/in-app browser
 class AuthActivity : BaseActivity<AuthPresenter, AuthView>(), AuthView {
 
     @Inject
@@ -41,40 +44,42 @@ class AuthActivity : BaseActivity<AuthPresenter, AuthView>(), AuthView {
     fun providePresenter(): AuthPresenter {
         authPresenter = presenterProvider.get()
         intent.ifNotNull {
-            authPresenter.authType = it.getSerializableExtra(AppExtras.ARGUMENT_AUTH_TYPE) as AuthType
+            authPresenter.authType = it.getSerializableExtra(AppExtras.ARGUMENT_AUTH_TYPE) as? AuthType
         }
 
         return authPresenter
     }
 
-    private val client by lazy { ShikimoriAuthClient() }
+    private val shikimoriClient by lazy { ShikimoriAuthClient() }
+    private val anime365Client by lazy { Anime365AuthClient() }
 
 
     companion object {
-        private const val PATTERN = "https?://(?:www\\.)?shikimori\\.one/oauth/authorize/(?:.*)"
-        private const val SIGN_UP_URL = "https://shikimori.one/users/sign_up"
-        private const val SIGN_IN_URL = "https://shikimori.one/users/sign_in"
-        fun newIntent(context: Context?, type: AuthType) = Intent(context, AuthActivity::class.java)
+        private const val SHIKIMORI_PATTERN = "https?://(?:www\\.)?shikimori\\.one/oauth/authorize/(?:.*)"
+        private const val SHIKIMORI_SIGN_UP_URL = "https://shikimori.one/users/sign_up"
+        private const val SHIKIMORI_SIGN_IN_URL = "https://shikimori.one/users/sign_in"
+
+        private const val ANIME_365_SIGN_IN = "https://smotret-anime.online/users/login"
+
+        fun shikimoriAuth(context: Context?, type: AuthType) = Intent(context, AuthActivity::class.java)
                 .apply { putExtra(AppExtras.ARGUMENT_AUTH_TYPE, type) }
+
+        fun anime365Auth(context: Context?) = Intent(context, AuthActivity::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initWebView()
+
+        val shikimori = intent?.getSerializableExtra(AppExtras.ARGUMENT_AUTH_TYPE) != null
+        initWebView(shikimori)
     }
 
     @SuppressLint("SetJavaScriptEnabled")
-    private fun initWebView() {
-//        webView = WebView(this)
-//        webView.setTag(R.id.aesthetic_ignore, "webView")
-//        container.addView(webView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+    private fun initWebView(shikimori: Boolean) {
         webView.apply {
-            settings.setAppCacheEnabled(false)
-            settings.cacheMode = WebSettings.LOAD_NO_CACHE
-            settings.databaseEnabled = false
-            settings.domStorageEnabled = false
             settings.javaScriptEnabled = true
-            webViewClient = client
+            settings.domStorageEnabled = true
+            webViewClient = if (shikimori) shikimoriClient else anime365Client
         }
     }
 
@@ -103,11 +108,15 @@ class AuthActivity : BaseActivity<AuthPresenter, AuthView>(), AuthView {
     ///////////////////////////////////////////////////////////////////////////
 
     override fun onSignIn() {
-        webView.loadUrl(SIGN_IN_URL)
+        webView.loadUrl(SHIKIMORI_SIGN_IN_URL)
     }
 
     override fun onSignUp() {
-        webView.loadUrl(SIGN_UP_URL)
+        webView.loadUrl(SHIKIMORI_SIGN_UP_URL)
+    }
+
+    override fun onAnime365() {
+        webView.loadUrl(ANIME_365_SIGN_IN)
     }
 
     override fun setTitle(title: String) {}
@@ -138,7 +147,7 @@ class AuthActivity : BaseActivity<AuthPresenter, AuthView>(), AuthView {
         }
 
         private fun interceptCode(url: String?) {
-            val matcher = Pattern.compile(PATTERN).matcher(url)
+            val matcher = Pattern.compile(SHIKIMORI_PATTERN).matcher(url)
             if (matcher.find()) {
                 val authCode =
                         if (matcher.group().isNullOrEmpty()) ""
@@ -150,6 +159,76 @@ class AuthActivity : BaseActivity<AuthPresenter, AuthView>(), AuthView {
                 webView.gone()
                 progressBar.visible()
             }
+        }
+    }
+
+    private inner class Anime365AuthClient : WebViewClient() {
+
+        //TODO remove
+        private var finishCounter = 0
+        private val TOKEN_URL = "https://smotret-anime.online/api/accessToken?app=sapp"
+
+
+        override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+            super.onPageStarted(view, url, favicon)
+            progressBar.visible()
+            if (url == "https://smotret-anime.online/" || url == "https://smotret-anime.online/users/profile") {
+                view?.loadUrl(TOKEN_URL)
+            }
+        }
+
+        override fun onPageFinished(view: WebView?, url: String?) {
+            super.onPageFinished(view, url)
+            //TODO remove
+            if (url == ANIME_365_SIGN_IN) finishCounter++
+
+            if (finishCounter > 1) {
+                finishCounter = 0
+                view?.postDelayed({
+                    view.loadUrl("https://smotret-anime.online/")
+                }, 750)
+            }
+
+            interceptCode(url)
+            progressBar.gone()
+        }
+
+        private fun interceptCode(url: String?) {
+            if (url == TOKEN_URL) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    webView.evaluateJavascript("(function() { return JSON.stringify(document.getElementsByTagName('html')[0].innerHTML); })();") { s ->
+                        processCode(s)
+                    }
+                } else {
+                    //TODO remove, add js interface
+                    Toast.makeText(applicationContext, "Авторизация на вашей версии Android временно не возможна", Toast.LENGTH_LONG).show()
+                    onBackPressed()
+                }
+            }
+
+            webView.gone()
+            progressBar.visible()
+        }
+
+        private fun processCode(html: String) {
+            val matcher = Pattern.compile("\\{.*\\}").matcher(html)
+            if (matcher.find()) {
+                val code = matcher
+                        .group()
+                        .replace("\\", "")
+                        .split("\"")
+                        .takeLast(2)
+                        .firstOrNull()
+
+                if (!code.isNullOrBlank()) onSuccess(code)
+            }
+        }
+
+        private fun onSuccess(code: String) {
+            getSharedPreferences("user_preferences", Context.MODE_PRIVATE)
+                    .putString(SettingsExtras.ANIME_365_TOKEN, code)
+            Toast.makeText(applicationContext, R.string.settings_anime_365_success, Toast.LENGTH_LONG).show()
+            onBackPressed()
         }
     }
 

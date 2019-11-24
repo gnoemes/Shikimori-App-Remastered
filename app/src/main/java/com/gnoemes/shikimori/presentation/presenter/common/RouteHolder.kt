@@ -76,7 +76,7 @@ object RouteHolder {
 
     fun createActivityIntent(context: Context?, screenKey: String?, data: Any?): Intent? {
         return when (screenKey) {
-            Screens.AUTHORIZATION -> AuthActivity.newIntent(context, data as AuthType)
+            Screens.AUTHORIZATION -> AuthActivity.shikimoriAuth(context, data as AuthType)
             //TODO check settings to open in internal on external browser
             Screens.WEB -> Intent(Intent.ACTION_VIEW, Uri.parse(data as String))
             Screens.SETTINGS -> Intent(context, SettingsActivity::class.java)
