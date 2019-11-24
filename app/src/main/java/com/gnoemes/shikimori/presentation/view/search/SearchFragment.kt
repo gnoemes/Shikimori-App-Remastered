@@ -104,7 +104,7 @@ class SearchFragment : BasePaginationFragment<SearchItem, SearchPresenter, Searc
 
         searchView = LayoutInflater.from(context).inflate(R.layout.layout_search_view, null) as? androidx.appcompat.widget.SearchView
 
-        toolbar.menu.findItem(R.id.item_search).actionView = searchView
+        toolbar?.menu?.findItem(R.id.item_search)?.actionView = searchView
         searchView?.run {
 
             setOnQueryTextListener(searchViewQueryListener)
@@ -141,13 +141,13 @@ class SearchFragment : BasePaginationFragment<SearchItem, SearchPresenter, Searc
     }
 
     override fun onTabRootAction() {
-        toolbar.menu.findItem(R.id.item_search)?.expandActionView()
+        toolbar?.menu?.findItem(R.id.item_search)?.expandActionView()
     }
 
     private val searchViewQueryListener = object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
             getPresenter().onQuerySearch(query)
-            toolbar.menu.findItem(R.id.item_search)?.collapseActionView()
+            toolbar?.menu?.findItem(R.id.item_search)?.collapseActionView()
             return false
         }
 

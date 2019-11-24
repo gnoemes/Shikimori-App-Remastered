@@ -150,13 +150,21 @@ open class AnimePresenter @Inject constructor(
         logEvent(AnalyticEvent.ANIME_DETAILS_LINKS)
     }
 
-    override fun onOpenInBrowser() = onOpenWeb(currentAnime.url)
+    override fun onOpenInBrowser() {
+        if (!::currentAnime.isInitialized) return
+
+        onOpenWeb(currentAnime.url)
+    }
 
     override fun onShareClicked() {
+        if (!::currentAnime.isInitialized) return
+
         router.navigateTo(Screens.SHARE, currentAnime.url)
     }
 
     override fun onWatchOnline() {
+        if (!::currentAnime.isInitialized) return
+
         val data = SeriesNavigationData(id,
                 currentAnime.image,
                 currentAnime.nameRu ?: currentAnime.name,
@@ -168,6 +176,8 @@ open class AnimePresenter @Inject constructor(
     }
 
     override fun onEditRate() {
+        if (!::currentAnime.isInitialized) return
+
         viewState.showRateDialog(title, currentAnime.userRate)
         logEvent(AnalyticEvent.RATE_DIALOG)
     }
