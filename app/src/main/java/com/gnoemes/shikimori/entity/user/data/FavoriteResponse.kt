@@ -7,5 +7,5 @@ data class FavoriteResponse(
         @field:SerializedName("name") val name : String,
         @field:SerializedName("russian") val nameRu : String?,
         @field:SerializedName("image") val image : String,
-        @field:SerializedName("url") val url : String
+        @field:SerializedName("url") val url : String?
 )

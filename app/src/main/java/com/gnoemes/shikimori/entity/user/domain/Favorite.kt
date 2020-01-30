@@ -5,6 +5,6 @@ data class Favorite(
         val name: String,
         val nameRu: String?,
         val image: String,
-        val url: String,
+        val url: String?,
         val type: FavoriteType
 )

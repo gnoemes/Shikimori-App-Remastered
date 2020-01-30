@@ -37,6 +37,6 @@ class FavoriteListResponseConverterImpl @Inject constructor() : FavoriteListResp
             it.name,
             it.nameRu,
             it.image.appendHostIfNeed().replace("x64", "original"),
-            it.url.appendHostIfNeed(),
+            it.url?.appendHostIfNeed(),
             type)
 }
