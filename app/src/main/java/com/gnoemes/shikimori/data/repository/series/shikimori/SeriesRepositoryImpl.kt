@@ -35,6 +35,12 @@ class SeriesRepositoryImpl @Inject constructor(
     override fun getEpisodes(id: Long, alternative: Boolean): Single<List<Episode>> =
             (if (alternative) source.getEpisodesAlternative(id) else source.getEpisodes(id))
                     .map { episodes -> episodes.filter { it.index > 0 }.sortedBy { it.index } }
+                    .map { episodes ->
+                        if (alternative || tokenSource.getToken() != null) episodes
+                        else episodes.filterNot {
+                            it.hostings.contains(VideoHosting.SMOTRET_ANIME)
+                        }
+                    }
                     .flatMap {
                         Observable.fromIterable(it)
                                 .flatMapSingle { episode ->
@@ -51,6 +57,12 @@ class SeriesRepositoryImpl @Inject constructor(
     override fun getTranslations(type: TranslationType, animeId: Long, episodeId: Long, alternative: Boolean): Single<List<Translation>> =
             (if (alternative) source.getTranslationsAlternative(animeId, episodeId, type.type!!) else source.getTranslations(animeId, episodeId, type.type!!))
                     .map(translationConverter)
+                    .map { translations ->
+                        if (alternative || tokenSource.getToken() != null) translations
+                        else translations.filterNot {
+                            it.hosting == VideoHosting.SMOTRET_ANIME
+                        }
+                    }
 
     override fun getVideo(payload: TranslationVideo, alternative: Boolean): Single<Video> =
             (if (alternative) source.getVideoAlternative(payload.videoId, payload.animeId, payload.episodeIndex.toLong(), tokenSource.getToken())
