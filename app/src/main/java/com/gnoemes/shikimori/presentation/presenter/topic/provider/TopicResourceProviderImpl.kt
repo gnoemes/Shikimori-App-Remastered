@@ -26,6 +26,7 @@ class TopicResourceProviderImpl @Inject constructor(
             ForumType.COLLECTIONS -> context.getString(R.string.forum_collection)
             ForumType.COSPLAY -> context.getString(R.string.forum_cosplay)
             ForumType.ANIME_AND_MANGA -> context.getString(R.string.forum_animanga)
+            ForumType.ARTICLES -> context.getString(R.string.forum_articles)
         }
     }
 

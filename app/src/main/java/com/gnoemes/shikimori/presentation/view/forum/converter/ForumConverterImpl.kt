@@ -36,6 +36,7 @@ class ForumConverterImpl @Inject constructor(
             ForumType.REVIEWS -> R.string.forum_reviews
             ForumType.SITE -> R.string.forum_site
             ForumType.VISUAL_NOVELS -> R.string.forum_vn
+            ForumType.ARTICLES -> R.string.forum_articles
         }
     }
 }

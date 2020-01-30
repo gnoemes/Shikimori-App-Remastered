@@ -15,5 +15,6 @@ enum class ForumType(val type : String) {
     @field:SerializedName("contests") CONTESTS("contests") ,
     @field:SerializedName("collections") COLLECTIONS("collections") ,
     @field:SerializedName("cosplay") COSPLAY("cosplay") ,
-    @field:SerializedName("my_clubs") MY_CLUBS("my_clubs");
+    @field:SerializedName("my_clubs") MY_CLUBS("my_clubs"),
+    @field:SerializedName("articles") ARTICLES("articles");
 }
