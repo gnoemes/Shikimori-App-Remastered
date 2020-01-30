@@ -53,6 +53,7 @@ import org.joda.time.Duration
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder
 import javax.inject.Inject
+import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
 class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPlayerView>(), EmbeddedPlayerView {
@@ -256,8 +257,15 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
             else -> current + offset
         }
 
-        val offsetText = (if (offset > 0) "+" else "-").plus(toMinutesAndSecond(validatedOffset))
-        val text = "${toMinutesAndSecond(validatedCurrent)} / ${toMinutesAndSecond(max)} "
+        val offsetText = toMinutesAndSecond(validatedOffset)?.let { timeOffset ->
+            (if (offset > 0) "+" else "-").plus(timeOffset)
+        }
+        val maxTimeOffset = toMinutesAndSecond(max)
+        val validatedCurrentTimeOffset = toMinutesAndSecond(validatedCurrent)
+
+        if (maxTimeOffset == null || validatedCurrentTimeOffset == null || offsetText == null) return
+
+        val text = "$validatedCurrentTimeOffset / $maxTimeOffset "
 
         val spanString = SpannableStringBuilder(text)
                 .append(offsetText.colorSpan(offsetColor))
@@ -732,7 +740,9 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
     private val isAutoRotationEnabled: Boolean
         get() = android.provider.Settings.System.getInt(contentResolver, Settings.System.ACCELEROMETER_ROTATION, 0) == 1
 
-    private fun toMinutesAndSecond(value: Long): String {
+    private fun toMinutesAndSecond(value: Long): String? {
+        if (value.absoluteValue !in 0..Int.MAX_VALUE) return null
+
         return Duration.millis(Math.abs(value)).toMinutesAndSeconds()
     }
 
