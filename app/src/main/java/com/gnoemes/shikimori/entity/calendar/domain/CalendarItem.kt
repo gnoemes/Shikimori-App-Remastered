@@ -7,7 +7,7 @@ import org.joda.time.DateTime
 data class CalendarItem(
         val anime: Anime,
         val nextEpisode: Int,
-        val nextEpisodeDate: DateTime,
-        val nextEpisodeEndDate: DateTime,
+        val nextEpisodeDate: DateTime?,
+        val nextEpisodeEndDate: DateTime?,
         val status : RateStatus? = null
 )

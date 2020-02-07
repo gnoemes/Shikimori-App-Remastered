@@ -12,6 +12,7 @@ class CalendarResponseConverterImpl @Inject constructor(
 
     override fun apply(t: List<CalendarResponse>): List<CalendarItem> =
             t.map { convertResponse(it) }
+                    .filter { it.nextEpisodeDate != null }
 
     private fun convertResponse(it: CalendarResponse): CalendarItem = CalendarItem(
             animeConverter.convertResponse(it.anime)!!,
@@ -20,7 +21,9 @@ class CalendarResponseConverterImpl @Inject constructor(
             convertDuration(it.nextEpisodeDate, it.duration)
     )
 
-    private fun convertDuration(date: DateTime, duration: String): DateTime {
+    private fun convertDuration(date: DateTime?, duration: String?): DateTime? {
+        if (date == null || duration == null) return null
+
         return when (duration.contains("/")) {
             true -> DateTime(date).plusMinutes(duration.substring(0, duration.indexOf("/")).toDouble().toInt())
             else -> DateTime(date).plusSeconds(duration.toDouble().toInt())
