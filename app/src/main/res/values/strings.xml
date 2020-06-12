@@ -380,6 +380,7 @@
     <string name="series_empty_episode_title">Эпизод не найден</string>
     <string name="series_empty_episode_description">Тайтл не вышел или видео не выложили.</string>
     <string name="series_add_video">Добавить видео</string>
+    <string name="series_tracks_empty">Не удалось найти видео. Похоже, что оно было удалено.</string>
 
     <string name="player_web">Веб-плеер</string>
     <string name="player_embedded">Внутренний плеер (BETA)</string>

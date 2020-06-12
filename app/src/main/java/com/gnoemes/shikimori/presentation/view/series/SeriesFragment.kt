@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
@@ -331,6 +332,10 @@ class SeriesFragment : BaseFragment<SeriesPresenter, SeriesView>(),
     override fun showEpisodesDialog(data: EpisodesNavigationData) {
         val dialog = EpisodesFragment.newInstance(data)
         dialog.show(childFragmentManager, "EpisodeDialog")
+    }
+
+    override fun showTracksNotFoundError() {
+        Toast.makeText(requireContext(), R.string.series_tracks_empty, Toast.LENGTH_SHORT).show()
     }
 
     override fun checkPermissions() {

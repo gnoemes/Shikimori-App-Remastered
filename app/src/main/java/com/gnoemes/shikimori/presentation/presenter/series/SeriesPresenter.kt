@@ -318,6 +318,10 @@ class SeriesPresenter @Inject constructor(
     }
 
     private fun showQualityChooser(tracks: List<Track>) {
+        if (tracks.isEmpty()) {
+            viewState.showTracksNotFoundError()
+            return
+        }
         if (tracks.size == 1 || settingsSource.isExternalBestQuality) openPlayer(selectedPlayer!!, tracks.firstOrNull()?.url)
         else viewState.showQualityChooser(tracks.map { Pair(it.quality, it.url) })
     }

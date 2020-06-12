@@ -56,6 +56,9 @@ interface SeriesView : BaseFragmentView {
     fun showEmptySearchView()
 
     @StateStrategyType(SkipStrategy::class)
+    fun showTracksNotFoundError()
+
+    @StateStrategyType(SkipStrategy::class)
     fun scrollToPosition(position: Int)
 
     fun showEpisodeLoading(show: Boolean)
