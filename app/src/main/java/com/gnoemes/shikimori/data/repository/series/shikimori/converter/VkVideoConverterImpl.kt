@@ -8,8 +8,8 @@ import javax.inject.Inject
 class VkVideoConverterImpl @Inject constructor() : VkVideoConverter {
 
     override fun convertId(it: Video): String? {
-        val oidRegex = Regex("oid=.+?&")
-        val idRegex = Regex("&id=.+?&")
+        val oidRegex = Regex("oid=.+?(\\D|$)")
+        val idRegex = Regex("\\Wid=.+?(&|\\D|$)")
 
         val url = it.tracks.firstOrNull()?.url ?: ""
 
