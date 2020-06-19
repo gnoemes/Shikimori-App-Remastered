@@ -82,7 +82,12 @@ object RouteHolder {
             Screens.SETTINGS -> Intent(context, SettingsActivity::class.java)
             Screens.WEB_PLAYER -> Intent(context, WebPlayerActivity::class.java).apply { putExtra(AppExtras.ARGUMENT_URL, data as String) }
             Screens.EMBEDDED_PLAYER -> Intent(context, EmbeddedPlayerActivity::class.java).apply { putExtra(AppExtras.ARGUMENT_PLAYER_DATA, data as EmbeddedPlayerNavigationData) }
-            Screens.EXTERNAL_PLAYER -> Intent(Intent.ACTION_VIEW, data?.toString()?.toUri()).apply { setDataAndType(data?.toString()?.toUri(), "video/mp4") }
+            Screens.EXTERNAL_PLAYER -> {
+                Intent(Intent.ACTION_VIEW, data?.toString()?.toUri()).apply {
+                    setDataAndType(data?.toString()?.toUri(), "video/mp4")
+                    putExtra("headers", arrayOf("User-Agent", "sap"))
+                }
+            }
             Screens.SHARE -> Intent.createChooser(Intent(Intent.ACTION_SEND).apply { type = "text/plain"; putExtra(Intent.EXTRA_TEXT, data?.toString()) }, context!!.getString(R.string.common_share))
             Screens.SCREENSHOTS -> ScreenshotsActivity.newIntent(context, data as ScreenshotsNavigationData)
             else -> null
