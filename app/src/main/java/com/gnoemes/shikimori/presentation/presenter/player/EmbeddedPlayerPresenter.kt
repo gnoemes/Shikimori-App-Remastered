@@ -4,6 +4,8 @@ import com.arellomobile.mvp.InjectViewState
 import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.domain.series.SeriesInteractor
 import com.gnoemes.shikimori.entity.app.domain.Constants
+import com.gnoemes.shikimori.entity.app.domain.HttpStatusCode
+import com.gnoemes.shikimori.entity.app.domain.exceptions.ServiceCodeException
 import com.gnoemes.shikimori.entity.series.domain.EpisodeChanges
 import com.gnoemes.shikimori.entity.series.domain.Video
 import com.gnoemes.shikimori.entity.series.domain.VideoHosting
@@ -45,7 +47,7 @@ class EmbeddedPlayerPresenter @Inject constructor(
     private fun loadVideo(payload: TranslationVideo) {
         interactor.getVideo(payload, payload.videoHosting == VideoHosting.SMOTRET_ANIME)
                 .appendLoadingLogic(viewState)
-                .subscribe({ updateVideo(it) }, this::processErrors)
+                .subscribe({ updateVideo(it) }, this::processLoadVideoErrors)
                 .addToDisposables()
     }
 
@@ -89,6 +91,12 @@ class EmbeddedPlayerPresenter @Inject constructor(
                 .sendEpisodeChanges(EpisodeChanges.Changes(rateId, animeId, currentEpisode, true))
                 .subscribe({}, this::processErrors)
                 .addToDisposables()
+    }
+
+    private fun processLoadVideoErrors(throwable: Throwable) {
+        if (throwable is ServiceCodeException && throwable.serviceCode == HttpStatusCode.NOT_FOUND) {
+            viewState.showMessage(resourceProvider.playerErrorMessage)
+        } else super.processErrors(throwable)
     }
 
     fun loadNextEpisode() {
