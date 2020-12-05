@@ -17,6 +17,7 @@ import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.app.domain.AppExtras
 import com.gnoemes.shikimori.entity.app.domain.SettingsExtras
 import com.gnoemes.shikimori.presentation.view.base.activity.BaseThemedActivity
+import com.gnoemes.shikimori.utils.Utils
 import com.gnoemes.shikimori.utils.widgets.VideoWebChromeClient
 import kotlinx.android.synthetic.main.activity_web_player.*
 import java.util.regex.Pattern
@@ -67,8 +68,13 @@ class WebPlayerActivity : BaseThemedActivity() {
                 val prefs = getSharedPreferences("user_preferences", Context.MODE_PRIVATE)
                 val token = prefs.getString(SettingsExtras.ANIME_365_TOKEN, null)
 
+                val useIFrame = Utils.checkNeedIFrame(url)
+
                 if (url.matches(ANIME_365_REGEX) && !token.isNullOrBlank()) webView.loadUrl("$url?access_token=$token")
-                else webView.loadUrl(url)
+                else if (useIFrame) {
+                    val iframe = "<html><body style='margin:0;padding:0;'><iframe src='$url' width='100%' height='100%'  frameborder='0' allowfullscreen></iframe></body></html>"
+                    webView.loadData(iframe, "text/html", "utf-8")
+                } else webView.loadUrl(url)
 
             } else showError()
         } else onBackPressed()

@@ -31,6 +31,7 @@ class PlashikiAnimeSourceImpl @Inject constructor(
 
                     list
                             .filter { it.type.type == type }
+                            .filter { it.episode.toLong() == episodeId }
                             .forEach { response ->
                                 val id =
                                         if (response.hosting is VideoHosting.SMOTRET_ANIME) {

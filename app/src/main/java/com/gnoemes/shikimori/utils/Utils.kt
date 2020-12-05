@@ -36,4 +36,11 @@ object Utils {
         return color
     }
 
+    fun checkNeedIFrame(url: String): Boolean {
+        return when {
+            url.contains("aparat") -> false
+            else -> true
+        }
+    }
+
 }
