@@ -31,6 +31,8 @@ object Constants {
 
     const val APP_CLUB_URL = "https://shikimori.one/clubs/1609"
 
+    const val PLASHIKI_URL = "https://plashiki.su/"
+
     const val ROAD_MAP_URL = "https://trello.com/b/TeSnqIHY/shikimori-app-public"
 
     const val DEFAULT_DONATION_LINK = "https://money.yandex.ru/to/410016011857536"

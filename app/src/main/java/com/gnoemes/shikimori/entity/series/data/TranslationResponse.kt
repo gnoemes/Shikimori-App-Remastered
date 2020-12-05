@@ -1,5 +1,6 @@
 package com.gnoemes.shikimori.entity.series.data
 
+import com.gnoemes.shikimori.entity.series.data.plashiki.PlashikiTranslationResponse
 import com.gnoemes.shikimori.entity.series.domain.TranslationQuality
 import com.gnoemes.shikimori.entity.series.domain.TranslationType
 import com.gnoemes.shikimori.entity.series.domain.VideoHosting
@@ -16,6 +17,18 @@ data class TranslationResponse(
         @field:SerializedName("author") val author: String,
         @field:SerializedName("episodesSize") val episodesSize: Int
 ) {
+
+    constructor(id: Long, response: PlashikiTranslationResponse, episodesSize: Int) : this(
+            id,
+            response.animeId,
+            response.episode,
+            response.type,
+            response.quality,
+            response.rawHosting,
+            response.author ?: "",
+            episodesSize
+    )
+
     val hosting: VideoHosting
         get() = Utils.hostingFromString(_hosting)
 

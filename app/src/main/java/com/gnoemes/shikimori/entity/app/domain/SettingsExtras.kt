@@ -50,6 +50,9 @@ object SettingsExtras {
     const val NEW_VERSION_AVAILABLE = "NEW_VERSION_AVAILABLE"
     const val DONATION_LINK = "DONATION_LINK"
 
+    const val USE_PLASHIKI_API = "USE_PLASHIKI_API"
+    const val PLASHIKI_URL = "PLASHIKI_URL"
+
     const val CHRONOLOGY_TYPE = "CHRONOLOGY_TYPE"
     const val SORT_KEY_PART = "rate_sort"
     const val ORDER_KEY_PART = "rate_order"

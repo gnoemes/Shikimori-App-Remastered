@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 public enum TranslationQuality {
     @SerializedName("bd")
     BD("bd"),
-    @SerializedName("tv")
+    @SerializedName(value = "tv", alternate = "web")
     TV("tv"),
     @SerializedName("dvd")
     DVD("dvd"),;

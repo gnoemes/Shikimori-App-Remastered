@@ -10,21 +10,12 @@ import dagger.Binds
 import dagger.Module
 import dagger.Reusable
 
-@Module
+@Module(includes = [SeriesAnimeModule::class])
 interface SeriesRepositoryModule {
 
     @Binds
     @Reusable
     fun bindSeriesRepository(seriesRepository: SeriesRepositoryImpl): SeriesRepository
-
-    //Todo make dynamic switch?
-    @Binds
-    @Reusable
-    fun bindAnimeSource(cloudSource: CloudAnimeSourceImpl): AnimeSource
-
-//    @Binds
-//    @Reusable
-//    fun bindAnimeSource(cloudSource: LocalAnimeSourceImpl): AnimeSource
 
     @Binds
     @Reusable

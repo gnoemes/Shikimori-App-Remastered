@@ -6,6 +6,7 @@ import com.gnoemes.shikimori.data.network.CalendarApi;
 import com.gnoemes.shikimori.data.network.CommentApi;
 import com.gnoemes.shikimori.data.network.DocumentVideoApi;
 import com.gnoemes.shikimori.data.network.MangaApi;
+import com.gnoemes.shikimori.data.network.PlashikiVideoApi;
 import com.gnoemes.shikimori.data.network.RanobeApi;
 import com.gnoemes.shikimori.data.network.RolesApi;
 import com.gnoemes.shikimori.data.network.TopicApi;
@@ -45,6 +46,12 @@ public interface ApiModule {
     @Provides
     static DocumentVideoApi bindDocumentVideoApi(@com.gnoemes.shikimori.di.app.annotations.DocumentVideoApi Retrofit retrofit) {
         return retrofit.create(DocumentVideoApi.class);
+    }
+
+    @Singleton
+    @Provides
+    static PlashikiVideoApi bindPlashikiVideoApi(@com.gnoemes.shikimori.di.app.annotations.PlashikiVideoApi Retrofit retrofit) {
+        return retrofit.create(PlashikiVideoApi.class);
     }
 
     @Singleton

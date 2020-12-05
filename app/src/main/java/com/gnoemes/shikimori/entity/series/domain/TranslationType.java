@@ -1,13 +1,13 @@
 package com.gnoemes.shikimori.entity.series.domain;
 
-import com.google.gson.annotations.SerializedName;
-
 import androidx.annotation.Nullable;
 
+import com.google.gson.annotations.SerializedName;
+
 public enum TranslationType {
-    @SerializedName("fandub")
+    @SerializedName(value = "fandub", alternate = "dub")
     VOICE_RU("fandub", "озвучка"),
-    @SerializedName("subtitles")
+    @SerializedName(value = "subtitles", alternate = "sub")
     SUB_RU("subtitles", "субтитры"),
     @SerializedName("raw")
     RAW("raw", "оригинал"),

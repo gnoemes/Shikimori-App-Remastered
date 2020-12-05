@@ -99,8 +99,14 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView, RouterPr
                     val donationLink = it.documents.firstOrNull()?.data?.get("donationLink") as? String
                     val version = it.documents.firstOrNull()?.data?.get("lastVersion")
                     val hasUpdate = BuildConfig.VERSION_NAME.replace(Regex("[^0-9.]"), "") != version
+
+                    val usePlashiki = it.documents.firstOrNull()?.data?.get("use_plashiki") as? Boolean ?: false
+                    val plashikiUrl = it.documents.firstOrNull()?.data?.get("plashiki_url") as? String ?: Constants.APP_CLUB_URL
+
                     getDefaultSharedPreferences().putBoolean(SettingsExtras.NEW_VERSION_AVAILABLE, hasUpdate)
                     getDefaultSharedPreferences().putString(SettingsExtras.DONATION_LINK, donationLink)
+                    getDefaultSharedPreferences().putBoolean(SettingsExtras.USE_PLASHIKI_API, usePlashiki)
+                    getDefaultSharedPreferences().putString(SettingsExtras.PLASHIKI_URL, plashikiUrl)
                 }.addOnFailureListener { Crashlytics.logException(it) }
     }
 
