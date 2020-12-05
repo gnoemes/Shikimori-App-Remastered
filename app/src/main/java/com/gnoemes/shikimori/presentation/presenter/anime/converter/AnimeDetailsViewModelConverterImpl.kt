@@ -73,15 +73,18 @@ class AnimeDetailsViewModelConverterImpl @Inject constructor(
             val category = context.getString(R.string.details_release_date)
             info.add(InfoItem(description, category))
         } else if (it.status == Status.ONGOING && it.nextEpisodeDate != null) {
-            val duration = Interval(DateTime.now(), it.nextEpisodeDate).toDuration()
-            val description =
-                    when {
-                        duration.standardHours == 0L -> duration.toMinutes()
-                        duration.standardDays == 0L -> duration.toHoursAndMinutes()
-                        else -> duration.toDays()
-                    }
-            val category = String.format(context.getString(R.string.details_release_episode_format), it.episodesAired + 1)
-            info.add(InfoItem(description, category))
+            val now = DateTime.now()
+            if (now.isBefore(it.nextEpisodeDate)) {
+                val duration = Interval(now, it.nextEpisodeDate).toDuration()
+                val description =
+                        when {
+                            duration.standardHours == 0L -> duration.toMinutes()
+                            duration.standardDays == 0L -> duration.toHoursAndMinutes()
+                            else -> duration.toDays()
+                        }
+                val category = String.format(context.getString(R.string.details_release_episode_format), it.episodesAired + 1)
+                info.add(InfoItem(description, category))
+            }
         } else if (it.dateAired != null && it.dateReleased != null) {
 
             val description = if (it.dateAired.year == it.dateReleased.year) {
