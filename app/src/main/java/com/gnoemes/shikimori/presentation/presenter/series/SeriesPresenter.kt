@@ -240,7 +240,7 @@ class SeriesPresenter @Inject constructor(
         val filteredItems = videos.filter { Utils.isHostingSupports(it.videoHosting) }
 
         Observable.fromIterable(filteredItems)
-                .flatMapSingle { interactor.getVideo(it, it.videoHosting == VideoHosting.SMOTRET_ANIME) }
+                .flatMapSingle { interactor.getVideo(it, it.videoHosting is VideoHosting.SMOTRET_ANIME) }
                 .flatMap { video ->
                     Observable.just(video)
                             .flatMapIterable { it.tracks }

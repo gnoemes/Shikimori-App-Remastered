@@ -80,7 +80,7 @@ object RouteHolder {
             //TODO check settings to open in internal on external browser
             Screens.WEB -> Intent(Intent.ACTION_VIEW, Uri.parse(data as String))
             Screens.SETTINGS -> Intent(context, SettingsActivity::class.java)
-            Screens.WEB_PLAYER -> Intent(context, WebPlayerActivity::class.java).apply { putExtra(AppExtras.ARGUMENT_URL, data as String) }
+            Screens.WEB_PLAYER -> Intent(context, WebPlayerActivity::class.java).apply { putExtra(AppExtras.ARGUMENT_URL, data as? String) }
             Screens.EMBEDDED_PLAYER -> Intent(context, EmbeddedPlayerActivity::class.java).apply { putExtra(AppExtras.ARGUMENT_PLAYER_DATA, data as EmbeddedPlayerNavigationData) }
             Screens.EXTERNAL_PLAYER -> {
                 Intent(Intent.ACTION_VIEW, data?.toString()?.toUri()).apply {

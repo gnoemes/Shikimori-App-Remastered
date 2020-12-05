@@ -7,23 +7,25 @@ import com.gnoemes.shikimori.entity.series.domain.VideoHosting
 
 object Utils {
 
+    fun hostingFromString(raw: String?): VideoHosting {
+        return when (raw) {
+            "vk.com", "vk" -> VideoHosting.VK()
+            "sibnet.ru", "sibnet" -> VideoHosting.SIBNET()
+            "sovetromantica.com", "sovetromantica" -> VideoHosting.SOVET_ROMANTICA()
+            "smotretanime.ru", "smotretanime", "smotret-anime.online" -> VideoHosting.SMOTRET_ANIME()
+            else -> (raw ?: "unknown").let { hosting -> VideoHosting.UNKNOWN(hosting, hosting) }
+        }
+    }
+
     fun isHostingSupports(hosting: VideoHosting): Boolean {
-        val supports = mutableListOf(
-                VideoHosting.SIBNET,
-                VideoHosting.VK,
-                VideoHosting.SOVET_ROMANTICA,
-                VideoHosting.SMOTRET_ANIME
-        )
-
-        return supports.contains(hosting)
+        return when (hosting) {
+            is VideoHosting.SIBNET, is VideoHosting.VK, is VideoHosting.SOVET_ROMANTICA, is VideoHosting.SMOTRET_ANIME -> true
+            else -> false
+        }
     }
 
-    fun getPriorityHosting(hostings: List<VideoHosting>): VideoHosting {
-        return hostings.sortedBy { it.ordinal }.first()
-    }
-
-    fun getRequestHeadersForHosting(video: Video?): Map<String, String> = when {
-        video?.hosting == VideoHosting.SOVET_ROMANTICA -> mapOf(Pair("Referer", video.player))
+    fun getRequestHeadersForHosting(video: Video?): Map<String, String> = when (video?.hosting) {
+        is VideoHosting.SOVET_ROMANTICA, is VideoHosting.UNKNOWN -> mapOf(Pair("Referrer", video.player))
         else -> emptyMap()
     }
 

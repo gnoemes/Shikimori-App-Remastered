@@ -8,6 +8,7 @@ import com.gnoemes.shikimori.entity.series.data.VideoRequest
 import com.gnoemes.shikimori.entity.series.domain.TranslationQuality
 import com.gnoemes.shikimori.entity.series.domain.TranslationType
 import com.gnoemes.shikimori.entity.series.domain.VideoHosting
+import com.gnoemes.shikimori.utils.Utils
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import org.jsoup.nodes.Document
@@ -86,7 +87,7 @@ class DocumentParsingConverterImpl @Inject constructor(
                 ?: TranslationQuality.TV
         val type = e.getElementsByClass(VIDEO_TYPE_QUERY).text().trim().toLowerCase().let { strType -> TranslationType.values().find { it.isEqualType(strType) } }
                 ?: TranslationType.VOICE_RU
-        val hosting = e.getElementsByClass(VIDEO_HOSTING_QUERY).text().trim().let { rawHosting -> VideoHosting.values().find { it.isEqualType(rawHosting) } }
+        val hosting = e.getElementsByClass(VIDEO_HOSTING_QUERY).text().trim().let { rawHosting -> Utils.hostingFromString(rawHosting).synonymType }
         val author = e.getElementsByClass(VIDEO_AUTHOR_QUERY).text().trim()
 
         return TranslationResponse(
@@ -116,6 +117,7 @@ class DocumentParsingConverterImpl @Inject constructor(
                 .split(",")
                 .map { it.trim() }
                 .map { convertVideoHosting(it) }
+                .map { it.synonymType }
 
         return EpisodeResponse(
                 id,
@@ -127,8 +129,7 @@ class DocumentParsingConverterImpl @Inject constructor(
         )
     }
 
-    private fun convertVideoHosting(hosting: String): VideoHosting = VideoHosting.values().find { it.isEqualType(hosting) }
-            ?: VideoHosting.UNKNOWN
+    private fun convertVideoHosting(hosting: String): VideoHosting = Utils.hostingFromString(hosting)
 
     private fun convertTranslationType(type: String): TranslationType = TranslationType.values().find { it.isEqualType(type) }
             ?: TranslationType.VOICE_RU

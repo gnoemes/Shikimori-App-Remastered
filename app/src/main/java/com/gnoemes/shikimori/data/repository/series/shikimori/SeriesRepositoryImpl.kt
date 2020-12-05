@@ -37,8 +37,8 @@ class SeriesRepositoryImpl @Inject constructor(
                     .map { episodes -> episodes.filter { it.index > 0 }.sortedBy { it.index } }
                     .map { episodes ->
                         if (alternative || tokenSource.getToken() != null) episodes
-                        else episodes.filterNot {
-                            it.hostings.contains(VideoHosting.SMOTRET_ANIME)
+                        else episodes.filterNot { episode ->
+                            episode.hostings.any { it is VideoHosting.SMOTRET_ANIME }
                         }
                     }
                     .flatMap {
@@ -59,8 +59,8 @@ class SeriesRepositoryImpl @Inject constructor(
                     .map(translationConverter)
                     .map { translations ->
                         if (alternative || tokenSource.getToken() != null) translations
-                        else translations.filterNot {
-                            it.hosting == VideoHosting.SMOTRET_ANIME
+                        else translations.filterNot { translation ->
+                            translation.hosting is VideoHosting.SMOTRET_ANIME
                         }
                     }
 
@@ -76,7 +76,7 @@ class SeriesRepositoryImpl @Inject constructor(
                     payload.videoHosting.synonymType
             ))
                     .map(videoConverter)
-                    .flatMap { if (it.hosting == VideoHosting.VK) getVkFiles(it) else Single.just(it) }
+                    .flatMap { if (it.hosting is VideoHosting.VK) getVkFiles(it) else Single.just(it) }
 
     private fun getVkFiles(video: Video): Single<Video> =
             api.getVkVideoFiles(BuildConfig.VkRandomToken, vkConverter.convertId(video))

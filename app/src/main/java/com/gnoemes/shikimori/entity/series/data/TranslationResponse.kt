@@ -3,6 +3,7 @@ package com.gnoemes.shikimori.entity.series.data
 import com.gnoemes.shikimori.entity.series.domain.TranslationQuality
 import com.gnoemes.shikimori.entity.series.domain.TranslationType
 import com.gnoemes.shikimori.entity.series.domain.VideoHosting
+import com.gnoemes.shikimori.utils.Utils
 import com.google.gson.annotations.SerializedName
 
 data class TranslationResponse(
@@ -11,12 +12,12 @@ data class TranslationResponse(
         @field:SerializedName("episodeId") val episodeId: Int,
         @field:SerializedName("type") private val _type: TranslationType?,
         @field:SerializedName("quality") val quality: TranslationQuality,
-        @field:SerializedName("hosting") val _hosting: VideoHosting?,
+        @field:SerializedName("hosting") val _hosting: String?,
         @field:SerializedName("author") val author: String,
         @field:SerializedName("episodesSize") val episodesSize: Int
 ) {
     val hosting: VideoHosting
-        get() = _hosting ?: VideoHosting.UNKNOWN
+        get() = Utils.hostingFromString(_hosting)
 
     val type: TranslationType
         get() = _type ?: TranslationType.VOICE_RU
