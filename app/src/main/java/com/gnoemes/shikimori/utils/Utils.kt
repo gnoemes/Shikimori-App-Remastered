@@ -10,7 +10,7 @@ object Utils {
     fun hostingFromString(raw: String?): VideoHosting {
         return when (raw) {
             "vk.com", "vk" -> VideoHosting.VK()
-            "sibnet.ru", "sibnet" -> VideoHosting.SIBNET()
+            "video.sibnet.ru", "sibnet" -> VideoHosting.SIBNET()
             "sovetromantica.com", "sovetromantica" -> VideoHosting.SOVET_ROMANTICA()
             "smotretanime.ru", "smotretanime", "smotret-anime.online" -> VideoHosting.SMOTRET_ANIME()
             else -> (raw ?: "unknown").let { hosting -> VideoHosting.UNKNOWN(hosting, hosting) }
