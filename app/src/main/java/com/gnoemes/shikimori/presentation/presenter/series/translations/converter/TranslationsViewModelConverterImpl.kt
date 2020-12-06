@@ -101,7 +101,8 @@ class TranslationsViewModelConverterImpl @Inject constructor(
                 t.author,
                 simpleAuthor,
                 t.type,
-                t.hosting
+                t.hosting,
+                t.webPlayerUrl
         )
     }
 

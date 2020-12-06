@@ -15,7 +15,8 @@ data class TranslationResponse(
         @field:SerializedName("quality") val quality: TranslationQuality,
         @field:SerializedName("hosting") val _hosting: String?,
         @field:SerializedName("author") val author: String,
-        @field:SerializedName("episodesSize") val episodesSize: Int
+        @field:SerializedName("episodesSize") val episodesSize: Int,
+        val webPlayerUrl: String? = null
 ) {
 
     constructor(id: Long, response: PlashikiTranslationResponse, episodesSize: Int) : this(
@@ -26,7 +27,8 @@ data class TranslationResponse(
             response.quality,
             response.rawHosting,
             response.author ?: "",
-            episodesSize
+            episodesSize,
+            response.url
     )
 
     val hosting: VideoHosting

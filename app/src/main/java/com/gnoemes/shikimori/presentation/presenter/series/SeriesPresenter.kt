@@ -314,6 +314,7 @@ class SeriesPresenter @Inject constructor(
     //Others o uses urls
     private fun openVideo(payload: TranslationVideo, playerType: PlayerType) {
         if (playerType == PlayerType.EMBEDDED) openPlayer(playerType, EmbeddedPlayerNavigationData(navigationData.name, navigationData.rateId, items.firstOrNull()!!.episodesSize, payload))
+        else if (playerType == PlayerType.WEB && payload.webPlayerUrl != null) openPlayer(playerType, payload.webPlayerUrl)
         else getVideoAndExecute(payload) { selectedPlayer = playerType; showQualityChooser(it.tracks) }
     }
 

@@ -8,11 +8,12 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class TranslationVideo(
         val videoId: Long,
-        val animeId : Long,
-        val episodeIndex : Int,
+        val animeId: Long,
+        val episodeIndex: Int,
         val language: String,
         val author: String,
         val authorSimple: String,
         val type: TranslationType,
-        val videoHosting: VideoHosting
+        val videoHosting: VideoHosting,
+        val webPlayerUrl: String?
 ) : Parcelable
