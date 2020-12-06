@@ -1,5 +1,7 @@
 package com.gnoemes.shikimori.entity.series.data.plashiki
 
+import com.google.gson.annotations.SerializedName
+
 class PlashikiTranslationsResponse {
-    val result: List<PlashikiTranslationResponse>? = null
+    @SerializedName("result") val result: List<PlashikiTranslationResponse>? = null
 }
