@@ -42,7 +42,7 @@
     <string name="settings_anime_player_type_key" translatable="false">PLAYER_TYPE</string>
 
     <string name="settings_anime_player_remember_title">Выбор плеера перед просмотром</string>
-    <string name="settings_anime_player_remember_summary_on">Перед переходом к просмотру будет предложено выбрать плеер</string>
+    <string name="settings_anime_player_remember_summary_on">Если есть варианты, то будет предложено выбрать плеер</string>
     <string name="settings_anime_player_remember_summary_off">Если возможно, то будет открыт плеер по умолчанию</string>
     <string name="settings_anime_player_remember_key" translatable="false">IS_REMEMBER_PLAYER</string>
 
