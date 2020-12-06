@@ -30,6 +30,6 @@ class VkVideoConverterImpl @Inject constructor() : VkVideoConverter {
         if (files?.src360 != null) tracks.add(Track("360", files.src360))
         if (files?.src240 != null) tracks.add(Track("240", files.src240))
 
-        return Video(it.animeId, it.episodeId, it.player, it.hosting, tracks)
+        return Video(it.animeId, it.episodeId, it.player, it.hosting, tracks, null, null)
     }
 }

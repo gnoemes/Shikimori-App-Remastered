@@ -9,5 +9,7 @@ data class Video(
         val episodeId: Long,
         val player : String,
         val hosting: VideoHosting,
-        val tracks: List<Track>
+        val tracks: List<Track>,
+        val subAss : String?,
+        val subVtt : String?
 ) : Parcelable

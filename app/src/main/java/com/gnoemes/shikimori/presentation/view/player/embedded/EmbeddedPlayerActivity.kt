@@ -44,6 +44,7 @@ import com.google.android.exoplayer2.ui.PlayerControlView
 import com.google.android.exoplayer2.ui.TimeBar
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
+import com.google.android.exoplayer2.util.MimeTypes
 import kotlinx.android.synthetic.main.activity_embedded_player.*
 import kotlinx.android.synthetic.main.layout_player_bottom.*
 import kotlinx.android.synthetic.main.layout_player_controls.*
@@ -330,7 +331,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         if (exit) onBackPressed()
     }
 
-    override fun playVideo(it: Track, needReset: Boolean, headers: Map<String, String>) {
+    override fun playVideo(it: Track, subtitles: String?, needReset: Boolean, headers: Map<String, String>) {
         Log.i("PLAYER", "loading: ${it.url}")
         val factory = DefaultHttpDataSourceFactory("sap", DefaultBandwidthMeter(), Constants.LONG_TIMEOUT * 1000, Constants.LONG_TIMEOUT * 1000, true)
         factory.defaultRequestProperties.set(headers)
@@ -339,6 +340,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
                 .withFactory(factory)
                 .withFormat(VideoFormat.MP4)
                 .withVideoUrl(it.url)
+                .withSubtitles(subtitles, Format.createTextSampleFormat(null, MimeTypes.TEXT_SSA, Format.NO_VALUE, null))
                 .get()
 
         if (needReset) controller.addMediaSource(source)

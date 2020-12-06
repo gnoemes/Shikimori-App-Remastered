@@ -64,7 +64,7 @@ class EmbeddedPlayerPresenter @Inject constructor(
         track?.let {
             viewState.apply {
                 setEpisodeSubtitle(currentEpisode)
-                playVideo(it, needReset, Utils.getRequestHeadersForHosting(video))
+                playVideo(it, video.subAss, needReset, Utils.getRequestHeadersForHosting(video))
                 val resolutions = video.tracks.asSequence().filter { it.quality != "unknown" }.map { it.quality }.toList()
                 setResolutions(resolutions)
                 selectTrack(currentTrack)

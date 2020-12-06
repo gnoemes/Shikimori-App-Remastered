@@ -9,7 +9,9 @@ data class VideoResponse(
         @field:SerializedName("episodeId") val episodeId: Long,
         @field:SerializedName("player") val player: String,
         @field:SerializedName("hosting") private val _hosting: String?,
-        @field:SerializedName("tracks") val tracks: List<TrackResponse>
+        @field:SerializedName("tracks") val tracks: List<TrackResponse>,
+        @SerializedName("subtitlesUrl") val subAss : String?,
+        @SerializedName("subtitlesVttUrl") val subVtt : String?
 ) {
     val hosting: VideoHosting
         get() = Utils.hostingFromString(_hosting)

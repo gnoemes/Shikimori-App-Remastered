@@ -19,7 +19,9 @@ class VideoResponseConverterImpl @Inject constructor(
                 t.episodeId,
                 t.player,
                 t.hosting,
-                tracks
+                tracks,
+                t.subAss,
+                t.subVtt
         )
     }
 
