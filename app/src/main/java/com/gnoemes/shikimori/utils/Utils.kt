@@ -19,7 +19,7 @@ object Utils {
 
     fun isHostingSupports(hosting: VideoHosting): Boolean {
         return when (hosting) {
-            is VideoHosting.SIBNET, is VideoHosting.VK, is VideoHosting.SOVET_ROMANTICA, is VideoHosting.SMOTRET_ANIME -> true
+            is VideoHosting.SIBNET, is VideoHosting.VK, is VideoHosting.SMOTRET_ANIME -> true
             else -> false
         }
     }
