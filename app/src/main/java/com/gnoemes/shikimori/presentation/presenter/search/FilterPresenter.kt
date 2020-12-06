@@ -63,6 +63,7 @@ open class FilterPresenter @Inject constructor(
 
     private fun setSortFilters(it: List<FilterItem>) {
         val selectedItem = it.find { it.value == appliedFilters[SearchConstants.ORDER]?.firstOrNull()?.value } ?: it.first()
+        clearAndAddToSelected(SearchConstants.ORDER, selectedItem)
         viewState.setSortFilterText(selectedItem.localizedText!!)
     }
 
