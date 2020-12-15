@@ -28,7 +28,7 @@ class WebPlayerActivity : BaseThemedActivity() {
     private lateinit var webView: WebView
 
     companion object {
-        private val ANIME_365_REGEX = "https?://(?:www\\.)?smotret-anime\\.online/".toRegex()
+        private val ANIME_365_REGEX = "smotret-anime\\.online".toRegex()
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -70,7 +70,7 @@ class WebPlayerActivity : BaseThemedActivity() {
 
                 val useIFrame = Utils.checkNeedIFrame(url)
 
-                if (url.matches(ANIME_365_REGEX) && !token.isNullOrBlank()) webView.loadUrl("$url?access_token=$token")
+                if (url.contains(ANIME_365_REGEX) && !token.isNullOrBlank()) webView.loadUrl("$url?access_token=$token")
                 else if (useIFrame) {
                     val iframe = "<html><body style='margin:0;padding:0;'><iframe src='$url' width='100%' height='100%'  frameborder='0' allowfullscreen></iframe></body></html>"
                     webView.loadData(iframe, "text/html", "utf-8")
