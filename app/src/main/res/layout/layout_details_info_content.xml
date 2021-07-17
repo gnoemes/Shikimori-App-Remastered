@@ -16,6 +16,7 @@
         android:layout_marginRight="16dp"
         android:gravity="center"
         android:textColor="?attr/colorOnPrimarySecondary"
+        android:textIsSelectable="true"
         android:textSize="10sp"
         tools:text="One Punch Man" />
 
