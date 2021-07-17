@@ -22,8 +22,8 @@ class SettingsFragment : BaseSettingsFragment() {
 
         (preference("info_group") as? AppGroupPreference)?.apply {
             mailClickListener = View.OnClickListener {
-                val sendMail = Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "gnoemes@gmail.com", null))
-                sendMail.putExtra(Intent.EXTRA_EMAIL, arrayOf("gnoemes@gmail.com"))
+                val sendMail = Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "shimori.app@gmail.com", null))
+                sendMail.putExtra(Intent.EXTRA_EMAIL, arrayOf("shimori.app@gmail.com"))
                 startActivity(Intent.createChooser(sendMail, null))
             }
             trelloClickListener = View.OnClickListener { openWeb(Constants.ROAD_MAP_URL) }
