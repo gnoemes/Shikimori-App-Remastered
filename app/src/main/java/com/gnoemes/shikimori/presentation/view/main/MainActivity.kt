@@ -100,13 +100,11 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView, RouterPr
                     val version = it.documents.firstOrNull()?.data?.get("lastVersion")
                     val hasUpdate = BuildConfig.VERSION_NAME.replace(Regex("[^0-9.]"), "") != version
 
-                    val usePlashiki = it.documents.firstOrNull()?.data?.get("use_plashiki") as? Boolean ?: false
-                    val plashikiUrl = it.documents.firstOrNull()?.data?.get("plashiki_url") as? String ?: Constants.PLASHIKI_URL
+                    val shimoriUrl = it.documents.firstOrNull()?.data?.get("shimori_url") as? String ?: Constants.SHIMORI_URL
 
                     getDefaultSharedPreferences().putBoolean(SettingsExtras.NEW_VERSION_AVAILABLE, hasUpdate)
                     getDefaultSharedPreferences().putString(SettingsExtras.DONATION_LINK, donationLink)
-                    getDefaultSharedPreferences().putBoolean(SettingsExtras.USE_PLASHIKI_API, usePlashiki)
-                    getDefaultSharedPreferences().putString(SettingsExtras.PLASHIKI_URL, plashikiUrl)
+                    getDefaultSharedPreferences().putString(SettingsExtras.SHIMORI_URL, shimoriUrl)
                 }.addOnFailureListener { Crashlytics.logException(it) }
     }
 

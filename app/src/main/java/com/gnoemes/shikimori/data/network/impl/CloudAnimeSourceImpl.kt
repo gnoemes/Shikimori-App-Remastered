@@ -5,16 +5,17 @@ import com.gnoemes.shikimori.data.network.VideoApi
 import com.gnoemes.shikimori.entity.series.data.EpisodeResponse
 import com.gnoemes.shikimori.entity.series.data.TranslationResponse
 import com.gnoemes.shikimori.entity.series.data.VideoResponse
+import com.gnoemes.shikimori.entity.series.domain.TranslationType
 import io.reactivex.Single
 import javax.inject.Inject
 
 class CloudAnimeSourceImpl @Inject constructor(private val api: VideoApi) : AnimeSource {
 
-    override fun getEpisodes(id: Long): Single<List<EpisodeResponse>> = api.getEpisodes(id)
+    override fun getEpisodes(id: Long, name: String): Single<List<EpisodeResponse>> = api.getEpisodes(id)
 
     override fun getEpisodesAlternative(id: Long): Single<List<EpisodeResponse>> = api.getEpisodesAlternative(id)
 
-    override fun getTranslations(animeId: Long, episodeId: Long, type: String): Single<List<TranslationResponse>> = api.getTranslations(animeId, episodeId, type)
+    override fun getTranslations(animeId: Long, name: String, episodeId: Long, type: TranslationType): Single<List<TranslationResponse>> = api.getTranslations(animeId, episodeId, type.type!!)
 
     override fun getTranslationsAlternative(animeId: Long, episodeId: Long, type: String): Single<List<TranslationResponse>> = api.getTranslationsAlternative(animeId, episodeId, type)
 

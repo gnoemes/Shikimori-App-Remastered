@@ -3,15 +3,16 @@ package com.gnoemes.shikimori.data.network
 import com.gnoemes.shikimori.entity.series.data.EpisodeResponse
 import com.gnoemes.shikimori.entity.series.data.TranslationResponse
 import com.gnoemes.shikimori.entity.series.data.VideoResponse
+import com.gnoemes.shikimori.entity.series.domain.TranslationType
 import io.reactivex.Single
 
 interface AnimeSource {
 
-    fun getEpisodes(id: Long): Single<List<EpisodeResponse>>
+    fun getEpisodes(id: Long, name : String): Single<List<EpisodeResponse>>
 
     fun getEpisodesAlternative(id: Long): Single<List<EpisodeResponse>>
 
-    fun getTranslations(animeId: Long, episodeId: Long, type: String): Single<List<TranslationResponse>>
+    fun getTranslations(animeId: Long, name: String, episodeId: Long, type: TranslationType): Single<List<TranslationResponse>>
 
     fun getTranslationsAlternative(animeId: Long, episodeId: Long, type: String): Single<List<TranslationResponse>>
 

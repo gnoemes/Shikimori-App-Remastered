@@ -9,6 +9,7 @@ data class SeriesNavigationData(
         val animeId: Long,
         val image: Image,
         val name: String,
+        val nameEng : String,
         val rateId: Long?,
         val episodesAired : Int,
         val episode : Int?

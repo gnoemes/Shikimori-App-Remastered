@@ -168,6 +168,7 @@ open class AnimePresenter @Inject constructor(
         val data = SeriesNavigationData(id,
                 currentAnime.image,
                 currentAnime.nameRu ?: currentAnime.name,
+                currentAnime.name,
                 currentAnime.userRate?.id,
                 if (currentAnime.status == Status.RELEASED) currentAnime.episodes else currentAnime.episodesAired,
                 null)

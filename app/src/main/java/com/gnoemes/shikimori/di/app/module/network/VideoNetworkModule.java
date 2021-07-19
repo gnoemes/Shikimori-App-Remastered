@@ -3,7 +3,7 @@ package com.gnoemes.shikimori.di.app.module.network;
 import android.content.Context;
 
 import com.gnoemes.shikimori.BuildConfig;
-import com.gnoemes.shikimori.di.app.annotations.PlashikiVideoApi;
+import com.gnoemes.shikimori.di.app.annotations.ShimoriVideoApi;
 import com.gnoemes.shikimori.di.app.annotations.VideoApi;
 import com.gnoemes.shikimori.entity.app.domain.Constants;
 import com.gnoemes.shikimori.entity.app.domain.SettingsExtras;
@@ -56,8 +56,8 @@ public interface VideoNetworkModule {
 
     @Provides
     @Singleton
-    @PlashikiVideoApi
-    static OkHttpClient providePlashikiOkHttpClient(HttpLoggingInterceptor interceptor) {
+    @ShimoriVideoApi
+    static OkHttpClient provideShimoriOkHttpClient(HttpLoggingInterceptor interceptor) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
                 .addInterceptor(interceptor);
         return NetworkExtensionsKt.enableTLS12(builder)
@@ -68,8 +68,8 @@ public interface VideoNetworkModule {
 
     @Provides
     @Singleton
-    @PlashikiVideoApi
-    static Retrofit.Builder providePlashikiRetrofitBuilder(@PlashikiVideoApi OkHttpClient client) {
+    @ShimoriVideoApi
+    static Retrofit.Builder providePlashikiRetrofitBuilder(@ShimoriVideoApi OkHttpClient client) {
         return new Retrofit.Builder()
                 .client(client)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -78,10 +78,10 @@ public interface VideoNetworkModule {
 
     @Provides
     @Singleton
-    @PlashikiVideoApi
-    static Retrofit providePlashikiRetrofit(Context context,  @PlashikiVideoApi Retrofit.Builder builder) {
-        String url = PreferenceKt.getDefaultSharedPreferences(context).getString(SettingsExtras.PLASHIKI_URL, Constants.PLASHIKI_URL);
-        if (url == null) url = Constants.PLASHIKI_URL;
+    @ShimoriVideoApi
+    static Retrofit providePlashikiRetrofit(Context context,  @ShimoriVideoApi Retrofit.Builder builder) {
+        String url = PreferenceKt.getDefaultSharedPreferences(context).getString(SettingsExtras.SHIMORI_URL, Constants.SHIMORI_URL);
+        if (url == null) url = Constants.SHIMORI_URL;
         return builder.baseUrl(url).build();
     }
 }

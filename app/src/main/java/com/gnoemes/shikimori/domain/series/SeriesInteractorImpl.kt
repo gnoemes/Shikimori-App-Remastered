@@ -17,13 +17,13 @@ class SeriesInteractorImpl @Inject constructor(
         private val progressRepository: AnimeProgressRepository
 ) : SeriesInteractor {
 
-    override fun getEpisodes(id: Long, alternative: Boolean): Single<List<Episode>> =
-            repository.getEpisodes(id, alternative)
+    override fun getEpisodes(id: Long, name: String, alternative: Boolean): Single<List<Episode>> =
+            repository.getEpisodes(id, name, alternative)
                     .map { list -> list.sortedBy { it.index } }
                     .applyErrorHandlerAndSchedulers()
 
-    override fun getTranslations(type: TranslationType, animeId: Long, episodeId: Long, alternative: Boolean): Single<List<Translation>> =
-            repository.getTranslations(type, animeId, episodeId, alternative)
+    override fun getTranslations(type: TranslationType, animeId: Long, episodeId: Long, name : String, alternative: Boolean): Single<List<Translation>> =
+            repository.getTranslations(type, animeId, episodeId, name, alternative)
                     .applyErrorHandlerAndSchedulers()
 
     override fun getTranslationSettings(animeId: Long): Single<TranslationSetting> =

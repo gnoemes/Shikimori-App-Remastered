@@ -32,8 +32,8 @@ class SeriesRepositoryImpl @Inject constructor(
         private val vkConverter: VkVideoConverter
 ) : SeriesRepository {
 
-    override fun getEpisodes(id: Long, alternative: Boolean): Single<List<Episode>> =
-            (if (alternative) source.getEpisodesAlternative(id) else source.getEpisodes(id))
+    override fun getEpisodes(id: Long, name: String, alternative: Boolean): Single<List<Episode>> =
+            (if (alternative) source.getEpisodesAlternative(id) else source.getEpisodes(id, name))
                     .map { episodes -> episodes.filter { it.index > 0 }.sortedBy { it.index } }
                     .map { episodes ->
                         if (alternative || tokenSource.getToken() != null) episodes
@@ -54,8 +54,8 @@ class SeriesRepositoryImpl @Inject constructor(
                                 .flatMap { syncEpisodes(id, it) }
                     }
 
-    override fun getTranslations(type: TranslationType, animeId: Long, episodeId: Long, alternative: Boolean): Single<List<Translation>> =
-            (if (alternative) source.getTranslationsAlternative(animeId, episodeId, type.type!!) else source.getTranslations(animeId, episodeId, type.type!!))
+    override fun getTranslations(type: TranslationType, animeId: Long, episodeId: Long, name : String, alternative: Boolean): Single<List<Translation>> =
+            (if (alternative) source.getTranslationsAlternative(animeId, episodeId, type.type!!) else source.getTranslations(animeId, name, episodeId, type))
                     .map(translationConverter)
                     .map { translations ->
                         if (alternative || tokenSource.getToken() != null) translations

@@ -1,7 +1,5 @@
 package com.gnoemes.shikimori.entity.series.data
 
-import com.gnoemes.shikimori.entity.series.data.plashiki.PlashikiTranslationResponse
-import com.gnoemes.shikimori.entity.series.data.plashiki.PlashikiTranslationsResponse
 import com.gnoemes.shikimori.entity.series.domain.TranslationType
 import com.gnoemes.shikimori.entity.series.domain.VideoHosting
 import com.gnoemes.shikimori.utils.Utils
@@ -17,15 +15,5 @@ data class EpisodeResponse(
 ) {
     val hostings: List<VideoHosting>
         get() = _hostings.map { Utils.hostingFromString(it) }
-
-    constructor(response: PlashikiTranslationResponse) : this(
-            response.episode.toLong(),
-            response.episode,
-            response.animeId,
-            listOf<TranslationType>(),
-            "",
-            listOf()
-
-    )
 
 }
