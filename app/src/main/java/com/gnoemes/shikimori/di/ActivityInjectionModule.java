@@ -7,6 +7,7 @@ import com.gnoemes.shikimori.di.player.PlayerModule;
 import com.gnoemes.shikimori.presentation.view.auth.AuthActivity;
 import com.gnoemes.shikimori.presentation.view.main.MainActivity;
 import com.gnoemes.shikimori.presentation.view.player.embedded.EmbeddedPlayerActivity;
+import com.gnoemes.shikimori.presentation.view.player.web.WebPlayerActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -25,4 +26,8 @@ public interface ActivityInjectionModule {
     @ActivityScope
     @ContributesAndroidInjector(modules = PlayerModule.class)
     EmbeddedPlayerActivity embeddedPlayerActivity();
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    WebPlayerActivity webPlayerActivity();
 }

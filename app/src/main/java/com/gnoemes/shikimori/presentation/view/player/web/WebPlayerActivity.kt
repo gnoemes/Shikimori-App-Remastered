@@ -3,6 +3,7 @@ package com.gnoemes.shikimori.presentation.view.player.web
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -14,18 +15,24 @@ import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.data.local.preference.PlayerSettingsSource
 import com.gnoemes.shikimori.entity.app.domain.AppExtras
 import com.gnoemes.shikimori.entity.app.domain.SettingsExtras
 import com.gnoemes.shikimori.presentation.view.base.activity.BaseThemedActivity
 import com.gnoemes.shikimori.utils.Utils
 import com.gnoemes.shikimori.utils.widgets.VideoWebChromeClient
+import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_web_player.*
 import java.util.regex.Pattern
+import javax.inject.Inject
 
 class WebPlayerActivity : BaseThemedActivity() {
 
     private lateinit var chromeClient: VideoWebChromeClient
     private lateinit var webView: WebView
+
+    @Inject
+    lateinit var settingsSource: PlayerSettingsSource
 
     companion object {
         private val ANIME_365_REGEX = "smotret-anime\\.online".toRegex()
@@ -33,11 +40,14 @@ class WebPlayerActivity : BaseThemedActivity() {
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_web_player)
 
         showNoAdsMessage()
+
+        if (settingsSource.isOpenLandscape) requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 
         webView = WebView(applicationContext)
         frame.addView(webView)
