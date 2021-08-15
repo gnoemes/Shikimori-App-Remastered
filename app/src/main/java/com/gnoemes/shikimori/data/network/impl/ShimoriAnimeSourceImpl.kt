@@ -33,13 +33,9 @@ class ShimoriAnimeSourceImpl @Inject constructor(
     }
 
     override fun getTranslations(animeId: Long, name: String, episodeId: Long, type: TranslationType): Single<List<TranslationResponse>> {
-        val type = when (type) {
-            TranslationType.VOICE_RU -> "dub"
-            TranslationType.SUB_RU -> "subs"
-            else -> "raw"
-        }
+        val shimoriType = getShimoriType(type)
 
-        return shimoriApi.getTranslations(animeId, name, episodeId.toInt(), type)
+        return shimoriApi.getTranslations(animeId, name, episodeId.toInt(), shimoriType)
                 .map { list ->
                     list.map { response ->
                         val id = Random.nextLong()
@@ -48,7 +44,11 @@ class ShimoriAnimeSourceImpl @Inject constructor(
                 }
     }
 
-    override fun getVideo(animeId: Long, episodeId: Int, videoId: String, language: String, type: String, author: String, hosting: String): Single<VideoResponse> = api.getVideo(animeId, episodeId, videoId, language, type, author, hosting)
+    override fun getVideo(animeId: Long, episodeId: Int, videoId: String, language: String, type: TranslationType, author: String, hosting: String, url: String?): Single<VideoResponse> {
+        val shimoriType = getShimoriType(type)
+
+        return shimoriApi.getVideo(animeId, episodeId, shimoriType, author, hosting, videoId.toLongOrNull(), url)
+    }
 
     override fun getEpisodesAlternative(id: Long): Single<List<EpisodeResponse>> = api.getEpisodesAlternative(id)
 
@@ -56,4 +56,11 @@ class ShimoriAnimeSourceImpl @Inject constructor(
 
     override fun getVideoAlternative(translationId: Long, animeId: Long, episodeIndex: Long, token: String?): Single<VideoResponse> = api.getVideoAlternative(translationId, token)
             .map { it.copy(animeId = animeId, episodeId = episodeIndex) }
+
+
+    private fun getShimoriType(type: TranslationType) = when (type) {
+        TranslationType.VOICE_RU -> "dub"
+        TranslationType.SUB_RU -> "subs"
+        else -> "raw"
+    }
 }

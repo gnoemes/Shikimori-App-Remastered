@@ -10,7 +10,7 @@ object Utils {
     fun hostingFromString(raw: String?): VideoHosting {
         return when (raw) {
             "vk.com", "vk" -> VideoHosting.VK()
-            "video.sibnet.ru", "sibnet" -> VideoHosting.SIBNET()
+            "video.sibnet.ru", "sibnet", "sibnet.ru" -> VideoHosting.SIBNET()
             "sovetromantica.com", "sovetromantica" -> VideoHosting.SOVET_ROMANTICA()
             "smotretanime.ru", "smotretanime", "smotret-anime.online" -> VideoHosting.SMOTRET_ANIME()
             else -> (raw ?: "unknown").let { hosting -> VideoHosting.UNKNOWN(hosting, hosting) }
@@ -19,13 +19,14 @@ object Utils {
 
     fun isHostingSupports(hosting: VideoHosting): Boolean {
         return when (hosting) {
-            is VideoHosting.SIBNET, is VideoHosting.VK, is VideoHosting.SMOTRET_ANIME -> true
+            is VideoHosting.SIBNET, is VideoHosting.VK, is VideoHosting.SMOTRET_ANIME, is VideoHosting.SOVET_ROMANTICA -> true
             else -> false
         }
     }
 
     fun getRequestHeadersForHosting(video: Video?): Map<String, String> = when (video?.hosting) {
         is VideoHosting.SOVET_ROMANTICA, is VideoHosting.UNKNOWN -> mapOf(Pair("Referrer", video.player))
+        is VideoHosting.SIBNET -> mapOf(Pair("Referer", video.player))
         else -> emptyMap()
     }
 

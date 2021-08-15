@@ -1,5 +1,6 @@
 package com.gnoemes.shikimori.data.network
 
+import com.gnoemes.shikimori.entity.series.data.VideoResponse
 import com.gnoemes.shikimori.entity.series.data.shimori.ShimoriTranslationResponse
 import io.reactivex.Single
 import retrofit2.http.GET
@@ -21,5 +22,16 @@ interface ShimoriVideoApi {
             @Query("kind") translationType: String?
     ): Single<List<ShimoriTranslationResponse>>
 
+
+    @GET("/api/anime/video")
+    fun getVideo(
+            @Query("id") malId: Long,
+            @Query("episode") episode: Int,
+            @Query("kind") translationType: String?,
+            @Query("author") author: String?,
+            @Query("hosting") hosting : String,
+            @Query("videoId") videoId : Long?,
+            @Query("url") url : String?
+    ) : Single<VideoResponse>
 
 }

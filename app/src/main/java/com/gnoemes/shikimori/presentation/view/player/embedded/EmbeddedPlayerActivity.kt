@@ -338,7 +338,10 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
 
         val source = MediaSourceHelper
                 .withFactory(factory)
-                .withFormat(VideoFormat.MP4)
+                .apply {
+                    if (it.url.contains("m3u8")) withFormat(VideoFormat.HLS)
+                    else withFormat(VideoFormat.MP4)
+                }
                 .withVideoUrl(it.url)
                 .withSubtitles(subtitles, Format.createTextSampleFormat(null, MimeTypes.TEXT_SSA, Format.NO_VALUE, null))
                 .get()
