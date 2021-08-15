@@ -19,7 +19,7 @@ class CloudAnimeSourceImpl @Inject constructor(private val api: VideoApi) : Anim
 
     override fun getTranslationsAlternative(animeId: Long, episodeId: Long, type: String): Single<List<TranslationResponse>> = api.getTranslationsAlternative(animeId, episodeId, type)
 
-    override fun getVideo(animeId: Long, episodeId: Int, videoId: String, language: String, type: String, author: String, hosting: String): Single<VideoResponse> = api.getVideo(animeId, episodeId, videoId, language, type, author, hosting)
+    override fun getVideo(animeId: Long, episodeId: Int, videoId: String, language: String, type: TranslationType, author: String, hosting: String, url : String?): Single<VideoResponse> = api.getVideo(animeId, episodeId, videoId, language, type.type!!, author, hosting)
 
     override fun getVideoAlternative(translationId: Long, animeId: Long, episodeIndex: Long, token : String?): Single<VideoResponse> = api.getVideoAlternative(translationId, token)
             .map { it.copy(animeId = animeId, episodeId = episodeIndex) }

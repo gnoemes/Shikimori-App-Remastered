@@ -71,9 +71,10 @@ class SeriesRepositoryImpl @Inject constructor(
                     payload.episodeIndex,
                     if (payload.videoId == Constants.NO_ID) "" else payload.videoId.toString(),
                     payload.language,
-                    payload.type.type!!,
+                    payload.type,
                     payload.authorSimple,
-                    payload.videoHosting.synonymType
+                    payload.videoHosting.synonymType,
+                    payload.webPlayerUrl
             ))
                     .map(videoConverter)
                     .flatMap { if (it.hosting is VideoHosting.VK) getVkFiles(it) else Single.just(it) }
