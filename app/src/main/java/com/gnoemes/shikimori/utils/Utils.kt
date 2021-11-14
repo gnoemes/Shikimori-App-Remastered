@@ -13,13 +13,14 @@ object Utils {
             "video.sibnet.ru", "sibnet", "sibnet.ru" -> VideoHosting.SIBNET()
             "sovetromantica.com", "sovetromantica" -> VideoHosting.SOVET_ROMANTICA()
             "smotretanime.ru", "smotretanime", "smotret-anime.online" -> VideoHosting.SMOTRET_ANIME()
+            "aniqit.com" -> VideoHosting.KODIK()
             else -> (raw ?: "unknown").let { hosting -> VideoHosting.UNKNOWN(hosting, hosting) }
         }
     }
 
     fun isHostingSupports(hosting: VideoHosting): Boolean {
         return when (hosting) {
-            is VideoHosting.SIBNET, is VideoHosting.VK, is VideoHosting.SMOTRET_ANIME, is VideoHosting.SOVET_ROMANTICA -> true
+            is VideoHosting.SIBNET, is VideoHosting.VK, is VideoHosting.SMOTRET_ANIME, is VideoHosting.SOVET_ROMANTICA, is VideoHosting.KODIK -> true
             else -> false
         }
     }
