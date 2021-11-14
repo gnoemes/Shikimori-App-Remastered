@@ -227,7 +227,11 @@ class SeriesPresenter @Inject constructor(
     }
 
     fun onShare(url: String) {
-        val text = shareResourceProvider.getEpisodeShareFormattedMessage(navigationData.name, episode!!, url)
+        val videoUrl = if (url.contains("m3u8")) {
+            url.replaceAfterLast("mp4", "")
+        } else url
+
+        val text = shareResourceProvider.getEpisodeShareFormattedMessage(navigationData.name, episode!!, videoUrl)
         router.navigateTo(Screens.SHARE, text)
     }
 
@@ -354,7 +358,9 @@ class SeriesPresenter @Inject constructor(
     }
 
     fun onTrackForDownloadSelected(url: String, video: Video) {
-        selectedDownloadUrl = url
+        selectedDownloadUrl = if (video.hosting is VideoHosting.KODIK) {
+            url.replaceAfterLast("mp4", "")
+        } else url
         selectedDownloadVideo = video
         viewState.checkPermissions()
     }
