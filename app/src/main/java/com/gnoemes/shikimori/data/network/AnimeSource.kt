@@ -10,7 +10,7 @@ interface AnimeSource {
 
     fun getEpisodes(id: Long, name : String): Single<List<EpisodeResponse>>
 
-    fun getEpisodesAlternative(id: Long): Single<List<EpisodeResponse>>
+    fun getEpisodesAlternative(id: Long, name : String): Single<List<EpisodeResponse>>
 
     fun getTranslations(animeId: Long, name: String, episodeId: Long, type: TranslationType): Single<List<TranslationResponse>>
 

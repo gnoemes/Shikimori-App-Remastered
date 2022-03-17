@@ -33,7 +33,7 @@ class SeriesRepositoryImpl @Inject constructor(
 ) : SeriesRepository {
 
     override fun getEpisodes(id: Long, name: String, alternative: Boolean): Single<List<Episode>> =
-            (if (alternative) source.getEpisodesAlternative(id) else source.getEpisodes(id, name))
+            (if (alternative) source.getEpisodesAlternative(id, name) else source.getEpisodes(id, name))
                     .map { episodes -> episodes.filter { it.index > 0 }.sortedBy { it.index } }
                     .map { episodes ->
                         if (alternative || tokenSource.getToken() != null) episodes

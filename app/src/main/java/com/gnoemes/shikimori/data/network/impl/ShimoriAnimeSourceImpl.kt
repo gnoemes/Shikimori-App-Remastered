@@ -50,7 +50,20 @@ class ShimoriAnimeSourceImpl @Inject constructor(
         return shimoriApi.getVideo(animeId, episodeId, shimoriType, author, hosting, videoId.toLongOrNull(), url)
     }
 
-    override fun getEpisodesAlternative(id: Long): Single<List<EpisodeResponse>> = api.getEpisodesAlternative(id)
+    override fun getEpisodesAlternative(id: Long, name: String): Single<List<EpisodeResponse>> =
+            shimoriApi.getSeries(id, name)
+                    .map { response ->
+                        response.map {
+                            EpisodeResponse(
+                                    it.id,
+                                    it.index.toInt(),
+                                    it.animeId,
+                                    emptyList(),
+                                    "",
+                                    emptyList()
+                            )
+                        }
+                    }
 
     override fun getTranslationsAlternative(animeId: Long, episodeId: Long, type: String): Single<List<TranslationResponse>> = api.getTranslationsAlternative(animeId, episodeId, type)
 
