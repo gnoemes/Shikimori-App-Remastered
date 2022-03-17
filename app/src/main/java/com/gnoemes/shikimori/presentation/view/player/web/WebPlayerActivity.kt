@@ -35,7 +35,7 @@ class WebPlayerActivity : BaseThemedActivity() {
     lateinit var settingsSource: PlayerSettingsSource
 
     companion object {
-        private val ANIME_365_REGEX = "smotret-anime\\.online".toRegex()
+        private val ANIME_365_REGEX = "smotret-anime\\.com".toRegex()
     }
 
     @SuppressLint("SetJavaScriptEnabled")

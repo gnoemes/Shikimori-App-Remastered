@@ -14,7 +14,7 @@ interface AnimeSource {
 
     fun getTranslations(animeId: Long, name: String, episodeId: Long, type: TranslationType): Single<List<TranslationResponse>>
 
-    fun getTranslationsAlternative(animeId: Long, episodeId: Long, type: String): Single<List<TranslationResponse>>
+    fun getTranslationsAlternative(animeId: Long, name: String, episodeId: Long, type: TranslationType): Single<List<TranslationResponse>>
 
     fun getVideo(animeId: Long, episodeId: Int, videoId: String, language: String, type: TranslationType, author: String, hosting: String, url : String?): Single<VideoResponse>
 

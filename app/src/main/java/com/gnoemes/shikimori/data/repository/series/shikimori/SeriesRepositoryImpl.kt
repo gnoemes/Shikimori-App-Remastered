@@ -55,7 +55,7 @@ class SeriesRepositoryImpl @Inject constructor(
                     }
 
     override fun getTranslations(type: TranslationType, animeId: Long, episodeId: Long, name : String, alternative: Boolean): Single<List<Translation>> =
-            (if (alternative) source.getTranslationsAlternative(animeId, episodeId, type.type!!) else source.getTranslations(animeId, name, episodeId, type))
+            (if (alternative) source.getTranslationsAlternative(animeId, name, episodeId, type) else source.getTranslations(animeId, name, episodeId, type))
                     .map(translationConverter)
                     .map { translations ->
                         if (alternative || tokenSource.getToken() != null) translations

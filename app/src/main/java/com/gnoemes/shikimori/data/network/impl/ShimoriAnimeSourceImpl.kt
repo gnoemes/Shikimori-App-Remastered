@@ -35,7 +35,7 @@ class ShimoriAnimeSourceImpl @Inject constructor(
     override fun getTranslations(animeId: Long, name: String, episodeId: Long, type: TranslationType): Single<List<TranslationResponse>> {
         val shimoriType = getShimoriType(type)
 
-        return shimoriApi.getTranslations(animeId, name, episodeId.toInt(), shimoriType)
+        return shimoriApi.getTranslations(animeId, name, episodeId.toInt(), 1, shimoriType)
                 .map { list ->
                     list.map { response ->
                         val id = Random.nextLong()
@@ -47,7 +47,7 @@ class ShimoriAnimeSourceImpl @Inject constructor(
     override fun getVideo(animeId: Long, episodeId: Int, videoId: String, language: String, type: TranslationType, author: String, hosting: String, url: String?): Single<VideoResponse> {
         val shimoriType = getShimoriType(type)
 
-        return shimoriApi.getVideo(animeId, episodeId, shimoriType, author, hosting, videoId.toLongOrNull(), url)
+        return shimoriApi.getVideo(animeId, episodeId, shimoriType, author, hosting, 1, videoId.toLongOrNull(), url, null)
     }
 
     override fun getEpisodesAlternative(id: Long, name: String): Single<List<EpisodeResponse>> =
@@ -65,10 +65,31 @@ class ShimoriAnimeSourceImpl @Inject constructor(
                         }
                     }
 
-    override fun getTranslationsAlternative(animeId: Long, episodeId: Long, type: String): Single<List<TranslationResponse>> = api.getTranslationsAlternative(animeId, episodeId, type)
+    override fun getTranslationsAlternative(animeId: Long, name: String, episodeId: Long, type: TranslationType): Single<List<TranslationResponse>> {
+        val shimoriType = getShimoriType(type)
 
-    override fun getVideoAlternative(translationId: Long, animeId: Long, episodeIndex: Long, token: String?): Single<VideoResponse> = api.getVideoAlternative(translationId, token)
-            .map { it.copy(animeId = animeId, episodeId = episodeIndex) }
+        return shimoriApi.getTranslations(animeId, name, episodeId.toInt(), 2, shimoriType)
+                .map { list ->
+                    list.map { response ->
+                        TranslationResponse(response.id, response)
+                    }
+                }
+    }
+
+
+    override fun getVideoAlternative(translationId: Long, animeId: Long, episodeIndex: Long, token: String?): Single<VideoResponse> {
+        return shimoriApi.getVideo(
+                animeId,
+                episodeIndex.toInt(),
+                "dub",
+                "none",
+                "none",
+                2,
+                translationId,
+                null,
+                accessToken = token
+        )
+    }
 
 
     private fun getShimoriType(type: TranslationType) = when (type) {
@@ -77,3 +98,4 @@ class ShimoriAnimeSourceImpl @Inject constructor(
         else -> "raw"
     }
 }
+

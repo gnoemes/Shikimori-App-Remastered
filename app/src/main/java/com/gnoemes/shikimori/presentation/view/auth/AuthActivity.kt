@@ -59,7 +59,7 @@ class AuthActivity : BaseActivity<AuthPresenter, AuthView>(), AuthView {
         private const val SHIKIMORI_SIGN_UP_URL = "https://shikimori.one/users/sign_up"
         private const val SHIKIMORI_SIGN_IN_URL = "https://shikimori.one/users/sign_in"
 
-        private const val ANIME_365_SIGN_IN = "https://smotret-anime.online/users/login"
+        private const val ANIME_365_SIGN_IN = "https://smotret-anime.com/users/login"
 
         fun shikimoriAuth(context: Context?, type: AuthType) = Intent(context, AuthActivity::class.java)
                 .apply { putExtra(AppExtras.ARGUMENT_AUTH_TYPE, type) }
@@ -166,13 +166,13 @@ class AuthActivity : BaseActivity<AuthPresenter, AuthView>(), AuthView {
 
         //TODO remove
         private var finishCounter = 0
-        private val TOKEN_URL = "https://smotret-anime.online/api/accessToken?app=sapp"
+        private val TOKEN_URL = "https://smotret-anime.com/api/accessToken?app=sapp"
 
 
         override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
             super.onPageStarted(view, url, favicon)
             progressBar.visible()
-            if (url == "https://smotret-anime.online/" || url == "https://smotret-anime.online/users/profile") {
+            if (url == "https://smotret-anime.com/" || url == "https://smotret-anime.com/users/profile") {
                 view?.loadUrl(TOKEN_URL)
             }
         }
@@ -185,7 +185,7 @@ class AuthActivity : BaseActivity<AuthPresenter, AuthView>(), AuthView {
             if (finishCounter > 1) {
                 finishCounter = 0
                 view?.postDelayed({
-                    view.loadUrl("https://smotret-anime.online/")
+                    view.loadUrl("https://smotret-anime.com/")
                 }, 750)
             }
 

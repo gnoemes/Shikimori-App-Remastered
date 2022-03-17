@@ -26,6 +26,7 @@ interface ShimoriVideoApi {
             @Query("id") malId: Long,
             @Query("name") name: String,
             @Query("episode") episode: Int,
+            @Query("hostingId") hostingId : Int,
             @Query("kind") translationType: String?
     ): Single<List<ShimoriTranslationResponse>>
 
@@ -37,8 +38,10 @@ interface ShimoriVideoApi {
             @Query("kind") translationType: String?,
             @Query("author") author: String?,
             @Query("hosting") hosting : String,
+            @Query("hostingId") hostingId : Int,
             @Query("videoId") videoId : Long?,
-            @Query("url") url : String?
+            @Query("url") url : String?,
+            @Query("accessToken") accessToken : String?
     ) : Single<VideoResponse>
 
 }
