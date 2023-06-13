@@ -30,7 +30,9 @@ class PersonDetailsResponseConverterImpl @Inject constructor(
             imageConverter.convertResponse(it.image),
             it.url.appendHostIfNeed(),
             it.jobTitle,
-            DateTime(it.birthDay.year.toInt(), it.birthDay.month.toInt(), it.birthDay.day.toInt(), 0, 0),
+            if (it.birthDay.year != null && it.birthDay.month != null && it.birthDay.day != null)
+                DateTime(it.birthDay.year.toInt(), it.birthDay.month.toInt(), it.birthDay.day.toInt(), 0, 0)
+            else null,
             convertWorks(it.works),
             convertCharacters(it.roles),
             it.rolesGrouped,
