@@ -2,7 +2,6 @@ package com.gnoemes.shikimori.entity.roles.data
 
 import com.gnoemes.shikimori.entity.common.data.ImageResponse
 import com.google.gson.annotations.SerializedName
-import org.joda.time.DateTime
 
 data class PersonDetailsResponse(
         @field:SerializedName("id") val id : Long,
@@ -12,7 +11,7 @@ data class PersonDetailsResponse(
         @field:SerializedName("image") val image : ImageResponse,
         @field:SerializedName("url") val url : String,
         @field:SerializedName("job_title") val jobTitle : String?,
-        @field:SerializedName("birthday") val birthDay : DateTime?,
+        @field:SerializedName("birth_on") val birthDay : BirthdayResponse,
         @field:SerializedName("works") val works : List<WorkResponse>?,
         @field:SerializedName("roles") val roles : List<SeyuRoleResponse>?,
         @field:SerializedName("groupped_roles") val rolesGrouped : List<List<String?>?>,

@@ -12,6 +12,7 @@ import com.gnoemes.shikimori.entity.roles.domain.PersonDetails
 import com.gnoemes.shikimori.entity.roles.domain.PersonType
 import com.gnoemes.shikimori.entity.roles.domain.Work
 import com.gnoemes.shikimori.utils.appendHostIfNeed
+import org.joda.time.DateTime
 import javax.inject.Inject
 
 class PersonDetailsResponseConverterImpl @Inject constructor(
@@ -29,7 +30,7 @@ class PersonDetailsResponseConverterImpl @Inject constructor(
             imageConverter.convertResponse(it.image),
             it.url.appendHostIfNeed(),
             it.jobTitle,
-            it.birthDay,
+            DateTime(it.birthDay.year.toInt(), it.birthDay.month.toInt(), it.birthDay.day.toInt(), 0, 0),
             convertWorks(it.works),
             convertCharacters(it.roles),
             it.rolesGrouped,
