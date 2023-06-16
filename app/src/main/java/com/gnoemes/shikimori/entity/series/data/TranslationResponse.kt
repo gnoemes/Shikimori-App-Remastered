@@ -1,5 +1,6 @@
 package com.gnoemes.shikimori.entity.series.data
 
+import com.gnoemes.shikimori.entity.series.data.shikicinema.ShikicinemaTranslationResponse
 import com.gnoemes.shikimori.entity.series.data.shimori.ShimoriTranslationResponse
 import com.gnoemes.shikimori.entity.series.domain.TranslationQuality
 import com.gnoemes.shikimori.entity.series.domain.TranslationType
@@ -28,6 +29,18 @@ data class TranslationResponse(
             response.hosting,
             response.author ?: "",
             response.episodesTotal ?: 0,
+            response.url
+    )
+
+    constructor(response: ShikicinemaTranslationResponse) : this(
+            response.id,
+            response.anime_id,
+            response.episode,
+            response.kind,
+            response.quality,
+            response.hosting,
+            response.author ?: "",
+            0,
             response.url
     )
 

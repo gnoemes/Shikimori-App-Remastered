@@ -1,6 +1,7 @@
 package com.gnoemes.shikimori.data.network.impl
 
 import com.gnoemes.shikimori.data.network.AnimeSource
+import com.gnoemes.shikimori.data.network.ShikicinemaVideoApi
 import com.gnoemes.shikimori.data.network.ShimoriVideoApi
 import com.gnoemes.shikimori.data.network.VideoApi
 import com.gnoemes.shikimori.entity.series.data.EpisodeResponse
@@ -13,7 +14,8 @@ import kotlin.random.Random
 
 class ShimoriAnimeSourceImpl @Inject constructor(
         private val api: VideoApi,
-        private val shimoriApi: ShimoriVideoApi
+        private val shimoriApi: ShimoriVideoApi,
+        private val shikicinemaVideoApi: ShikicinemaVideoApi
 ) : AnimeSource {
 
     override fun getEpisodes(id: Long, name: String): Single<List<EpisodeResponse>> {
@@ -91,11 +93,44 @@ class ShimoriAnimeSourceImpl @Inject constructor(
         )
     }
 
+    override fun getEpisodesShikicinema(id: Long): Single<List<EpisodeResponse>> {
+        return shikicinemaVideoApi.getEpisodes(id)
+                .map { response ->
+                    (0..response.length).map {
+                        EpisodeResponse(
+                                it.toLong(),
+                                it,
+                                id,
+                                emptyList(),
+                                "",
+                                emptyList()
+                        )
+                    }
+                }
+    }
+
+    override fun getTranslationsShikicinema(animeId: Long, episodeId: Long, type: TranslationType): Single<List<TranslationResponse>> {
+        val shikicinemaType = getShikicinemaType(type)
+
+        return shikicinemaVideoApi.getTranslations(animeId, "all", episodeId, shikicinemaType)
+            .map { list ->
+                list.map { response ->
+                    TranslationResponse(response)
+                }
+            }
+    }
+
 
     private fun getShimoriType(type: TranslationType) = when (type) {
         TranslationType.VOICE_RU -> "dub"
         TranslationType.SUB_RU -> "subs"
         else -> "raw"
+    }
+
+    private fun getShikicinemaType(type: TranslationType) = when (type) {
+        TranslationType.VOICE_RU -> "озвучка"
+        TranslationType.SUB_RU -> "субтитры"
+        else -> "оригинал"
     }
 }
 
