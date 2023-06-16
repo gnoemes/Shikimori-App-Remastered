@@ -2,6 +2,7 @@ package com.gnoemes.shikimori.entity.roles.data
 
 import com.gnoemes.shikimori.entity.common.data.ImageResponse
 import com.google.gson.annotations.SerializedName
+import org.joda.time.DateTime
 
 data class PersonDetailsResponse(
         @field:SerializedName("id") val id : Long,
@@ -11,7 +12,7 @@ data class PersonDetailsResponse(
         @field:SerializedName("image") val image : ImageResponse,
         @field:SerializedName("url") val url : String,
         @field:SerializedName("job_title") val jobTitle : String?,
-        @field:SerializedName("birth_on") val birthDay : BirthdayResponse,
+        @field:SerializedName("birthday") val _birthDay : BirthdayResponse,
         @field:SerializedName("works") val works : List<WorkResponse>?,
         @field:SerializedName("roles") val roles : List<SeyuRoleResponse>?,
         @field:SerializedName("groupped_roles") val rolesGrouped : List<List<String?>?>,
@@ -23,4 +24,10 @@ data class PersonDetailsResponse(
         @field:SerializedName("mangaka_favoured") val isFavoriteMangaka : Boolean,
         @field:SerializedName("seyu") val isSeyu : Boolean,
         @field:SerializedName("seyu_favoured") val isFavoriteSeyu : Boolean
-)
+) {
+    val birthDay: DateTime?
+        get() = if (_birthDay.year != null && _birthDay.month != null && _birthDay.day != null)
+            DateTime(_birthDay.year.toInt(), _birthDay.month.toInt(), _birthDay.day.toInt(), 0, 0)
+        else null
+
+}
