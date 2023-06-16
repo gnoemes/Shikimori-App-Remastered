@@ -20,7 +20,7 @@ android {
             versionMajor 0
             versionMinor 8
             versionPatch 6
-            versionBuild 3
+            versionBuild 5
         }
         codeOptions {
             versionCodeType VersionCodeType.AUTO_INCREMENT_ONE_STEP
