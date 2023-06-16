@@ -12,7 +12,6 @@ import com.gnoemes.shikimori.entity.roles.domain.PersonDetails
 import com.gnoemes.shikimori.entity.roles.domain.PersonType
 import com.gnoemes.shikimori.entity.roles.domain.Work
 import com.gnoemes.shikimori.utils.appendHostIfNeed
-import org.joda.time.DateTime
 import javax.inject.Inject
 
 class PersonDetailsResponseConverterImpl @Inject constructor(
