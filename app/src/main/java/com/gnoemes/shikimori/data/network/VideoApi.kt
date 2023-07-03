@@ -37,10 +37,8 @@ interface VideoApi {
     @POST("/api/anime/player")
     fun getVideo(@Body request : VideoRequest) : Single<VideoResponse>
 
-    @GET("https://api.vk.com/method/video.get?v=5.92&count=1&extended=0")
-    fun getVkVideoFiles(@Query("access_token") token: String,
-                        @Query("videos") videoId: String?
-    ) : Single<VkResponse>
+    @GET("https://shikiapp-api.vercel.app/api/anime/vk-videos")
+    fun getVkVideoFiles(@Query("playerUrl") playerUrl: String) : Single<VkResponse>
 
     @GET("/api/anime/alternative/translation/{id}")
     fun getVideoAlternative(
