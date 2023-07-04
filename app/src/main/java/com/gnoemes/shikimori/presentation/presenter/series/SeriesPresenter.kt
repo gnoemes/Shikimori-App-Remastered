@@ -79,8 +79,6 @@ class SeriesPresenter @Inject constructor(
         super.onViewReattached()
 
         if (isWatchSession) {
-            episodeId = null
-            episode = null
             loadWithEpisode()
         }
     }
