@@ -22,8 +22,8 @@ class SeriesInteractorImpl @Inject constructor(
                     .map { list -> list.sortedBy { it.index } }
                     .applyErrorHandlerAndSchedulers()
 
-    override fun getTranslations(type: TranslationType, animeId: Long, episodeId: Long, name : String, alternative: Boolean): Single<List<Translation>> =
-            repository.getTranslations(type, animeId, episodeId, name, alternative)
+    override fun getTranslations(type: TranslationType, animeId: Long, episodeId: Long, name : String, alternative: Boolean, loadLength: Boolean): Single<List<Translation>> =
+            repository.getTranslations(type, animeId, episodeId, name, alternative, loadLength)
                     .applyErrorHandlerAndSchedulers()
 
     override fun getTranslationSettings(animeId: Long): Single<TranslationSetting> =

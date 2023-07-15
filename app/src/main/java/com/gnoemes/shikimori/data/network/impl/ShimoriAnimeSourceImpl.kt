@@ -109,15 +109,23 @@ class ShimoriAnimeSourceImpl @Inject constructor(
                 }
     }
 
-    override fun getTranslationsShikicinema(animeId: Long, episodeId: Long, type: TranslationType): Single<List<TranslationResponse>> {
+    override fun getTranslationsShikicinema(animeId: Long, episodeId: Long, type: TranslationType, loadLength: Boolean): Single<List<TranslationResponse>> {
         val shikicinemaType = getShikicinemaType(type)
 
-        return shikicinemaVideoApi.getTranslations(animeId, "all", episodeId, shikicinemaType)
-            .map { list ->
-                list.map { response ->
-                    TranslationResponse(response)
+        return if (loadLength) shikicinemaVideoApi.getEpisodes(animeId).flatMap { lengthResponse ->
+            shikicinemaVideoApi.getTranslations(animeId, "all", episodeId, shikicinemaType)
+                    .map { list ->
+                        list.map { response ->
+                            TranslationResponse(response, lengthResponse.length)
+                        }
+                    }
+        }
+        else shikicinemaVideoApi.getTranslations(animeId, "all", episodeId, shikicinemaType)
+                .map { list ->
+                    list.map { response ->
+                        TranslationResponse(response, 0)
+                    }
                 }
-            }
     }
 
 
