@@ -80,8 +80,9 @@ class SeriesRepositoryImpl @Inject constructor(
                     .flatMap { if (it.hosting is VideoHosting.VK) getVkFiles(it) else Single.just(it) }
 
     private fun getVkFiles(video: Video): Single<Video> =
-            api.getVkVideoFiles(video.player)
-                    .map { vkConverter.convertTracks(video, it) }
+            api.getVkPlayerHtml(video.player).map {
+                vkConverter.parsePlaylists(it.string())
+            }.map { vkConverter.convertTracks(video, it) }
 
     override fun getTopic(animeId: Long, episodeId: Int): Single<Long> =
             topicApi.getAnimeEpisodeTopic(animeId, episodeId)

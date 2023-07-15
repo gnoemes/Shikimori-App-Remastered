@@ -2,6 +2,7 @@ package com.gnoemes.shikimori.data.network
 
 import com.gnoemes.shikimori.entity.series.data.*
 import io.reactivex.Single
+import okhttp3.ResponseBody
 import retrofit2.http.*
 
 interface VideoApi {
@@ -37,8 +38,9 @@ interface VideoApi {
     @POST("/api/anime/player")
     fun getVideo(@Body request : VideoRequest) : Single<VideoResponse>
 
-    @GET("https://shikiapp-api.vercel.app/api/anime/vk-videos")
-    fun getVkVideoFiles(@Query("playerUrl") playerUrl: String) : Single<VkResponse>
+    @Headers("Accept: text/html")
+    @GET
+    fun getVkPlayerHtml(@Url playerUrl: String) : Single<ResponseBody>
 
     @GET("/api/anime/alternative/translation/{id}")
     fun getVideoAlternative(

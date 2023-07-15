@@ -1,6 +1,6 @@
 package com.gnoemes.shikimori.data.repository.series.shikimori.converter
 
-import com.gnoemes.shikimori.entity.series.data.VkResponse
+import com.gnoemes.shikimori.entity.series.data.VkFileResponse
 import com.gnoemes.shikimori.entity.series.domain.Track
 import com.gnoemes.shikimori.entity.series.domain.Video
 import javax.inject.Inject
@@ -19,17 +19,34 @@ class VkVideoConverterImpl @Inject constructor() : VkVideoConverter {
         return "${firstPart}_$secondPart"
     }
 
-    override fun convertTracks(it: Video, vkResponse: VkResponse): Video {
-        val files = vkResponse.response.items.firstOrNull()?.file
-
+    override fun convertTracks(it: Video, vkResponse: VkFileResponse): Video {
         val tracks = mutableListOf<Track>()
 
-        if (files?.src1080 != null) tracks.add(Track("1080", files.src1080))
-        if (files?.src720 != null) tracks.add(Track("720", files.src720))
-        if (files?.src480 != null) tracks.add(Track("480", files.src480))
-        if (files?.src360 != null) tracks.add(Track("360", files.src360))
-        if (files?.src240 != null) tracks.add(Track("240", files.src240))
+        if (vkResponse.src1080 != null) tracks.add(Track("1080", vkResponse.src1080!!))
+        if (vkResponse.src720 != null) tracks.add(Track("720", vkResponse.src720!!))
+        if (vkResponse.src480 != null) tracks.add(Track("480", vkResponse.src480!!))
+        if (vkResponse.src360 != null) tracks.add(Track("360", vkResponse.src360!!))
+        if (vkResponse.src240 != null) tracks.add(Track("240", vkResponse.src240!!))
 
         return Video(it.animeId, it.episodeId, it.player, it.hosting, tracks, null, null)
+    }
+
+    override fun parsePlaylists(html: String): VkFileResponse {
+        val regex = Regex("\"(url240|url360|url480|url720|url1080)\":\"(.*?)\"")
+        val matches = regex.findAll(html)
+        val vkResponse = VkFileResponse(null, null, null, null, null)
+
+        matches.map { it.destructured.toList() }.forEach {
+            val (key, value) = it
+            when (key) {
+                "url240" -> vkResponse.src240 = value
+                "url360" -> vkResponse.src360 = value
+                "url480" -> vkResponse.src480 = value
+                "url720" -> vkResponse.src720= value
+                "url1080" -> vkResponse.src1080 = value
+            }
+        }
+
+        return vkResponse
     }
 }
