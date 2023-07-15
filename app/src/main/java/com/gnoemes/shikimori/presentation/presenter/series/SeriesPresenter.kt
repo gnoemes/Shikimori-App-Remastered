@@ -104,7 +104,7 @@ class SeriesPresenter @Inject constructor(
             .addToDisposables()
 
     private fun loadTranslations(type: TranslationType, episodeId: Long) = interactor
-            .getTranslations(type, navigationData.animeId, episodeId, navigationData.nameEng, isAlternative)
+            .getTranslations(type, navigationData.animeId, episodeId, navigationData.nameEng, isAlternative, true)
             .doOnSubscribe { viewState.setTranslationType(type) }
             .map { converter.convertTranslations(it, setting) }
 
@@ -315,7 +315,7 @@ class SeriesPresenter @Inject constructor(
     //Only embedded player can process object payload
     //Others o uses urls
     private fun openVideo(payload: TranslationVideo, playerType: PlayerType) {
-        if (playerType == PlayerType.EMBEDDED) openPlayer(playerType, EmbeddedPlayerNavigationData(navigationData.name, navigationData.rateId, items.firstOrNull()!!.episodesSize, payload))
+        if (playerType == PlayerType.EMBEDDED) openPlayer(playerType, EmbeddedPlayerNavigationData(navigationData.name, navigationData.rateId, items.firstOrNull()!!.episodesSize, payload, navigationData.nameEng, isAlternative))
         else if (playerType == PlayerType.WEB && payload.webPlayerUrl != null) openPlayer(playerType, payload.webPlayerUrl)
         else getVideoAndExecute(payload) { selectedPlayer = playerType; showQualityChooser(it.tracks) }
     }

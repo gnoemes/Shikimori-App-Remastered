@@ -32,7 +32,7 @@ data class TranslationResponse(
             response.url
     )
 
-    constructor(response: ShikicinemaTranslationResponse) : this(
+    constructor(response: ShikicinemaTranslationResponse, episodesSize: Int) : this(
             response.id,
             response.anime_id,
             response.episode,
@@ -40,7 +40,7 @@ data class TranslationResponse(
             response.quality,
             response.hosting,
             response.author ?: "",
-            0,
+            episodesSize,
             response.url
     )
 

@@ -52,8 +52,8 @@ class SeriesRepositoryImpl @Inject constructor(
                                 .flatMap { syncEpisodes(id, it) }
                     }
 
-    override fun getTranslations(type: TranslationType, animeId: Long, episodeId: Long, name : String, alternative: Boolean): Single<List<Translation>> =
-            (if (alternative) source.getTranslationsShikicinema(animeId, episodeId, type) else source.getTranslations(animeId, name, episodeId, type))
+    override fun getTranslations(type: TranslationType, animeId: Long, episodeId: Long, name : String, alternative: Boolean, loadLength: Boolean): Single<List<Translation>> =
+            (if (alternative) source.getTranslationsShikicinema(animeId, episodeId, type, loadLength) else source.getTranslations(animeId, name, episodeId, type))
                     .map(translationConverter)
                     .map { translations ->
                         if (alternative || tokenSource.getToken() != null) translations
