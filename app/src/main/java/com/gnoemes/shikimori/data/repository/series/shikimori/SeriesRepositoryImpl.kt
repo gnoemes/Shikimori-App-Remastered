@@ -6,10 +6,7 @@ import com.gnoemes.shikimori.data.local.db.EpisodeDbSource
 import com.gnoemes.shikimori.data.network.AnimeSource
 import com.gnoemes.shikimori.data.network.TopicApi
 import com.gnoemes.shikimori.data.network.VideoApi
-import com.gnoemes.shikimori.data.repository.series.shikimori.converter.EpisodeResponseConverter
-import com.gnoemes.shikimori.data.repository.series.shikimori.converter.TranslationResponseConverter
-import com.gnoemes.shikimori.data.repository.series.shikimori.converter.VideoResponseConverter
-import com.gnoemes.shikimori.data.repository.series.shikimori.converter.VkVideoConverter
+import com.gnoemes.shikimori.data.repository.series.shikimori.converter.*
 import com.gnoemes.shikimori.data.repository.series.smotretanime.Anime365TokenSource
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.series.domain.*
@@ -29,7 +26,8 @@ class SeriesRepositoryImpl @Inject constructor(
         private val videoConverter: VideoResponseConverter,
         private val episodeSource: EpisodeDbSource,
         private val syncSource: AnimeRateSyncDbSource,
-        private val vkConverter: VkVideoConverter
+        private val vkConverter: VkVideoConverter,
+        private val sovetRomanticaConverter: SovetRomanticaVideoConverter
 ) : SeriesRepository {
 
     override fun getEpisodes(id: Long, name: String, alternative: Boolean): Single<List<Episode>> =
@@ -77,11 +75,16 @@ class SeriesRepositoryImpl @Inject constructor(
                     payload.webPlayerUrl
             ))
                     .map(videoConverter)
-                    .flatMap { if (it.hosting is VideoHosting.VK) getVkFiles(it) else Single.just(it) }
+                    .flatMap { if (it.hosting is VideoHosting.VK) getVkFiles(it) else if (it.hosting is VideoHosting.SOVET_ROMANTICA) getSovetRomanticaFiles(it) else Single.just(it) }
 
     private fun getVkFiles(video: Video): Single<Video> =
-            api.getVkVideoFiles(video.player)
-                    .map { vkConverter.convertTracks(video, it) }
+            api.getVkPlayerHtml(video.player).map {
+                vkConverter.parsePlaylists(it.string())
+            }.map { vkConverter.convertTracks(video, it) }
+
+    private fun getSovetRomanticaFiles(video: Video): Single<Video> =
+            api.getSovetRomanticaVideoFiles(video.tracks[0].url)
+                    .map { sovetRomanticaConverter.convertTracks(video, it) }
 
     override fun getTopic(animeId: Long, episodeId: Int): Single<Long> =
             topicApi.getAnimeEpisodeTopic(animeId, episodeId)
