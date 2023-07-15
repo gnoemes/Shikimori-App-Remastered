@@ -38,6 +38,10 @@ interface SeriesUtilModule {
 
     @Binds
     @Reusable
+    fun bindSovetRomanticaConverter(converter: SovetRomanticaVideoConverterImpl): SovetRomanticaVideoConverter
+
+    @Binds
+    @Reusable
     fun bindParsingConverter(converter: DocumentParsingConverterImpl): DocumentParsingConverter
 
 }
