@@ -155,7 +155,7 @@ class AnimeDetailsViewModelConverterImpl @Inject constructor(
                 .filter { it.second.contains("Director") || it.second.contains("Original Creator") }
                 .sortedByDescending { it.second.contains("Director") }
                 .forEach {
-                    val description = it.first.nameRu ?: it.first.name
+                    val description = it.first.nameRu.nullIfEmpty() ?: it.first.name
                     val category = it.second.firstOrNull { role -> role == "Director" || role == "Original Creator" }?.let { convertRole(it) }
                     if (category != null) {
                         info.add(InfoClickableItem(it.first.id, it.first.linkedType, description, it.first.image, category))
