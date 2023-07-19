@@ -101,26 +101,32 @@ class EmbeddedPlayerPresenter @Inject constructor(
         } else super.processErrors(throwable)
     }
 
-    fun loadNextEpisode() = loadTranslations(navigationData.payload.type, (currentEpisode + 1).toLong()).map { translations ->
+    fun loadNextEpisode() {
         currentEpisode += 1
-        val translation = translations.find {
-            it.author == payload.author && it.hosting == payload.videoHosting
-        }
+        loadPrevOrNextEpisode()
+    }
 
-        payload = payload.copy(videoId = translation?.videoId ?: Constants.NO_ID, episodeIndex = currentEpisode, webPlayerUrl = translation?.webPlayerUrl)
-        if (currentEpisode <= navigationData.episodesSize) loadOrUpdateVideo(payload)
-        updateControls()
-    }.subscribe().addToDisposables()
-
-    fun loadPrevEpisode() = loadTranslations(navigationData.payload.type, (currentEpisode - 1).toLong()).map { translations ->
+    fun loadPrevEpisode() {
         currentEpisode -= 1
-        val translation = translations.find {
-            it.author == payload.author && it.hosting == payload.videoHosting
-        }
+        loadPrevOrNextEpisode()
+    }
 
-        payload = payload.copy(videoId = translation?.videoId ?: Constants.NO_ID, episodeIndex = currentEpisode, webPlayerUrl = translation?.webPlayerUrl)
-        if (currentEpisode > 0) loadOrUpdateVideo(payload)
-    }.subscribe().addToDisposables()
+    private fun loadPrevOrNextEpisode() {
+        val video = videos.find { it.episodeId.toInt() == currentEpisode }
+
+        return if (video != null) {
+            updateVideo(video)
+            updateControls()
+        } else loadTranslations(navigationData.payload.type, currentEpisode.toLong()).map { translations ->
+            val translation = translations.find {
+                it.author == payload.author && it.hosting == payload.videoHosting
+            }
+
+            payload = payload.copy(videoId = translation?.videoId ?: Constants.NO_ID, episodeIndex = currentEpisode, webPlayerUrl = translation?.webPlayerUrl)
+            loadVideo(payload)
+            updateControls()
+        }.subscribe().addToDisposables()
+    }
 
     fun onResolutionChanged(newResolution: String) {
         val video = videos.find { it.episodeId.toInt() == currentEpisode }
