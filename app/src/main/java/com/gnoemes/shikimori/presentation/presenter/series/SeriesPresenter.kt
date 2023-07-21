@@ -349,7 +349,7 @@ class SeriesPresenter @Inject constructor(
     }
 
     private fun getVideoAndExecute(payload: TranslationVideo, onSubscribe: (Video) -> Unit) {
-        interactor.getVideo(payload, isAlternative)
+        interactor.getVideo(payload, payload.videoHosting is VideoHosting.SMOTRET_ANIME)
                 .appendLoadingLogic(viewState)
                 .subscribe(onSubscribe::invoke, this::processErrors)
                 .addToDisposables()

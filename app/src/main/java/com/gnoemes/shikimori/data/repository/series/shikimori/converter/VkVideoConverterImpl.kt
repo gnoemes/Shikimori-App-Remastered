@@ -3,6 +3,7 @@ package com.gnoemes.shikimori.data.repository.series.shikimori.converter
 import com.gnoemes.shikimori.entity.series.data.VkFileResponse
 import com.gnoemes.shikimori.entity.series.domain.Track
 import com.gnoemes.shikimori.entity.series.domain.Video
+import com.gnoemes.shikimori.entity.series.presentation.TranslationVideo
 import javax.inject.Inject
 
 class VkVideoConverterImpl @Inject constructor() : VkVideoConverter {
@@ -19,7 +20,7 @@ class VkVideoConverterImpl @Inject constructor() : VkVideoConverter {
         return "${firstPart}_$secondPart"
     }
 
-    override fun convertTracks(it: Video, vkResponse: VkFileResponse): Video {
+    override fun convertTracks(it: TranslationVideo, vkResponse: VkFileResponse): Video {
         val tracks = mutableListOf<Track>()
 
         if (vkResponse.src1080 != null) tracks.add(Track("1080", vkResponse.src1080!!))
@@ -28,7 +29,7 @@ class VkVideoConverterImpl @Inject constructor() : VkVideoConverter {
         if (vkResponse.src360 != null) tracks.add(Track("360", vkResponse.src360!!))
         if (vkResponse.src240 != null) tracks.add(Track("240", vkResponse.src240!!))
 
-        return Video(it.animeId, it.episodeId, it.player, it.hosting, tracks, null, null)
+        return Video(it.animeId, it.episodeIndex.toLong(), it.webPlayerUrl!!, it.videoHosting, tracks, null, null)
     }
 
     override fun parsePlaylists(html: String): VkFileResponse {

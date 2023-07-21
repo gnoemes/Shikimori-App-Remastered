@@ -63,7 +63,8 @@ class SeriesRepositoryImpl @Inject constructor(
                     }
 
     override fun getVideo(payload: TranslationVideo, alternative: Boolean): Single<Video> =
-            (if (alternative) source.getVideoAlternative(payload.videoId, payload.animeId, payload.episodeIndex.toLong(), tokenSource.getToken())
+            if (payload.videoHosting is VideoHosting.VK) getVkFiles(payload)
+            else (if (alternative) source.getVideoAlternative(payload.videoId, payload.animeId, payload.episodeIndex.toLong(), tokenSource.getToken())
             else source.getVideo(
                     payload.animeId,
                     payload.episodeIndex,
@@ -75,10 +76,10 @@ class SeriesRepositoryImpl @Inject constructor(
                     payload.webPlayerUrl
             ))
                     .map(videoConverter)
-                    .flatMap { if (it.hosting is VideoHosting.VK) getVkFiles(it) else if (it.hosting is VideoHosting.SOVET_ROMANTICA) getSovetRomanticaFiles(it) else Single.just(it) }
+                    .flatMap { if (it.hosting is VideoHosting.SOVET_ROMANTICA) getSovetRomanticaFiles(it) else Single.just(it) }
 
-    private fun getVkFiles(video: Video): Single<Video> =
-            api.getVkPlayerHtml(video.player).map {
+    private fun getVkFiles(video: TranslationVideo): Single<Video> =
+            api.getVkPlayerHtml(video.webPlayerUrl!!).map {
                 vkConverter.parsePlaylists(it.string())
             }.map { vkConverter.convertTracks(video, it) }
 
