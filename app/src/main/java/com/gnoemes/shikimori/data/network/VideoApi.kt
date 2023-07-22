@@ -45,6 +45,9 @@ interface VideoApi {
     @GET("https://shikiapp-api.vercel.app/api/anime/sovetromantica-videos")
     fun getSovetRomanticaVideoFiles(@Query("playlistUrl") playlistUrl: String) : Single<SovetRomanticaVideosResponse>
 
+    @GET("https://shikiapp-api.vercel.app/api/anime/ok-videos")
+    fun getOkVideoFiles(@Query("playerUrl") playerUrl: String) : Single<OkVideosResponse>
+
     @GET("/api/anime/alternative/translation/{id}")
     fun getVideoAlternative(
             @Path("id") translationId: Long,

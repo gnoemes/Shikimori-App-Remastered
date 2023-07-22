@@ -27,7 +27,8 @@ class SeriesRepositoryImpl @Inject constructor(
         private val episodeSource: EpisodeDbSource,
         private val syncSource: AnimeRateSyncDbSource,
         private val vkConverter: VkVideoConverter,
-        private val sovetRomanticaConverter: SovetRomanticaVideoConverter
+        private val sovetRomanticaConverter: SovetRomanticaVideoConverter,
+        private val okConverter: OkVideoConverter
 ) : SeriesRepository {
 
     override fun getEpisodes(id: Long, name: String, alternative: Boolean): Single<List<Episode>> =
@@ -64,6 +65,7 @@ class SeriesRepositoryImpl @Inject constructor(
 
     override fun getVideo(payload: TranslationVideo, alternative: Boolean): Single<Video> =
             if (payload.videoHosting is VideoHosting.VK) getVkFiles(payload)
+            else if (payload.videoHosting is VideoHosting.OK) getOkFiles(payload)
             else (if (alternative) source.getVideoAlternative(payload.videoId, payload.animeId, payload.episodeIndex.toLong(), tokenSource.getToken())
             else source.getVideo(
                     payload.animeId,
@@ -79,9 +81,15 @@ class SeriesRepositoryImpl @Inject constructor(
                     .flatMap { if (it.hosting is VideoHosting.SOVET_ROMANTICA) getSovetRomanticaFiles(it) else Single.just(it) }
 
     private fun getVkFiles(video: TranslationVideo): Single<Video> =
-            api.getVkPlayerHtml(video.webPlayerUrl!!).map {
+            if (video.webPlayerUrl == null) Single.just(vkConverter.parsePlaylists(null)).map { vkConverter.convertTracks(video, it) }
+            else api.getVkPlayerHtml(video.webPlayerUrl).map {
                 vkConverter.parsePlaylists(it.string())
             }.map { vkConverter.convertTracks(video, it) }
+
+    private fun getOkFiles(video: TranslationVideo): Single<Video> =
+            api.getOkVideoFiles(video.webPlayerUrl!!).map {
+                okConverter.convertTracks(video, it)
+            }
 
     private fun getSovetRomanticaFiles(video: Video): Single<Video> =
             api.getSovetRomanticaVideoFiles(video.tracks[0].url)

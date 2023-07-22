@@ -32,19 +32,22 @@ class VkVideoConverterImpl @Inject constructor() : VkVideoConverter {
         return Video(it.animeId, it.episodeIndex.toLong(), it.webPlayerUrl!!, it.videoHosting, tracks, null, null)
     }
 
-    override fun parsePlaylists(html: String): VkFileResponse {
-        val regex = Regex("\"(url240|url360|url480|url720|url1080)\":\"(.*?)\"")
-        val matches = regex.findAll(html)
+    override fun parsePlaylists(html: String?): VkFileResponse {
         val vkResponse = VkFileResponse(null, null, null, null, null)
 
-        matches.map { it.destructured.toList() }.forEach {
-            val (key, value) = it
-            when (key) {
-                "url240" -> vkResponse.src240 = value
-                "url360" -> vkResponse.src360 = value
-                "url480" -> vkResponse.src480 = value
-                "url720" -> vkResponse.src720= value
-                "url1080" -> vkResponse.src1080 = value
+        if (html != null) {
+            val regex = Regex("\"(url240|url360|url480|url720|url1080)\":\"(.*?)\"")
+            val matches = regex.findAll(html)
+
+            matches.map { it.destructured.toList() }.forEach {
+                val (key, value) = it
+                when (key) {
+                    "url240" -> vkResponse.src240 = value
+                    "url360" -> vkResponse.src360 = value
+                    "url480" -> vkResponse.src480 = value
+                    "url720" -> vkResponse.src720= value
+                    "url1080" -> vkResponse.src1080 = value
+                }
             }
         }
 

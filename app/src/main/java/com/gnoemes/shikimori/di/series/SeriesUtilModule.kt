@@ -42,6 +42,10 @@ interface SeriesUtilModule {
 
     @Binds
     @Reusable
+    fun bindOkConverter(converter: OkVideoConverterImpl): OkVideoConverter
+
+    @Binds
+    @Reusable
     fun bindParsingConverter(converter: DocumentParsingConverterImpl): DocumentParsingConverter
 
 }
