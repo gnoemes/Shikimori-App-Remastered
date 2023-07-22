@@ -81,11 +81,6 @@ class EmbeddedPlayerPresenter @Inject constructor(
         viewState.enablePrevButton(currentEpisode > 1)
     }
 
-    private fun loadOrUpdateVideo(payload: TranslationVideo) {
-        val video = videos.find { it.episodeId.toInt() == currentEpisode }
-        video?.let { updateVideo(video) } ?: loadVideo(payload)
-    }
-
     private fun setEpisodeWatched() {
         if (!settingsSource.isAutoIncrement) return
         val rateId = navigationData.rateId ?: Constants.NO_ID
@@ -119,11 +114,16 @@ class EmbeddedPlayerPresenter @Inject constructor(
             updateControls()
         } else loadTranslations(navigationData.payload.type, currentEpisode.toLong()).map { translations ->
             val translation = translations.find {
-                it.author == payload.author && it.hosting == payload.videoHosting
+                if (it.author.isNotEmpty()) it.author == payload.author && it.hosting == payload.videoHosting
+                else it.author.isEmpty() && it.hosting == payload.videoHosting
             }
 
-            payload = payload.copy(videoId = translation?.videoId ?: Constants.NO_ID, episodeIndex = currentEpisode, webPlayerUrl = translation?.webPlayerUrl)
-            loadVideo(payload)
+            if (translation != null) {
+                payload = payload.copy(videoId = translation.videoId, episodeIndex = currentEpisode, webPlayerUrl = translation.webPlayerUrl)
+                loadVideo(payload)
+            } else {
+                viewState.showMessage(resourceProvider.translationNotFound)
+            }
             updateControls()
         }.subscribe().addToDisposables()
     }

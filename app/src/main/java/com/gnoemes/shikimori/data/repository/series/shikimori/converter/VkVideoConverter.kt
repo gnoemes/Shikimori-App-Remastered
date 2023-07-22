@@ -10,5 +10,5 @@ interface VkVideoConverter {
 
     fun convertTracks(it : TranslationVideo, vkResponse : VkFileResponse) : Video
 
-    fun parsePlaylists(html: String): VkFileResponse
+    fun parsePlaylists(html: String?): VkFileResponse
 }

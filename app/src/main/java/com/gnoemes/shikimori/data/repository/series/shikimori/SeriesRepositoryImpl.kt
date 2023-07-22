@@ -79,7 +79,8 @@ class SeriesRepositoryImpl @Inject constructor(
                     .flatMap { if (it.hosting is VideoHosting.SOVET_ROMANTICA) getSovetRomanticaFiles(it) else Single.just(it) }
 
     private fun getVkFiles(video: TranslationVideo): Single<Video> =
-            api.getVkPlayerHtml(video.webPlayerUrl!!).map {
+            if (video.webPlayerUrl == null) Single.just(vkConverter.parsePlaylists(null)).map { vkConverter.convertTracks(video, it) }
+            else api.getVkPlayerHtml(video.webPlayerUrl).map {
                 vkConverter.parsePlaylists(it.string())
             }.map { vkConverter.convertTracks(video, it) }
 
