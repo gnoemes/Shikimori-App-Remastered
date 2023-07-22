@@ -87,9 +87,9 @@ class SeriesRepositoryImpl @Inject constructor(
             }.map { vkConverter.convertTracks(video, it) }
 
     private fun getOkFiles(video: TranslationVideo): Single<Video> =
-            api.getOkVideoFiles(video.webPlayerUrl!!).map {
-                okConverter.convertTracks(video, it)
-            }
+            api.getVkPlayerHtml(video.webPlayerUrl!!).map {
+                okConverter.parsePlaylists(it.string())
+            }.map { okConverter.convertTracks(video, it) }
 
     private fun getSovetRomanticaFiles(video: Video): Single<Video> =
             api.getSovetRomanticaVideoFiles(video.tracks[0].url)
