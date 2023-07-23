@@ -1,6 +1,5 @@
 package com.gnoemes.shikimori.data.repository.series.shikimori
 
-import com.gnoemes.shikimori.BuildConfig
 import com.gnoemes.shikimori.data.local.db.AnimeRateSyncDbSource
 import com.gnoemes.shikimori.data.local.db.EpisodeDbSource
 import com.gnoemes.shikimori.data.network.AnimeSource
@@ -82,14 +81,15 @@ class SeriesRepositoryImpl @Inject constructor(
 
     private fun getVkFiles(video: TranslationVideo): Single<Video> =
             if (video.webPlayerUrl == null) Single.just(vkConverter.parsePlaylists(null)).map { vkConverter.convertTracks(video, it) }
-            else api.getVkPlayerHtml(video.webPlayerUrl).map {
+            else api.getPlayerHtml(video.webPlayerUrl).map {
                 vkConverter.parsePlaylists(it.string())
             }.map { vkConverter.convertTracks(video, it) }
 
     private fun getOkFiles(video: TranslationVideo): Single<Video> =
-            api.getOkVideoFiles(video.webPlayerUrl!!).map {
-                okConverter.convertTracks(video, it)
-            }
+            if (video.webPlayerUrl == null) Single.just(okConverter.parsePlaylists(null)).map { okConverter.convertTracks(video, it) }
+            else api.getPlayerHtml(video.webPlayerUrl).map {
+                okConverter.parsePlaylists(it.string())
+            }.map { okConverter.convertTracks(video, it) }
 
     private fun getSovetRomanticaFiles(video: Video): Single<Video> =
             api.getSovetRomanticaVideoFiles(video.tracks[0].url)

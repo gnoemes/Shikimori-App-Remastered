@@ -40,13 +40,10 @@ interface VideoApi {
 
     @Headers("Accept: text/html")
     @GET
-    fun getVkPlayerHtml(@Url playerUrl: String) : Single<ResponseBody>
+    fun getPlayerHtml(@Url playerUrl: String) : Single<ResponseBody>
 
     @GET("https://shikiapp-api.vercel.app/api/anime/sovetromantica-videos")
     fun getSovetRomanticaVideoFiles(@Query("playlistUrl") playlistUrl: String) : Single<SovetRomanticaVideosResponse>
-
-    @GET("https://shikiapp-api.vercel.app/api/anime/ok-videos")
-    fun getOkVideoFiles(@Query("playerUrl") playerUrl: String) : Single<OkVideosResponse>
 
     @GET("/api/anime/alternative/translation/{id}")
     fun getVideoAlternative(
