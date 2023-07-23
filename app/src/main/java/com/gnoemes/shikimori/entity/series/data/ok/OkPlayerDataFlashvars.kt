@@ -1,5 +1,7 @@
 package com.gnoemes.shikimori.entity.series.data.ok
 
+import com.google.gson.annotations.SerializedName
+
 data class OkPlayerDataFlashvars(
-        val metadata: String
+        @SerializedName("metadata") val metadata: String
 )

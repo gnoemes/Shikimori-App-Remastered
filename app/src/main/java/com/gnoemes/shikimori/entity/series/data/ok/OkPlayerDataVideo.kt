@@ -1,6 +1,8 @@
 package com.gnoemes.shikimori.entity.series.data.ok
 
+import com.google.gson.annotations.SerializedName
+
 data class OkPlayerDataVideo(
-        val name: String,
-        val url: String
+        @SerializedName("name") val name: String,
+        @SerializedName("url") val url: String
 )
