@@ -1,5 +1,7 @@
 package com.gnoemes.shikimori.entity.series.data.ok
 
+import com.google.gson.annotations.SerializedName
+
 data class OkPlayerDataMetadata(
-        val videos: List<OkPlayerDataVideo>
+        @SerializedName("videos") val videos: List<OkPlayerDataVideo>
 )
