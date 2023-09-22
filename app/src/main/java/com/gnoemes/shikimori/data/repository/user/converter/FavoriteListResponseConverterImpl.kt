@@ -6,6 +6,7 @@ import com.gnoemes.shikimori.entity.user.domain.Favorite
 import com.gnoemes.shikimori.entity.user.domain.FavoriteList
 import com.gnoemes.shikimori.entity.user.domain.FavoriteType
 import com.gnoemes.shikimori.utils.appendHostIfNeed
+import com.gnoemes.shikimori.utils.nullIfEmpty
 import javax.inject.Inject
 
 class FavoriteListResponseConverterImpl @Inject constructor() : FavoriteListResponseConverter {
@@ -35,7 +36,7 @@ class FavoriteListResponseConverterImpl @Inject constructor() : FavoriteListResp
     private fun convertFavorite(it: FavoriteResponse, type: FavoriteType): Favorite = Favorite(
             it.id,
             it.name,
-            it.nameRu,
+            it.nameRu.nullIfEmpty(),
             it.image.appendHostIfNeed().replace("x64", "original"),
             it.url?.appendHostIfNeed(),
             type)

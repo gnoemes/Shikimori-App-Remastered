@@ -16,6 +16,7 @@ import com.gnoemes.shikimori.entity.similar.presentation.SimilarViewModel
 import com.gnoemes.shikimori.utils.color
 import com.gnoemes.shikimori.utils.colorSpan
 import com.gnoemes.shikimori.utils.getCurrentTheme
+import com.gnoemes.shikimori.utils.nullIfEmpty
 import javax.inject.Inject
 
 class SimilarViewModelConverterImpl @Inject constructor(
@@ -34,7 +35,7 @@ class SimilarViewModelConverterImpl @Inject constructor(
     }
 
     private fun convertAnime(it: AnimeWithStatus, isGuest: Boolean): SimilarViewModel {
-        val name = if (settings.isRussianNaming) it.anime.nameRu ?: it.anime.name else it.anime.name
+        val name = if (settings.isRussianNaming) it.anime.nameRu.nullIfEmpty() ?: it.anime.name else it.anime.name
 
         val builder = SpannableStringBuilder()
 
@@ -98,7 +99,7 @@ class SimilarViewModelConverterImpl @Inject constructor(
     }
 
     private fun convertManga(it: MangaWithStatus, isGuest: Boolean): SimilarViewModel {
-        val name = if (settings.isRussianNaming) it.manga.nameRu ?: it.manga.name else it.manga.name
+        val name = if (settings.isRussianNaming) it.manga.nameRu.nullIfEmpty() ?: it.manga.name else it.manga.name
 
         val builder = SpannableStringBuilder()
 

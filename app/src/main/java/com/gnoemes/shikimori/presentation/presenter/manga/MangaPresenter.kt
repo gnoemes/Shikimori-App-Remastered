@@ -23,6 +23,7 @@ import com.gnoemes.shikimori.presentation.presenter.manga.converter.MangaDetails
 import com.gnoemes.shikimori.presentation.view.manga.MangaView
 import com.gnoemes.shikimori.utils.appendLoadingLogic
 import com.gnoemes.shikimori.utils.applySingleSchedulers
+import com.gnoemes.shikimori.utils.nullIfEmpty
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import javax.inject.Inject
@@ -150,6 +151,6 @@ class MangaPresenter @Inject constructor(
     }
 
     private val title: String
-        get() = if (settingsSource.isRussianNaming) currentManga.nameRu
+        get() = if (settingsSource.isRussianNaming) currentManga.nameRu.nullIfEmpty()
                 ?: currentManga.name else currentManga.name
 }

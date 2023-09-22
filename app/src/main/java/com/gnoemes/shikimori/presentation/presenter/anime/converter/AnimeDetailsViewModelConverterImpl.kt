@@ -45,7 +45,7 @@ class AnimeDetailsViewModelConverterImpl @Inject constructor(
     }
 
     override fun convertInfo(it: AnimeDetails, creators: List<Pair<Person, List<String>>>): DetailsInfoItem {
-        val nameSecond = if (!settings.isRussianNaming) it.nameRu ?: it.name else it.name
+        val nameSecond = if (!settings.isRussianNaming) it.nameRu.nullIfEmpty() ?: it.name else it.name
 
         val tags = mutableListOf<DetailsTagItem>()
 
