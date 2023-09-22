@@ -36,7 +36,7 @@ class VkVideoConverterImpl @Inject constructor() : VkVideoConverter {
         val vkResponse = VkFileResponse(null, null, null, null, null)
 
         if (html != null) {
-            val regex = Regex("\"(url240|url360|url480|url720|url1080)\":\"(.*?)\"")
+            val regex = Regex("\"(url240|url360|url480|url720|url1080)\":\\s?\"(.*?)\"")
             val matches = regex.findAll(html)
 
             matches.map { it.destructured.toList() }.forEach {
