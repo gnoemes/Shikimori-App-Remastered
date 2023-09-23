@@ -14,14 +14,15 @@ data class ShikicinemaTranslationResponse (
         @SerializedName("episode") val episode: Int,
         @SerializedName("kind") private val _kind: String,
         @SerializedName("language") private val language: String,
-        @SerializedName("quality") val _quality: String,
+        @SerializedName("quality") val _quality: String?,
         @SerializedName("author") val author: String?,
-        @SerializedName("watches_count") val watches_count: Long,
+        @SerializedName("watches_count") val watches_count: Long?,
         @SerializedName("uploader") val uploader: String
 ) {
     val quality: TranslationQuality
-        get() = when (_quality.toLowerCase()) {
+        get() = when (_quality?.toLowerCase()) {
             "bd" -> TranslationQuality.BD
+            "dvd" -> TranslationQuality.DVD
             else -> TranslationQuality.TV
         }
 

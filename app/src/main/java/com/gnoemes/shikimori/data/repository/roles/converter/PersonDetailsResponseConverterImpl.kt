@@ -12,6 +12,7 @@ import com.gnoemes.shikimori.entity.roles.domain.PersonDetails
 import com.gnoemes.shikimori.entity.roles.domain.PersonType
 import com.gnoemes.shikimori.entity.roles.domain.Work
 import com.gnoemes.shikimori.utils.appendHostIfNeed
+import com.gnoemes.shikimori.utils.nullIfEmpty
 import javax.inject.Inject
 
 class PersonDetailsResponseConverterImpl @Inject constructor(
@@ -24,7 +25,7 @@ class PersonDetailsResponseConverterImpl @Inject constructor(
     override fun convertResponse(it: PersonDetailsResponse): PersonDetails = PersonDetails(
             it.id,
             it.name,
-            it.nameRu,
+            it.nameRu.nullIfEmpty(),
             it.nameJp,
             imageConverter.convertResponse(it.image),
             it.url.appendHostIfNeed(),

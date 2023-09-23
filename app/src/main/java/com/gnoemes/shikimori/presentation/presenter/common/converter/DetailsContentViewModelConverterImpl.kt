@@ -21,6 +21,7 @@ import com.gnoemes.shikimori.entity.roles.domain.Person
 import com.gnoemes.shikimori.entity.roles.domain.Work
 import com.gnoemes.shikimori.utils.colorSpan
 import com.gnoemes.shikimori.utils.getCurrentTheme
+import com.gnoemes.shikimori.utils.nullIfEmpty
 import javax.inject.Inject
 
 class DetailsContentViewModelConverterImpl @Inject constructor(
@@ -63,7 +64,7 @@ class DetailsContentViewModelConverterImpl @Inject constructor(
 
         val name = when (!settings.isRussianNaming) {
             true -> if (isAnime) it.anime?.name else it.manga?.name
-            else -> if (isAnime) it.anime?.nameRu ?: it.anime?.name else it.manga?.nameRu
+            else -> if (isAnime) it.anime?.nameRu.nullIfEmpty() ?: it.anime?.name else it.manga?.nameRu.nullIfEmpty()
                     ?: it.manga?.name
         }
 
@@ -138,7 +139,7 @@ class DetailsContentViewModelConverterImpl @Inject constructor(
     }
 
     private fun convertPerson(it: Person): ContentItem {
-        val name = if (!settings.isRussianNaming) it.name else it.nameRu ?: it.name
+        val name = if (!settings.isRussianNaming) it.name else it.nameRu.nullIfEmpty() ?: it.name
         return ContentItem(
                 name,
                 it.image,
@@ -148,7 +149,7 @@ class DetailsContentViewModelConverterImpl @Inject constructor(
     }
 
     private fun convertCharacter(it: Character): ContentItem {
-        val name = if (!settings.isRussianNaming) it.name else it.nameRu ?: it.name
+        val name = if (!settings.isRussianNaming) it.name else it.nameRu.nullIfEmpty() ?: it.name
         return ContentItem(
                 name,
                 it.image,
@@ -158,7 +159,7 @@ class DetailsContentViewModelConverterImpl @Inject constructor(
     }
 
     private fun convertManga(it: Manga): ContentItem {
-        val name = if (!settings.isRussianNaming) it.name else it.nameRu ?: it.name
+        val name = if (!settings.isRussianNaming) it.name else it.nameRu.nullIfEmpty() ?: it.name
         val description = SpannableStringBuilder(getLocalizedType(it.type).toUpperCase())
 
         val divider = "  •  ".colorSpan(dividerColor)
@@ -179,7 +180,7 @@ class DetailsContentViewModelConverterImpl @Inject constructor(
     }
 
     private fun convertAnime(it: Anime): ContentItem {
-        val name = if (!settings.isRussianNaming) it.name else it.nameRu ?: it.name
+        val name = if (!settings.isRussianNaming) it.name else it.nameRu.nullIfEmpty() ?: it.name
         val description = SpannableStringBuilder(getLocalizedType(it.type).toUpperCase())
 
         val divider = "  •  ".colorSpan(dividerColor)

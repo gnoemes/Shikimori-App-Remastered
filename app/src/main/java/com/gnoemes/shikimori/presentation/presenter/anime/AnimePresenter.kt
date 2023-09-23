@@ -25,10 +25,7 @@ import com.gnoemes.shikimori.presentation.presenter.common.converter.DetailsCont
 import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResourceProvider
 import com.gnoemes.shikimori.presentation.presenter.details.BaseDetailsPresenter
 import com.gnoemes.shikimori.presentation.view.anime.AnimeView
-import com.gnoemes.shikimori.utils.appendLightLoadingLogic
-import com.gnoemes.shikimori.utils.appendLoadingLogic
-import com.gnoemes.shikimori.utils.applySingleSchedulers
-import com.gnoemes.shikimori.utils.clearAndAddAll
+import com.gnoemes.shikimori.utils.*
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import javax.inject.Inject
@@ -167,7 +164,7 @@ open class AnimePresenter @Inject constructor(
 
         val data = SeriesNavigationData(id,
                 currentAnime.image,
-                currentAnime.nameRu ?: currentAnime.name,
+                currentAnime.nameRu.nullIfEmpty() ?: currentAnime.name,
                 currentAnime.name,
                 currentAnime.userRate?.id,
                 if (currentAnime.status == Status.RELEASED) currentAnime.episodes else currentAnime.episodesAired,
@@ -208,6 +205,6 @@ open class AnimePresenter @Inject constructor(
     }
 
     private val title: String
-        get() = if (settingsSource.isRussianNaming) currentAnime.nameRu
+        get() = if (settingsSource.isRussianNaming) currentAnime.nameRu.nullIfEmpty()
                 ?: currentAnime.name else currentAnime.name
 }

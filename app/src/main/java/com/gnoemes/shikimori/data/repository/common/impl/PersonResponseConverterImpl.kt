@@ -5,6 +5,7 @@ import com.gnoemes.shikimori.data.repository.common.PersonResponseConverter
 import com.gnoemes.shikimori.entity.roles.data.PersonResponse
 import com.gnoemes.shikimori.entity.roles.domain.Person
 import com.gnoemes.shikimori.utils.appendHostIfNeed
+import com.gnoemes.shikimori.utils.nullIfEmpty
 import javax.inject.Inject
 
 class PersonResponseConverterImpl @Inject constructor(
@@ -20,7 +21,7 @@ class PersonResponseConverterImpl @Inject constructor(
 
         return Person(it.id,
                 it.name.trim(),
-                it.nameRu?.trim(),
+                it.nameRu?.trim().nullIfEmpty(),
                 imageConverter.convertResponse(it.image),
                 it.url.appendHostIfNeed()
         )

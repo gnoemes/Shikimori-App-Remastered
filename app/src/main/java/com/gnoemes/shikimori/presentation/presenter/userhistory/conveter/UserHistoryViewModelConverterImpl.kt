@@ -8,6 +8,7 @@ import com.gnoemes.shikimori.entity.user.presentation.UserHistoryHeaderViewModel
 import com.gnoemes.shikimori.entity.user.presentation.UserHistoryViewModel
 import com.gnoemes.shikimori.utils.date.DateTimeConverter
 import com.gnoemes.shikimori.utils.date.DateTimeUtils
+import com.gnoemes.shikimori.utils.nullIfEmpty
 import org.joda.time.*
 import javax.inject.Inject
 
@@ -22,9 +23,9 @@ class UserHistoryViewModelConverterImpl @Inject constructor(
 
     private fun convertHistory(it: UserHistory): UserHistoryViewModel {
         val name = if (it.target is Anime) {
-            if (settings.isRussianNaming) it.target.nameRu ?: it.target.name else it.target.name
+            if (settings.isRussianNaming) it.target.nameRu.nullIfEmpty() ?: it.target.name else it.target.name
         } else  {
-            if (settings.isRussianNaming) (it.target as Manga).nameRu ?: it.target.name else it.target?.linkedName
+            if (settings.isRussianNaming) (it.target as Manga).nameRu.nullIfEmpty() ?: it.target.name else it.target?.linkedName
         }
 
        return UserHistoryViewModel(

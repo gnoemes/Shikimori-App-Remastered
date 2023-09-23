@@ -4,6 +4,7 @@ import com.gnoemes.shikimori.entity.series.data.TrackResponse
 import com.gnoemes.shikimori.entity.series.data.VideoResponse
 import com.gnoemes.shikimori.entity.series.domain.Track
 import com.gnoemes.shikimori.entity.series.domain.Video
+import com.gnoemes.shikimori.entity.series.domain.VideoHosting
 import javax.inject.Inject
 
 class VideoResponseConverterImpl @Inject constructor(
@@ -13,7 +14,9 @@ class VideoResponseConverterImpl @Inject constructor(
             convertVideo(t)
 
     private fun convertVideo(t: VideoResponse): Video {
-        val tracks = t.tracks.map { convertTrack(it) }
+        val tracks = t.tracks.map { convertTrack(it) }.let {
+            if (t.hosting is VideoHosting.KODIK) it.reversed() else it
+        }
         return Video(
                 t.animeId,
                 t.episodeId,

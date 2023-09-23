@@ -5,6 +5,7 @@ import com.gnoemes.shikimori.data.repository.common.ImageResponseConverter
 import com.gnoemes.shikimori.entity.anime.data.AnimeResponse
 import com.gnoemes.shikimori.entity.anime.domain.Anime
 import com.gnoemes.shikimori.utils.appendHostIfNeed
+import com.gnoemes.shikimori.utils.nullIfEmpty
 import javax.inject.Inject
 
 class AnimeResponseConverterImpl @Inject constructor(
@@ -20,7 +21,7 @@ class AnimeResponseConverterImpl @Inject constructor(
         return Anime(
                 response.id,
                 response.name.trim(),
-                response.nameRu?.trim(),
+                response.nameRu?.trim().nullIfEmpty(),
                 imageConverter.convertResponse(response.image),
                 response.url.appendHostIfNeed(),
                 response.type,

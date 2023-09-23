@@ -27,7 +27,10 @@ class SeriesRepositoryImpl @Inject constructor(
         private val syncSource: AnimeRateSyncDbSource,
         private val vkConverter: VkVideoConverter,
         private val sovetRomanticaConverter: SovetRomanticaVideoConverter,
-        private val okConverter: OkVideoConverter
+        private val okConverter: OkVideoConverter,
+        private val myviConverter: MyviVideoConverter,
+        private val allVideoConverter: AllVideoVideoConverter,
+        private val animeJoyConverter: AnimeJoyVideoConverter
 ) : SeriesRepository {
 
     override fun getEpisodes(id: Long, name: String, alternative: Boolean): Single<List<Episode>> =
@@ -63,21 +66,26 @@ class SeriesRepositoryImpl @Inject constructor(
                     }
 
     override fun getVideo(payload: TranslationVideo, alternative: Boolean): Single<Video> =
-            if (payload.videoHosting is VideoHosting.VK) getVkFiles(payload)
-            else if (payload.videoHosting is VideoHosting.OK) getOkFiles(payload)
-            else (if (alternative) source.getVideoAlternative(payload.videoId, payload.animeId, payload.episodeIndex.toLong(), tokenSource.getToken())
-            else source.getVideo(
-                    payload.animeId,
-                    payload.episodeIndex,
-                    if (payload.videoId == Constants.NO_ID) "" else payload.videoId.toString(),
-                    payload.language,
-                    payload.type,
-                    payload.authorSimple,
-                    payload.videoHosting.synonymType,
-                    payload.webPlayerUrl
-            ))
-                    .map(videoConverter)
-                    .flatMap { if (it.hosting is VideoHosting.SOVET_ROMANTICA) getSovetRomanticaFiles(it) else Single.just(it) }
+            when (payload.videoHosting) {
+                is VideoHosting.VK -> getVkFiles(payload)
+                is VideoHosting.OK -> getOkFiles(payload)
+                is VideoHosting.MYVI -> getMyviFiles(payload)
+                is VideoHosting.ALLVIDEO -> getAllVideoFiles(payload)
+                is VideoHosting.ANIMEJOY -> getAnimeJoyFiles(payload)
+                else -> (if (alternative) source.getVideoAlternative(payload.videoId, payload.animeId, payload.episodeIndex.toLong(), tokenSource.getToken())
+                    else source.getVideo(
+                            payload.animeId,
+                            payload.episodeIndex,
+                            if (payload.videoId == Constants.NO_ID) "" else payload.videoId.toString(),
+                            payload.language,
+                            payload.type,
+                            payload.authorSimple,
+                            payload.videoHosting.synonymType,
+                            payload.webPlayerUrl
+                    ))
+                        .map(videoConverter)
+                        .flatMap { if (it.hosting is VideoHosting.SOVET_ROMANTICA) getSovetRomanticaFiles(it) else Single.just(it) }
+            }
 
     private fun getVkFiles(video: TranslationVideo): Single<Video> =
             if (video.webPlayerUrl == null) Single.just(vkConverter.parsePlaylists(null)).map { vkConverter.convertTracks(video, it) }
@@ -90,6 +98,24 @@ class SeriesRepositoryImpl @Inject constructor(
             else api.getPlayerHtml(video.webPlayerUrl).map {
                 okConverter.parsePlaylists(it.string())
             }.map { okConverter.convertTracks(video, it) }
+
+    private fun getMyviFiles(video: TranslationVideo): Single<Video> =
+            if (video.webPlayerUrl == null) Single.just(myviConverter.parsePlaylist(null)).map { myviConverter.convertTracks(video, it) }
+            else api.getPlayerHtml(video.webPlayerUrl).map {
+                myviConverter.parsePlaylist(it.string())
+            }.map { myviConverter.convertTracks(video, it) }
+
+    private fun getAllVideoFiles(video: TranslationVideo): Single<Video> =
+            if (video.webPlayerUrl == null) Single.just(allVideoConverter.parsePlaylists(null)).map { allVideoConverter.convertTracks(video, it) }
+            else api.getPlayerHtml(video.webPlayerUrl).map {
+                allVideoConverter.parsePlaylists(it.string())
+            }.map { allVideoConverter.convertTracks(video, it) }
+
+    private fun getAnimeJoyFiles(video: TranslationVideo): Single<Video> =
+            if (video.webPlayerUrl == null) Single.just(animeJoyConverter.parsePlaylists(null)).map { animeJoyConverter.convertTracks(video, it) }
+            else Single.just(animeJoyConverter.parsePlaylists(video.webPlayerUrl)).map {
+                animeJoyConverter.convertTracks(video, it)
+            }
 
     private fun getSovetRomanticaFiles(video: Video): Single<Video> =
             api.getSovetRomanticaVideoFiles(video.tracks[0].url)
