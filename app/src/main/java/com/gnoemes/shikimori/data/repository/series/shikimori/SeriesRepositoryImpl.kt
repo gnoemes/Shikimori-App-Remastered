@@ -63,21 +63,23 @@ class SeriesRepositoryImpl @Inject constructor(
                     }
 
     override fun getVideo(payload: TranslationVideo, alternative: Boolean): Single<Video> =
-            if (payload.videoHosting is VideoHosting.VK) getVkFiles(payload)
-            else if (payload.videoHosting is VideoHosting.OK) getOkFiles(payload)
-            else (if (alternative) source.getVideoAlternative(payload.videoId, payload.animeId, payload.episodeIndex.toLong(), tokenSource.getToken())
-            else source.getVideo(
-                    payload.animeId,
-                    payload.episodeIndex,
-                    if (payload.videoId == Constants.NO_ID) "" else payload.videoId.toString(),
-                    payload.language,
-                    payload.type,
-                    payload.authorSimple,
-                    payload.videoHosting.synonymType,
-                    payload.webPlayerUrl
-            ))
-                    .map(videoConverter)
-                    .flatMap { if (it.hosting is VideoHosting.SOVET_ROMANTICA) getSovetRomanticaFiles(it) else Single.just(it) }
+            when (payload.videoHosting) {
+                is VideoHosting.VK -> getVkFiles(payload)
+                is VideoHosting.OK -> getOkFiles(payload)
+                else -> (if (alternative) source.getVideoAlternative(payload.videoId, payload.animeId, payload.episodeIndex.toLong(), tokenSource.getToken())
+                    else source.getVideo(
+                            payload.animeId,
+                            payload.episodeIndex,
+                            if (payload.videoId == Constants.NO_ID) "" else payload.videoId.toString(),
+                            payload.language,
+                            payload.type,
+                            payload.authorSimple,
+                            payload.videoHosting.synonymType,
+                            payload.webPlayerUrl
+                    ))
+                        .map(videoConverter)
+                        .flatMap { if (it.hosting is VideoHosting.SOVET_ROMANTICA) getSovetRomanticaFiles(it) else Single.just(it) }
+            }
 
     private fun getVkFiles(video: TranslationVideo): Single<Video> =
             if (video.webPlayerUrl == null) Single.just(vkConverter.parsePlaylists(null)).map { vkConverter.convertTracks(video, it) }
