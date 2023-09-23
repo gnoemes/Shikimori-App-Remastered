@@ -29,7 +29,8 @@ class SeriesRepositoryImpl @Inject constructor(
         private val sovetRomanticaConverter: SovetRomanticaVideoConverter,
         private val okConverter: OkVideoConverter,
         private val myviConverter: MyviVideoConverter,
-        private val allVideoConverter: AllVideoVideoConverter
+        private val allVideoConverter: AllVideoVideoConverter,
+        private val animeJoyConverter: AnimeJoyVideoConverter
 ) : SeriesRepository {
 
     override fun getEpisodes(id: Long, name: String, alternative: Boolean): Single<List<Episode>> =
@@ -70,6 +71,7 @@ class SeriesRepositoryImpl @Inject constructor(
                 is VideoHosting.OK -> getOkFiles(payload)
                 is VideoHosting.MYVI -> getMyviFiles(payload)
                 is VideoHosting.ALLVIDEO -> getAllVideoFiles(payload)
+                is VideoHosting.ANIMEJOY -> getAnimeJoyFiles(payload)
                 else -> (if (alternative) source.getVideoAlternative(payload.videoId, payload.animeId, payload.episodeIndex.toLong(), tokenSource.getToken())
                     else source.getVideo(
                             payload.animeId,
@@ -108,6 +110,12 @@ class SeriesRepositoryImpl @Inject constructor(
             else api.getPlayerHtml(video.webPlayerUrl).map {
                 allVideoConverter.parsePlaylists(it.string())
             }.map { allVideoConverter.convertTracks(video, it) }
+
+    private fun getAnimeJoyFiles(video: TranslationVideo): Single<Video> =
+            if (video.webPlayerUrl == null) Single.just(animeJoyConverter.parsePlaylists(null)).map { animeJoyConverter.convertTracks(video, it) }
+            else Single.just(animeJoyConverter.parsePlaylists(video.webPlayerUrl)).map {
+                animeJoyConverter.convertTracks(video, it)
+            }
 
     private fun getSovetRomanticaFiles(video: Video): Single<Video> =
             api.getSovetRomanticaVideoFiles(video.tracks[0].url)
