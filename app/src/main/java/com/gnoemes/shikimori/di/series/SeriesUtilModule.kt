@@ -50,6 +50,10 @@ interface SeriesUtilModule {
 
     @Binds
     @Reusable
+    fun bindAllVideoConverter(converter: AllVideoVideoConverterImpl): AllVideoVideoConverter
+
+    @Binds
+    @Reusable
     fun bindParsingConverter(converter: DocumentParsingConverterImpl): DocumentParsingConverter
 
 }
