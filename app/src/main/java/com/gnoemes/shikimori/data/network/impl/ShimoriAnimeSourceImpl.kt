@@ -1,6 +1,9 @@
 package com.gnoemes.shikimori.data.network.impl
 
-import com.gnoemes.shikimori.data.network.*
+import com.gnoemes.shikimori.data.network.AnimeSource
+import com.gnoemes.shikimori.data.network.ShikicinemaVideoApi
+import com.gnoemes.shikimori.data.network.ShimoriVideoApi
+import com.gnoemes.shikimori.data.network.VideoApi
 import com.gnoemes.shikimori.entity.series.data.EpisodeResponse
 import com.gnoemes.shikimori.entity.series.data.TranslationResponse
 import com.gnoemes.shikimori.entity.series.data.VideoResponse
@@ -12,8 +15,7 @@ import kotlin.random.Random
 class ShimoriAnimeSourceImpl @Inject constructor(
         private val api: VideoApi,
         private val shimoriApi: ShimoriVideoApi,
-        private val shikicinemaVideoApi: ShikicinemaVideoApi,
-        private val animeApi: AnimeApi
+        private val shikicinemaVideoApi: ShikicinemaVideoApi
 ) : AnimeSource {
 
     override fun getEpisodes(id: Long, name: String): Single<List<EpisodeResponse>> {
@@ -92,9 +94,9 @@ class ShimoriAnimeSourceImpl @Inject constructor(
     }
 
     override fun getEpisodesShikicinema(id: Long): Single<List<EpisodeResponse>> {
-        return animeApi.getDetails(id)
+        return shikicinemaVideoApi.getEpisodes(id)
                 .map { response ->
-                    (0..response.episodesAired).map {
+                    (0..response.length).map {
                         EpisodeResponse(
                                 it.toLong(),
                                 it,
