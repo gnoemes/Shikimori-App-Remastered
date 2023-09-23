@@ -1,10 +1,7 @@
 package com.gnoemes.shikimori.di.series
 
 import android.content.Context
-import com.gnoemes.shikimori.data.network.AnimeSource
-import com.gnoemes.shikimori.data.network.ShikicinemaVideoApi
-import com.gnoemes.shikimori.data.network.ShimoriVideoApi
-import com.gnoemes.shikimori.data.network.VideoApi
+import com.gnoemes.shikimori.data.network.*
 import com.gnoemes.shikimori.data.network.impl.ShimoriAnimeSourceImpl
 import dagger.Module
 import dagger.Provides
@@ -15,7 +12,7 @@ class SeriesAnimeModule {
 
     @Provides
     @Reusable
-    fun provideAnimeSource(context: Context, videoApi: VideoApi, shimoriVideoApi : ShimoriVideoApi, shikicinemaVideoApi: ShikicinemaVideoApi) : AnimeSource {
-      return  ShimoriAnimeSourceImpl(videoApi, shimoriVideoApi, shikicinemaVideoApi)
+    fun provideAnimeSource(context: Context, videoApi: VideoApi, shimoriVideoApi : ShimoriVideoApi, shikicinemaVideoApi: ShikicinemaVideoApi, animeApi: AnimeApi) : AnimeSource {
+      return  ShimoriAnimeSourceImpl(videoApi, shimoriVideoApi, shikicinemaVideoApi, animeApi)
     }
 }
