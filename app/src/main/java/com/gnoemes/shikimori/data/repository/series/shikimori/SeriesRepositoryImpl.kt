@@ -26,7 +26,6 @@ class SeriesRepositoryImpl @Inject constructor(
         private val episodeSource: EpisodeDbSource,
         private val syncSource: AnimeRateSyncDbSource,
         private val vkConverter: VkVideoConverter,
-        private val sovetRomanticaConverter: SovetRomanticaVideoConverter,
         private val okConverter: OkVideoConverter,
         private val myviConverter: MyviVideoConverter,
         private val allVideoConverter: AllVideoVideoConverter,
@@ -84,7 +83,6 @@ class SeriesRepositoryImpl @Inject constructor(
                             payload.webPlayerUrl
                     ))
                         .map(videoConverter)
-                        .flatMap { if (it.hosting is VideoHosting.SOVET_ROMANTICA) getSovetRomanticaFiles(it) else Single.just(it) }
             }
 
     private fun getVkFiles(video: TranslationVideo): Single<Video> =
@@ -116,10 +114,6 @@ class SeriesRepositoryImpl @Inject constructor(
             else Single.just(animeJoyConverter.parsePlaylists(video.webPlayerUrl)).map {
                 animeJoyConverter.convertTracks(video, it)
             }
-
-    private fun getSovetRomanticaFiles(video: Video): Single<Video> =
-            api.getSovetRomanticaVideoFiles(video.tracks[0].url)
-                    .map { sovetRomanticaConverter.convertTracks(video, it) }
 
     override fun getTopic(animeId: Long, episodeId: Int): Single<Long> =
             topicApi.getAnimeEpisodeTopic(animeId, episodeId)
