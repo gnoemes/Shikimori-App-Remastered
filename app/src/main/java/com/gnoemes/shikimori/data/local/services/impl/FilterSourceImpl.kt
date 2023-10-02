@@ -69,7 +69,6 @@ class FilterSourceImpl @Inject constructor(
                     .zip(AgeRating.values().asSequence().filter { it.rating != AgeRating.NONE.rating }.map { it.rating.toLowerCase() }.toMutableList())
                     .map { (name, value) -> convert(FilterType.AGE_RATING.value, value, name) }
                     .toMutableList()
-                    .apply { removeAt(lastIndex) }
 
     private fun getDurations(): MutableList<FilterItem> =
             getList(R.array.duration)
