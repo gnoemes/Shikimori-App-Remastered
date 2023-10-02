@@ -89,4 +89,8 @@ public enum Genre {
     public String getRussianName() {
         return russianName;
     }
+
+    public boolean hasContentId(boolean isAnime) {
+        return isAnime ? this.animeId != -1 : this.mangaId != -1;
+    }
 }
