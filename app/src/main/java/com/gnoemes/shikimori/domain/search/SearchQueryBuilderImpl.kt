@@ -2,14 +2,16 @@ package com.gnoemes.shikimori.domain.search
 
 import android.text.TextUtils
 import androidx.collection.ArrayMap
+import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.entity.common.domain.FilterItem
 import com.gnoemes.shikimori.entity.common.domain.SearchConstants
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import io.reactivex.Single
 import javax.inject.Inject
 
-//TODO settings for 18+
-class SearchQueryBuilderImpl @Inject constructor() : SearchQueryBuilder {
+class SearchQueryBuilderImpl @Inject constructor(
+        private val settingsSource: SettingsSource
+) : SearchQueryBuilder {
 
     companion object {
         private const val DIVIDER = ","
@@ -24,7 +26,7 @@ class SearchQueryBuilderImpl @Inject constructor() : SearchQueryBuilder {
 
         queryMap[SearchConstants.PAGE] = page.toString()
         queryMap[SearchConstants.LIMIT] = limit.toString()
-        queryMap[SearchConstants.CENSORED] = true.toString()
+        queryMap[SearchConstants.CENSORED] = (!settingsSource.allowR18Content).toString()
 
         return Single.just(queryMap)
     }
@@ -43,7 +45,9 @@ class SearchQueryBuilderImpl @Inject constructor() : SearchQueryBuilder {
             queryMap[SearchConstants.PAGE] = page.toString()
             queryMap[SearchConstants.LIMIT] = limit.toString()
 
+            queryMap[SearchConstants.CENSORED] = (!settingsSource.allowR18Content).toString()
         }
+
         return Single.just(queryMap)
     }
 
@@ -62,6 +66,7 @@ class SearchQueryBuilderImpl @Inject constructor() : SearchQueryBuilder {
             queryMap[SearchConstants.LIMIT] = limit.toString()
 
             queryMap[SearchConstants.RATE] = status.status
+            queryMap[SearchConstants.CENSORED] = (!settingsSource.allowR18Content).toString()
         }
         return Single.just(queryMap)
     }
@@ -77,6 +82,8 @@ class SearchQueryBuilderImpl @Inject constructor() : SearchQueryBuilder {
             queryMap[SearchConstants.FRANCHISE] = franchise
             queryMap[SearchConstants.PAGE] = page.toString()
             queryMap[SearchConstants.LIMIT] = limit.toString()
+
+            queryMap[SearchConstants.CENSORED] = (!settingsSource.allowR18Content).toString()
         }
         return Single.just(queryMap)
     }
@@ -86,7 +93,8 @@ class SearchQueryBuilderImpl @Inject constructor() : SearchQueryBuilder {
         queryMap[SearchConstants.PAGE] = page.toString()
         queryMap[SearchConstants.LIMIT] = limit.toString()
         queryMap[SearchConstants.ORDER] = SearchConstants.ORDER_BY.RANKED.toString()
-        queryMap[SearchConstants.CENSORED] = true.toString()
+
+        queryMap[SearchConstants.CENSORED] = (!settingsSource.allowR18Content).toString()
         return queryMap
     }
 

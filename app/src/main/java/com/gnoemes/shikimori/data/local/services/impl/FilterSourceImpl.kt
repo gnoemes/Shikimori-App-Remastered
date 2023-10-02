@@ -69,7 +69,6 @@ class FilterSourceImpl @Inject constructor(
                     .zip(AgeRating.values().asSequence().filter { it.rating != AgeRating.NONE.rating }.map { it.rating.toLowerCase() }.toMutableList())
                     .map { (name, value) -> convert(FilterType.AGE_RATING.value, value, name) }
                     .toMutableList()
-                    .apply { removeAt(lastIndex) }
 
     private fun getDurations(): MutableList<FilterItem> =
             getList(R.array.duration)
@@ -105,7 +104,7 @@ class FilterSourceImpl @Inject constructor(
             getList(R.array.genres)
                     .zip(getList(R.array.genres_names))
                     .asSequence()
-                    .mapNotNull { pair -> Genre.values().find { it.equalsName(pair.second) }?.let { Pair(pair.first, if (anime) it.animeId else it.mangaId) } }
+                    .mapNotNull { pair -> Genre.values().find { it.equalsName(pair.second) }?.let { if (it.hasContentId(anime)) it else null }?.let { Pair(pair.first, if (anime) it.animeId else it.mangaId) } }
                     .map { (name, value) -> convert(FilterType.GENRE.value, value, name) }
                     .toMutableList()
 
