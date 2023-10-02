@@ -40,14 +40,17 @@ public enum Genre {
     HAREM("harem", "Гарем", 35, 71),
     SLICE_OF_LIFE("slice_of_life", "Повседневность", 36, 54),
     SUPERNATURAL("supernatural", "Сверхъестественное", 37, 48),
-    MILITATY("military", "Военное", 38, 70),
+    MILITARY("military", "Военное", 38, 70),
     POLICE("police", "Полиция", 39, 89),
     PSYCHOLOGICAL("psychological", "Психологический", 40, 67),
     THRILLER("thriller", "Триллер", 41, 81),
     SEINEN("seinen", "Сейнен", 42, 52),
     JOSEI("josei", "Дзёсей", 43, 87),
     GENDER_BENDER("gender_bender", "Смена пола", -1, 74),
-    DOUJINSHI("doujinshi", "Додзинси", -1, 61);
+    DOUJINSHI("doujinshi", "Додзинси", -1, 61),
+    GOURMET("gourmet", "Гурман", 543, 544),
+    WORK_LIFE("work_life", "Работа", 541, 542),
+    EROTICA("erotica", "Эротика", 539, 540);
 
     private final String name;
     private final String russianName;

@@ -41,8 +41,11 @@
     <string name="dementia">Безумие</string>
     <string name="josei">Дзёсей</string>
     <string name="mystery">Детектив</string>
-
-    <!--   NONONONONO 18+ :)  -->
+    <string name="doujinshi">Додзинси</string>
+    <string name="gender_bender">Смена пола</string>
+    <string name="gourmet">Гурман</string>
+    <string name="work_life">Работа</string>
+    <string name="erotica">Эротика</string>
     <string name="hentai">Хентай</string>
     <string name="yaoi">Яой</string>
     <string name="yuri">Юри</string>
@@ -90,6 +93,14 @@
         <item>@string/kids</item>
         <item>@string/cars</item>
         <item>@string/mystery</item>
+        <item>@string/doujinshi</item>
+        <item>@string/gender_bender</item>
+        <item>@string/gourmet</item>
+        <item>@string/work_life</item>
+        <item>@string/erotica</item>
+        <item>@string/hentai</item>
+        <item>@string/yaoi</item>
+        <item>@string/yuri</item>
     </string-array>
 
     <string-array name="genres_names">
@@ -134,6 +145,14 @@
         <item>kids</item>
         <item>cars</item>
         <item>mystery</item>
+        <item>doujinshi</item>
+        <item>gender_bender</item>
+        <item>gourmet</item>
+        <item>work_life</item>
+        <item>erotica</item>
+        <item>hentai</item>
+        <item>yaoi</item>
+        <item>yuri</item>
     </string-array>
 
 </resources>
