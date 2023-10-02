@@ -13,6 +13,8 @@ interface SettingsSource {
 
     var isRussianNaming: Boolean
 
+    var allowR18Content: Boolean;
+
     var isAskForPlayer : Boolean
 
     var isNotificationsEnabled : Boolean
