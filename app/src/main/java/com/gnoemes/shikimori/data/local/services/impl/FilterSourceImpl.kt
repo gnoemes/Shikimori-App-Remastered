@@ -104,7 +104,7 @@ class FilterSourceImpl @Inject constructor(
             getList(R.array.genres)
                     .zip(getList(R.array.genres_names))
                     .asSequence()
-                    .mapNotNull { pair -> Genre.values().find { it.equalsName(pair.second) }?.let { Pair(pair.first, if (anime) it.animeId else it.mangaId) } }
+                    .mapNotNull { pair -> Genre.values().find { it.equalsName(pair.second) }?.let { if (it.hasContentId(anime)) it else null }?.let { Pair(pair.first, if (anime) it.animeId else it.mangaId) } }
                     .map { (name, value) -> convert(FilterType.GENRE.value, value, name) }
                     .toMutableList()
 
