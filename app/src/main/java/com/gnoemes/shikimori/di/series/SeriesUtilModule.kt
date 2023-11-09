@@ -42,18 +42,6 @@ interface SeriesUtilModule {
 
     @Binds
     @Reusable
-    fun bindMyviConverter(converter: MyviVideoConverterImpl): MyviVideoConverter
-
-    @Binds
-    @Reusable
-    fun bindAllVideoConverter(converter: AllVideoVideoConverterImpl): AllVideoVideoConverter
-
-    @Binds
-    @Reusable
-    fun bindAnimeJoyConverter(converter: AnimeJoyVideoConverterImpl): AnimeJoyVideoConverter
-
-    @Binds
-    @Reusable
     fun bindParsingConverter(converter: DocumentParsingConverterImpl): DocumentParsingConverter
 
 }

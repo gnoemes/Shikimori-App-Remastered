@@ -26,10 +26,7 @@ class SeriesRepositoryImpl @Inject constructor(
         private val episodeSource: EpisodeDbSource,
         private val syncSource: AnimeRateSyncDbSource,
         private val vkConverter: VkVideoConverter,
-        private val okConverter: OkVideoConverter,
-        private val myviConverter: MyviVideoConverter,
-        private val allVideoConverter: AllVideoVideoConverter,
-        private val animeJoyConverter: AnimeJoyVideoConverter
+        private val okConverter: OkVideoConverter
 ) : SeriesRepository {
 
     override fun getEpisodes(id: Long, name: String, alternative: Boolean): Single<List<Episode>> =
@@ -68,9 +65,6 @@ class SeriesRepositoryImpl @Inject constructor(
             when (payload.videoHosting) {
                 is VideoHosting.VK -> getVkFiles(payload)
                 is VideoHosting.OK -> getOkFiles(payload)
-                is VideoHosting.MYVI -> getMyviFiles(payload)
-                is VideoHosting.ALLVIDEO -> getAllVideoFiles(payload)
-                is VideoHosting.ANIMEJOY -> getAnimeJoyFiles(payload)
                 else -> (if (alternative) source.getVideoAlternative(payload.videoId, payload.animeId, payload.episodeIndex.toLong(), tokenSource.getToken())
                     else source.getVideo(
                             payload.animeId,
@@ -96,24 +90,6 @@ class SeriesRepositoryImpl @Inject constructor(
             else api.getPlayerHtml(video.webPlayerUrl).map {
                 okConverter.parsePlaylists(it.string())
             }.map { okConverter.convertTracks(video, it) }
-
-    private fun getMyviFiles(video: TranslationVideo): Single<Video> =
-            if (video.webPlayerUrl == null) Single.just(myviConverter.parsePlaylist(null)).map { myviConverter.convertTracks(video, it) }
-            else api.getPlayerHtml(video.webPlayerUrl).map {
-                myviConverter.parsePlaylist(it.string())
-            }.map { myviConverter.convertTracks(video, it) }
-
-    private fun getAllVideoFiles(video: TranslationVideo): Single<Video> =
-            if (video.webPlayerUrl == null) Single.just(allVideoConverter.parsePlaylists(null)).map { allVideoConverter.convertTracks(video, it) }
-            else api.getPlayerHtml(video.webPlayerUrl).map {
-                allVideoConverter.parsePlaylists(it.string())
-            }.map { allVideoConverter.convertTracks(video, it) }
-
-    private fun getAnimeJoyFiles(video: TranslationVideo): Single<Video> =
-            if (video.webPlayerUrl == null) Single.just(animeJoyConverter.parsePlaylists(null)).map { animeJoyConverter.convertTracks(video, it) }
-            else Single.just(animeJoyConverter.parsePlaylists(video.webPlayerUrl)).map {
-                animeJoyConverter.convertTracks(video, it)
-            }
 
     override fun getTopic(animeId: Long, episodeId: Int): Single<Long> =
             topicApi.getAnimeEpisodeTopic(animeId, episodeId)
