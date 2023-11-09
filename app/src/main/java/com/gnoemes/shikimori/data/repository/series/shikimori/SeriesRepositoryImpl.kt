@@ -33,7 +33,7 @@ class SeriesRepositoryImpl @Inject constructor(
 ) : SeriesRepository {
 
     override fun getEpisodes(id: Long, name: String, alternative: Boolean): Single<List<Episode>> =
-            (if (alternative) source.getEpisodesShikicinema(id) else source.getEpisodes(id, name))
+            (if (alternative) source.getEpisodesAlternative(id, name) else source.getEpisodes(id, name))
                     .map { episodes -> episodes.filter { it.index > 0 }.sortedBy { it.index } }
                     .map { episodes ->
                         if (alternative || tokenSource.getToken() != null) episodes
@@ -54,8 +54,8 @@ class SeriesRepositoryImpl @Inject constructor(
                                 .flatMap { syncEpisodes(id, it) }
                     }
 
-    override fun getTranslations(type: TranslationType, animeId: Long, episodeId: Long, name : String, alternative: Boolean, loadLength: Boolean): Single<List<Translation>> =
-            (if (alternative) source.getTranslationsShikicinema(animeId, episodeId, type, loadLength) else source.getTranslations(animeId, name, episodeId, type))
+    override fun getTranslations(type: TranslationType, animeId: Long, episodeId: Long, name : String, alternative: Boolean): Single<List<Translation>> =
+            (if (alternative) source.getTranslationsAlternative(animeId, name, episodeId, type) else source.getTranslations(animeId, name, episodeId, type))
                     .map(translationConverter)
                     .map { translations ->
                         if (alternative || tokenSource.getToken() != null) translations

@@ -105,7 +105,6 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView, RouterPr
                     getDefaultSharedPreferences().putBoolean(SettingsExtras.NEW_VERSION_AVAILABLE, hasUpdate)
                     getDefaultSharedPreferences().putString(SettingsExtras.DONATION_LINK, donationLink)
                     getDefaultSharedPreferences().putString(SettingsExtras.SHIMORI_URL, shimoriUrl)
-                    getDefaultSharedPreferences().putString(SettingsExtras.SHIKICINEMA_URL, Constants.SHIKICINEMA_URL)
                 }.addOnFailureListener { Crashlytics.logException(it) }
     }
 

@@ -52,7 +52,6 @@ object SettingsExtras {
     const val DONATION_LINK = "DONATION_LINK"
 
     const val SHIMORI_URL = "SHIMORI_URL"
-    const val SHIKICINEMA_URL = "SHIKICINEMA_URL"
 
     const val CHRONOLOGY_TYPE = "CHRONOLOGY_TYPE"
     const val SORT_KEY_PART = "rate_sort"

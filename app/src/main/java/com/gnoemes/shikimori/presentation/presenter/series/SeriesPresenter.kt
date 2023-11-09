@@ -104,7 +104,7 @@ class SeriesPresenter @Inject constructor(
             .addToDisposables()
 
     private fun loadTranslations(type: TranslationType, episodeId: Long) = interactor
-            .getTranslations(type, navigationData.animeId, episodeId, navigationData.nameEng, isAlternative, true)
+            .getTranslations(type, navigationData.animeId, episodeId, navigationData.nameEng, isAlternative)
             .doOnSubscribe { viewState.setTranslationType(type) }
             .map { converter.convertTranslations(it, setting) }
 

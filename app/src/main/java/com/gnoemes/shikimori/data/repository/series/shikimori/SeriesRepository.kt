@@ -11,7 +11,7 @@ interface SeriesRepository {
 
     fun getEpisodes(id: Long, name : String, alternative: Boolean): Single<List<Episode>>
 
-    fun getTranslations(type: TranslationType, animeId: Long, episodeId: Long, name : String, alternative: Boolean, loadLength: Boolean): Single<List<Translation>>
+    fun getTranslations(type: TranslationType, animeId: Long, episodeId: Long, name : String, alternative: Boolean): Single<List<Translation>>
 
     fun getVideo(payload: TranslationVideo, alternative: Boolean): Single<Video>
 
