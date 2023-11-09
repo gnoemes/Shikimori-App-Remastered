@@ -55,13 +55,17 @@ class AuthActivity : BaseActivity<AuthPresenter, AuthView>(), AuthView {
 
 
     companion object {
-        private const val SHIKIMORI_PATTERN = "https?://(?:www\\.)?shikimori\\.me/oauth/authorize/(?:.*)"
-        private const val SHIKIMORI_SIGN_UP_URL = "https://shikimori.me/users/sign_up"
-        private const val SHIKIMORI_SIGN_IN_URL = "https://shikimori.me/users/sign_in"
+        private const val SHIKIMORI_PATTERN_OLD =
+            "https?://(?:www\\.)?shikimori\\.me/oauth/authorize/(?:.*)"
+        private const val SHIKIMORI_PATTERN =
+            "https?://(?:www\\.)?shikimori\\.one/oauth/authorize/(?:.*)"
+        private const val SHIKIMORI_SIGN_UP_URL = "https://shikimori.one/users/sign_up"
+        private const val SHIKIMORI_SIGN_IN_URL = "https://shikimori.one/users/sign_in"
 
         private const val ANIME_365_SIGN_IN = "https://smotret-anime.com/users/login"
 
-        fun shikimoriAuth(context: Context?, type: AuthType) = Intent(context, AuthActivity::class.java)
+        fun shikimoriAuth(context: Context?, type: AuthType) =
+            Intent(context, AuthActivity::class.java)
                 .apply { putExtra(AppExtras.ARGUMENT_AUTH_TYPE, type) }
 
         fun anime365Auth(context: Context?) = Intent(context, AuthActivity::class.java)
@@ -128,7 +132,10 @@ class AuthActivity : BaseActivity<AuthPresenter, AuthView>(), AuthView {
         }
 
         @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-        override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+        override fun shouldOverrideUrlLoading(
+            view: WebView?,
+            request: WebResourceRequest?
+        ): Boolean {
             interceptCode(request?.url?.toString())
             return false
         }
@@ -147,13 +154,20 @@ class AuthActivity : BaseActivity<AuthPresenter, AuthView>(), AuthView {
         }
 
         private fun interceptCode(url: String?) {
-            val matcher = Pattern.compile(SHIKIMORI_PATTERN).matcher(url)
-            if (matcher.find()) {
+            val matcherFixed = Pattern.compile(SHIKIMORI_PATTERN).matcher(url)
+            val matcherOld = Pattern.compile(SHIKIMORI_PATTERN_OLD).matcher(url)
+            val matcher = when {
+                matcherFixed.find() -> matcherFixed
+                matcherOld.find() -> matcherOld
+                else -> null
+            }
+            if (matcher != null) {
                 val authCode =
-                        if (matcher.group().isNullOrEmpty()) ""
-                        else url!!.substring(
-                                url.lastIndexOf("/"))
-                                .replaceFirst("/", "")
+                    if (matcher.group().isNullOrEmpty()) ""
+                    else url!!.substring(
+                        url.lastIndexOf("/")
+                    )
+                        .replaceFirst("/", "")
                 presenter.onAuthCodeReceived(authCode)
 
                 webView.gone()
@@ -201,7 +215,11 @@ class AuthActivity : BaseActivity<AuthPresenter, AuthView>(), AuthView {
                     }
                 } else {
                     //TODO remove, add js interface
-                    Toast.makeText(applicationContext, "Авторизация на вашей версии Android временно не возможна", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        applicationContext,
+                        "Авторизация на вашей версии Android временно не возможна",
+                        Toast.LENGTH_LONG
+                    ).show()
                     onBackPressed()
                 }
                 webView.gone()
@@ -213,11 +231,11 @@ class AuthActivity : BaseActivity<AuthPresenter, AuthView>(), AuthView {
             val matcher = Pattern.compile("\\{.*\\}").matcher(html)
             if (matcher.find()) {
                 val code = matcher
-                        .group()
-                        .replace("\\", "")
-                        .split("\"")
-                        .takeLast(2)
-                        .firstOrNull()
+                    .group()
+                    .replace("\\", "")
+                    .split("\"")
+                    .takeLast(2)
+                    .firstOrNull()
 
                 if (!code.isNullOrBlank()) onSuccess(code)
             }
@@ -225,8 +243,12 @@ class AuthActivity : BaseActivity<AuthPresenter, AuthView>(), AuthView {
 
         private fun onSuccess(code: String) {
             getSharedPreferences("user_preferences", Context.MODE_PRIVATE)
-                    .putString(SettingsExtras.ANIME_365_TOKEN, code)
-            Toast.makeText(applicationContext, R.string.settings_anime_365_success, Toast.LENGTH_LONG).show()
+                .putString(SettingsExtras.ANIME_365_TOKEN, code)
+            Toast.makeText(
+                applicationContext,
+                R.string.settings_anime_365_success,
+                Toast.LENGTH_LONG
+            ).show()
             onBackPressed()
         }
     }
