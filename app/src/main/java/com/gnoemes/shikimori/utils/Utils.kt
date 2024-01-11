@@ -14,6 +14,7 @@ object Utils {
             "www.myvi.top", "www.myvi.tv", "myvi.top", "myvi.tv" -> VideoHosting.MYVI()
             "csst.online", "www.csst.online", "fsst.online", "www.fsst.online", "secvideo1.online", "www.secvideo1.online" -> VideoHosting.ALLVIDEO()
             "animejoy.ru" -> VideoHosting.ANIMEJOY()
+            "dzen.ru" -> VideoHosting.DZEN()
             "video.sibnet.ru", "sibnet", "sibnet.ru" -> VideoHosting.SIBNET()
             "sovetromantica.com", "sovetromantica" -> VideoHosting.SOVET_ROMANTICA()
             "smotretanime.ru", "smotretanime", "smotret-anime.online", "smotret-anime.com" -> VideoHosting.SMOTRET_ANIME()
@@ -24,7 +25,7 @@ object Utils {
 
     fun isHostingSupports(hosting: VideoHosting): Boolean {
         return when (hosting) {
-            is VideoHosting.SIBNET, is VideoHosting.VK, is VideoHosting.SMOTRET_ANIME, is VideoHosting.SOVET_ROMANTICA, is VideoHosting.KODIK, is VideoHosting.OK, is VideoHosting.MYVI, is VideoHosting.ALLVIDEO, is VideoHosting.ANIMEJOY -> true
+            is VideoHosting.SIBNET, is VideoHosting.VK, is VideoHosting.SMOTRET_ANIME, is VideoHosting.SOVET_ROMANTICA, is VideoHosting.KODIK, is VideoHosting.OK, is VideoHosting.MYVI, is VideoHosting.ALLVIDEO, is VideoHosting.ANIMEJOY, is VideoHosting.DZEN -> true
             else -> false
         }
     }
