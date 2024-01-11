@@ -44,6 +44,12 @@ sealed class VideoHosting : Parcelable {
     ) : VideoHosting()
 
     @Parcelize
+    data class NUUM(
+            override val type: String = "nuum",
+            override val synonymType: String = "nuum.ru"
+    ) : VideoHosting()
+
+    @Parcelize
     data class KODIK(
             override val type: String = "aniqit",
             override val synonymType: String = "aniqit.com"
