@@ -3,6 +3,7 @@ package com.gnoemes.shikimori.data.network
 import com.gnoemes.shikimori.entity.series.data.*
 import io.reactivex.Single
 import okhttp3.ResponseBody
+import retrofit2.Response
 import retrofit2.http.*
 
 interface VideoApi {
@@ -41,6 +42,9 @@ interface VideoApi {
     @Headers("Accept: text/html")
     @GET
     fun getPlayerHtml(@Url playerUrl: String) : Single<ResponseBody>
+
+    @GET("https://my.mail.ru/+/video/meta/{videoId}")
+    fun getMailRuVideoMeta(@Path("videoId") videoId: String) : Single<Response<MailRuVideosResponse>>
 
     @GET("/api/anime/alternative/translation/{id}")
     fun getVideoAlternative(

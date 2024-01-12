@@ -50,6 +50,12 @@ sealed class VideoHosting : Parcelable {
     ) : VideoHosting()
 
     @Parcelize
+    data class MAILRU(
+            override val type: String = "mail.ru",
+            override val synonymType: String = "mail.ru"
+    ) : VideoHosting()
+
+    @Parcelize
     data class KODIK(
             override val type: String = "aniqit",
             override val synonymType: String = "aniqit.com"

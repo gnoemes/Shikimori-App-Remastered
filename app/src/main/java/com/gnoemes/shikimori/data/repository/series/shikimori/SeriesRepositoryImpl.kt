@@ -26,7 +26,8 @@ class SeriesRepositoryImpl @Inject constructor(
         private val episodeSource: EpisodeDbSource,
         private val syncSource: AnimeRateSyncDbSource,
         private val vkConverter: VkVideoConverter,
-        private val okConverter: OkVideoConverter
+        private val okConverter: OkVideoConverter,
+        private val mailRuVideoConverter: MailRuVideoConverter
 ) : SeriesRepository {
 
     override fun getEpisodes(id: Long, name: String, alternative: Boolean): Single<List<Episode>> =
@@ -65,6 +66,7 @@ class SeriesRepositoryImpl @Inject constructor(
             when (payload.videoHosting) {
                 is VideoHosting.VK -> getVkFiles(payload)
                 is VideoHosting.OK -> getOkFiles(payload)
+                is VideoHosting.MAILRU -> getMailRuFiles(payload)
                 else -> (if (alternative) source.getVideoAlternative(payload.videoId, payload.animeId, payload.episodeIndex.toLong(), tokenSource.getToken())
                     else source.getVideo(
                             payload.animeId,
@@ -90,6 +92,16 @@ class SeriesRepositoryImpl @Inject constructor(
             else api.getPlayerHtml(video.webPlayerUrl).map {
                 okConverter.parsePlaylists(it.string())
             }.map { okConverter.convertTracks(video, it) }
+
+    private fun getMailRuFiles(video: TranslationVideo): Single<Video>{
+        val videoId = mailRuVideoConverter.parseVideoId(video.webPlayerUrl)
+
+        return if (video.webPlayerUrl == null || videoId == null) Single.just(mailRuVideoConverter.parsePlaylists(null)).map { mailRuVideoConverter.convertTracks(video, it) }
+        else api.getMailRuVideoMeta(videoId)
+                .map { mailRuVideoConverter.saveCookies(it.raw()); it }
+                .map { mailRuVideoConverter.parsePlaylists(it.body()) }
+                .map { mailRuVideoConverter.convertTracks(video, it) }
+    }
 
     override fun getTopic(animeId: Long, episodeId: Int): Single<Long> =
             topicApi.getAnimeEpisodeTopic(animeId, episodeId)
