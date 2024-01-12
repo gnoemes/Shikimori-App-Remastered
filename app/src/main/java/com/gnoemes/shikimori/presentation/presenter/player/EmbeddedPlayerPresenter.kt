@@ -114,7 +114,7 @@ class EmbeddedPlayerPresenter @Inject constructor(
             updateControls()
         } else loadTranslations(navigationData.payload.type, currentEpisode.toLong()).map { translations ->
             val translation = translations.find {
-                if (it.author.isNotEmpty()) it.author == payload.author && it.hosting == payload.videoHosting
+                if (payload.author.isNotEmpty()) it.author == payload.author && it.hosting == payload.videoHosting
                 else it.author.isEmpty() && it.hosting == payload.videoHosting
             }
 
