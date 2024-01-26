@@ -10,7 +10,7 @@ interface MailRuVideoConverter {
 
     fun convertTracks(it : TranslationVideo, videos: List<MailRuVideoResponse>) : Video
 
-    fun parseVideoId(embedUrl: String?): String?
+    fun parseVideoMetaUrl(html: String?): String?
 
     fun parsePlaylists(videosMetadata: MailRuVideosResponse?): List<MailRuVideoResponse>
 

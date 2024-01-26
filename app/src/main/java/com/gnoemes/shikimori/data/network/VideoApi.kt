@@ -43,8 +43,8 @@ interface VideoApi {
     @GET
     fun getPlayerHtml(@Url playerUrl: String) : Single<ResponseBody>
 
-    @GET("https://my.mail.ru/+/video/meta/{videoId}")
-    fun getMailRuVideoMeta(@Path("videoId") videoId: String) : Single<Response<MailRuVideosResponse>>
+    @GET
+    fun getMailRuVideoMeta(@Url videoMetaUrl: String) : Single<Response<MailRuVideosResponse>>
 
     @GET("/api/anime/alternative/translation/{id}")
     fun getVideoAlternative(

@@ -93,15 +93,15 @@ class SeriesRepositoryImpl @Inject constructor(
                 okConverter.parsePlaylists(it.string())
             }.map { okConverter.convertTracks(video, it) }
 
-    private fun getMailRuFiles(video: TranslationVideo): Single<Video>{
-        val videoId = mailRuVideoConverter.parseVideoId(video.webPlayerUrl)
-
-        return if (video.webPlayerUrl == null || videoId == null) Single.just(mailRuVideoConverter.parsePlaylists(null)).map { mailRuVideoConverter.convertTracks(video, it) }
-        else api.getMailRuVideoMeta(videoId)
+    private fun getMailRuFiles(video: TranslationVideo): Single<Video> =
+        if (video.webPlayerUrl == null) Single.just(mailRuVideoConverter.parsePlaylists(null)).map { mailRuVideoConverter.convertTracks(video, it) }
+        else api.getPlayerHtml(video.webPlayerUrl)
+                .map { mailRuVideoConverter.parseVideoMetaUrl(it.string()) }
+                .flatMap { api.getMailRuVideoMeta(it) }
                 .map { mailRuVideoConverter.saveCookies(it.raw()); it }
                 .map { mailRuVideoConverter.parsePlaylists(it.body()) }
                 .map { mailRuVideoConverter.convertTracks(video, it) }
-    }
+
 
     override fun getTopic(animeId: Long, episodeId: Int): Single<Long> =
             topicApi.getAnimeEpisodeTopic(animeId, episodeId)
