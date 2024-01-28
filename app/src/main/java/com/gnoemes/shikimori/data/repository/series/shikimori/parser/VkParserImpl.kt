@@ -11,7 +11,7 @@ class VkParserImpl @Inject constructor() : VkParser {
             Video(video.animeId, video.episodeIndex.toLong(), video.webPlayerUrl!!, video.videoHosting, tracks, null, null)
 
     override fun tracks(html: String?): List<Track> {
-        if (html == null) return emptyList()
+        if (html.isNullOrEmpty()) return emptyList()
 
         val regex = Regex("\"(url240|url360|url480|url720|url1080)\":\\s?\"(.*?)\"")
         val matches = regex.findAll(html)

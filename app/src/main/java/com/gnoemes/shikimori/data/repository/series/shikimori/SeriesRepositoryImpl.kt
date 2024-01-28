@@ -84,7 +84,7 @@ class SeriesRepositoryImpl @Inject constructor(
             }
 
     private fun getVkFiles(video: TranslationVideo): Single<Video> =
-            if (video.webPlayerUrl == null) Single.just(vkParser.tracks(null)).map { vkParser.video(video, it) }
+            if (video.webPlayerUrl == null) Single.just(vkParser.video(video, emptyList()))
             else api.getPlayerHtml(video.webPlayerUrl)
                     .map { vkParser.tracks(it.string()) }
                     .map { vkParser.video(video, it) }
