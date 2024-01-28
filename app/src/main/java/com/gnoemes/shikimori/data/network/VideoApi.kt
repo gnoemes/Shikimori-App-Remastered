@@ -43,8 +43,15 @@ interface VideoApi {
     @GET
     fun getPlayerHtml(@Url playerUrl: String) : Single<ResponseBody>
 
+    @Headers("Accept: text/plain")
+    @GET
+    fun getTextResponse(@Url playerUrl: String) : Single<ResponseBody>
+
     @GET
     fun getMailRuVideoMeta(@Url videoMetaUrl: String) : Single<Response<MailRuVideosResponse>>
+
+    @GET
+    fun getNuumStreamsMetadata(@Url metadataUrl: String) : Single<Response<NuumStreamsMetadataResponse>>
 
     @GET("/api/anime/alternative/translation/{id}")
     fun getVideoAlternative(

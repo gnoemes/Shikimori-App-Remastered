@@ -47,6 +47,10 @@ interface SeriesUtilModule {
 
     @Binds
     @Reusable
+    fun bindNuumParser(parser: NuumParserImpl): NuumParser
+
+    @Binds
+    @Reusable
     fun bindParsingConverter(converter: DocumentParsingConverterImpl): DocumentParsingConverter
 
 }

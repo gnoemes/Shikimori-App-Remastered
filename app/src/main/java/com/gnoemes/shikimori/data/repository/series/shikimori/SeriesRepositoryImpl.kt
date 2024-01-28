@@ -7,6 +7,7 @@ import com.gnoemes.shikimori.data.network.TopicApi
 import com.gnoemes.shikimori.data.network.VideoApi
 import com.gnoemes.shikimori.data.repository.series.shikimori.converter.*
 import com.gnoemes.shikimori.data.repository.series.shikimori.parser.MailRuParser
+import com.gnoemes.shikimori.data.repository.series.shikimori.parser.NuumParser
 import com.gnoemes.shikimori.data.repository.series.shikimori.parser.OkParser
 import com.gnoemes.shikimori.data.repository.series.shikimori.parser.VkParser
 import com.gnoemes.shikimori.data.repository.series.smotretanime.Anime365TokenSource
@@ -30,7 +31,8 @@ class SeriesRepositoryImpl @Inject constructor(
         private val syncSource: AnimeRateSyncDbSource,
         private val vkParser: VkParser,
         private val okParser: OkParser,
-        private val mailRuParser: MailRuParser
+        private val mailRuParser: MailRuParser,
+        private val nuumParser: NuumParser
 ) : SeriesRepository {
 
     override fun getEpisodes(id: Long, name: String, alternative: Boolean): Single<List<Episode>> =
@@ -70,6 +72,7 @@ class SeriesRepositoryImpl @Inject constructor(
                 is VideoHosting.VK -> getVkFiles(payload)
                 is VideoHosting.OK -> getOkFiles(payload)
                 is VideoHosting.MAILRU -> getMailRuFiles(payload)
+                is VideoHosting.NUUM -> getNuumFiles(payload)
                 else -> (if (alternative) source.getVideoAlternative(payload.videoId, payload.animeId, payload.episodeIndex.toLong(), tokenSource.getToken())
                     else source.getVideo(
                             payload.animeId,
@@ -105,6 +108,13 @@ class SeriesRepositoryImpl @Inject constructor(
                 .map { mailRuParser.tracks(it.body()) }
                 .map { mailRuParser.video(video, it) }
 
+    private fun getNuumFiles(video: TranslationVideo): Single<Video> =
+            if (video.webPlayerUrl == null) Single.just(nuumParser.video(video, emptyList()))
+            else api.getNuumStreamsMetadata(nuumParser.getMetadataUrl(video.webPlayerUrl))
+                    .map { nuumParser.getMasterPlaylistUrl(it.body()) }
+                    .flatMap { api.getTextResponse(it) }
+                    .map { nuumParser.tracks(it.string()) }
+                    .map { nuumParser.video(video, it) }
 
     override fun getTopic(animeId: Long, episodeId: Int): Single<Long> =
             topicApi.getAnimeEpisodeTopic(animeId, episodeId)

@@ -57,5 +57,7 @@ ext.versions = [
 
         multidex          : '2.0.1',
         slidr             : '2.1.0',
-        subscaleImage     : '3.10.0'
+        subscaleImage     : '3.10.0',
+
+        m3u8Parser        : '0.27'
 ]
