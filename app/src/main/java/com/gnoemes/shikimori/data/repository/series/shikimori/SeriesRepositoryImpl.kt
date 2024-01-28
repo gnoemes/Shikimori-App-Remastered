@@ -6,6 +6,7 @@ import com.gnoemes.shikimori.data.network.AnimeSource
 import com.gnoemes.shikimori.data.network.TopicApi
 import com.gnoemes.shikimori.data.network.VideoApi
 import com.gnoemes.shikimori.data.repository.series.shikimori.converter.*
+import com.gnoemes.shikimori.data.repository.series.shikimori.parser.OkParser
 import com.gnoemes.shikimori.data.repository.series.shikimori.parser.VkParser
 import com.gnoemes.shikimori.data.repository.series.smotretanime.Anime365TokenSource
 import com.gnoemes.shikimori.entity.app.domain.Constants
@@ -27,7 +28,7 @@ class SeriesRepositoryImpl @Inject constructor(
         private val episodeSource: EpisodeDbSource,
         private val syncSource: AnimeRateSyncDbSource,
         private val vkParser: VkParser,
-        private val okConverter: OkVideoConverter,
+        private val okParser: OkParser,
         private val mailRuVideoConverter: MailRuVideoConverter
 ) : SeriesRepository {
 
@@ -89,10 +90,10 @@ class SeriesRepositoryImpl @Inject constructor(
                     .map { vkParser.video(video, it) }
 
     private fun getOkFiles(video: TranslationVideo): Single<Video> =
-            if (video.webPlayerUrl == null) Single.just(okConverter.parsePlaylists(null)).map { okConverter.convertTracks(video, it) }
-            else api.getPlayerHtml(video.webPlayerUrl).map {
-                okConverter.parsePlaylists(it.string())
-            }.map { okConverter.convertTracks(video, it) }
+            if (video.webPlayerUrl == null) Single.just(okParser.video(video, emptyList()))
+            else api.getPlayerHtml(video.webPlayerUrl)
+                    .map { okParser.tracks(it.string()) }
+                    .map { okParser.video(video, it) }
 
     private fun getMailRuFiles(video: TranslationVideo): Single<Video> =
         if (video.webPlayerUrl == null) Single.just(mailRuVideoConverter.parsePlaylists(null)).map { mailRuVideoConverter.convertTracks(video, it) }

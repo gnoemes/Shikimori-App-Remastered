@@ -1,6 +1,8 @@
 package com.gnoemes.shikimori.di.series
 
 import com.gnoemes.shikimori.data.repository.series.shikimori.converter.*
+import com.gnoemes.shikimori.data.repository.series.shikimori.parser.OkParser
+import com.gnoemes.shikimori.data.repository.series.shikimori.parser.OkParserImpl
 import com.gnoemes.shikimori.data.repository.series.shikimori.parser.VkParser
 import com.gnoemes.shikimori.data.repository.series.shikimori.parser.VkParserImpl
 import com.gnoemes.shikimori.presentation.presenter.series.episodes.converter.EpisodeViewModelConverter
@@ -40,7 +42,7 @@ interface SeriesUtilModule {
 
     @Binds
     @Reusable
-    fun bindOkConverter(converter: OkVideoConverterImpl): OkVideoConverter
+    fun bindOkParser(parser: OkParserImpl): OkParser
 
     @Binds
     @Reusable
