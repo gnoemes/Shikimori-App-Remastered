@@ -1,10 +1,7 @@
 package com.gnoemes.shikimori.di.series
 
 import com.gnoemes.shikimori.data.repository.series.shikimori.converter.*
-import com.gnoemes.shikimori.data.repository.series.shikimori.parser.OkParser
-import com.gnoemes.shikimori.data.repository.series.shikimori.parser.OkParserImpl
-import com.gnoemes.shikimori.data.repository.series.shikimori.parser.VkParser
-import com.gnoemes.shikimori.data.repository.series.shikimori.parser.VkParserImpl
+import com.gnoemes.shikimori.data.repository.series.shikimori.parser.*
 import com.gnoemes.shikimori.presentation.presenter.series.episodes.converter.EpisodeViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.series.episodes.converter.EpisodeViewModelConverterImpl
 import com.gnoemes.shikimori.presentation.presenter.series.translations.converter.TranslationsViewModelConverter
@@ -46,7 +43,7 @@ interface SeriesUtilModule {
 
     @Binds
     @Reusable
-    fun bindMailRuConverter(converter: MailRuVideoConverterImpl): MailRuVideoConverter
+    fun bindMailRuParser(parser: MailRuParserImpl): MailRuParser
 
     @Binds
     @Reusable
