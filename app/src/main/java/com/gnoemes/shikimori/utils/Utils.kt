@@ -17,7 +17,7 @@ object Utils {
             "animejoy.ru" -> VideoHosting.ANIMEJOY()
             "dzen.ru" -> VideoHosting.DZEN()
             "nuum.ru" -> VideoHosting.NUUM()
-            "my.mail.ru", "videoapi.my.mail.ru" -> VideoHosting.MAILRU()
+            "my.mail.ru", "videoapi.my.mail.ru", "mail.ru" -> VideoHosting.MAILRU()
             "video.sibnet.ru", "sibnet", "sibnet.ru" -> VideoHosting.SIBNET()
             "sovetromantica.com", "sovetromantica" -> VideoHosting.SOVET_ROMANTICA()
             "smotretanime.ru", "smotretanime", "smotret-anime.online", "smotret-anime.com" -> VideoHosting.SMOTRET_ANIME()
