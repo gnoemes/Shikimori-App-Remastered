@@ -2,10 +2,10 @@ package com.gnoemes.shikimori.data.repository.series.shikimori.parser
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.gnoemes.shikimori.entity.series.data.NuumStreamsMetadataResponse
 import com.gnoemes.shikimori.entity.series.domain.Track
 import com.gnoemes.shikimori.entity.series.domain.Video
 import com.gnoemes.shikimori.entity.series.presentation.TranslationVideo
-import com.shimori.dto.nuum.NuumStreamsMetadataResponse
 import javax.inject.Inject
 import io.lindstrom.m3u8.parser.MasterPlaylistParser
 

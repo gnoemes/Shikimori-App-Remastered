@@ -1,9 +1,9 @@
 package com.gnoemes.shikimori.data.repository.series.shikimori.parser
 
+import com.gnoemes.shikimori.entity.series.data.NuumStreamsMetadataResponse
 import com.gnoemes.shikimori.entity.series.domain.Track
 import com.gnoemes.shikimori.entity.series.domain.Video
 import com.gnoemes.shikimori.entity.series.presentation.TranslationVideo
-import com.shimori.dto.nuum.NuumStreamsMetadataResponse
 
 interface NuumParser {
 
