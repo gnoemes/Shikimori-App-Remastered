@@ -5,6 +5,7 @@ import com.gnoemes.shikimori.data.repository.common.PersonResponseConverter
 import com.gnoemes.shikimori.data.repository.common.RolesResponseConverter
 import com.gnoemes.shikimori.entity.common.data.RolesResponse
 import com.gnoemes.shikimori.entity.common.domain.Roles
+import com.gnoemes.shikimori.utils.nullIfEmpty
 import javax.inject.Inject
 
 class RolesResponseConverterImpl @Inject constructor(
@@ -16,7 +17,7 @@ class RolesResponseConverterImpl @Inject constructor(
         val characters = t
                 .asSequence()
                 .filter { it.character != null }
-                .sortedBy { it.character?.nameRu }
+                .sortedBy { it.character?.nameRu.nullIfEmpty() ?: it.character?.name }
                 .sortedByDescending { it.roles.contains("Main") }
                 .mapNotNull { characterConverter.convertResponse(it.character) }
                 .toList()

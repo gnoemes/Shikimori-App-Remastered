@@ -14,6 +14,7 @@ import com.gnoemes.shikimori.utils.colorSpan
 import com.gnoemes.shikimori.utils.date.DateTimeConverter
 import com.gnoemes.shikimori.utils.date.DateTimeUtils
 import com.gnoemes.shikimori.utils.getCurrentTheme
+import com.gnoemes.shikimori.utils.nullIfEmpty
 import com.gnoemes.shikimori.utils.toHoursAndMinutesAndSeconds
 import org.joda.time.*
 import javax.inject.Inject
@@ -93,7 +94,7 @@ class CalendarViewModelConverterImpl @Inject constructor(
 
         return CalendarAnimeItem(
                 item.anime.id,
-                if (!settings.isRussianNaming) item.anime.name else item.anime.nameRu
+                if (!settings.isRussianNaming) item.anime.name else item.anime.nameRu.nullIfEmpty()
                         ?: item.anime.name,
                 item.anime.image,
                 item.anime.type != AnimeType.MOVIE && item.nextEpisode == item.anime.episodes,

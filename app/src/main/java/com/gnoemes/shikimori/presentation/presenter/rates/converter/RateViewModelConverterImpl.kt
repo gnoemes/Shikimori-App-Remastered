@@ -17,6 +17,7 @@ import com.gnoemes.shikimori.entity.rates.presentation.RateViewModel
 import com.gnoemes.shikimori.utils.color
 import com.gnoemes.shikimori.utils.colorSpan
 import com.gnoemes.shikimori.utils.getCurrentTheme
+import com.gnoemes.shikimori.utils.nullIfEmpty
 import javax.inject.Inject
 
 class RateViewModelConverterImpl @Inject constructor(
@@ -45,10 +46,10 @@ class RateViewModelConverterImpl @Inject constructor(
         val contentId = if (isAnime()) it.anime!!.id else it.manga!!.id
         val image = if (isAnime()) it.anime!!.image else it.manga!!.image
         val name = if (isAnime()) {
-            if (settings.isRussianNaming) it.anime!!.nameRu ?: it.anime.name
+            if (settings.isRussianNaming) it.anime!!.nameRu.nullIfEmpty() ?: it.anime.name
             else it.anime!!.name
         } else {
-            if (settings.isRussianNaming) it.manga!!.nameRu ?: it.manga.name
+            if (settings.isRussianNaming) it.manga!!.nameRu.nullIfEmpty() ?: it.manga.name
             else it.manga!!.name
         }
 

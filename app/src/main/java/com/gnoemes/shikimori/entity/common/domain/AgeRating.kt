@@ -2,7 +2,7 @@ package com.gnoemes.shikimori.entity.common.domain
 
 import com.google.gson.annotations.SerializedName
 
-enum class AgeRating(val rating: String) {
+enum class AgeRating(val rating: String, val isR18: Boolean = false) {
     @SerializedName("none")
     NONE("none"),
     @SerializedName("g")
@@ -16,5 +16,5 @@ enum class AgeRating(val rating: String) {
     @SerializedName("r_plus")
     R_PLUS("r_plus"),
     @SerializedName("rx")
-    RX("rx")
+    RX("rx", true)
 }

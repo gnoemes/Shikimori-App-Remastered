@@ -29,6 +29,10 @@ class SettingsSourceImpl @Inject constructor(
         get() = prefs.getBoolean(SettingsExtras.IS_ROMADZI_NAMING, true)
         set(value) = prefs.putBoolean(SettingsExtras.IS_ROMADZI_NAMING, value)
 
+    override var allowR18Content: Boolean
+        get() = prefs.getBoolean(SettingsExtras.ALLOW_R18_CONTENT, false)
+        set(value) = prefs.putBoolean(SettingsExtras.ALLOW_R18_CONTENT, value)
+
     override var isAskForPlayer: Boolean
         get() = prefs.getBoolean(SettingsExtras.IS_REMEMBER_PLAYER, true)
         set(value) = prefs.putBoolean(SettingsExtras.IS_REMEMBER_PLAYER, value)

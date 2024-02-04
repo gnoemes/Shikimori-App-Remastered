@@ -39,7 +39,7 @@ class MangaDetailsViewModelConverterImpl @Inject constructor(
     }
 
     override fun convertInfo(it: MangaDetails, creators: List<Pair<Person, List<String>>>): DetailsInfoItem {
-        val nameSecond = if (!settings.isRussianNaming) it.nameRu ?: it.name else it.name
+        val nameSecond = if (!settings.isRussianNaming) it.nameRu.nullIfEmpty() ?: it.name else it.name
 
         val tags = mutableListOf<DetailsTagItem>()
 
@@ -98,7 +98,7 @@ class MangaDetailsViewModelConverterImpl @Inject constructor(
                 .filter { it.second.contains("Art") || it.second.contains("Story") || it.second.contains("Story & Art") }
                 .sortedByDescending { it.second.contains("Story") }
                 .forEach {
-                    val description = it.first.nameRu ?: it.first.name
+                    val description = it.first.nameRu.nullIfEmpty() ?: it.first.name
                     val category = it.second.firstOrNull { role -> role == "Art" || role == "Story" || role == "Story & Art" }?.let { convertRole(it) }
                     if (category != null) {
                         info.add(InfoClickableItem(it.first.id, it.first.linkedType, description, it.first.image, category))
@@ -169,6 +169,7 @@ class MangaDetailsViewModelConverterImpl @Inject constructor(
             MangaType.MANHUA -> context.getString(R.string.type_manhua_translatable)
             MangaType.MANHWA -> context.getString(R.string.type_manhwa_translatable)
             MangaType.NOVEL -> context.getString(R.string.type_novel_translatable)
+            MangaType.LIGHT_NOVEL -> context.getString(R.string.type_novel_translatable)
             MangaType.ONE_SHOT -> context.getString(R.string.type_one_shot_translatable)
             MangaType.UNKNOWN -> ""
         }

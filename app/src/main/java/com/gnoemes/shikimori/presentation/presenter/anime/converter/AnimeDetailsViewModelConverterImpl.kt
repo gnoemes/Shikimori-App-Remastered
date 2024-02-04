@@ -45,7 +45,7 @@ class AnimeDetailsViewModelConverterImpl @Inject constructor(
     }
 
     override fun convertInfo(it: AnimeDetails, creators: List<Pair<Person, List<String>>>): DetailsInfoItem {
-        val nameSecond = if (!settings.isRussianNaming) it.nameRu ?: it.name else it.name
+        val nameSecond = if (!settings.isRussianNaming) it.nameRu.nullIfEmpty() ?: it.name else it.name
 
         val tags = mutableListOf<DetailsTagItem>()
 
@@ -155,7 +155,7 @@ class AnimeDetailsViewModelConverterImpl @Inject constructor(
                 .filter { it.second.contains("Director") || it.second.contains("Original Creator") }
                 .sortedByDescending { it.second.contains("Director") }
                 .forEach {
-                    val description = it.first.nameRu ?: it.first.name
+                    val description = it.first.nameRu.nullIfEmpty() ?: it.first.name
                     val category = it.second.firstOrNull { role -> role == "Director" || role == "Original Creator" }?.let { convertRole(it) }
                     if (category != null) {
                         info.add(InfoClickableItem(it.first.id, it.first.linkedType, description, it.first.image, category))

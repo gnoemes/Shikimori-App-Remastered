@@ -180,6 +180,7 @@ class TopicFragment : BasePaginationFragment<CommentViewModel, TopicPresenter, T
                             MangaType.MANHUA -> context.getString(R.string.type_manhua_translatable)
                             MangaType.MANHWA -> context.getString(R.string.type_manhwa_translatable)
                             MangaType.NOVEL -> context.getString(R.string.type_novel_translatable)
+                            MangaType.LIGHT_NOVEL -> context.getString(R.string.type_novel_translatable)
                             MangaType.ONE_SHOT -> context.getString(R.string.type_one_shot_translatable)
                             MangaType.UNKNOWN -> ""
                         }

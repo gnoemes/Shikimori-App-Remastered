@@ -79,8 +79,6 @@ class SeriesPresenter @Inject constructor(
         super.onViewReattached()
 
         if (isWatchSession) {
-            episodeId = null
-            episode = null
             loadWithEpisode()
         }
     }
@@ -317,7 +315,7 @@ class SeriesPresenter @Inject constructor(
     //Only embedded player can process object payload
     //Others o uses urls
     private fun openVideo(payload: TranslationVideo, playerType: PlayerType) {
-        if (playerType == PlayerType.EMBEDDED) openPlayer(playerType, EmbeddedPlayerNavigationData(navigationData.name, navigationData.rateId, items.firstOrNull()!!.episodesSize, payload))
+        if (playerType == PlayerType.EMBEDDED) openPlayer(playerType, EmbeddedPlayerNavigationData(navigationData.name, navigationData.rateId, items.firstOrNull()!!.episodesSize, payload, navigationData.nameEng, isAlternative))
         else if (playerType == PlayerType.WEB && payload.webPlayerUrl != null) openPlayer(playerType, payload.webPlayerUrl)
         else getVideoAndExecute(payload) { selectedPlayer = playerType; showQualityChooser(it.tracks) }
     }
@@ -351,7 +349,7 @@ class SeriesPresenter @Inject constructor(
     }
 
     private fun getVideoAndExecute(payload: TranslationVideo, onSubscribe: (Video) -> Unit) {
-        interactor.getVideo(payload, isAlternative)
+        interactor.getVideo(payload, payload.videoHosting is VideoHosting.SMOTRET_ANIME)
                 .appendLoadingLogic(viewState)
                 .subscribe(onSubscribe::invoke, this::processErrors)
                 .addToDisposables()

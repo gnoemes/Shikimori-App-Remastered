@@ -11,6 +11,7 @@ import com.gnoemes.shikimori.entity.anime.domain.AnimeVideo
 import com.gnoemes.shikimori.entity.user.data.StatisticResponse
 import com.gnoemes.shikimori.entity.user.domain.Statistic
 import com.gnoemes.shikimori.utils.appendHostIfNeed
+import com.gnoemes.shikimori.utils.nullIfEmpty
 import javax.inject.Inject
 
 class AnimeDetailsResponseConverterImpl @Inject constructor(
@@ -23,7 +24,7 @@ class AnimeDetailsResponseConverterImpl @Inject constructor(
     override fun apply(t: AnimeDetailsResponse): AnimeDetails = AnimeDetails(
             t.id,
             t.name,
-            t.nameRu,
+            t.nameRu.nullIfEmpty(),
             imageConverter.convertResponse(t.image),
             t.url.appendHostIfNeed(),
             t.type,

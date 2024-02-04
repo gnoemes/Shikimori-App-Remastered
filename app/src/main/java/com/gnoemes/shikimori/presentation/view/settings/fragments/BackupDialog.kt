@@ -324,6 +324,7 @@ class BackupDialog : BaseBottomSheetDialogFragment() {
                 ThemeExtras.NIGHT_THEME_START_KEY to 0,
                 ThemeExtras.NIGHT_THEME_KEY to 0,
                 SettingsExtras.IS_ROMADZI_NAMING to true,
+                SettingsExtras.ALLOW_R18_CONTENT to false,
                 SettingsExtras.DOWNLOAD_FOLDER to "",
                 SettingsExtras.IS_AUTO_INCREMENT to true,
                 SettingsExtras.IS_AUTO_STATUS to true,

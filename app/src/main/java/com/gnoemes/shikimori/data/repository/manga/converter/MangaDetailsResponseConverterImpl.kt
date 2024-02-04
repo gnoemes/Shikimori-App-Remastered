@@ -8,6 +8,7 @@ import com.gnoemes.shikimori.entity.manga.domain.MangaDetails
 import com.gnoemes.shikimori.entity.user.data.StatisticResponse
 import com.gnoemes.shikimori.entity.user.domain.Statistic
 import com.gnoemes.shikimori.utils.appendHostIfNeed
+import com.gnoemes.shikimori.utils.nullIfEmpty
 import javax.inject.Inject
 
 class MangaDetailsResponseConverterImpl @Inject constructor(
@@ -19,7 +20,7 @@ class MangaDetailsResponseConverterImpl @Inject constructor(
     override fun apply(t: MangaDetailsResponse): MangaDetails = MangaDetails(
             t.id,
             t.name,
-            t.nameRu,
+            t.nameRu.nullIfEmpty(),
             imageConverter.convertResponse(t.image),
             t.url.appendHostIfNeed(),
             t.type,
