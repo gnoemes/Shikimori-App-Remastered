@@ -1,7 +1,7 @@
 package com.gnoemes.shikimori.entity.app.domain
 
 object Constants {
-    const val AUTH_URL = "https://shikimori.me/oauth/authorize?" +
+    const val AUTH_URL = "https://shikimori.one/oauth/authorize?" +
             "client_id=f6f9ff07c7fdca024c5d3395f6dc8d9e802bda458a213d5c382d5d6e69bc77b0&" +
             "redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code"
 
@@ -29,7 +29,7 @@ object Constants {
 
     const val FOUR_PDA_THEME_URL = "https://4pda.ru/forum/index.php?showtopic=903970"
 
-    const val APP_CLUB_URL = "https://shikimori.me/clubs/1609"
+    const val APP_CLUB_URL = "https://shikimori.one/clubs/1609"
 
     const val SHIMORI_URL = "https://shimori-us.herokuapp.com/"
 
