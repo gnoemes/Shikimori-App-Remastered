@@ -98,7 +98,7 @@ class TranslationsViewModelConverterImpl @Inject constructor(
                 t.episodeId,
                 //TODO multi language
                 "russian",
-                t.author,
+                if (t.author.contains(unknownAuthor)) "" else t.author,
                 simpleAuthor,
                 t.type,
                 t.hosting,

@@ -20,6 +20,7 @@ import com.gnoemes.shikimori.entity.manga.domain.MangaWithStatus
 import com.gnoemes.shikimori.utils.color
 import com.gnoemes.shikimori.utils.colorSpan
 import com.gnoemes.shikimori.utils.getCurrentTheme
+import com.gnoemes.shikimori.utils.nullIfEmpty
 import javax.inject.Inject
 
 class ChronologyViewModelConverterImpl @Inject constructor(
@@ -40,7 +41,7 @@ class ChronologyViewModelConverterImpl @Inject constructor(
     }
 
     private fun convertAnime(it: AnimeWithStatus, relationType: RelationType, isGuest: Boolean): ChronologyViewModel {
-        val name = if (settings.isRussianNaming) it.anime.nameRu ?: it.anime.name else it.anime.name
+        val name = if (settings.isRussianNaming) it.anime.nameRu.nullIfEmpty() ?: it.anime.name else it.anime.name
         val relation = getRelation(relationType)
 
         val builder = SpannableStringBuilder()
@@ -119,7 +120,7 @@ class ChronologyViewModelConverterImpl @Inject constructor(
             }
 
     private fun convertManga(it: MangaWithStatus, relationType: RelationType, isGuest: Boolean): ChronologyViewModel {
-        val name = if (settings.isRussianNaming) it.manga.nameRu ?: it.manga.name else it.manga.name
+        val name = if (settings.isRussianNaming) it.manga.nameRu.nullIfEmpty() ?: it.manga.name else it.manga.name
         val relation = getRelation(relationType)
 
         val builder = SpannableStringBuilder()

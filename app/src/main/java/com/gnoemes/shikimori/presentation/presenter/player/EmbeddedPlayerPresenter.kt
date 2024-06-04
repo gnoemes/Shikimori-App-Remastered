@@ -6,9 +6,7 @@ import com.gnoemes.shikimori.domain.series.SeriesInteractor
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.app.domain.HttpStatusCode
 import com.gnoemes.shikimori.entity.app.domain.exceptions.ServiceCodeException
-import com.gnoemes.shikimori.entity.series.domain.EpisodeChanges
-import com.gnoemes.shikimori.entity.series.domain.Video
-import com.gnoemes.shikimori.entity.series.domain.VideoHosting
+import com.gnoemes.shikimori.entity.series.domain.*
 import com.gnoemes.shikimori.entity.series.presentation.EmbeddedPlayerNavigationData
 import com.gnoemes.shikimori.entity.series.presentation.TranslationVideo
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
@@ -51,6 +49,10 @@ class EmbeddedPlayerPresenter @Inject constructor(
                 .addToDisposables()
     }
 
+    private fun loadTranslations(type: TranslationType, episodeId: Long) = interactor
+            .getTranslations(type, animeId, episodeId, navigationData.nameEng, navigationData.isAlternative)
+            .appendLoadingLogic(viewState)
+
     private fun updateVideo(video: Video, needReset: Boolean = true) {
         videos.add(video)
 
@@ -79,11 +81,6 @@ class EmbeddedPlayerPresenter @Inject constructor(
         viewState.enablePrevButton(currentEpisode > 1)
     }
 
-    private fun loadOrUpdateVideo(payload: TranslationVideo) {
-        val video = videos.find { it.episodeId.toInt() == currentEpisode }
-        video?.let { updateVideo(video) } ?: loadVideo(payload)
-    }
-
     private fun setEpisodeWatched() {
         if (!settingsSource.isAutoIncrement) return
         val rateId = navigationData.rateId ?: Constants.NO_ID
@@ -101,16 +98,34 @@ class EmbeddedPlayerPresenter @Inject constructor(
 
     fun loadNextEpisode() {
         currentEpisode += 1
-        payload = payload.copy(videoId = Constants.NO_ID, episodeIndex = currentEpisode)
-        if (currentEpisode <= navigationData.episodesSize) loadOrUpdateVideo(payload)
-        updateControls()
+        loadPrevOrNextEpisode()
     }
 
     fun loadPrevEpisode() {
         currentEpisode -= 1
-        payload = payload.copy(videoId = Constants.NO_ID, episodeIndex = currentEpisode)
-        if (currentEpisode > 0) loadOrUpdateVideo(payload)
-        updateControls()
+        loadPrevOrNextEpisode()
+    }
+
+    private fun loadPrevOrNextEpisode() {
+        val video = videos.find { it.episodeId.toInt() == currentEpisode }
+
+        return if (video != null) {
+            updateVideo(video)
+            updateControls()
+        } else loadTranslations(navigationData.payload.type, currentEpisode.toLong()).map { translations ->
+            val translation = translations.find {
+                if (payload.author.isNotEmpty()) it.author == payload.author && it.hosting == payload.videoHosting
+                else it.author.isEmpty() && it.hosting == payload.videoHosting
+            }
+
+            if (translation != null) {
+                payload = payload.copy(videoId = translation.videoId, episodeIndex = currentEpisode, webPlayerUrl = translation.webPlayerUrl)
+                loadVideo(payload)
+            } else {
+                viewState.showMessage(resourceProvider.translationNotFound)
+            }
+            updateControls()
+        }.subscribe().addToDisposables()
     }
 
     fun onResolutionChanged(newResolution: String) {

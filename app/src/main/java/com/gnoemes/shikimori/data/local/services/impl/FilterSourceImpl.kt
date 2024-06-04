@@ -2,6 +2,7 @@ package com.gnoemes.shikimori.data.local.services.impl
 
 import android.content.Context
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.data.local.services.FilterSource
 import com.gnoemes.shikimori.entity.anime.domain.AnimeType
 import com.gnoemes.shikimori.entity.common.domain.*
@@ -13,7 +14,8 @@ import org.joda.time.DateTime
 import javax.inject.Inject
 
 class FilterSourceImpl @Inject constructor(
-        private val context: Context
+        private val context: Context,
+        private val settingsSource: SettingsSource
 ) : FilterSource {
 
     override fun getAnimeFilters(): List<FilterCategory> = listOf(
@@ -66,10 +68,9 @@ class FilterSourceImpl @Inject constructor(
 
     private fun getAgeRatings(): MutableList<FilterItem> =
             getList(R.array.age_ratings)
-                    .zip(AgeRating.values().asSequence().filter { it.rating != AgeRating.NONE.rating }.map { it.rating.toLowerCase() }.toMutableList())
+                    .zip(AgeRating.values().asSequence().filter { it.rating != AgeRating.NONE.rating }.let { if (!settingsSource.allowR18Content) it.filter { !it.isR18 } else it }.map { it.rating.toLowerCase() }.toMutableList())
                     .map { (name, value) -> convert(FilterType.AGE_RATING.value, value, name) }
                     .toMutableList()
-                    .apply { removeAt(lastIndex) }
 
     private fun getDurations(): MutableList<FilterItem> =
             getList(R.array.duration)
@@ -105,7 +106,7 @@ class FilterSourceImpl @Inject constructor(
             getList(R.array.genres)
                     .zip(getList(R.array.genres_names))
                     .asSequence()
-                    .mapNotNull { pair -> Genre.values().find { it.equalsName(pair.second) }?.let { Pair(pair.first, if (anime) it.animeId else it.mangaId) } }
+                    .mapNotNull { pair -> Genre.values().find { it.equalsName(pair.second) }?.let { if (it.hasContentId(anime)) it else null }?.let { if (!settingsSource.allowR18Content && it.isR18) null else it }?.let { Pair(pair.first, if (anime) it.animeId else it.mangaId) } }
                     .map { (name, value) -> convert(FilterType.GENRE.value, value, name) }
                     .toMutableList()
 

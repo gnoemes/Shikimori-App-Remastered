@@ -11,6 +11,8 @@ enum class MangaType(val type: String) {
     MANHUA("manhua"),
     @SerializedName("novel")
     NOVEL("novel"),
+    @SerializedName("light_novel")
+    LIGHT_NOVEL("light_novel"),
     @SerializedName("one_shot")
     ONE_SHOT("one_shot"),
     @SerializedName("doujin")

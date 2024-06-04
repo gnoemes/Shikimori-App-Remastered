@@ -37,6 +37,7 @@ import com.gnoemes.shikimori.presentation.presenter.rates.converter.RateCountCon
 import com.gnoemes.shikimori.presentation.presenter.rates.converter.RateViewModelConverter
 import com.gnoemes.shikimori.presentation.presenter.rates.provider.RateResourceProvider
 import com.gnoemes.shikimori.presentation.view.rates.RateView
+import com.gnoemes.shikimori.utils.nullIfEmpty
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -354,7 +355,7 @@ class RatePresenter @Inject constructor(
     //TODO manga
     private fun watchOnlineOrOpenList(rate: Rate, settings: TranslationSetting, progress: Int) {
         val name =
-                if (settingsSource.isRussianNaming) rate.anime?.nameRu ?: rate.anime?.name!!
+                if (settingsSource.isRussianNaming) rate.anime?.nameRu.nullIfEmpty() ?: rate.anime?.name!!
                 else rate.anime?.name!!
         val episodesAired = if (rate.anime?.status == Status.RELEASED) rate.anime.episodes else rate.anime?.episodesAired
         val navigationData = SeriesNavigationData(settings.animeId, rate.anime?.image!!, name, rate.anime.name, rate.id, episodesAired!!, progress)
