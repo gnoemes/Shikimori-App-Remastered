@@ -71,3 +71,15 @@
 -keepclassmembernames class kotlinx.** {
     volatile <fields>;
 }
+
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
+}
+
+-keepattributes JavascriptInterface
+-keep public class com.gnoemes.shikimori.presentation.view.player.embedded.EmbeddedPlayerActivity
+-keepclassmembers class com.gnoemes.shikimori.presentation.view.player.embedded.EmbeddedPlayerActivity
+-keep public class * implements com.gnoemes.shikimori.presentation.view.player.embedded.EmbeddedPlayerActivity$AdInterface
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
+}

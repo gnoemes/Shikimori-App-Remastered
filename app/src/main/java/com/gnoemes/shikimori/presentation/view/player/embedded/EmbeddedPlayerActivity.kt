@@ -153,42 +153,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
 
             addJavascriptInterface(AdInterface(), "AdHandler")
 
-            webViewClient = object : WebViewClient() {
-                override fun onPageFinished(view: WebView?, url: String?) {
-                    super.onPageFinished(view, url)
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                        view?.evaluateJavascript(
-                            """
-                            function kodikMessageListener(message) {
-                                console.log(JSON.stringify(message.data));
-                                if (message.data.key == 'kodik_player_advert_ended') {
-                                   AdHandler.removeAd();
-                                }
-                            }
-                            
-                            if (window.addEventListener) {
-                                window.addEventListener('message', kodikMessageListener);
-                            } else {
-                                window.attachEvent('onmessage', kodikMessageListener);
-                            }
-                        """.trimIndent()
-                        ) {}
-                        view?.post { clickAdPlay() }
-                    } else {
-                        this@EmbeddedPlayerActivity.removeAd()
-                    }
-                }
-
-                override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-                    return if ((url.startsWith("http://") || url.startsWith("https://"))) {
-                        view.context.startActivity(
-                            Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                        )
-                        true
-                    } else false
-                }
-            }
+            webViewClient = AdClient()
         }
 
         includedToolbar.gone()
@@ -204,12 +169,48 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         pipView.onClick { enterPip() }
     }
 
+    private inner class AdClient : WebViewClient() {
+        override fun onPageFinished(view: WebView?, url: String?) {
+            super.onPageFinished(view, url)
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                view?.evaluateJavascript(
+                    """
+                            function kodikMessageListener(message) {
+                                console.log(JSON.stringify(message.data));
+                                if (message.data.key == 'kodik_player_advert_ended') {
+                                   AdHandler.removeAd();
+                                }
+                            }
+                            
+                            if (window.addEventListener) {
+                                window.addEventListener('message', kodikMessageListener);
+                            } else {
+                                window.attachEvent('onmessage', kodikMessageListener);
+                            }
+                        """.trimIndent()
+                ) {}
+                view?.post { clickAdPlay() }
+            } else {
+                this@EmbeddedPlayerActivity.removeAd()
+            }
+        }
+
+        override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+            return if ((url.startsWith("http://") || url.startsWith("https://"))) {
+                view.context.startActivity(
+                    Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                )
+                true
+            } else false
+        }
+    }
+
     private fun removeAd() {
         runOnUiThread {
             adView.gone()
             controller.play()
         }
-
     }
 
     private inner class AdInterface() {
