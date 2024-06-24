@@ -5,11 +5,12 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Video(
-        val animeId: Long,
-        val episodeId: Long,
-        val player : String,
-        val hosting: VideoHosting,
-        val tracks: List<Track>,
-        val subAss : String?,
-        val subVtt : String?
+    val animeId: Long,
+    val episodeId: Long,
+    val player: String,
+    val hosting: VideoHosting,
+    val tracks: List<Track>,
+    val adLink: String?,
+    val subAss: String?,
+    val subVtt: String?
 ) : Parcelable

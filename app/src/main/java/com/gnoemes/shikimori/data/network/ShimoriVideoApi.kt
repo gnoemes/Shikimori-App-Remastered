@@ -31,7 +31,7 @@ interface ShimoriVideoApi {
     ): Single<List<ShimoriTranslationResponse>>
 
 
-    @GET("/api/anime/video")
+    @GET("/api/anime/v2/video")
     fun getVideo(
             @Query("id") malId: Long,
             @Query("episode") episode: Int,

@@ -15,5 +15,6 @@ data class TranslationVideo(
         val authorSimple: String,
         val type: TranslationType,
         val videoHosting: VideoHosting,
-        val webPlayerUrl: String?
+        val webPlayerUrl: String?,
+        val adLink : String?
 ) : Parcelable

@@ -3,11 +3,14 @@ package com.gnoemes.shikimori.presentation.view.player.embedded
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.PictureInPictureParams
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.content.res.Configuration
+import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.media.AudioManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
@@ -15,6 +18,10 @@ import android.support.v4.media.session.MediaSessionCompat
 import android.text.SpannableStringBuilder
 import android.util.Log
 import android.view.*
+import android.webkit.JavascriptInterface
+import android.webkit.WebSettings
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.graphics.ColorUtils
@@ -57,15 +64,17 @@ import javax.inject.Inject
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
-class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPlayerView>(), EmbeddedPlayerView {
+
+class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPlayerView>(),
+    EmbeddedPlayerView {
 
     @InjectPresenter
     lateinit var playerPresenter: EmbeddedPlayerPresenter
 
     @ProvidePresenter
     fun providePresenter(): EmbeddedPlayerPresenter =
-            presenterProvider.get()
-                    .apply { navigationData = intent.getParcelableExtra(AppExtras.ARGUMENT_PLAYER_DATA) }
+        presenterProvider.get()
+            .apply { navigationData = intent.getParcelableExtra(AppExtras.ARGUMENT_PLAYER_DATA) }
 
     @Inject
     lateinit var localNavigatorHolder: NavigatorHolder
@@ -117,10 +126,71 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
 
         speedSpinnerView.apply {
             background.tint(color(R.color.player_controls))
-            adapter = ArrayAdapter(this@EmbeddedPlayerActivity, R.layout.item_spinner_player, resources.getStringArray(R.array.player_speed_rates))
+            adapter = ArrayAdapter(
+                this@EmbeddedPlayerActivity,
+                R.layout.item_spinner_player,
+                resources.getStringArray(R.array.player_speed_rates)
+            )
             setOnItemClickListener { _, _, position, _ -> controller.changePlaySpeed(position) }
             setSelection(2, false)
         }
+
+        adView.apply {
+            settings.apply {
+                setAppCacheEnabled(true)
+                cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
+                javaScriptCanOpenWindowsAutomatically = true
+                javaScriptEnabled = true
+                domStorageEnabled = true
+                allowContentAccess = true
+                allowUniversalAccessFromFileURLs = true
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    mediaPlaybackRequiresUserGesture = false
+                }
+                userAgentString =
+                    "Mozilla/5.0 (Linux; Android 4.4; Nexus 5 Build/_BuildID_) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/30.0.0.0 Mobile Safari/537.36"
+            }
+
+            addJavascriptInterface(AdInterface(), "AdHandler")
+
+            webViewClient = object : WebViewClient() {
+                override fun onPageFinished(view: WebView?, url: String?) {
+                    super.onPageFinished(view, url)
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        view?.evaluateJavascript(
+                            """
+                            function kodikMessageListener(message) {
+                                console.log(JSON.stringify(message.data));
+                                if (message.data.key == 'kodik_player_advert_ended') {
+                                   AdHandler.removeAd();
+                                }
+                            }
+                            
+                            if (window.addEventListener) {
+                                window.addEventListener('message', kodikMessageListener);
+                            } else {
+                                window.attachEvent('onmessage', kodikMessageListener);
+                            }
+                        """.trimIndent()
+                        ) {}
+                        view?.post { clickAdPlay() }
+                    } else {
+                        this@EmbeddedPlayerActivity.removeAd()
+                    }
+                }
+
+                override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+                    return if ((url.startsWith("http://") || url.startsWith("https://"))) {
+                        view.context.startActivity(
+                            Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                        )
+                        true
+                    } else false
+                }
+            }
+        }
+
         includedToolbar.gone()
         unlockView.hide()
 
@@ -132,6 +202,42 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         lockView.onClick { controller.lock() }
         unlockView.onClick { controller.unlock() }
         pipView.onClick { enterPip() }
+    }
+
+    private fun removeAd() {
+        runOnUiThread {
+            adView.gone()
+            controller.play()
+        }
+
+    }
+
+    private inner class AdInterface() {
+        @JavascriptInterface
+        fun removeAd() {
+            this@EmbeddedPlayerActivity.removeAd()
+        }
+    }
+
+    private fun clickAdPlay() {
+        val d = MotionEvent.obtain(
+            150L,
+            150L,
+            MotionEvent.ACTION_DOWN,
+            adView.width / 2f,
+            adView.height / 2f,
+            0
+        )
+        adView.dispatchTouchEvent(d)
+        val u = MotionEvent.obtain(
+            150L,
+            150L,
+            MotionEvent.ACTION_UP,
+            adView.width / 2f,
+            adView.height / 2f,
+            0
+        )
+        adView.dispatchTouchEvent(u)
     }
 
     private fun enterPip() {
@@ -306,6 +412,13 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         toolbar.subtitle = subTitle
     }
 
+    override fun showAd(adLink: String) {
+        val iframe =
+            "<html><body style='margin:0;padding:0;'><iframe id='kodik-player' src='$adLink' width='100%' height='100%' frameborder='0' allowfullscreen allow='autoplay *; fullscreen *'></iframe></body></html>"
+        adView.loadData(iframe, "text/html", "utf-8")
+        adView.visible()
+    }
+
     override fun setResolutions(resolutions: List<String>) {
         resolutionSpinnerView.visibleIf { resolutions.isNotEmpty() }
         if (resolutions.isNotEmpty()) {
@@ -331,22 +444,36 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         if (exit) onBackPressed()
     }
 
-    override fun playVideo(it: Track, subtitles: String?, needReset: Boolean, headers: Map<String, String>) {
-        Log.i("PLAYER", "loading: ${it.url}")
-        val factory = DefaultHttpDataSourceFactory("sap", DefaultBandwidthMeter(), Constants.LONG_TIMEOUT * 1000, Constants.LONG_TIMEOUT * 1000, true)
+    override fun playVideo(
+        it: Track,
+        subtitles: String?,
+        needReset: Boolean,
+        headers: Map<String, String>,
+        ad: Boolean
+    ) {
+        val factory = DefaultHttpDataSourceFactory(
+            "sap",
+            DefaultBandwidthMeter(),
+            Constants.LONG_TIMEOUT * 1000,
+            Constants.LONG_TIMEOUT * 1000,
+            true
+        )
         factory.defaultRequestProperties.set(headers)
 
         val source = MediaSourceHelper
-                .withFactory(factory)
-                .apply {
-                    if (it.url.contains("m3u8")) withFormat(VideoFormat.HLS)
-                    else withFormat(VideoFormat.MP4)
-                }
-                .withVideoUrl(it.url)
-                .withSubtitles(subtitles, Format.createTextSampleFormat(null, MimeTypes.TEXT_SSA, Format.NO_VALUE, null))
-                .get()
+            .withFactory(factory)
+            .apply {
+                if (it.url.contains("m3u8")) withFormat(VideoFormat.HLS)
+                else withFormat(VideoFormat.MP4)
+            }
+            .withVideoUrl(it.url)
+            .withSubtitles(
+                subtitles,
+                Format.createTextSampleFormat(null, MimeTypes.TEXT_SSA, Format.NO_VALUE, null)
+            )
+            .get()
 
-        if (needReset) controller.addMediaSource(source)
+        if (needReset) controller.addMediaSource(source, !ad)
         else controller.updateTrack(source)
     }
 
@@ -459,8 +586,8 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
             speedSpinnerView.setSelection(currentSpeed, false)
         }
 
-        fun addMediaSource(source: MediaSource?) {
-            player.playWhenReady = true
+        fun addMediaSource(source: MediaSource?, playWhenReady : Boolean) {
+            player.playWhenReady = playWhenReady
             player.prepare(source)
         }
 
@@ -524,6 +651,10 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
             rewindView.text = bigOffsetText
             seek(-bigOffset)
             hideRewindAfterTimeout()
+        }
+
+        fun play() {
+            player.playWhenReady = true
         }
 
         private fun seek(pos: Long) {

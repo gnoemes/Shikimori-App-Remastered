@@ -15,7 +15,7 @@ import javax.inject.Inject
 class MailRuParserImpl @Inject constructor() : MailRuParser {
 
     override fun video(video: TranslationVideo, tracks: List<Track>): Video =
-            Video(video.animeId, video.episodeIndex.toLong(), video.webPlayerUrl!!, video.videoHosting, tracks, null, null)
+            Video(video.animeId, video.episodeIndex.toLong(), video.webPlayerUrl!!, video.videoHosting, tracks, null,null, null)
 
     override fun parseVideoMetaUrl(html: String?): String? {
         if (html.isNullOrEmpty()) return null

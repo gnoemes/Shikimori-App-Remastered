@@ -9,5 +9,6 @@ data class Translation(
         val hosting: VideoHosting,
         val author: String,
         val episodesSize: Int,
-        val webPlayerUrl : String?
+        val webPlayerUrl : String?,
+        val adLink : String?
 )

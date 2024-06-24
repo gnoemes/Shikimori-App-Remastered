@@ -7,25 +7,26 @@ import com.gnoemes.shikimori.entity.series.domain.Video
 import javax.inject.Inject
 
 class VideoResponseConverterImpl @Inject constructor(
-): VideoResponseConverter {
+) : VideoResponseConverter {
 
     override fun apply(t: VideoResponse): Video =
-            convertVideo(t)
+        convertVideo(t)
 
     private fun convertVideo(t: VideoResponse): Video {
         val tracks = t.tracks.map { convertTrack(it) }
         return Video(
-                t.animeId,
-                t.episodeId,
-                t.player,
-                t.hosting,
-                tracks,
-                t.subAss,
-                t.subVtt
+            t.animeId,
+            t.episodeId,
+            t.player,
+            t.hosting,
+            tracks,
+            t.adLink,
+            t.subAss,
+            t.subVtt
         )
     }
 
     private fun convertTrack(it: TrackResponse): Track =
-            Track(it.quality, it.url)
+        Track(it.quality, it.url)
 
 }

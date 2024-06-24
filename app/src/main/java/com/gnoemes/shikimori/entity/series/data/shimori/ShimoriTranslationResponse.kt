@@ -14,7 +14,8 @@ data class ShimoriTranslationResponse(
         @SerializedName("language") val language: String?,
         @SerializedName("author") val author: String?,
         @SerializedName("quality") private val _quality: String?,
-        @SerializedName("episodesTotal") val episodesTotal: Int?
+        @SerializedName("episodesTotal") val episodesTotal: Int?,
+        @SerializedName("adLink") val adLink : String?
 ) {
     val quality: TranslationQuality
         get() = when (_quality) {

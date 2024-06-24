@@ -13,13 +13,13 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:auto_show="false"
-        app:show_timeout="0"
         app:controller_layout_id="@layout/layout_player_controller"
         app:hide_on_touch="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:show_timeout="0"
         app:shutter_background_color="@android:color/transparent"
         app:use_controller="true" />
 
@@ -100,5 +100,12 @@
         tools:drawableStart="@drawable/ic_brightness"
         tools:text="57%"
         tools:visibility="visible" />
+
+    <WebView
+        android:id="@+id/adView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        tools:visibility="invisible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

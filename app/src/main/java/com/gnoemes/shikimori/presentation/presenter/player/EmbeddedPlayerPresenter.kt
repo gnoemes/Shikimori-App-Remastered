@@ -18,9 +18,9 @@ import javax.inject.Inject
 
 @InjectViewState
 class EmbeddedPlayerPresenter @Inject constructor(
-        private val interactor: SeriesInteractor,
-        private val settingsSource: SettingsSource,
-        private val resourceProvider: EmbeddedPlayerResourceProvider
+    private val interactor: SeriesInteractor,
+    private val settingsSource: SettingsSource,
+    private val resourceProvider: EmbeddedPlayerResourceProvider
 ) : BaseNetworkPresenter<EmbeddedPlayerView>() {
 
     lateinit var navigationData: EmbeddedPlayerNavigationData
@@ -44,36 +44,54 @@ class EmbeddedPlayerPresenter @Inject constructor(
 
     private fun loadVideo(payload: TranslationVideo) {
         interactor.getVideo(payload, payload.videoHosting is VideoHosting.SMOTRET_ANIME)
-                .appendLoadingLogic(viewState)
-                .subscribe({ updateVideo(it) }, this::processLoadVideoErrors)
-                .addToDisposables()
+            .appendLoadingLogic(viewState)
+            .subscribe({ updateVideo(it) }, this::processLoadVideoErrors)
+            .addToDisposables()
     }
 
     private fun loadTranslations(type: TranslationType, episodeId: Long) = interactor
-            .getTranslations(type, animeId, episodeId, navigationData.nameEng, navigationData.isAlternative)
-            .appendLoadingLogic(viewState)
+        .getTranslations(
+            type,
+            animeId,
+            episodeId,
+            navigationData.nameEng,
+            navigationData.isAlternative
+        )
+        .appendLoadingLogic(viewState)
 
     private fun updateVideo(video: Video, needReset: Boolean = true) {
         videos.add(video)
 
         if (!Utils.isHostingSupports(video.hosting)) viewState.showMessage(resourceProvider.hostingErrorMessage)
-        else if (video.tracks.isNotEmpty()) setTrack(video, needReset)
+        else if (video.tracks.isNotEmpty()) checkAd(video, needReset)
         else viewState.showMessage(resourceProvider.playerErrorMessage, true)
     }
 
-    private fun setTrack(video: Video, needReset: Boolean) {
+    private fun checkAd(video: Video, needReset: Boolean) {
         val track = video.tracks.getOrNull(currentTrack)
-        track?.let {
+            ?: return viewState.showMessage(resourceProvider.playerErrorMessage)
+
+        if (video.adLink != null && needReset) {
+            viewState.showAd(video.adLink)
+        }
+
+        setTrack(track, video, needReset, video.adLink != null)
+    }
+
+    private fun setTrack(track: Track, video: Video, needReset: Boolean, ad: Boolean) {
+        track.let {
             viewState.apply {
                 setEpisodeSubtitle(currentEpisode)
-                playVideo(it, video.subAss, needReset, Utils.getRequestHeadersForHosting(video))
-                val resolutions = video.tracks.asSequence().filter { it.quality != "unknown" }.map { it.quality }.toList()
+                playVideo(it, video.subAss, needReset, Utils.getRequestHeadersForHosting(video), ad)
+                val resolutions =
+                    video.tracks.asSequence().filter { it.quality != "unknown" }.map { it.quality }
+                        .toList()
                 setResolutions(resolutions)
                 selectTrack(currentTrack)
             }
             currentTrack = 0
             setEpisodeWatched()
-        } ?: viewState.showMessage(resourceProvider.playerErrorMessage)
+        }
     }
 
     private fun updateControls() {
@@ -85,9 +103,9 @@ class EmbeddedPlayerPresenter @Inject constructor(
         if (!settingsSource.isAutoIncrement) return
         val rateId = navigationData.rateId ?: Constants.NO_ID
         interactor
-                .sendEpisodeChanges(EpisodeChanges.Changes(rateId, animeId, currentEpisode, true))
-                .subscribe({}, this::processErrors)
-                .addToDisposables()
+            .sendEpisodeChanges(EpisodeChanges.Changes(rateId, animeId, currentEpisode, true))
+            .subscribe({}, this::processErrors)
+            .addToDisposables()
     }
 
     private fun processLoadVideoErrors(throwable: Throwable) {
@@ -112,14 +130,21 @@ class EmbeddedPlayerPresenter @Inject constructor(
         return if (video != null) {
             updateVideo(video)
             updateControls()
-        } else loadTranslations(navigationData.payload.type, currentEpisode.toLong()).map { translations ->
+        } else loadTranslations(
+            navigationData.payload.type,
+            currentEpisode.toLong()
+        ).map { translations ->
             val translation = translations.find {
                 if (payload.author.isNotEmpty()) it.author == payload.author && it.hosting == payload.videoHosting
                 else it.author.isEmpty() && it.hosting == payload.videoHosting
             }
 
             if (translation != null) {
-                payload = payload.copy(videoId = translation.videoId, episodeIndex = currentEpisode, webPlayerUrl = translation.webPlayerUrl)
+                payload = payload.copy(
+                    videoId = translation.videoId,
+                    episodeIndex = currentEpisode,
+                    webPlayerUrl = translation.webPlayerUrl
+                )
                 loadVideo(payload)
             } else {
                 viewState.showMessage(resourceProvider.translationNotFound)

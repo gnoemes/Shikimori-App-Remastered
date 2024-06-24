@@ -8,7 +8,7 @@ import javax.inject.Inject
 class VkParserImpl @Inject constructor() : VkParser {
 
     override fun video(video: TranslationVideo, tracks: List<Track>): Video =
-            Video(video.animeId, video.episodeIndex.toLong(), video.webPlayerUrl!!, video.videoHosting, tracks, null, null)
+            Video(video.animeId, video.episodeIndex.toLong(), video.webPlayerUrl!!, video.videoHosting, tracks, null, null, null)
 
     override fun tracks(html: String?): List<Track> {
         if (html.isNullOrEmpty()) return emptyList()

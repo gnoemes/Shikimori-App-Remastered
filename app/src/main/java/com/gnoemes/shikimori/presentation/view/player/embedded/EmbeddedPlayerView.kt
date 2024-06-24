@@ -13,8 +13,16 @@ interface EmbeddedPlayerView : BaseNetworkView {
     fun selectTrack(currentTrack: Int)
     fun setEpisodeSubtitle(currentEpisode: Int)
 
-    fun playVideo(it: Track, subtitles: String?, needReset: Boolean, headers: Map<String, String>)
+    fun playVideo(
+        it: Track,
+        subtitles: String?,
+        needReset: Boolean,
+        headers: Map<String, String>,
+        ad: Boolean
+    )
 
     fun setResolutions(resolutions: List<String>)
+
+    fun showAd(adLink: String)
 
 }
