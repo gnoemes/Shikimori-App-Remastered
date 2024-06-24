@@ -1,12 +1,14 @@
 package com.gnoemes.shikimori.presentation.view.settings.fragments
 
 import android.Manifest
+import android.content.Context
 import android.os.Bundle
 import android.os.Environment
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.files.folderChooser
 import com.afollestad.materialdialogs.list.listItems
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.app.domain.SettingsExtras
 import com.gnoemes.shikimori.entity.rates.domain.RateSwipeAction
 import com.gnoemes.shikimori.utils.preference
@@ -44,6 +46,15 @@ class SettingsGeneralFragment : BaseSettingsFragment() {
                 true
             }
         }
+
+        val authorized = context?.getSharedPreferences("user_preferences", Context.MODE_PRIVATE)
+            ?.getLong(SettingsExtras.USER_ID, Constants.NO_ID).let {
+                it != null && it != Constants.NO_ID
+            }
+
+        preference(SettingsExtras.ALLOW_R18_CONTENT)?.apply {
+            isVisible = authorized
+        }
     }
 
     private fun getRateActionSummary(action: String): String {
@@ -59,9 +70,12 @@ class SettingsGeneralFragment : BaseSettingsFragment() {
 
     private fun checkStoragePermissions(onAccepted: () -> Unit) {
         KotlinPermissions.with(activity!!)
-                .permissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
-                .onAccepted { onAccepted.invoke() }
-                .ask()
+            .permissions(
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            )
+            .onAccepted { onAccepted.invoke() }
+            .ask()
     }
 
     override val preferenceScreen: Int
@@ -70,14 +84,17 @@ class SettingsGeneralFragment : BaseSettingsFragment() {
     private fun updateFolderSummary() {
         val folder = prefs().getString(SettingsExtras.DOWNLOAD_FOLDER, "")
         val summary =
-                if (!folder.isNullOrEmpty()) folder
-                else context!!.getString(R.string.settings_content_download_folder_summary)
+            if (!folder.isNullOrEmpty()) folder
+            else context!!.getString(R.string.settings_content_download_folder_summary)
         preference(SettingsExtras.DOWNLOAD_FOLDER)?.summary = summary
     }
 
     private fun showRateSwipeActionDialog(key: String) {
         MaterialDialog(context!!).show {
-            listItems(R.array.rate_swipe_actions, waitForPositiveButton = false) { dialog, index, text ->
+            listItems(
+                R.array.rate_swipe_actions,
+                waitForPositiveButton = false
+            ) { dialog, index, text ->
                 preference(key)?.summary = text
                 prefs().putString(key, RateSwipeAction.values()[index].name)
             }
@@ -94,10 +111,11 @@ class SettingsGeneralFragment : BaseSettingsFragment() {
 
         MaterialDialog(context!!).show {
             folderChooser(
-                    initialDirectory = initialDirectory,
-                    allowFolderCreation = true,
-                    emptyTextRes = R.string.download_folder_empty,
-                    folderCreationLabel = R.string.download_new_folder)
+                initialDirectory = initialDirectory,
+                allowFolderCreation = true,
+                emptyTextRes = R.string.download_folder_empty,
+                folderCreationLabel = R.string.download_new_folder
+            )
             { dialog, file ->
                 prefs().putString(SettingsExtras.DOWNLOAD_FOLDER, file.absolutePath)
                 updateFolderSummary()
