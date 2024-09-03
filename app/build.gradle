@@ -20,7 +20,7 @@ android {
             versionMajor 0
             versionMinor 8
             versionPatch 7
-            versionBuild 0
+            versionBuild 1
         }
         codeOptions {
             versionCodeType VersionCodeType.AUTO_INCREMENT_ONE_STEP
@@ -117,7 +117,6 @@ dependencies {
 
     implementation "com.google.code.gson:gson:" + versions.gson
     implementation 'net.danlew:android.joda:' + versions.jodaDateTime
-    implementation 'ru.terrakok.cicerone:cicerone:' + versions.cicerone
     implementation 'com.afollestad.material-dialogs:core:' + versions.materialDialogs
     implementation 'com.afollestad.material-dialogs:input:' + versions.materialDialogs
     implementation 'com.afollestad.material-dialogs:files:' + versions.materialDialogs
@@ -125,14 +124,21 @@ dependencies {
     implementation 'com.github.ybq:Android-SpinKit:' + versions.spinKit
     implementation 'com.github.santalu:respinner:' + versions.reSpinner
     implementation 'com.hannesdorfmann:adapterdelegates4:' + versions.adapterDelegate
-    implementation 'com.google.android:flexbox:' + versions.flexbox
-    implementation 'com.infideap.drawerbehavior:drawer-behavior:' + versions.drawerBehavior
     implementation 'com.facebook.shimmer:shimmer:' + versions.shimmer
     implementation 'de.hdodenhof:circleimageview:' + versions.circleImageView
-    implementation 'ru.superjob:kotlin-permissions:' + versions.kotlinPermissions
 
-    implementation 'com.google.android.exoplayer:exoplayer:' + versions.exoplayer
-    implementation 'com.google.android.exoplayer:extension-mediasession:' + versions.exoplayer
+    implementation files("../libs/flexbox-" + versions.flexbox + ".aar")
+    implementation files("../libs/drawer-behavior-" + versions.drawerBehavior + ".aar")
+    implementation files("../libs/kotlin-permissions-" + versions.kotlinPermissions + ".aar")
+    implementation files("../libs/exoplayer-" + versions.exoplayer + ".aar")
+    implementation files("../libs/exoplayer-core-" + versions.exoplayer + ".aar")
+    implementation files("../libs/exoplayer-dash-" + versions.exoplayer + ".aar")
+    implementation files("../libs/exoplayer-hls-" + versions.exoplayer + ".aar")
+    implementation files("../libs/exoplayer-ui-" + versions.exoplayer + ".aar")
+    implementation files("../libs/exoplayer-smoothstreaming-" + versions.exoplayer + ".aar")
+    implementation files("../libs/extension-mediasession-" + versions.exoplayer + ".aar")
+    implementation files("../libs/media-" + versions.androidx + ".aar")
+    implementation files("../libs/cicerone-" + versions.cicerone + ".jar")
 
     implementation 'org.kefirsf:kefirbb:' + versions.kefirBB
 
