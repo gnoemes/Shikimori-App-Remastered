@@ -62,7 +62,7 @@ class AuthActivity : BaseActivity<AuthPresenter, AuthView>(), AuthView {
         private const val SHIKIMORI_SIGN_UP_URL = "https://shikimori.one/users/sign_up"
         private const val SHIKIMORI_SIGN_IN_URL = "https://shikimori.one/users/sign_in"
 
-        private const val ANIME_365 = "https://smotret-anime.net"
+        private const val ANIME_365 = "https://smotret-anime.org"
         private const val ANIME_365_SIGN_IN = "$ANIME_365/users/login"
 
 
