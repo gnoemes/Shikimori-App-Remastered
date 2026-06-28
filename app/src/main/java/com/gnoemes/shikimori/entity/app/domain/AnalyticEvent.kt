@@ -57,5 +57,5 @@ enum class AnalyticEvent {
     ANIME_TRANSLATIONS_DISCUSSION,
     ANIME_TRANSLATIONS_AUTHORS;
 
-    override fun toString(): String = super.toString().toLowerCase()
+    override fun toString(): String = super.toString().lowercase()
 }

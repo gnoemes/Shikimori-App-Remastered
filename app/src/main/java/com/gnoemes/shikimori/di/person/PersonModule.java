@@ -1,6 +1,6 @@
 package com.gnoemes.shikimori.di.person;
 
-import com.arellomobile.mvp.MvpPresenter;
+import moxy.MvpPresenter;
 import com.gnoemes.shikimori.data.repository.roles.PersonRepository;
 import com.gnoemes.shikimori.data.repository.roles.PersonRepositoryImpl;
 import com.gnoemes.shikimori.data.repository.roles.converter.PersonDetailsResponseConverter;

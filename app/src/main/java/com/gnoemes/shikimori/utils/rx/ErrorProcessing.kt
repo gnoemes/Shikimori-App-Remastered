@@ -1,6 +1,6 @@
 package com.gnoemes.shikimori.utils.rx
 
-import com.crashlytics.android.Crashlytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.gnoemes.shikimori.entity.app.domain.exceptions.*
 import com.google.gson.JsonSyntaxException
 import io.reactivex.Completable
@@ -30,7 +30,7 @@ class ErrorProcessing<T> {
     @Throws(TitleException::class, NetworkException::class, ServiceCodeException::class, ContentException::class)
     internal fun throwProcessException(throwable: Throwable): Throwable {
 
-        Crashlytics.logException(throwable)
+        FirebaseCrashlytics.getInstance().recordException(throwable)
 
         if (throwable is UnknownHostException) {
             throw NetworkException("Internet error")

@@ -1,6 +1,6 @@
 package com.gnoemes.shikimori.presentation.presenter.topic.details
 
-import com.arellomobile.mvp.InjectViewState
+import moxy.InjectViewState
 import com.gnoemes.shikimori.domain.comment.CommentInteractor
 import com.gnoemes.shikimori.domain.topic.TopicInteractor
 import com.gnoemes.shikimori.entity.app.domain.Constants

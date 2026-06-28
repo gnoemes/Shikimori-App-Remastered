@@ -2,7 +2,7 @@ package com.gnoemes.shikimori.presentation.view.base.fragment;
 
 import android.os.Bundle;
 
-import com.arellomobile.mvp.MvpDelegate;
+import moxy.MvpDelegate;
 
 import androidx.fragment.app.Fragment;
 
@@ -26,12 +26,11 @@ public class MvpFragment extends Fragment {
         getMvpDelegate().onAttach();
     }
 
+    @Override
     public void onResume() {
         super.onResume();
 
         mIsStateSaved = false;
-
-        getMvpDelegate().onAttach();
     }
 
     public void onSaveInstanceState(Bundle outState) {
@@ -40,7 +39,6 @@ public class MvpFragment extends Fragment {
         mIsStateSaved = true;
 
         getMvpDelegate().onSaveInstanceState(outState);
-        getMvpDelegate().onDetach();
     }
 
     @Override

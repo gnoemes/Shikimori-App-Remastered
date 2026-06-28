@@ -8,14 +8,15 @@ import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.databinding.DialogMenuBinding
 import com.gnoemes.shikimori.entity.common.presentation.RateSort
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseBottomSheetDialogFragment
 import com.gnoemes.shikimori.utils.colorStateList
 import com.gnoemes.shikimori.utils.dimenAttr
 import com.gnoemes.shikimori.utils.withArgs
-import kotlinx.android.parcel.Parcelize
-import kotlinx.android.synthetic.main.dialog_menu.*
+import kotlinx.parcelize.Parcelize
 
 class RateSortDialog : BaseBottomSheetDialogFragment() {
 
@@ -30,23 +31,41 @@ class RateSortDialog : BaseBottomSheetDialogFragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        peekHeight = Point().let { activity?.windowManager?.defaultDisplay?.getSize(it);it }.x - context.dimenAttr(android.R.attr.actionBarSize)
+        peekHeight = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+            windowManager.currentWindowMetrics.bounds.width() - context.dimenAttr(android.R.attr.actionBarSize)
+        } else {
+            Point().let { point ->
+                @Suppress("DEPRECATION")
+                activity?.windowManager?.defaultDisplay?.getSize(point)
+                point
+            }.x - context.dimenAttr(android.R.attr.actionBarSize)
+        }
     }
 
+    private var _binding: DialogMenuBinding? = null
+    private val binding: DialogMenuBinding? get() = _binding
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(getDialogLayout(), container, false)
+        _binding = DialogMenuBinding.inflate(inflater, container, false)
+        return _binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val sorts = arguments?.getParcelableArray(SORTS_KEY)?.map { it as Sort }!!
+        val b = _binding ?: return
 
-        with(toolbar) {
-            setTitle(R.string.sort)
+        @Suppress("DEPRECATION")
+        val sorts = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            arguments?.getParcelableArray(SORTS_KEY, Sort::class.java)?.map { it as Sort }!!
+        } else {
+            arguments?.getParcelableArray(SORTS_KEY)?.map { it as Sort }!!
         }
 
-        navView.apply {
+        b.toolbar.setTitle(R.string.sort)
+
+        b.navView.apply {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 setItemBackgroundResource(R.drawable.selector_item_menu_background_accent)
                 itemTextColor = context.colorStateList(R.color.selector_item_menu_text_color_accent)
@@ -63,6 +82,11 @@ class RateSortDialog : BaseBottomSheetDialogFragment() {
                 setCheckedItem(checkedId)
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     ///////////////////////////////////////////////////////////////////////////

@@ -1,11 +1,13 @@
 package com.gnoemes.shikimori.presentation.presenter.series
 
-import com.arellomobile.mvp.InjectViewState
+import moxy.InjectViewState
 import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.domain.download.DownloadInteractor
 import com.gnoemes.shikimori.domain.series.SeriesInteractor
+import com.gnoemes.shikimori.domain.series.SeriesSyncInteractor
 import com.gnoemes.shikimori.entity.app.domain.AnalyticEvent
 import com.gnoemes.shikimori.entity.app.domain.Constants
+import com.gnoemes.shikimori.entity.common.domain.KeyScreen
 import com.gnoemes.shikimori.entity.common.domain.Screens
 import com.gnoemes.shikimori.entity.download.DownloadVideoData
 import com.gnoemes.shikimori.entity.series.domain.*
@@ -21,6 +23,8 @@ import com.gnoemes.shikimori.utils.clearAndAddAll
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
 @InjectViewState
@@ -32,6 +36,9 @@ class SeriesPresenter @Inject constructor(
         private val commonResourceProvider: CommonResourceProvider,
         private val shareResourceProvider: ShareResourceProvider
 ) : BaseNetworkPresenter<SeriesView>() {
+
+    @Inject
+    lateinit var seriesSyncInteractor: SeriesSyncInteractor
 
     lateinit var navigationData: SeriesNavigationData
     lateinit var type: TranslationType
@@ -50,6 +57,13 @@ class SeriesPresenter @Inject constructor(
     private var selectedPlayer: PlayerType? = null
 
     private var isWatchSession = false
+
+    private val backgroundDisposable = CompositeDisposable()
+
+    override fun onDestroy() {
+        super.onDestroy()
+        backgroundDisposable.clear()
+    }
 
     override fun initData() {
         super.initData()
@@ -98,6 +112,7 @@ class SeriesPresenter @Inject constructor(
 
     private fun loadEpisodes() = interactor.getEpisodes(navigationData.animeId, navigationData.nameEng, isAlternative)
             .map { it.take(navigationData.episodesAired) }
+            .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { viewState.showEpisodeLoading(true) }
             .doOnSuccess { viewState.showEpisodeLoading(false) }
             .subscribe(this::openPriorityEpisode, this::processErrors)
@@ -141,6 +156,7 @@ class SeriesPresenter @Inject constructor(
             viewState.hideEpisodeName()
             viewState.showNextEpisode(false)
             viewState.showFab(false)
+            viewState.showContent(false)
         }
     }
 
@@ -165,6 +181,7 @@ class SeriesPresenter @Inject constructor(
 
     fun onNextEpisode() = interactor.getEpisodes(navigationData.animeId, navigationData.nameEng, isAlternative)
             .map { it.take(navigationData.episodesAired) }
+            .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { viewState.showEpisodeLoading(true) }
             .doOnSuccess { viewState.showEpisodeLoading(false) }
             .subscribe(this::loadNextEpisode, this::processErrors)
@@ -195,6 +212,7 @@ class SeriesPresenter @Inject constructor(
             viewState.hideEpisodeName()
             viewState.showNextEpisode(false)
             viewState.showFab(false)
+            viewState.showContent(false)
         }
     }
 
@@ -230,7 +248,7 @@ class SeriesPresenter @Inject constructor(
         } else url
 
         val text = shareResourceProvider.getEpisodeShareFormattedMessage(navigationData.name, episode!!, videoUrl)
-        router.navigateTo(Screens.SHARE, text)
+        router.navigateTo(KeyScreen(Screens.SHARE, text))
     }
 
     private fun showAuthorDialog(author: String) {
@@ -284,6 +302,7 @@ class SeriesPresenter @Inject constructor(
         if (episode != null) {
             logEvent(AnalyticEvent.ANIME_TRANSLATIONS_DISCUSSION)
             interactor.getTopic(navigationData.animeId, episode!!)
+                    .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(this::onTopicClicked, this::onDiscussionNotExist)
                     .addToDisposables()
         }
@@ -316,7 +335,7 @@ class SeriesPresenter @Inject constructor(
     //Others o uses urls
     private fun openVideo(payload: TranslationVideo, playerType: PlayerType) {
         if (playerType == PlayerType.EMBEDDED) openPlayer(playerType, EmbeddedPlayerNavigationData(navigationData.name, navigationData.rateId, items.firstOrNull()!!.episodesSize, payload, navigationData.nameEng, isAlternative))
-        else if (playerType == PlayerType.WEB && payload.webPlayerUrl != null) openPlayer(playerType, payload.webPlayerUrl)
+        else if (playerType == PlayerType.WEB && payload.webPlayerUrl != null) openPlayer(playerType, payload)
         else getVideoAndExecute(payload) { selectedPlayer = playerType; showQualityChooser(it.tracks) }
     }
 
@@ -334,10 +353,20 @@ class SeriesPresenter @Inject constructor(
     }
 
     override fun openPlayer(playerType: PlayerType, payload: Any?) {
-        super.openPlayer(playerType, payload)
-
         isWatchSession = true
         saveSettingsAndIncrementOptional(playerType != PlayerType.EMBEDDED, selectedVideo)
+
+        super.openPlayer(playerType, payload)
+    }
+
+    override fun openExternalPlayer(payload: Any?) {
+        episodeId?.let { epId ->
+            seriesSyncInteractor
+                .setEpisodeWatched(selectedVideo.animeId, epId.toInt(), onlyLocal = false)
+                .subscribe({}, this::processErrors)
+                .let { backgroundDisposable.add(it) }
+        }
+        super.openExternalPlayer(payload)
     }
 
     private fun saveSettingsAndIncrementOptional(increment: Boolean, payload: TranslationVideo) {
@@ -345,7 +374,6 @@ class SeriesPresenter @Inject constructor(
         else Completable.complete())
                 .andThen(interactor.saveTranslationSettings(TranslationSetting(payload.animeId, payload.author, payload.type)))
                 .subscribe({}, this::processErrors)
-                .addToDisposables()
     }
 
     private fun getVideoAndExecute(payload: TranslationVideo, onSubscribe: (Video) -> Unit) {
@@ -386,7 +414,7 @@ class SeriesPresenter @Inject constructor(
     }
 
     private fun onDiscussionNotExist(throwable: Throwable?) {
-        router.showSystemMessage(commonResourceProvider.topicNotFound)
+        viewState.showSystemMessage(commonResourceProvider.topicNotFound)
         viewState.showFab(false)
     }
 

@@ -2,10 +2,11 @@ package com.gnoemes.shikimori.presentation.view.character
 
 import android.os.Bundle
 import android.view.View
-import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.ProvidePresenter
+import moxy.presenter.InjectPresenter
+import moxy.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.data.local.preference.SettingsSource
+import com.gnoemes.shikimori.databinding.FragmentCharacterBinding
 import com.gnoemes.shikimori.entity.app.domain.AppExtras
 import com.gnoemes.shikimori.entity.common.presentation.DetailsContentItem
 import com.gnoemes.shikimori.entity.common.presentation.DetailsContentType
@@ -22,11 +23,12 @@ import com.gnoemes.shikimori.utils.addBackButton
 import com.gnoemes.shikimori.utils.ifNotNull
 import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.gnoemes.shikimori.utils.withArgs
-import kotlinx.android.synthetic.main.fragment_character.*
-import kotlinx.android.synthetic.main.layout_toolbar.*
 import javax.inject.Inject
 
 class CharacterFragment : BaseFragment<CharacterPresenter, CharacterView>(), CharacterView {
+
+    private var _binding: FragmentCharacterBinding? = null
+    private val binding: FragmentCharacterBinding? get() = _binding
 
     @Inject
     lateinit var imageLoader: ImageLoader
@@ -67,8 +69,10 @@ class CharacterFragment : BaseFragment<CharacterPresenter, CharacterView>(), Cha
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentCharacterBinding.bind(view.findViewById(R.id.nestedScroll))
+        val b = _binding ?: return
 
-        toolbar?.apply {
+        toolbarBinding?.toolbar?.apply {
             addBackButton { getPresenter().onBackPressed() }
             setTitle(R.string.common_character)
             inflateMenu(R.menu.menu_character)
@@ -81,16 +85,19 @@ class CharacterFragment : BaseFragment<CharacterPresenter, CharacterView>(), Cha
             }
         }
 
-        headHolder = DetailsHeadSimpleViewHolder(headLayout, imageLoader)
-        descriptionHolder = DetailsDescriptionViewHolder(descriptionLayout, getPresenter()::onContentClicked)
+        headHolder = DetailsHeadSimpleViewHolder(b.headLayout, imageLoader)
+        descriptionHolder = DetailsDescriptionViewHolder(b.descriptionLayout, getPresenter()::onContentClicked)
 
         contentHolders.apply {
-            put(DetailsContentType.SEYUS, DetailsContentViewHolder(seyuLayout, seyuAdapter))
-            put(DetailsContentType.ANIMES, DetailsContentViewHolder(animeLayout, animeAdapter))
-            put(DetailsContentType.MANGAS, DetailsContentViewHolder(mangaLayout, mangaAdapter))
+            put(DetailsContentType.SEYUS, DetailsContentViewHolder(b.seyuLayout, seyuAdapter))
+            put(DetailsContentType.ANIMES, DetailsContentViewHolder(b.animeLayout, animeAdapter))
+            put(DetailsContentType.MANGAS, DetailsContentViewHolder(b.mangaLayout, mangaAdapter))
         }
+    }
 
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -113,8 +120,16 @@ class CharacterFragment : BaseFragment<CharacterPresenter, CharacterView>(), Cha
         descriptionHolder.bind(item)
     }
 
-    override fun setContent(type: DetailsContentType, item: DetailsContentItem) {
-        contentHolders[type]?.bind(type, item)
+    override fun setSeyuContent(item: DetailsContentItem) {
+        contentHolders[DetailsContentType.SEYUS]?.bind(DetailsContentType.SEYUS, item)
+    }
+
+    override fun setAnimeContent(item: DetailsContentItem) {
+        contentHolders[DetailsContentType.ANIMES]?.bind(DetailsContentType.ANIMES, item)
+    }
+
+    override fun setMangaContent(item: DetailsContentItem) {
+        contentHolders[DetailsContentType.MANGAS]?.bind(DetailsContentType.MANGAS, item)
     }
 
     override fun showContent(show: Boolean) = Unit

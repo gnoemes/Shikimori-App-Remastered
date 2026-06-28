@@ -1,10 +1,11 @@
 package com.gnoemes.shikimori.presentation.presenter.auth
 
-import com.arellomobile.mvp.InjectViewState
+import moxy.InjectViewState
 import com.gnoemes.shikimori.domain.auth.AuthInteractor
 import com.gnoemes.shikimori.entity.auth.AuthType
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNetworkPresenter
 import com.gnoemes.shikimori.presentation.view.auth.AuthView
+import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
 @InjectViewState
@@ -24,6 +25,7 @@ class AuthPresenter @Inject constructor(
 
     fun onAuthCodeReceived(authCode: String?) {
         interactor.signIn(authCode ?: "")
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onSuccess, this::processErrors)
                 .addToDisposables()
     }

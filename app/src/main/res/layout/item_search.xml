@@ -18,6 +18,7 @@
             android:id="@+id/imageView"
             android:layout_width="0dp"
             android:layout_height="@dimen/image_search_height"
+            android:contentDescription="@string/description_search_result"
             android:minWidth="@dimen/image_search_width"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

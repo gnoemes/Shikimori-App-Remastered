@@ -1,8 +1,8 @@
 package com.gnoemes.shikimori.presentation.presenter.common
 
-import com.arellomobile.mvp.MvpView
-import com.arellomobile.mvp.viewstate.ViewCommand
-import com.arellomobile.mvp.viewstate.strategy.StateStrategy
+import moxy.MvpView
+import moxy.viewstate.ViewCommand
+import moxy.viewstate.strategy.StateStrategy
 
 class AddToEndSingleTagStrategy : StateStrategy {
 

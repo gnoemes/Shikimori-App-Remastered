@@ -1,72 +1,36 @@
 package com.gnoemes.shikimori.data.local.db.impl
 
 import com.gnoemes.shikimori.data.local.db.AnimeRateSyncDbSource
-import com.gnoemes.shikimori.data.local.db.table.AnimeRateSyncTable
+import com.gnoemes.shikimori.data.local.db.dao.AnimeRateSyncRoomDao
 import com.gnoemes.shikimori.entity.rates.data.AnimeRateSyncDao
 import com.gnoemes.shikimori.entity.rates.domain.UserRate
-import com.pushtorefresh.storio3.sqlite.StorIOSQLite
-import com.pushtorefresh.storio3.sqlite.queries.DeleteQuery
-import com.pushtorefresh.storio3.sqlite.queries.Query
 import io.reactivex.Completable
 import io.reactivex.Single
 import javax.inject.Inject
 
 class AnimeRateSyncDbSourceImpl @Inject constructor(
-        private val storIOSQLite: StorIOSQLite
+        private val animeRateSyncDao: AnimeRateSyncRoomDao
 ) : AnimeRateSyncDbSource {
 
     override fun getRate(rateId: Long): Single<UserRate> =
-            storIOSQLite
-                    .get()
-                    .`object`(AnimeRateSyncDao::class.java)
-                    .withQuery(Query.builder()
-                            .table(AnimeRateSyncTable.TABLE)
-                            .where("${AnimeRateSyncTable.COLUMN_RATE_ID} = ?")
-                            .whereArgs(rateId)
-                            .build())
-                    .prepare()
-                    .asRxSingle()
-                    .map { it.get() }
+            animeRateSyncDao.getRate(rateId)
                     .map { UserRate(it.rateId, targetId = it.animeId, episodes = it.episodes) }
+                    .toSingle()
 
 
-    override fun saveRate(userRate: UserRate): Completable =
-            Completable.fromAction {
-                val result = storIOSQLite
-                        .put()
-                        .`object`(AnimeRateSyncDao(userRate.id!!, userRate.targetId!!, userRate.episodes!!))
-                        .prepare()
-                        .executeAsBlocking()
-            }
-                    .onErrorResumeNext { it.printStackTrace();Completable.complete() }
+    override fun saveRate(userRate: UserRate): Completable {
+        val rateId = userRate.id ?: return Completable.complete()
+        val targetId = userRate.targetId ?: return Completable.complete()
+        val episodes = userRate.episodes ?: return Completable.complete()
+        return animeRateSyncDao.insert(AnimeRateSyncDao(rateId, targetId, episodes))
+                .onErrorResumeNext { it.printStackTrace(); Completable.complete() }
+    }
 
 
     override fun getEpisodeCount(animeId: Long): Single<Int> =
-            storIOSQLite
-                    .get()
-                    .`object`(AnimeRateSyncDao::class.java)
-                    .withQuery(Query.builder()
-                            .table(AnimeRateSyncTable.TABLE)
-                            .where("${AnimeRateSyncTable.COLUMN_ANIME_ID} = ?")
-                            .whereArgs(animeId)
-                            .build())
-                    .prepare()
-                    .asRxSingle()
-                    .map {
-                        when (it.isPresent) {
-                            true -> it.get().episodes
-                            else -> 0
-                        }
-                    }
+            animeRateSyncDao.getEpisodeCount(animeId)
+                    .toSingle(0)
 
     override fun clearRate(animeId: Long): Completable =
-            storIOSQLite
-                    .delete()
-                    .byQuery(DeleteQuery.builder()
-                            .table(AnimeRateSyncTable.TABLE)
-                            .where("${AnimeRateSyncTable.COLUMN_ANIME_ID} = ?")
-                            .whereArgs(animeId)
-                            .build())
-                    .prepare()
-                    .asRxCompletable()
+            animeRateSyncDao.deleteByAnimeId(animeId)
 }

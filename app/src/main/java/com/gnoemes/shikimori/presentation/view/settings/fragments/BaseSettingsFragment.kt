@@ -6,9 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.ArrayRes
 import androidx.preference.PreferenceFragmentCompat
-import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.list.ItemListener
-import com.afollestad.materialdialogs.list.listItems
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.utils.colorAttr
 
@@ -26,10 +24,13 @@ abstract class BaseSettingsFragment : PreferenceFragmentCompat() {
         setDividerHeight(0)
     }
 
-    protected fun showListDialog(@ArrayRes items: Int, listener: ItemListener): Boolean {
-        MaterialDialog(context!!).show {
-            listItems(items, selection = listener)
-        }
+    protected fun showListDialog(@ArrayRes items: Int, listener: (index: Int, text: String) -> Unit): Boolean {
+        val itemArray = resources!!.getStringArray(items)
+        MaterialAlertDialogBuilder(context!!).apply {
+            setItems(itemArray) { _, which ->
+                listener(which, itemArray[which])
+            }
+        }.show()
         return true
     }
 

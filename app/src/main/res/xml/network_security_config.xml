@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- Default: block cleartext traffic -->
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+
+    <!-- Shikimori API - HTTPS only -->
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="true">shikimori.io</domain>
+        <domain includeSubdomains="true">shikimori.org</domain>
+    </domain-config>
+
+    <!-- Video sources - HTTPS only -->
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="true">us-central1-shikimori-fbf37.cloudfunctions.net</domain>
+        <domain includeSubdomains="true">shimori-us.herokuapp.com</domain>
+        <domain includeSubdomains="true">play.shikimori.org</domain>
+    </domain-config>
+</network-security-config>

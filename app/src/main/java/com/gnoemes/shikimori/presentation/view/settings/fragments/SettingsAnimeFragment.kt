@@ -3,14 +3,14 @@ package com.gnoemes.shikimori.presentation.view.settings.fragments
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
 import android.text.InputType
+import android.text.TextWatcher
+import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
 import androidx.preference.Preference
 import androidx.preference.SwitchPreference
-import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.WhichButton
-import com.afollestad.materialdialogs.actions.setActionButtonEnabled
-import com.afollestad.materialdialogs.input.InputCallback
-import com.afollestad.materialdialogs.input.input
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.app.domain.SettingsExtras
 import com.gnoemes.shikimori.entity.series.domain.PlayerType
@@ -124,7 +124,7 @@ class SettingsAnimeFragment : BaseSettingsFragment() {
     }
 
     private val translationClickListener = Preference.OnPreferenceClickListener { preference ->
-        showListDialog(R.array.translation_types) { _, index, text ->
+        showListDialog(R.array.translation_types) { index, text ->
             when (index) {
                 0 -> prefs().putString(SettingsExtras.TRANSLATION_TYPE, TranslationType.VOICE_RU.type)
                 1 -> prefs().putString(SettingsExtras.TRANSLATION_TYPE, TranslationType.SUB_RU.type)
@@ -135,7 +135,7 @@ class SettingsAnimeFragment : BaseSettingsFragment() {
     }
 
     private val playerClickListener = Preference.OnPreferenceClickListener { preference ->
-        showListDialog(R.array.players) { _, index, text ->
+        showListDialog(R.array.players) { index, text ->
             when (index) {
                 0 -> prefs().putString(SettingsExtras.PLAYER_TYPE, PlayerType.WEB.name)
                 1 -> prefs().putString(SettingsExtras.PLAYER_TYPE, PlayerType.EMBEDDED.name)
@@ -157,49 +157,57 @@ class SettingsAnimeFragment : BaseSettingsFragment() {
     private val smallOffsetClickListener = Preference.OnPreferenceClickListener { preference ->
         val message = context!!.getString(R.string.settings_player_gestures_offset_small_validation_error)
         val prefill = (prefs().getLong(preference.key, 10000) / 1000).toString()
-        showNumberEditTextDialog(message, prefill) { dialog: MaterialDialog, text: CharSequence? ->
-            val value = text.toString().toIntOrNull()
-            val isValid = when (value) {
-                in 5..30 -> true
-                else -> false
-            }
-
-            dialog.setActionButtonEnabled(WhichButton.POSITIVE, isValid)
-            dialog.positiveButton {
-                if (isValid) {
-                    preference.summary = String.format(context?.getString(R.string.settings_player_gestures_offset_small_summary_format)!!, value)
-                    putSetting(preference.key, value!! * 1000L)
-                }
-            }
+        showNumberEditTextDialog(
+                message = message,
+                prefill = prefill,
+                validRange = 5..30
+        ) { value ->
+            preference.summary = String.format(context?.getString(R.string.settings_player_gestures_offset_small_summary_format)!!, value)
+            putSetting(preference.key, value * 1000L)
         }
     }
 
     private val bigOffsetClickListener = Preference.OnPreferenceClickListener { preference ->
         val message = context!!.getString(R.string.settings_player_gestures_offset_big_validation_error)
         val prefill = (prefs().getLong(preference.key, 90000) / 1000).toString()
-        showNumberEditTextDialog(message, prefill) { dialog: MaterialDialog, text: CharSequence? ->
-            val value = text.toString().toIntOrNull()
-            val isValid = when (value) {
-                in 80..180 -> true
-                else -> false
-            }
-
-            dialog.setActionButtonEnabled(WhichButton.POSITIVE, isValid)
-            dialog.positiveButton {
-                if (isValid) {
-                    preference.summary = String.format(context?.getString(R.string.settings_player_gestures_offset_big_summary_format)!!, value)
-                    putSetting(preference.key, value!! * 1000L)
-                }
-            }
+        showNumberEditTextDialog(
+                message = message,
+                prefill = prefill,
+                validRange = 80..180
+        ) { value ->
+            preference.summary = String.format(context?.getString(R.string.settings_player_gestures_offset_big_summary_format)!!, value)
+            putSetting(preference.key, value * 1000L)
         }
     }
 
-    private fun showNumberEditTextDialog(message: String, prefill: String, callback: InputCallback): Boolean {
-        MaterialDialog(context!!).show {
-            message(text = message)
-            input(prefill = prefill, inputType = InputType.TYPE_CLASS_NUMBER, waitForPositiveButton = false, callback = callback)
-            positiveButton(R.string.common_accept)
-            negativeButton(R.string.common_cancel)
+    private fun showNumberEditTextDialog(message: String, prefill: String, validRange: IntRange, onSuccess: (Int) -> Unit): Boolean {
+        val editText = EditText(context!!).apply {
+            inputType = InputType.TYPE_CLASS_NUMBER
+            setText(prefill)
+            setSelection(text.length)
+        }
+        val dialog = MaterialAlertDialogBuilder(context!!).apply {
+            setMessage(message)
+            setView(editText)
+            setPositiveButton(R.string.common_accept, null)
+            setNegativeButton(R.string.common_cancel, null)
+        }.create()
+        dialog.show()
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
+        editText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val value = s.toString().toIntOrNull()
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = value != null && value in validRange
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+            val value = editText.text.toString().toIntOrNull()
+            if (value != null && value in validRange) {
+                onSuccess(value)
+                dialog.dismiss()
+            }
         }
         return true
     }

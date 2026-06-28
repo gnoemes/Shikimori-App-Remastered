@@ -47,6 +47,7 @@
             android:id="@+id/imageView"
             android:layout_width="@dimen/image_details_width"
             android:layout_height="@dimen/image_details_height"
+            android:contentDescription="@string/description_anime_cover"
             tools:src="@drawable/test_preview2" />
 
     </com.google.android.material.card.MaterialCardView>
@@ -84,6 +85,7 @@
         android:layout_marginEnd="4dp"
         android:layout_marginRight="4dp"
         android:layout_marginBottom="8dp"
+        android:contentDescription="@string/description_comments_icon"
         android:tint="?attr/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/commentView"

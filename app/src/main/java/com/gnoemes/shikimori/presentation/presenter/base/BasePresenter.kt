@@ -1,6 +1,6 @@
 package com.gnoemes.shikimori.presentation.presenter.base
 
-import com.arellomobile.mvp.MvpPresenter
+import moxy.MvpPresenter
 import com.gnoemes.shikimori.presentation.view.base.activity.BaseView
 import ru.terrakok.cicerone.Router
 

@@ -4,24 +4,25 @@ import android.text.Html
 import android.view.View
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.databinding.LayoutUserProfileInfoBinding
+import com.gnoemes.shikimori.databinding.LayoutUserProfileInfoContentBinding
 import com.gnoemes.shikimori.entity.user.presentation.UserInfoViewModel
 import com.gnoemes.shikimori.entity.user.presentation.UserProfileAction
 import com.gnoemes.shikimori.presentation.view.common.holders.DetailsPlaceholderViewHolder
 import com.gnoemes.shikimori.utils.gone
 import com.gnoemes.shikimori.utils.onClick
-import kotlinx.android.synthetic.main.layout_user_profile_info.view.*
-import kotlinx.android.synthetic.main.layout_user_profile_info_content.view.*
 
 class UserInfoViewHolder(
-        private val view: View,
+        private val infoBinding: LayoutUserProfileInfoBinding,
+        private val contentBinding: LayoutUserProfileInfoContentBinding,
         private val actionCallback: (UserProfileAction) -> Unit
 ) {
 
-    private val placeholder by lazy { DetailsPlaceholderViewHolder(view.infoContent, view.infoPlaceholder as ShimmerFrameLayout) }
+    private val placeholder by lazy { DetailsPlaceholderViewHolder(contentBinding.root, infoBinding.infoPlaceholder.root) }
     private lateinit var item: UserInfoViewModel
 
     init {
-        with(view) {
+        with(contentBinding) {
             messageFab.onClick { actionCallback.invoke(if (item.isMe) UserProfileAction.MessageBox else UserProfileAction.Message) }
             friendshipFab.onClick { actionCallback.invoke(UserProfileAction.ChangeFriendshipStatus(!item.isFriend)) }
             ignoreFab.onClick { actionCallback.invoke(UserProfileAction.ChangeIgnoreStatus(!item.isIgnored)) }
@@ -34,7 +35,7 @@ class UserInfoViewHolder(
         this.item = item
         placeholder.showContent()
 
-        with(view) {
+        with(contentBinding) {
             infoView.text = Html.fromHtml(item.info)
 
             if (item.isMe) {
@@ -51,4 +52,11 @@ class UserInfoViewHolder(
         }
     }
 
+    companion object {
+        fun create(view: View, actionCallback: (UserProfileAction) -> Unit): UserInfoViewHolder {
+            val infoBinding = LayoutUserProfileInfoBinding.bind(view)
+            val contentBinding = LayoutUserProfileInfoContentBinding.bind(infoBinding.infoContent.root)
+            return UserInfoViewHolder(infoBinding, contentBinding, actionCallback)
+        }
+    }
 }

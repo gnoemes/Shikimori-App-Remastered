@@ -37,14 +37,16 @@ class CommentsAdapter(
     }
 
     fun showEmptyView() {
-        items.clear()
-        items.add(PlaceholderItem())
-        super.bindItems(items)
+        val list = items!!
+        list.clear()
+        list.add(PlaceholderItem())
+        super.bindItems(list)
     }
 
     fun hideEmptyView() {
-        items.clear()
-        super.bindItems(items)
+        val list = items!!
+        list.clear()
+        super.bindItems(list)
     }
 
 }

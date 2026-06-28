@@ -1,0 +1,155 @@
+# =============================================================================
+# Release workflow — tag-triggered APK build, sign & release
+# Trigger: strict semver v<major>.<minor>.<patch> tags only (e.g. v0.8.8, v1.0.0)
+#
+# Secrets required in GitHub repository settings:
+#   KEYSTORE_BASE64        — base64-encoded Android keystore (.jks/.keystore)
+#   KEYSTORE_PASSWORD      — keystore master password
+#   KEY_ALIAS              — signing key alias
+#   KEY_PASSWORD           — private key password
+#   SHIKIMORI_CLIENT_ID
+#   SHIKIMORI_CLIENT_SECRET
+#   SHIKIMORI_BASE_URL
+#   VIDEO_BASE_URL
+#   VK_RANDOM_TOKEN
+# =============================================================================
+
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v[0-9]*.[0-9]*.[0-9]*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build & Release APK
+    if: ${{ github.event_name == 'workflow_dispatch' || (github.ref_type == 'tag' && ! contains(github.ref_name, '-')) }}
+    runs-on: ubuntu-latest
+
+    steps:
+      # -----------------------------------------------------------------------
+      # Checkout with full history (advanced-build-version plugin uses git
+      # commit count for auto versionCode).
+      # -----------------------------------------------------------------------
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # -----------------------------------------------------------------------
+      # Java 17 — required by the project (sourceCompatibility / targetCompatibility).
+      # -----------------------------------------------------------------------
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      # -----------------------------------------------------------------------
+      # Android SDK — installs cmdline-tools + required packages.
+      # -----------------------------------------------------------------------
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      # -----------------------------------------------------------------------
+      # Grant execute permission to the Gradle wrapper.
+      # -----------------------------------------------------------------------
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      # -----------------------------------------------------------------------
+      # Cache Gradle dependencies between builds (speeds up subsequent runs).
+      # -----------------------------------------------------------------------
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      # -----------------------------------------------------------------------
+      # Override gradle.properties values with GitHub Secrets.
+      # Appending ensures secrets take precedence over committed defaults.
+      # -----------------------------------------------------------------------
+      - name: Inject secrets into gradle.properties
+        env:
+          SHIKIMORI_CLIENT_ID: ${{ secrets.SHIKIMORI_CLIENT_ID }}
+          SHIKIMORI_CLIENT_SECRET: ${{ secrets.SHIKIMORI_CLIENT_SECRET }}
+          SHIKIMORI_BASE_URL: ${{ secrets.SHIKIMORI_BASE_URL }}
+          VIDEO_BASE_URL: ${{ secrets.VIDEO_BASE_URL }}
+          VK_RANDOM_TOKEN: ${{ secrets.VK_RANDOM_TOKEN }}
+        run: |
+          [ -n "$SHIKIMORI_CLIENT_ID" ] && echo "ShikimoriClientId=$SHIKIMORI_CLIENT_ID" >> gradle.properties
+          [ -n "$SHIKIMORI_CLIENT_SECRET" ] && echo "ShikimoriClientSecret=$SHIKIMORI_CLIENT_SECRET" >> gradle.properties
+          [ -n "$SHIKIMORI_BASE_URL" ] && echo "ShikimoriBaseUrl=$SHIKIMORI_BASE_URL" >> gradle.properties
+          [ -n "$VIDEO_BASE_URL" ] && echo "VideoBaseUrl=$VIDEO_BASE_URL" >> gradle.properties
+          [ -n "$VK_RANDOM_TOKEN" ] && echo "VkRandomToken=$VK_RANDOM_TOKEN" >> gradle.properties
+
+      # -----------------------------------------------------------------------
+      # Build the release APK (unsigned — zipAlignEnabled is set in build.gradle).
+      # -----------------------------------------------------------------------
+      - name: Build Release APK
+        run: ./gradlew assembleRelease --no-daemon
+
+      # -----------------------------------------------------------------------
+      # Sign the unsigned APK using apksigner.
+      #
+      # apksigner supports env:VARNAME syntax for password arguments, which
+      # avoids exposing secrets in the process command line.
+      # -----------------------------------------------------------------------
+      - name: Sign APK
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        run: |
+          # Decode base64-encoded keystore
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > keystore.jks
+
+          # Locate the unsigned APK
+          APK_UNSIGNED=$(find app/build/outputs/apk/release -name "*-unsigned.apk" -type f | head -n 1)
+          if [ -z "$APK_UNSIGNED" ]; then
+            echo "::error::No unsigned APK found in app/build/outputs/apk/release/"
+            exit 1
+          fi
+          echo "Found unsigned APK: $APK_UNSIGNED"
+
+          # Locate apksigner from the installed Android SDK build-tools
+          ANDROID_HOME="${ANDROID_SDK_ROOT:-${ANDROID_HOME:-/usr/local/lib/android/sdk}}"
+          BUILD_TOOLS_DIR=$(ls -d "$ANDROID_HOME"/build-tools/* 2>/dev/null | head -n 1)
+          if [ -z "$BUILD_TOOLS_DIR" ]; then
+            echo "::error::Could not locate Android SDK build-tools under $ANDROID_HOME"
+            exit 1
+          fi
+          APKSIGNER="$BUILD_TOOLS_DIR/apksigner"
+          echo "Using apksigner: $APKSIGNER"
+
+          # Sign — output alongside the original
+          APK_SIGNED="${APK_UNSIGNED%-unsigned.apk}.apk"
+          "$APKSIGNER" sign \
+            --ks keystore.jks \
+            --ks-pass env:KEYSTORE_PASSWORD \
+            --ks-key-alias "$KEY_ALIAS" \
+            --key-pass env:KEY_PASSWORD \
+            --out "$APK_SIGNED" \
+            "$APK_UNSIGNED"
+
+          echo "Signed APK: $APK_SIGNED"
+          echo "signed_apk_path=$APK_SIGNED" >> "$GITHUB_ENV"
+
+      # -----------------------------------------------------------------------
+      # Create a GitHub Release and attach the signed APK.
+      # Release notes are auto-generated from merged pull requests.
+      # -----------------------------------------------------------------------
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ env.signed_apk_path }}
+          generate_release_notes: true
+          make_latest: true

@@ -2,7 +2,7 @@ package com.gnoemes.shikimori.di.calendar;
 
 import androidx.fragment.app.Fragment;
 
-import com.arellomobile.mvp.MvpPresenter;
+import moxy.MvpPresenter;
 import com.gnoemes.shikimori.data.repository.calendar.CalendarRepository;
 import com.gnoemes.shikimori.data.repository.calendar.CalendarRepositoryImpl;
 import com.gnoemes.shikimori.data.repository.calendar.converter.CalendarResponseConverter;

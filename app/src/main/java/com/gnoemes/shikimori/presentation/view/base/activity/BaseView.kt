@@ -1,8 +1,13 @@
 package com.gnoemes.shikimori.presentation.view.base.activity
 
 import androidx.annotation.StringRes
-import com.arellomobile.mvp.MvpView
+import moxy.MvpView
+import moxy.viewstate.strategy.AddToEndSingleStrategy
+import moxy.viewstate.strategy.AddToEndStrategy
+import moxy.viewstate.strategy.SkipStrategy
+import moxy.viewstate.strategy.StateStrategyType
 
+@StateStrategyType(AddToEndSingleStrategy::class)
 interface BaseView : MvpView {
 
     /**
@@ -43,4 +48,6 @@ interface BaseView : MvpView {
     fun onShowLightLoading() = Unit
 
     fun onHideLightLoading() = Unit
+
+    fun showSystemMessage(message: String?) = Unit
 }

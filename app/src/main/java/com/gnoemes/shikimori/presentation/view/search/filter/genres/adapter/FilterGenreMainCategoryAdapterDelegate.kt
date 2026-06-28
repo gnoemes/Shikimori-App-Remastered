@@ -1,9 +1,11 @@
 package com.gnoemes.shikimori.presentation.view.search.filter.genres.adapter
 
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.databinding.ItemFilterGenreSectionBinding
 import com.gnoemes.shikimori.entity.search.domain.FilterType
 import com.gnoemes.shikimori.entity.search.presentation.FilterMainGenreCategory
 import com.gnoemes.shikimori.entity.search.presentation.FilterViewModel
@@ -11,7 +13,6 @@ import com.gnoemes.shikimori.presentation.view.search.filter.adapter.FilterChipA
 import com.gnoemes.shikimori.utils.inflate
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
-import kotlinx.android.synthetic.main.item_filter_genre_section.view.*
 
 class FilterGenreMainCategoryAdapterDelegate(
         private val invertCallback: (FilterType, FilterViewModel) -> Unit,
@@ -24,31 +25,29 @@ class FilterGenreMainCategoryAdapterDelegate(
             item is FilterMainGenreCategory
 
     override fun onCreateViewHolder(parent: ViewGroup): ViewHolder =
-            ViewHolder(parent.inflate(R.layout.item_filter_genre_section))
+            ViewHolder(ItemFilterGenreSectionBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(item: FilterMainGenreCategory, holder: ViewHolder, payloads: MutableList<Any>) {
         holder.bind(item)
     }
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(private val binding: ItemFilterGenreSectionBinding) : RecyclerView.ViewHolder(binding.root) {
 
         init {
-            itemView.recyclerView.setRecycledViewPool(sharedPool)
+            binding.recyclerView.setRecycledViewPool(sharedPool)
         }
 
         fun bind(item: FilterMainGenreCategory) {
-            with(itemView) {
-                categoryNameView.setText(R.string.filter_genres_main)
-                val chipAdapter = FilterChipAdapter(FilterType.GENRE, invertCallback, selectCallback).apply { if (!hasObservers()) setHasStableIds(true) }
+            binding.categoryNameView.setText(R.string.filter_genres_main)
+            val chipAdapter = FilterChipAdapter(FilterType.GENRE, invertCallback, selectCallback).apply { if (!hasObservers()) setHasStableIds(true) }
 
-                with(recyclerView) {
-                    adapter = chipAdapter
-                    layoutManager = FlexboxLayoutManager(context)
-                    itemAnimator = null
-                }
-
-                chipAdapter.bind(item.filters)
+            with(binding.recyclerView) {
+                adapter = chipAdapter
+                layoutManager = FlexboxLayoutManager(context)
+                itemAnimator = null
             }
+
+            chipAdapter.bind(item.filters)
         }
     }
 }

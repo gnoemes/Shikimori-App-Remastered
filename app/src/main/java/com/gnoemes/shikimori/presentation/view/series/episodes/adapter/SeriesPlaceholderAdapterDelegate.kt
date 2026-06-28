@@ -1,13 +1,12 @@
 package com.gnoemes.shikimori.presentation.view.series.episodes.adapter
 
-import android.view.View
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.databinding.ItemSeriesEmptyPlaceholderBinding
 import com.gnoemes.shikimori.entity.series.presentation.SeriesPlaceholderItem
-import com.gnoemes.shikimori.utils.inflate
 import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
-import kotlinx.android.synthetic.main.item_series_empty_placeholder.view.*
 
 class SeriesPlaceholderAdapterDelegate : AbsListItemAdapterDelegate<SeriesPlaceholderItem, Any, SeriesPlaceholderAdapterDelegate.ViewHolder>() {
 
@@ -15,19 +14,17 @@ class SeriesPlaceholderAdapterDelegate : AbsListItemAdapterDelegate<SeriesPlaceh
             item is SeriesPlaceholderItem
 
     override fun onCreateViewHolder(parent: ViewGroup): ViewHolder =
-            ViewHolder(parent.inflate(R.layout.item_series_empty_placeholder))
+            ViewHolder(ItemSeriesEmptyPlaceholderBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(item: SeriesPlaceholderItem, holder: ViewHolder, payloads: MutableList<Any>) {
         holder.bind(item)
     }
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(val binding: ItemSeriesEmptyPlaceholderBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: SeriesPlaceholderItem) {
-            with(itemView) {
-                titleView.setText(item.title)
-                descriptionView.setText(item.description)
-            }
+            binding.titleView.setText(item.title)
+            binding.descriptionView.setText(item.description)
         }
 
     }

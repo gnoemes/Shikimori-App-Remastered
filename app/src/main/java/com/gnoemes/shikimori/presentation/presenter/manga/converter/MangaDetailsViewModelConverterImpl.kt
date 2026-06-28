@@ -118,7 +118,7 @@ class MangaDetailsViewModelConverterImpl @Inject constructor(
 
 
     override fun convertScores(t: List<Statistic>): List<UserStatisticItem> {
-        val sum = t.sumBy { it.value }
+        val sum = t.sumOf { it.value }
 
         return t
                 .asSequence()
@@ -136,7 +136,7 @@ class MangaDetailsViewModelConverterImpl @Inject constructor(
                 Pair("Dropped|Брошено", UserStatisticItem(context.getString(R.string.rate_dropped), 0, 0f))
         )
 
-        val sum = t.sumBy { it.value }
+        val sum = t.sumOf { it.value }
 
         return items
                 .mapNotNull { pair ->

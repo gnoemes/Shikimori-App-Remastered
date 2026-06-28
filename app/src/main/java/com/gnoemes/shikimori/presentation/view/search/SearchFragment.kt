@@ -8,9 +8,10 @@ import android.widget.ArrayAdapter
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.ProvidePresenter
+import moxy.presenter.InjectPresenter
+import moxy.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.databinding.FragmentSearchBinding
 import com.gnoemes.shikimori.entity.app.domain.AnalyticEvent
 import com.gnoemes.shikimori.entity.app.domain.AppExtras
 import com.gnoemes.shikimori.entity.common.domain.FilterItem
@@ -28,18 +29,16 @@ import com.gnoemes.shikimori.presentation.view.search.filter.FilterFragment
 import com.gnoemes.shikimori.utils.*
 import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.gnoemes.shikimori.utils.widgets.GridItemDecorator
-import com.santalu.widget.ReSpinner
+import com.gnoemes.shikimori.presentation.view.common.widget.ReSpinner
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.HasSupportFragmentInjector
-import kotlinx.android.synthetic.main.fragment_search.*
-import kotlinx.android.synthetic.main.layout_default_list.*
-import kotlinx.android.synthetic.main.layout_default_placeholders.*
-import kotlinx.android.synthetic.main.layout_progress.*
-import kotlinx.android.synthetic.main.layout_toolbar.*
+import dagger.android.HasAndroidInjector
 import javax.inject.Inject
 
-class SearchFragment : BasePaginationFragment<SearchItem, SearchPresenter, SearchView>(), SearchView, FilterCallback, HasSupportFragmentInjector, TabRootFragment {
+class SearchFragment : BasePaginationFragment<SearchItem, SearchPresenter, SearchView>(), SearchView, FilterCallback, HasAndroidInjector, TabRootFragment {
+
+    private var _viewBinding: FragmentSearchBinding? = null
+    private val viewBinding: FragmentSearchBinding? get() = _viewBinding
 
     @Inject
     lateinit var imageLoader: ImageLoader
@@ -48,9 +47,9 @@ class SearchFragment : BasePaginationFragment<SearchItem, SearchPresenter, Searc
     lateinit var searchPresenter: SearchPresenter
 
     @Inject
-    lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
+    lateinit var fragmentInjector: DispatchingAndroidInjector<Any>
 
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> = fragmentInjector
+    override fun androidInjector(): AndroidInjector<Any> = fragmentInjector
 
     @ProvidePresenter
     fun providePresenter(): SearchPresenter {
@@ -85,7 +84,9 @@ class SearchFragment : BasePaginationFragment<SearchItem, SearchPresenter, Searc
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        progressBar?.gone()
+        _viewBinding = FragmentSearchBinding.bind(view.findViewById(R.id.fragment_content))
+
+        progressBinding?.progressBar?.gone()
 
         spinner = ReSpinner(view.context)
         spinner?.adapter = ArrayAdapter<String>(
@@ -96,7 +97,7 @@ class SearchFragment : BasePaginationFragment<SearchItem, SearchPresenter, Searc
         spinner?.setOnItemClickListener { _, _, position, _ -> getPresenter().onTypeChanged(position) }
         spinner?.background = spinner?.background?.apply { tint(context!!.colorAttr(R.attr.colorOnPrimary)) }
 
-        toolbar?.apply {
+        toolbarBinding?.toolbar?.apply {
             title = null
             addView(spinner)
             inflateMenu(R.menu.menu_search)
@@ -104,7 +105,7 @@ class SearchFragment : BasePaginationFragment<SearchItem, SearchPresenter, Searc
 
         searchView = LayoutInflater.from(context).inflate(R.layout.layout_search_view, null) as? androidx.appcompat.widget.SearchView
 
-        toolbar?.menu?.findItem(R.id.item_search)?.actionView = searchView
+        toolbarBinding?.toolbar?.menu?.findItem(R.id.item_search)?.actionView = searchView
         searchView?.run {
 
             setOnQueryTextListener(searchViewQueryListener)
@@ -114,11 +115,11 @@ class SearchFragment : BasePaginationFragment<SearchItem, SearchPresenter, Searc
             setOnCloseListener {
                 return@setOnCloseListener true
             }
-            findViewById<androidx.appcompat.widget.SearchView.SearchAutoComplete>(R.id.search_src_text)?.apply {
+            findViewById<androidx.appcompat.widget.SearchView.SearchAutoComplete>(androidx.appcompat.R.id.search_src_text)?.apply {
                 setPadding(0, 0, context.dp(8), 0)
                 setHintTextColor(context.colorStateList(context.attr(R.attr.colorOnPrimarySecondary).resourceId))
             }
-            findViewById<LinearLayout>(R.id.search_edit_frame)?.apply {
+            findViewById<LinearLayout>(androidx.appcompat.R.id.search_edit_frame)?.apply {
                 layoutParams = (layoutParams as? LinearLayout.LayoutParams)?.apply {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                         marginStart = 0
@@ -128,7 +129,7 @@ class SearchFragment : BasePaginationFragment<SearchItem, SearchPresenter, Searc
         }
 
 
-        with(recyclerView) {
+        with(viewBinding!!.includedLayoutDefaultList.recyclerView) {
             val spanCount = context.calculateColumns(R.dimen.image_search_width)
             adapter = this@SearchFragment.adapter
             layoutManager = GridLayoutManager(context, spanCount)
@@ -137,17 +138,22 @@ class SearchFragment : BasePaginationFragment<SearchItem, SearchPresenter, Searc
             addOnScrollListener(nextPageListener)
         }
 
-        fab.setOnClickListener { getPresenter().onFilterClicked() }
+        viewBinding!!.fab.setOnClickListener { getPresenter().onFilterClicked() }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _viewBinding = null
     }
 
     override fun onTabRootAction() {
-        toolbar?.menu?.findItem(R.id.item_search)?.expandActionView()
+        toolbarBinding?.toolbar?.menu?.findItem(R.id.item_search)?.expandActionView()
     }
 
     private val searchViewQueryListener = object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
             getPresenter().onQuerySearch(query)
-            toolbar?.menu?.findItem(R.id.item_search)?.collapseActionView()
+            toolbarBinding?.toolbar?.menu?.findItem(R.id.item_search)?.collapseActionView()
             return false
         }
 
@@ -176,11 +182,17 @@ class SearchFragment : BasePaginationFragment<SearchItem, SearchPresenter, Searc
 
     override fun showFilter(type: Type, filters: HashMap<String, MutableList<FilterItem>>) {
         val tag = "filterDialog"
-        val fragment = fragmentManager?.findFragmentByTag(tag)
+        val fragment = parentFragmentManager.findFragmentByTag(tag)
         if (fragment == null) {
             val filter = FilterFragment.newInstance(type, filters)
-            filter.setTargetFragment(this, 42)
-            postViewAction { filter.show(fragmentManager!!, tag) }
+            parentFragmentManager.setFragmentResultListener(FilterFragment.FILTER_RESULT_KEY, this) { _, bundle ->
+                val filterTag = bundle.getString(FilterFragment.RESULT_TAG_KEY)
+                val filtersJson = bundle.getString(FilterFragment.RESULT_FILTERS_KEY)
+                val typeToken = object : com.google.gson.reflect.TypeToken<HashMap<String, MutableList<FilterItem>>>() {}.type
+                val appliedFilters: HashMap<String, MutableList<FilterItem>> = com.google.gson.Gson().fromJson(filtersJson, typeToken)
+                onFiltersSelected(filterTag, appliedFilters)
+            }
+            postViewAction { filter.show(parentFragmentManager, tag) }
         }
     }
 
@@ -189,15 +201,15 @@ class SearchFragment : BasePaginationFragment<SearchItem, SearchPresenter, Searc
     }
 
     override fun addBackButton() {
-        toolbar?.addBackButton { getPresenter().onBackPressed() }
+        toolbarBinding?.toolbar?.addBackButton { getPresenter().onBackPressed() }
     }
 
     override fun updateFilterIcon(empty: Boolean) {
-        fab.setImageResource(if (empty) R.drawable.ic_filter else R.drawable.ic_filter_edit)
+        viewBinding?.fab?.setImageResource(if (empty) R.drawable.ic_filter else R.drawable.ic_filter_edit)
     }
 
-    override fun showFilterButton() = fab.show()
-    override fun hideFilterButton() = fab.hide()
-    override fun setSimpleEmptyText() = emptyContentView.setText(R.string.search_need_query)
-    override fun setDefaultEmptyText() = emptyContentView.setText(R.string.search_nothing)
+    override fun showFilterButton() { viewBinding?.fab?.show() }
+    override fun hideFilterButton() { viewBinding?.fab?.hide() }
+    override fun setSimpleEmptyText() { placeholdersBinding?.emptyContentView?.setText(R.string.search_need_query) }
+    override fun setDefaultEmptyText() { placeholdersBinding?.emptyContentView?.setText(R.string.search_nothing) }
 }

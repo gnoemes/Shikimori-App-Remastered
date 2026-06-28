@@ -19,6 +19,7 @@
             android:id="@+id/imageView"
             android:layout_width="@dimen/image_default_width"
             android:layout_height="@dimen/image_calendar_height"
+            android:contentDescription="@string/description_character_image"
             tools:src="@drawable/test_preview2" />
 
     </com.google.android.material.card.MaterialCardView>

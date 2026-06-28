@@ -1,6 +1,6 @@
 package com.gnoemes.shikimori.presentation.presenter.series.episodes
 
-import com.arellomobile.mvp.InjectViewState
+import moxy.InjectViewState
 import com.gnoemes.shikimori.domain.rates.RatesInteractor
 import com.gnoemes.shikimori.domain.series.SeriesInteractor
 import com.gnoemes.shikimori.domain.user.UserInteractor
@@ -18,6 +18,7 @@ import com.gnoemes.shikimori.presentation.presenter.series.episodes.converter.Ep
 import com.gnoemes.shikimori.presentation.view.series.episodes.EpisodesView
 import com.gnoemes.shikimori.utils.clearAndAddAll
 import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
 @InjectViewState
@@ -50,11 +51,13 @@ class EpisodesPresenter @Inject constructor(
         loadData()
     }
 
-    private fun loadData() =
-            loadEpisodes()
-                    .appendLoadingLogic(viewState)
-                    .subscribe(this::setData, this::processErrors)
-                    .addToDisposables()
+    private fun loadData() {
+        compositeDisposable.clear()
+        loadEpisodes()
+                .appendLoadingLogic(viewState)
+                .subscribe(this::setData, this::processErrors)
+                .addToDisposables()
+    }
 
     private fun loadEpisodes(): Single<List<EpisodeViewModel>> =
             interactor.getEpisodes(navigationData.animeId, navigationData.name, isAlternativeSource)
@@ -63,6 +66,8 @@ class EpisodesPresenter @Inject constructor(
     private fun setData(items: List<EpisodeViewModel>) {
         val first = this.items.isEmpty()
         this.items.clearAndAddAll(items)
+
+        if (items.isNotEmpty()) viewState.showContent(true)
         showData(items)
 
         if (first) scrollToPenultimate()
@@ -109,6 +114,7 @@ class EpisodesPresenter @Inject constructor(
         logEvent(AnalyticEvent.ANIME_EPISODES_CHECKED_MANUALLY)
 
         createRateIfNotExist(rateId)
+                .observeOn(AndroidSchedulers.mainThread())
                 .doOnSuccess { viewState.onRateCreated(it) }
                 .flatMapCompletable { interactor.sendEpisodeChanges(EpisodeChanges.Changes(it, item.animeId, item.index, newStatus)) }
                 .doOnSubscribe { showEpisodeLoading(item, newStatus) }
@@ -170,16 +176,17 @@ class EpisodesPresenter @Inject constructor(
                     if (it is EpisodeChanges.Error) Single.error(it.exception)
                     else loadEpisodes()
                 }
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::setData, this::processErrors)
                 .addToDisposables()
     }
 
     fun <T> Single<T>.appendLoadingLogic(viewState: EpisodesView): Single<T> =
-            this.doOnSubscribe { viewState.onShowLoading() }
+            this.observeOn(AndroidSchedulers.mainThread())
+                    .doOnSubscribe { viewState.onShowLoading() }
                     .doOnSubscribe { viewState.showEmptyEpisodesView(false) }
                     .doOnSubscribe { viewState.hideNetworkView() }
-                    .doOnSubscribe { viewState.showContent(true) }
-                    .doAfterTerminate { viewState.onHideLoading() }
-                    .doOnEvent { _, _ -> viewState.onHideLoading() }
-                    .doOnSuccess { viewState.showContent(true) }
+                    .doOnSubscribe { viewState.showContent(false) }
+                                .doOnEvent { _, _ -> viewState.onHideLoading() }
+
 }

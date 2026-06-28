@@ -21,6 +21,7 @@
             android:id="@+id/imageView"
             android:layout_width="@dimen/image_details_poster_width"
             android:layout_height="@dimen/image_details_poster_height"
+            android:contentDescription="@string/description_anime_poster"
             tools:src="@drawable/test_preview2" />
     </com.google.android.material.card.MaterialCardView>
 

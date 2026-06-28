@@ -1,7 +1,7 @@
 package com.gnoemes.shikimori.entity.user.presentation
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class UserHistoryNavigationData(

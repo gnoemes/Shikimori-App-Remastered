@@ -1,0 +1,199 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 3,
+    "identityHash": "80dd66de0e6c37a0c64132a38bdf85c9",
+    "entities": [
+      {
+        "tableName": "anime_rate_sync",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_rate_id` INTEGER NOT NULL, `_anime_id` INTEGER NOT NULL, `episodes` INTEGER NOT NULL, PRIMARY KEY(`_rate_id`))",
+        "fields": [
+          {
+            "fieldPath": "rateId",
+            "columnName": "_rate_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "animeId",
+            "columnName": "_anime_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "episodes",
+            "columnName": "episodes",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "_rate_id"
+          ]
+        }
+      },
+      {
+        "tableName": "episodes",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_anime_id` INTEGER NOT NULL, `_episode_id` INTEGER NOT NULL, `is_watched` INTEGER, PRIMARY KEY(`_anime_id`, `_episode_id`))",
+        "fields": [
+          {
+            "fieldPath": "animeId",
+            "columnName": "_anime_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "episodeId",
+            "columnName": "_episode_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isWatched",
+            "columnName": "is_watched",
+            "affinity": "INTEGER"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "_anime_id",
+            "_episode_id"
+          ]
+        }
+      },
+      {
+        "tableName": "manga_rate_sync",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_rate_id` INTEGER NOT NULL, `_manga_id` INTEGER NOT NULL, `chapters` INTEGER NOT NULL, PRIMARY KEY(`_rate_id`))",
+        "fields": [
+          {
+            "fieldPath": "rateId",
+            "columnName": "_rate_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mangaId",
+            "columnName": "_manga_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "chapters",
+            "columnName": "chapters",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "_rate_id"
+          ]
+        }
+      },
+      {
+        "tableName": "translation_settings",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_anime_id` INTEGER NOT NULL, `author` TEXT, `type` TEXT, PRIMARY KEY(`_anime_id`))",
+        "fields": [
+          {
+            "fieldPath": "animeId",
+            "columnName": "_anime_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "author",
+            "columnName": "author",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "_anime_id"
+          ]
+        }
+      },
+      {
+        "tableName": "chapters",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_manga_id` INTEGER NOT NULL, `_chapter_id` INTEGER NOT NULL, `is_readed` INTEGER, PRIMARY KEY(`_manga_id`, `_chapter_id`))",
+        "fields": [
+          {
+            "fieldPath": "mangaId",
+            "columnName": "_manga_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "chapterId",
+            "columnName": "_chapter_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isReaded",
+            "columnName": "is_readed",
+            "affinity": "INTEGER"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "_manga_id",
+            "_chapter_id"
+          ]
+        }
+      },
+      {
+        "tableName": "pinned_rates",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `type` TEXT NOT NULL, `status` TEXT NOT NULL, `pinned_order` INTEGER NOT NULL, PRIMARY KEY(`id`, `type`, `status`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "order",
+            "columnName": "pinned_order",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id",
+            "type",
+            "status"
+          ]
+        }
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '80dd66de0e6c37a0c64132a38bdf85c9')"
+    ]
+  }
+}

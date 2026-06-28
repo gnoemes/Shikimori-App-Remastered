@@ -11,14 +11,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.di.base.modules.BaseFragmentModule
+import com.gnoemes.shikimori.entity.common.domain.KeyScreen
 import com.gnoemes.shikimori.entity.main.LocalCiceroneHolder
 import com.gnoemes.shikimori.presentation.presenter.common.RouteHolder
 import com.gnoemes.shikimori.presentation.view.base.fragment.*
 import com.gnoemes.shikimori.utils.navigation.SupportAppNavigator
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasAndroidInjector
 import dagger.android.support.AndroidSupportInjection
-import dagger.android.support.HasSupportFragmentInjector
 import ru.terrakok.cicerone.Cicerone
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.Router
@@ -26,7 +27,7 @@ import ru.terrakok.cicerone.commands.Command
 import javax.inject.Inject
 import javax.inject.Named
 
-class BottomTabContainer : MvpFragment(), RouterProvider, BackButtonListener, HasSupportFragmentInjector, TabContainer {
+class BottomTabContainer : MvpFragment(), RouterProvider, BackButtonListener, HasAndroidInjector, TabContainer {
 
     @Inject
     lateinit var ciceroneHolder: LocalCiceroneHolder
@@ -36,9 +37,9 @@ class BottomTabContainer : MvpFragment(), RouterProvider, BackButtonListener, Ha
     lateinit var childFM: FragmentManager
 
     @Inject
-    lateinit var childFragmentInjector: DispatchingAndroidInjector<Fragment>
+    lateinit var childFragmentInjector: DispatchingAndroidInjector<Any>
 
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> = childFragmentInjector
+    override fun androidInjector(): AndroidInjector<Any> = childFragmentInjector
 
     companion object {
         fun newInstance() = BottomTabContainer()
@@ -53,16 +54,16 @@ class BottomTabContainer : MvpFragment(), RouterProvider, BackButtonListener, Ha
         super.onAttach(context)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        if (childFM.findFragmentById(R.id.fragment_container) == null) {
-            getCicerone().router.replaceScreen(getContainerName())
-        }
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_tab, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        if (childFM.findFragmentById(R.id.fragment_container) == null) {
+            getCicerone().router.replaceScreen(KeyScreen(getContainerName()))
+        }
     }
 
     override fun onResume() {

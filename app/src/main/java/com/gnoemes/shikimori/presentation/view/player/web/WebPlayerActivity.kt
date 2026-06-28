@@ -9,30 +9,44 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
-import androidx.annotation.RequiresApi
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.data.local.preference.PlayerSettingsSource
+import com.gnoemes.shikimori.domain.series.SeriesSyncInteractor
 import com.gnoemes.shikimori.entity.app.domain.AppExtras
 import com.gnoemes.shikimori.entity.app.domain.SettingsExtras
 import com.gnoemes.shikimori.presentation.view.base.activity.BaseThemedActivity
 import com.gnoemes.shikimori.utils.Utils
 import com.gnoemes.shikimori.utils.widgets.VideoWebChromeClient
 import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.activity_web_player.*
+import com.gnoemes.shikimori.databinding.ActivityWebPlayerBinding
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import java.util.regex.Pattern
 import javax.inject.Inject
 
 class WebPlayerActivity : BaseThemedActivity() {
 
+    private lateinit var binding: ActivityWebPlayerBinding
     private lateinit var chromeClient: VideoWebChromeClient
     private lateinit var webView: WebView
 
     @Inject
     lateinit var settingsSource: PlayerSettingsSource
+
+    @Inject
+    lateinit var seriesSyncInteractor: SeriesSyncInteractor
+
+    private val compositeDisposable = CompositeDisposable()
+
+    private val animeId: Long by lazy { intent.getLongExtra(AppExtras.ARGUMENT_ANIME_ID, -1L) }
+    private val episodeId: Long by lazy { intent.getLongExtra(AppExtras.ARGUMENT_EPISODE_ID, -1L) }
 
     companion object {
         private val ANIME_365_REGEX = "smotret-anime\\.com".toRegex()
@@ -42,15 +56,16 @@ class WebPlayerActivity : BaseThemedActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
+        binding = ActivityWebPlayerBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        setContentView(R.layout.activity_web_player)
 
         showNoAdsMessage()
 
         if (settingsSource.isOpenLandscape) requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 
         webView = WebView(applicationContext)
-        frame.addView(webView)
+        binding.frame.addView(webView)
 
         chromeClient = VideoWebChromeClient(webView, windowCallback)
         webView.apply {
@@ -59,7 +74,6 @@ class WebPlayerActivity : BaseThemedActivity() {
             setLayerType(WebView.LAYER_TYPE_HARDWARE, null)
 
             settings.apply {
-                setAppCacheEnabled(true)
                 cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
                 javaScriptCanOpenWindowsAutomatically = true
                 javaScriptEnabled = true
@@ -118,45 +132,56 @@ class WebPlayerActivity : BaseThemedActivity() {
     }
 
     override fun onDestroy() {
-        frame?.removeAllViews()
-        window.decorView.destroyDrawingCache()
-        webView.webChromeClient = null
-        webView.webViewClient = null
+        compositeDisposable.clear()
+        markEpisodeAsWatched()
+        binding.frame?.removeAllViews()
         webView.destroy()
         super.onDestroy()
     }
 
-    private fun showSystemUI() {
-        window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
+    private fun markEpisodeAsWatched() {
+        if (animeId == -1L || episodeId == -1L) return
+        compositeDisposable.add(
+                seriesSyncInteractor.setEpisodeWatched(animeId, episodeId.toInt(), onlyLocal = false)
+                        .subscribe({}, { it.printStackTrace() })
+        )
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private fun showSystemUI() {
+        WindowInsetsControllerCompat(window, window.decorView).show(WindowInsetsCompat.Type.systemBars())
+    }
+
     private fun hideSystemUi() {
-        window.decorView
-                .systemUiVisibility = (View.SYSTEM_UI_FLAG_IMMERSIVE
-                // Set the content to appear under the system bars so that the
-                // content doesn't resize when the system bars hide and show.
-                or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                // Hide the nav bar and status bar
-                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                or View.SYSTEM_UI_FLAG_FULLSCREEN)
+        WindowInsetsControllerCompat(window, window.decorView).let { controller ->
+            controller.hide(WindowInsetsCompat.Type.systemBars())
+            controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        }
     }
 
     private val client = object : WebViewClient() {
+        @Suppress("DEPRECATION")
         override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
             return if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
-                if (Pattern.compile("https?://vk\\.com/").matcher(url).find()) {
+                if (Pattern.compile("https?://vk\\.com/").matcher(url.orEmpty()).find()) {
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     startActivity(intent)
                     true
                 } else false
+            } else {
+                super.shouldOverrideUrlLoading(view, url)
+            }
+        }
 
-            } else super.shouldOverrideUrlLoading(view, url)
+        override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest): Boolean {
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                if (Pattern.compile("https?://vk\\.com/").matcher(request.url.toString()).find()) {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(request.url.toString()))
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    startActivity(intent)
+                    true
+                } else false
+            } else false
         }
     }
 

@@ -1,15 +1,17 @@
 package com.gnoemes.shikimori.presentation.presenter.manga
 
-import com.arellomobile.mvp.InjectViewState
+import moxy.InjectViewState
 import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.domain.manga.MangaInteractor
 import com.gnoemes.shikimori.domain.ranobe.RanobeInteractor
 import com.gnoemes.shikimori.domain.rates.RatesInteractor
 import com.gnoemes.shikimori.domain.related.RelatedInteractor
 import com.gnoemes.shikimori.domain.user.UserInteractor
+import com.gnoemes.shikimori.BuildConfig
 import com.gnoemes.shikimori.entity.app.domain.AnalyticEvent
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.chronology.ChronologyNavigationData
+import com.gnoemes.shikimori.entity.common.domain.KeyScreen
 import com.gnoemes.shikimori.entity.common.domain.*
 import com.gnoemes.shikimori.entity.common.presentation.DetailsHeadItem
 import com.gnoemes.shikimori.entity.manga.domain.MangaDetails
@@ -105,13 +107,13 @@ class MangaPresenter @Inject constructor(
 
     override fun onOpenDiscussion() {
         currentManga.topicId?.let { onTopicClicked(it) }
-                ?: router.showSystemMessage(resourceProvider.topicNotFound)
+                ?: viewState.showSystemMessage(resourceProvider.topicNotFound)
     }
 
     override fun onSimilarClicked() {
         super.onSimilarClicked()
         val data = CommonNavigationData(currentManga.id, Type.MANGA)
-        router.navigateTo(Screens.SIMILAR, data)
+        router.navigateTo(KeyScreen(Screens.SIMILAR, data))
     }
 
     override fun onEditRate() {
@@ -125,14 +127,18 @@ class MangaPresenter @Inject constructor(
     override fun onChronology() {
         super.onChronology()
         val data = ChronologyNavigationData(id, type, currentManga.franchise)
-        router.navigateTo(Screens.CHRONOLOGY, data)
+        router.navigateTo(KeyScreen(Screens.CHRONOLOGY, data))
         logEvent(AnalyticEvent.ANIME_DETAILS_CHRONOLOGY)
     }
 
-    override fun onOpenInBrowser() = onOpenWeb(currentManga.url)
+    override fun onOpenInBrowser() {
+        val typeSegment = if (isRanobe) "ranobes" else "mangas"
+        val url = "${BuildConfig.ShikimoriBaseUrl}/$typeSegment/$id"
+        viewState.openInBrowser(url)
+    }
 
     override fun onShareClicked() {
-        router.navigateTo(Screens.SHARE, currentManga.url)
+        router.navigateTo(KeyScreen(Screens.SHARE, currentManga.url))
     }
 
     override fun onStatisticClicked() {

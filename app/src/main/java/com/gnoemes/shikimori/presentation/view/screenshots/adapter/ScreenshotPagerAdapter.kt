@@ -7,7 +7,7 @@ import com.github.ybq.android.spinkit.SpinKitView
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.anime.domain.Screenshot
 import com.gnoemes.shikimori.presentation.view.common.widget.TouchImageView
-import com.gnoemes.shikimori.utils.images.GlideApp
+import com.bumptech.glide.Glide
 import com.gnoemes.shikimori.utils.images.TouchImageTargetView
 
 class ScreenshotPagerAdapter(
@@ -23,10 +23,10 @@ class ScreenshotPagerAdapter(
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val view = LayoutInflater.from(container.context).inflate(R.layout.item_screenshot_page, null)
         val photoView = view.findViewById<TouchImageView>(R.id.imageView)
-        val progressBar = view.findViewById<SpinKitView>(R.id.progressBar)
+        val progressBar = view.findViewById<SpinKitView>(R.id.included_layout_progress)
 
         val item = items[position]
-        GlideApp.with(photoView)
+        Glide.with(photoView)
                 .asBitmap()
                 .load(item.original)
                 .into(TouchImageTargetView(photoView, progressBar))
@@ -51,9 +51,9 @@ class ScreenshotPagerAdapter(
     }
 
     private val tapListener = object : GestureDetector.OnDoubleTapListener {
-        override fun onDoubleTap(e: MotionEvent?): Boolean = false
-        override fun onDoubleTapEvent(e: MotionEvent?): Boolean = false
-        override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
+        override fun onDoubleTap(e: MotionEvent): Boolean = false
+        override fun onDoubleTapEvent(e: MotionEvent): Boolean = false
+        override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
             uiVisibilityCallback.invoke()
             return true
         }

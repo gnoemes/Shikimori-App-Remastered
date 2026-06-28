@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include layout="@layout/layout_filter_nested_toolbar" />
+    <include
+        android:id="@+id/nestedToolbar"
+        layout="@layout/layout_filter_nested_toolbar" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"

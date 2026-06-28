@@ -23,6 +23,6 @@ class GenreResponseConverterImpl @Inject constructor() : GenreResponseConverter 
         name.toCharArray().forEach {
             if (Character.isWhitespace(it) || it == '-') builder.append('_') else builder.append(it)
         }
-        return builder.toString().toLowerCase()
+        return builder.toString().lowercase()
     }
 }

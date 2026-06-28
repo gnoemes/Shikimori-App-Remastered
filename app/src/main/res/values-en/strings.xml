@@ -1,0 +1,754 @@
+<resources>
+    <string name="app_name">Shikimori App</string>
+    <string name="appBarFixScrollingFooterBehavior">com.gnoemes.shikimori.utils.widgets.FixScrollingFooterBehavior</string>
+    <string name="default_notification_channel_id">SHIKIMORI_NOTIFICATION_CHANNEL_ID</string>
+    <string name="main_exit_message">Press the button again to exit</string>
+
+    <!-- Content descriptions for accessibility -->
+    <string name="description_anime_cover">Anime cover</string>
+    <string name="description_character_image">Character image</string>
+    <string name="description_anime_poster">Anime poster</string>
+    <string name="description_screenshot">Screenshot</string>
+    <string name="description_profile_image">Profile image</string>
+    <string name="description_user_avatar">User avatar</string>
+    <string name="description_category_icon">Category icon</string>
+    <string name="description_search_result">Search result</string>
+    <string name="description_favorite_image">Favorite image</string>
+    <string name="description_info_image">Info image</string>
+    <string name="description_action_icon">Action icon</string>
+    <string name="description_person_photo">Person photo</string>
+    <string name="description_linked_image">Linked image</string>
+    <string name="description_comments_icon">Comments icon</string>
+    <string name="description_club_avatar">Club avatar</string>
+    <string name="description_same_author">Same author indicator</string>
+    <string name="description_history_image">History image</string>
+    <string name="description_preference_icon">Preference icon</string>
+    <string name="description_theme_preview">Theme preview</string>
+    <string name="description_theme_status">Theme status</string>
+    <string name="description_expand">Expand</string>
+    <string name="description_rate_status_icon">Rate status icon</string>
+    <string name="description_empty_state">Empty state</string>
+    <string name="description_network_error">Network error</string>
+
+    <string name="common_rates">Lists</string>
+    <string name="common_calendar">Calendar</string>
+    <string name="common_search">Search</string>
+    <string name="common_main">Home</string>
+    <string name="common_more">Profile</string>
+    <string name="common_profile">Profile</string>
+    <string name="common_today">Today</string>
+    <string name="common_tomorrow">Tomorrow</string>
+    <string name="common_genre">Genre</string>
+    <string name="common_type">Type</string>
+    <string name="common_status">Status</string>
+    <string name="common_season">Season</string>
+    <string name="common_year">Year</string>
+    <string name="common_duration">Episode duration</string>
+    <string name="common_yesterday">Yesterday</string>
+    <string name="common_error_message">It seems there is no internet connection or an error occurred.\n Pull to refresh</string>
+    <string name="common_error_message_without_pull">It seems there is no internet connection or an error occurred.</string>
+    <string name="common_description">Description</string>
+    <string name="common_cancel">Cancel</string>
+    <string name="common_cancel_variant">Cancel</string>
+    <string name="common_next">Next</string>
+    <string name="common_sign_in">Sign in</string>
+    <string name="common_sign_up">Sign up</string>
+    <string name="common_sign_as_guest">Sign in as guest</string>
+    <string name="common_characters">Characters</string>
+    <string name="common_character">Character</string>
+    <string name="common_chronology">Chronology</string>
+    <string name="common_chronology_read">Reading order</string>
+    <string name="common_similar">Similar</string>
+    <string name="common_related">Related</string>
+    <string name="common_links">Links</string>
+    <string name="common_discussion">Discussion</string>
+    <string name="common_seyu">Seiyū</string>
+    <string name="common_anime">Anime</string>
+    <string name="common_manga">Manga</string>
+    <string name="common_ranobe">Ranobe</string>
+    <string name="common_manga_and_ranobe">Manga and ranobe</string>
+    <string name="common_video">Video</string>
+    <string name="common_empty">Nothing found</string>
+    <string name="common_need_auth">Authorization required for this action</string>
+    <string name="common_episodes">Episodes</string>
+    <string name="common_save">Save</string>
+    <string name="common_delete">Delete</string>
+    <string name="common_volumes">Volumes</string>
+    <string name="common_chapters">Chapters</string>
+    <string name="common_open_in_browser">Open web version</string>
+    <string name="common_source">Source</string>
+    <string name="common_person">Person</string>
+    <string name="common_roles">Roles</string>
+    <string name="common_all">All</string>
+    <string name="common_repeat">Repeat</string>
+    <string name="common_reset">Reset</string>
+    <string name="common_accept">Accept</string>
+    <string name="common_age_rating">Age rating</string>
+    <string name="common_guest">Guest</string>
+    <string name="common_clubs">Clubs</string>
+    <string name="common_comments">Comments</string>
+    <string name="common_download">Download</string>
+    <string name="common_remember_choice">Remember choice</string>
+    <string name="common_change_in_settings">Can be changed in settings</string>
+    <string name="common_topic_not_found">Topic not found</string>
+    <string name="common_favorite">Favorites</string>
+    <string name="common_friends">Friends</string>
+    <string name="common_history">History</string>
+    <string name="common_online">Online</string>
+    <string name="common_user_history">User history</string>
+    <string name="common_understand">Got it</string>
+    <string name="common_apply">Apply</string>
+    <string name="common_ok">OK</string>
+    <string name="common_share">Share</string>
+    <string name="common_statistic">Statistics</string>
+    <string name="common_web_version">Web version</string>
+    <string name="common_count_format">%d of %d</string>
+
+    <string name="season_autumn">Autumn</string>
+    <string name="season_winter">Winter</string>
+    <string name="season_spring">Spring</string>
+    <string name="season_summer">Summer</string>
+
+    <string name="status_anons">Announced</string>
+    <string name="status_ongoing">Ongoing</string>
+    <string name="status_released">Released</string>
+
+    <string name="rate_add">Add</string>
+    <string name="rate_empty">Nothing here yet</string>
+    <string name="rate_watching">Watching</string>
+    <string name="rate_reading">Reading</string>
+    <string name="rate_rereading">Rereading</string>
+    <string name="rate_readed">Completed</string>
+    <string name="rate_planned">Planned</string>
+    <string name="rate_planned_short">Plan to watch</string>
+    <string name="rate_rewatch">Rewatching</string>
+    <string name="rate_rewatch_short">Rewatch</string>
+    <string name="rate_completed">Completed</string>
+    <string name="rate_on_hold">On hold</string>
+    <string name="rate_dropped">Dropped</string>
+    <string name="rate_rating">Rating</string>
+    <string name="rate_comment_hint">Add a comment to the list</string>
+    <string name="rate_watching_with_count" formatted="false">Watching (%s)</string>
+    <string name="rate_reading_with_count" formatted="false">Reading (%s)</string>
+    <string name="rate_rereading_with_count" formatted="false">Rereading (%s)</string>
+    <string name="rate_readed_with_count" formatted="false">Completed (%s)</string>
+    <string name="rate_planned_with_count" formatted="false">Planned (%s)</string>
+    <string name="rate_rewatch_with_count" formatted="false">Rewatching (%s)</string>
+    <string name="rate_completed_with_count">Completed (%s)</string>
+    <string name="rate_on_hold_with_count">On hold (%s)</string>
+    <string name="rate_dropped_with_count">Dropped (%s)</string>
+    <string name="rate_remove">Remove from list</string>
+    <string name="rate_comment">Comment</string>
+    <string name="rate_status">List</string>
+    <string name="rates_need_auth">You need to sign in to change the status</string>
+    <string name="rates_title_anime">Edit anime</string>
+    <string name="rates_title_manga">Edit manga</string>
+    <string name="rates_title_anime_add">Add anime</string>
+    <string name="rates_title_manga_add">Add manga</string>
+    <string name="rate_switch_list">Switch list</string>
+    <string name="rate_search_empty_title">Nothing found in this list</string>
+    <string name="rate_search_empty_message">Change your query or use the search section.</string>
+    <string name="rate_pin_max_message">You can pin up to three items</string>
+    <string name="rate_swipe_increment">+1</string>
+    <string name="rate_swipe_change">Change list</string>
+    <string name="rate_swipe_hold">On hold</string>
+    <string name="rate_swipe_drop">Drop</string>
+    <string name="rate_swipe_disabled">Disabled</string>
+    <string name="rate_empty_list">List is empty</string>
+    <string name="rate_empty_anime">Search anime</string>
+    <string name="rate_empty_manga">Search manga</string>
+
+    <string name="rate_message_anime_in_progress">Awaiting viewing.</string>
+    <string name="rate_message_anime_planned">Planned.</string>
+    <string name="rate_message_anime_rewatched">Awaiting rewatch.</string>
+    <string name="rate_message_anime_completed">Watched.</string>
+    <string name="rate_message_anime_on_hold">On hold.</string>
+    <string name="rate_message_anime_drop">Dropped.</string>
+    <string name="rate_message_anime_deleted">Deleted.</string>
+
+    <string name="rate_message_manga_in_progress">Awaiting reading.</string>
+    <string name="rate_message_manga_planned">Planned.</string>
+    <string name="rate_message_manga_rewatched">Awaiting rereading.</string>
+    <string name="rate_message_manga_completed">Read.</string>
+    <string name="rate_message_manga_on_hold">On hold.</string>
+    <string name="rate_message_manga_drop">Dropped.</string>
+    <string name="rate_message_manga_deleted">Deleted.</string>
+
+    <string name="rate_message_ranobe_in_progress">Awaiting reading.</string>
+    <string name="rate_message_ranobe_planned">Planned.</string>
+    <string name="rate_message_ranobe_rewatched">Awaiting rereading.</string>
+    <string name="rate_message_ranobe_completed">Read.</string>
+    <string name="rate_message_ranobe_on_hold">On hold.</string>
+    <string name="rate_message_ranobe_drop">Dropped.</string>
+    <string name="rate_message_ranobe_deleted">Deleted.</string>
+
+    <string name="rating_empty">No rating</string>
+    <string name="rating_bad_ass">Worst ever</string>
+    <string name="rating_awful">Awful</string>
+    <string name="rating_very_bad">Very bad</string>
+    <string name="rating_bad">Bad</string>
+    <string name="rating_not_bad">Not bad</string>
+    <string name="rating_normal">Average</string>
+    <string name="rating_good">Good</string>
+    <string name="rating_fine">Great</string>
+    <string name="rating_nuts">Excellent</string>
+    <string name="rating_perfect">Masterpiece!</string>
+
+    <string name="search_nothing">Nothing found.\n Try searching for something else</string>
+    <string name="translations_nothing">Nothing found.\n Try changing the translation type</string>
+
+    <string name="common_this_week">This week</string>
+    <string name="day_ago">day ago</string>
+    <string name="week_ago">week ago</string>
+    <string name="month_ago">month ago</string>
+    <string name="year_ago">year ago</string>
+    <string name="history_half_year_ago">More than half a year ago</string>
+    <string name="history_hour_ago">hour ago</string>
+    <string name="history_its_now">just now</string>
+    <string name="history_minute_ago">minute ago</string>
+
+    <string name="calendar_date_format" translatable="false">%s, %s</string>
+    <string name="calendar_must_aired">Currently airing</string>
+    <string name="calendar_my_ongoings">My ongoing</string>
+    <string name="calendar_nothing">Nothing found.\n Add anime to lists to track new episode releases</string>
+    <string name="calendar_search_hint">Ongoing and announced</string>
+    <string name="calendar_aired_already">Released today</string>
+    <string name="calendar_season_end">Season end</string>
+    <string name="calendar_empty_title">Nothing in the next month</string>
+    <string name="calendar_empty_description">Change your query or try finding a later release date on the title page.</string>
+    <string name="similar_empty_description">Nothing found</string>
+
+    <string name="episodes_format">\n[%s of %s]</string>
+    <string name="volumes_format">\n[%s-%s]</string>
+    <string name="episode_number">Episode %d</string>
+    <string name="episode_short">ep.</string>
+    <string name="episode_in">in %s</string>
+    <string name="minute_short">min</string>
+    <string name="hour_short">h</string>
+    <string name="type_pattern">%s (%s ep.), %d min.</string>
+    <string name="type_pattern_manga">%s, %s vol. %s ch.</string>
+    <string name="type_pattern_without_duration">%s (%s ep.)</string>
+    <string name="error_no_data">No data</string>
+    <string name="error_not_realized">Not implemented</string>
+    <string name="details_type">Type:</string>
+    <string name="details_season">Season:</string>
+    <string name="details_status">Status:</string>
+    <string name="details_studio">Studio:</string>
+    <string name="details_watch_online">Watch online</string>
+    <string name="details_read_online">Read online</string>
+    <string name="details_release_date">Release date</string>
+    <string name="details_released">Released</string>
+    <string name="details_released_manga">Published</string>
+    <string name="details_release_episode_format">Up to episode %s</string>
+    <string name="details_episode_duration">Episode duration</string>
+    <string name="details_screenshots">Screenshots</string>
+    <string name="details_character_search_hint">Enter character name…</string>
+    <string name="details_character_search_empty">¯ \\ _ (ツ) _ / ¯\n\nCharacter not found</string>
+
+    <string name="opening">Opening</string>
+    <string name="ending">Ending</string>
+    <string name="promo">Promo</string>
+    <string name="other">Other</string>
+
+    <string name="others">Others:</string>
+    <string name="on_jp">In Japanese:</string>
+    <string name="on_ru">In Russian:</string>
+    <string name="on_eng">In English:</string>
+
+    <string name="person_best_works">Best works</string>
+    <string name="person_best_roles">Best roles</string>
+    <string name="person_birthday">Date of birth:</string>
+    <string name="person_director">Director</string>
+    <string name="person_original_creator">Original creator</string>
+    <string name="person_art">Art</string>
+    <string name="person_story">Story</string>
+    <string name="person_story_and_art">Story and art</string>
+
+    <string name="type_tv_translatable">TV series</string>
+    <string name="type_tv_long_translatable">Series</string>
+    <string name="type_tv_short_translatable">TV</string>
+    <string name="type_movie_translatable">Movie</string>
+    <string name="type_special_translatable">Special</string>
+    <string name="type_music_translatable">Music video</string>
+    <string name="type_tv_13" translatable="false">TV 13</string>
+    <string name="type_tv_24" translatable="false">TV 24</string>
+    <string name="type_tv_48" translatable="false">TV 48</string>
+    <string name="type_ova" translatable="false">OVA</string>
+    <string name="type_ona" translatable="false">ONA</string>
+
+    <string name="type_manga_translatable">Manga</string>
+    <string name="type_novel_translatable">Ranobe</string>
+    <string name="type_one_shot_translatable">One-shot</string>
+    <string name="type_doujin_translatable">Doujinshi</string>
+    <string name="type_manhua_translatable">Manhua</string>
+    <string name="type_manhwa_translatable">Manhwa</string>
+
+    <string name="sort">Sort</string>
+    <string name="sort_id">Default</string>
+    <string name="sort_type">By type</string>
+    <string name="sort_date">By release date</string>
+    <string name="sort_date_added">By date added</string>
+    <string name="sort_date_updated">By date updated</string>
+    <string name="sort_status">By status</string>
+    <string name="sort_episodes">By episodes</string>
+    <string name="sort_chapters">By chapters</string>
+    <string name="sort_volumes">By volume count</string>
+    <string name="sort_episodes_watched">By episodes</string>
+    <string name="sort_chapters_readed">By chapters</string>
+    <string name="sort_progress">By progress</string>
+    <string name="sort_score">By score</string>
+    <string name="sort_random">Random</string>
+    <string name="sort_popularity">By popularity</string>
+    <string name="sort_name">By name</string>
+    <string name="sort_rating">By rating</string>
+    <string name="rate_drawer_open">rate_drawer_open</string>
+    <string name="rate_drawer_close">rate_drawer_close</string>
+    <string name="search_need_query">Enter a name to search</string>
+
+    <string name="duration_small">&lt; 10 min.</string>
+    <string name="duration_medium">&lt; 30 min.</string>
+    <string name="duration_long">&gt; 30 min.</string>
+
+    <string name="filter_not_selected">Not selected</string>
+    <string name="filter_select">Select</string>
+    <string name="filter_older">Older</string>
+    <string name="filter_drop">Reset</string>
+    <string name="filters">Filters</string>
+    <string name="filters_latest">Recently released</string>
+    <string name="filters_hint">Long press an item to exclude it.</string>
+    <string name="filters_genres">Genres</string>
+    <string name="filter_genres_main">Main</string>
+    <string name="filter_genres_other">List</string>
+    <string name="filter_custom">Custom filter</string>
+    <string name="filter_custom_seasons">Custom season filter</string>
+    <string name="filter_custom_input_hint">Tap here to start typing</string>
+    <string name="filter_seasons">Seasons</string>
+    <!--<string name="filter_custom_seasons_hint"><![CDATA[<p>Позволяет выделить и исключить введённый год и сезон в каком-то году. Вводить нужно на английском. Ключевые слова для сезонов: зима - winter, весна - spring, лето - summer, осень - fall. Восклицательный знак даёт исключение. Примеры:</p><br><p><b>1983</b> - 1983 год</p><br><p><b>winter_2016</b> - Зима 2016 года</p><br><p><b>2003_2015</b> - с 2003 по 2015 год</p><br><p><b>!2013</b> - кроме 2013 года</p><br><p><b>!summer_2001</b> - кроме Лета 2001 года</p>]]></string>-->
+    <string name="filter_custom_seasons_hint"><![CDATA[Allows you to highlight and exclude a specific year and season. Enter in English. Keywords for seasons: winter, spring, summer, fall. The exclamation mark excludes. Examples:
+    <br>
+    <br><b>1983</b> - year 1983
+    <br><b>winter_2016</b> - Winter 2016
+    <br><b>2003_2015</b> - from 2003 to 2015
+    <br><b>!2013</b> - except 2013
+    <br><b>!summer_2001</b> - except Summer 2001]]></string>
+
+    <string name="more_authorized_hint">Go to profile</string>
+    <string name="more_guest_hint">Sign in</string>
+    <string name="more_settings">Settings</string>
+
+    <string name="dialog_auth_message">Sign in or register to access all app features</string>
+
+    <string name="topic_news">News</string>
+    <string name="topic_my_feed">My feed</string>
+    <string name="topic_forum">Forum</string>
+
+    <string name="topic_tag_news">news</string>
+    <string name="topic_tag_collection">collection</string>
+    <string name="topic_tag_review">review</string>
+    <string name="topic_tag_cosplay">cosplay</string>
+    <string name="topic_tag_episode">episode</string>
+    <string name="topic_tag_release">release</string>
+    <string name="topic_tag_offtopic">off-topic</string>
+    <string name="topic_tag_summary">summary</string>
+
+    <string name="forum_site">Site</string>
+    <string name="forum_clubs">Clubs</string>
+    <string name="forum_games">Games</string>
+    <string name="forum_cosplay">Cosplay</string>
+    <string name="forum_review">Reviews</string>
+    <string name="forum_news">News</string>
+    <string name="forum_collection">Collections</string>
+    <string name="forum_all">All mixed</string>
+    <string name="forum_my_clubs">My clubs</string>
+    <string name="forum_contests">Tournaments</string>
+    <string name="forum_reviews">Reviews</string>
+    <string name="forum_animanga">Anime and manga</string>
+    <string name="forum_vn">Visual novels</string>
+    <string name="forum_off_topic">Off-topic</string>
+    <string name="forum_articles">Articles</string>
+    <string name="forum_my_clubs_empty">No matching topics found.\nJoin clubs to receive updates.</string>
+
+    <string name="comment_more_format_message">Load %d more of</string>
+    <string name="comment_more_format_message_last">Load more</string>
+    <string name="comment_previous">Show previous</string>
+    <string name="comment_empty">Comments not found.</string>
+    <string name="comment_reply">Reply:</string>
+
+    <string name="series_show">Watch anime</string>
+    <string name="series_alternative_source">Alternative source</string>
+    <string name="episode_number_hint">Episode number</string>
+    <string name="episodes_not_found">Episodes not found</string>
+    <string name="episodes_under_license">Licensed in Russia</string>
+    <string name="episodes_blocked">Blocked in Russia</string>
+    <string name="episode_check_all_previous">Mark all before</string>
+    <string name="episode_search_empty_title">Episode not found</string>
+    <string name="episode_search_empty_desc">Invalid query or the episode hasn\'t been uploaded yet</string>
+    <string name="episode_opened">Opened</string>
+    <string name="episodes_empty_title">Episodes not found</string>
+    <string name="episodes_empty_description">Nothing found in the main source</string>
+    <string name="translation_authors">Authors</string>
+    <string name="translation_downloadable">Available for download</string>
+    <string name="translation_sources">Sources</string>
+    <string name="translation_last_author">Last author</string>
+    <string name="translation_blue_ray">Blue-ray</string>
+    <string name="translation_voice">Voiceover</string>
+    <string name="translation_subtitles">Subtitles</string>
+    <string name="translation_original">Original</string>
+    <string name="translation_unknown_author">Unknown author</string>
+    <string name="translation_author_hint">Team or author</string>
+    <string name="translation_search_empty_title">Nothing found</string>
+    <string name="translation_search_empty_desc">Try searching for something else</string>
+    <string name="translation_not_found">Translation by this author not found</string>
+
+    <string name="series_main_source">Main</string>
+    <string name="series_alt_source">Alternative</string>
+    <string name="series_empty_authors_title">Authors not found</string>
+    <string name="series_empty_authors_description">Try changing the source or type if you\'re not watching from the same one.</string>
+    <string name="series_empty_episode_title">Episode not found</string>
+    <string name="series_empty_episode_description">The title hasn\'t aired or the video hasn\'t been uploaded.</string>
+    <string name="series_add_video">Add video</string>
+    <string name="series_tracks_empty">Could not find video. It may have been removed.</string>
+
+    <string name="player_web">Web player</string>
+    <string name="player_embedded">Embedded player (BETA)</string>
+    <string name="player_external">External player</string>
+    <string name="player_error">An error occurred while loading the video</string>
+    <string name="player_no_ads">The hosting may show ads</string>
+    <string name="player_seconds_short">sec.</string>
+    <string name="player_hosting_error">This hosting is not supported by the player</string>
+
+    <string name="profile_write">Message</string>
+    <string name="profile_message_box">Mailbox</string>
+    <string name="profile_friendship">Friendship</string>
+    <string name="profile_ignore">Ignore</string>
+    <string name="profile_bans">Bans</string>
+    <string name="profile_history">History</string>
+    <string name="profile_about_me">About me</string>
+
+    <string name="profile_rate_anime">Anime</string>
+    <string name="profile_rate_manga">Manga and ranobe</string>
+    <string name="profile_rate_watched">Watched</string>
+    <string name="profile_rate_watching">Watching / Planning</string>
+    <string name="profile_rate_readed">Read</string>
+    <string name="profile_rate_reading">Reading / Planning</string>
+    <string name="profile_rate_dropped">Dropped</string>
+    <string name="profile_auth_title">You are not signed in</string>
+    <string name="profile_auth_description">Sign in to access all features.</string>
+    <string name="profile_auth_register">Create account</string>
+
+    <string name="profile_rate_rewatched">Rewatched</string>
+    <string name="profile_rate_reread">Reread</string>
+    <string name="profile_score">Scores</string>
+    <string name="profile_middle_score">Average</string>
+    <string name="profile_types">Types</string>
+    <string name="profile_ratings">Ratings</string>
+    <string name="profile_history_format">History %s</string>
+    <string name="profile_statistic">Extended statistics</string>
+    <string name="profile_anime_hint">Generated from the «Watching», «Rewatching» and «Completed» lists.</string>
+    <string name="profile_manga_hint">Generated from the «Reading», «Rereading» and «Read» lists.</string>
+
+    <string name="club_free">Free discussion and joining</string>
+    <string name="club_free_join">Free joining</string>
+    <string name="club_free_discussion">Free discussion</string>
+    <string name="club_invite">By invitation</string>
+
+    <string name="favorites_producers">Directors</string>
+    <string name="favorites_mangakas">Mangaka</string>
+    <string name="favorites_other_people">Other people</string>
+
+    <string name="download_new_folder">New folder</string>
+    <string name="download_new_folder_hint">Enter new folder name</string>
+    <string name="download_folder_empty">Folder is empty</string>
+
+    <string name="theme_default">Default theme</string>
+    <string name="theme_dark">Dark theme</string>
+    <string name="theme_amoled">Amoled theme</string>
+
+    <string name="chronology_prequel">Prequel</string>
+    <string name="chronology_sequel">Sequel</string>
+    <string name="chronology_other">Other</string>
+    <string name="chronology_summary">Summary</string>
+    <string name="chronology_side_story">Side story</string>
+    <string name="chronology_alternative_setting">Alternative setting</string>
+    <string name="chronology_alternative_version">Alternative version</string>
+    <string name="chronology_parent_story">Parent story</string>
+    <string name="chronology_adaptation">Adaptation</string>
+    <string name="chronology_type">Chronology type</string>
+    <string name="chronology_type_main">Main story</string>
+    <string name="chronology_type_linked">Story branches</string>
+    <string name="chronology_type_all">Franchise</string>
+
+    <string name="backup_save">Saving</string>
+    <string name="backup_saved">Saved</string>
+    <string name="backup_write_error">Could not create file</string>
+    <string name="backup_read_error">Could not open file</string>
+    <string name="backup_on_cloud">To cloud</string>
+    <string name="backup_on_device">To device</string>
+    <string name="backup_share">Share</string>
+    <string name="backup_from_cloud">From cloud</string>
+    <string name="backup_from_device">From device</string>
+    <string name="backup_download">Restore</string>
+    <string name="backup_empty_file">App settings not found</string>
+    <string name="backup_read_success">Settings successfully restored</string>
+    <string name="backup_found_title">Restore</string>
+    <string name="backup_found_message">App settings file found</string>
+    <string name="backup_cloud_upload_error">Could not upload file to cloud</string>
+    <string name="backup_cloud_upload_success">Settings successfully uploaded</string>
+    <string name="backup_cloud_download_error">Could not download settings</string>
+
+    <string name="month_jan_short">Jan</string>
+    <string name="month_feb_short">Feb</string>
+    <string name="month_mar_short">Mar</string>
+    <string name="month_apr_short">Apr</string>
+    <string name="month_may_short">May</string>
+    <string name="month_jun_short">Jun</string>
+    <string name="month_jul_short">Jul</string>
+    <string name="month_aug_short">Aug</string>
+    <string name="month_sep_short">Sep</string>
+    <string name="month_oct_short">Oct</string>
+    <string name="month_nov_short">Nov</string>
+    <string name="month_dec_short">Dec</string>
+
+    <string-array name="rate_types">
+        <item>@string/common_anime</item>
+        <item>@string/common_manga</item>
+    </string-array>
+
+    <string-array name="anime_rate_stasuses_empty">
+        <item>@string/rate_add</item>
+        <item>@string/rate_watching</item>
+        <item>@string/rate_planned</item>
+        <item>@string/rate_rewatch</item>
+        <item>@string/rate_completed</item>
+        <item>@string/rate_on_hold</item>
+        <item>@string/rate_dropped</item>
+    </string-array>
+
+    <string-array name="anime_rate_stasuses">
+        <item>@string/rate_watching</item>
+        <item>@string/rate_planned</item>
+        <item>@string/rate_rewatch</item>
+        <item>@string/rate_completed</item>
+        <item>@string/rate_on_hold</item>
+        <item>@string/rate_dropped</item>
+    </string-array>
+
+    <string-array name="anime_rate_stasuses_with_delete">
+        <item>@string/rate_watching</item>
+        <item>@string/rate_planned</item>
+        <item>@string/rate_rewatch</item>
+        <item>@string/rate_completed</item>
+        <item>@string/rate_on_hold</item>
+        <item>@string/rate_dropped</item>
+        <item>@string/rate_remove</item>
+    </string-array>
+
+    <string-array name="anime_rate_stasuses_with_count">
+        <item>@string/rate_watching_with_count</item>
+        <item>@string/rate_planned_with_count</item>
+        <item>@string/rate_rewatch_with_count</item>
+        <item>@string/rate_completed_with_count</item>
+        <item>@string/rate_on_hold_with_count</item>
+        <item>@string/rate_dropped_with_count</item>
+    </string-array>
+
+    <string-array name="manga_rate_stasuses">
+        <item>@string/rate_reading</item>
+        <item>@string/rate_planned</item>
+        <item>@string/rate_rereading</item>
+        <item>@string/rate_readed</item>
+        <item>@string/rate_on_hold</item>
+        <item>@string/rate_dropped</item>
+    </string-array>
+
+    <string-array name="manga_rate_stasuses_empty">
+        <item>@string/rate_add</item>
+        <item>@string/rate_reading</item>
+        <item>@string/rate_planned</item>
+        <item>@string/rate_rereading</item>
+        <item>@string/rate_readed</item>
+        <item>@string/rate_on_hold</item>
+        <item>@string/rate_dropped</item>
+    </string-array>
+
+    <string-array name="manga_rate_stasuses_with_count">
+        <item>@string/rate_reading_with_count</item>
+        <item>@string/rate_planned_with_count</item>
+        <item>@string/rate_rereading_with_count</item>
+        <item>@string/rate_readed_with_count</item>
+        <item>@string/rate_on_hold_with_count</item>
+        <item>@string/rate_dropped_with_count</item>
+    </string-array>
+
+    <string-array name="search_types">
+        <item>@string/common_anime</item>
+        <item>@string/common_manga</item>
+        <item>@string/common_ranobe</item>
+        <item>@string/common_character</item>
+        <item>@string/common_person</item>
+    </string-array>
+
+    <string-array name="anime_search_sort">
+        <item>@string/sort_score</item>
+        <item>@string/sort_popularity</item>
+        <item>@string/sort_episodes_watched</item>
+        <item>@string/sort_date</item>
+        <item>@string/sort_name</item>
+    </string-array>
+
+    <string-array name="anime_search_sort_values">
+        <item>ranked</item>
+        <item>popularity</item>
+        <item>episodes</item>
+        <item>aired_on</item>
+        <item>name</item>
+    </string-array>
+
+    <string-array name="manga_search_sort">
+        <item>@string/sort_score</item>
+        <item>@string/sort_popularity</item>
+        <item>@string/sort_chapters_readed</item>
+        <item>@string/sort_date</item>
+        <item>@string/sort_name</item>
+    </string-array>
+
+    <string-array name="manga_search_sort_values">
+        <item>ranked</item>
+        <item>popularity</item>
+        <item>chapters</item>
+        <item>aired_on</item>
+        <item>name</item>
+    </string-array>
+
+    <string-array name="statuses">
+        <item>@string/status_anons</item>
+        <item>@string/status_ongoing</item>
+        <item>@string/status_released</item>
+    </string-array>
+
+    <string-array name="filter_statuses">
+        <item>@string/status_anons</item>
+        <item>@string/status_ongoing</item>
+        <item>@string/status_released</item>
+        <item>@string/filters_latest</item>
+    </string-array>
+
+    <string-array name="statuses_names">
+        <item>anons</item>
+        <item>ongoing</item>
+        <item>released</item>
+    </string-array>
+
+    <string-array name="anime_types">
+        <item>@string/type_tv_translatable</item>
+        <item>@string/type_movie_translatable</item>
+        <item>@string/type_special_translatable</item>
+        <item>@string/type_music_translatable</item>
+        <item>@string/type_ova</item>
+        <item>@string/type_ona</item>
+        <item>@string/type_tv_13</item>
+        <item>@string/type_tv_24</item>
+        <item>@string/type_tv_48</item>
+    </string-array>
+
+    <string-array name="anime_types_name">
+        <item>tv</item>
+        <item>movie</item>
+        <item>special</item>
+        <item>music</item>
+        <item>ova</item>
+        <item>ona</item>
+        <item>tv_13</item>
+        <item>tv_24</item>
+        <item>tv_48</item>
+    </string-array>
+
+    <string-array name="duration">
+        <item>@string/duration_small</item>
+        <item>@string/duration_medium</item>
+        <item>@string/duration_long</item>
+    </string-array>
+
+    <string-array name="duration_names">
+        <item>S</item>
+        <item>D</item>
+        <item>F</item>
+    </string-array>
+
+    <string-array name="manga_types">
+        <item>@string/type_manga_translatable</item>
+        <item>@string/type_manhwa_translatable</item>
+        <item>@string/type_manhua_translatable</item>
+        <item>@string/type_one_shot_translatable</item>
+        <item>@string/type_doujin_translatable</item>
+    </string-array>
+
+    <string-array name="manga_types_name">
+        <item>manga</item>
+        <item>manhwa</item>
+        <item>manhua</item>
+        <item>one_shot</item>
+        <item>doujin</item>
+    </string-array>
+
+    <string-array name="age_ratings">
+        <item>G</item>
+        <item>PG</item>
+        <item>PG-13</item>
+        <item>R-17</item>
+        <item>R+</item>
+        <item>Rx</item>
+    </string-array>
+
+    <string-array name="age_ratings_values">
+        <item>0+</item>
+        <item>7+</item>
+        <item>13+</item>
+        <item>16+</item>
+        <item>17+</item>
+        <item>18+</item>
+    </string-array>
+
+    <string-array name="seasons">
+        <item>@string/season_autumn</item>
+        <item>@string/season_winter</item>
+        <item>@string/season_spring</item>
+        <item>@string/season_summer</item>
+    </string-array>
+
+    <string-array name="players">
+        <item>@string/player_web</item>
+        <item>@string/player_embedded</item>
+        <item>@string/player_external</item>
+    </string-array>
+
+    <string-array name="translation_types">
+        <item>@string/translation_voice</item>
+        <item>@string/translation_subtitles</item>
+        <item>@string/translation_original</item>
+    </string-array>
+
+    <string-array name="player_speed_rates">
+        <item>0.25x</item>
+        <item>0.5x</item>
+        <item>1x</item>
+        <item>1.25x</item>
+        <item>1.5x</item>
+        <item>2x</item>
+    </string-array>
+
+    <string-array name="themes">
+        <item>@string/theme_default</item>
+        <item>@string/theme_dark</item>
+        <item>@string/theme_amoled</item>
+    </string-array>
+
+    <string-array name="rate_swipe_actions">
+        <item>@string/rate_swipe_increment</item>
+        <item>@string/rate_swipe_change</item>
+        <item>@string/rate_swipe_hold</item>
+        <item>@string/rate_swipe_drop</item>
+        <item>@string/rate_swipe_disabled</item>
+    </string-array>
+
+</resources>

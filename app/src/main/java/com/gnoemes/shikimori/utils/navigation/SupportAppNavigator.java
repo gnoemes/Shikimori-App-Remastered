@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
+import com.gnoemes.shikimori.entity.common.domain.KeyScreen;
 import ru.terrakok.cicerone.commands.BackTo;
 import ru.terrakok.cicerone.commands.Command;
 import ru.terrakok.cicerone.commands.Forward;
@@ -40,12 +41,13 @@ public abstract class SupportAppNavigator extends SupportFragmentNavigator {
 
     @Override
     protected void forward(Forward command) {
-        Intent activityIntent = createActivityIntent(activity, command.getScreenKey(), command.getTransitionData());
+        KeyScreen screen = (KeyScreen) command.getScreen();
+        Intent activityIntent = createActivityIntent(activity, screen.getScreenKey(), screen.getTransitionData());
 
         // Start activity
         if (activityIntent != null) {
             Bundle options = createStartActivityOptions(command, activityIntent);
-            checkAndStartActivity(command.getScreenKey(), activityIntent, options);
+            checkAndStartActivity(screen.getScreenKey(), activityIntent, options);
         } else {
             super.forward(command);
         }
@@ -53,12 +55,13 @@ public abstract class SupportAppNavigator extends SupportFragmentNavigator {
 
     @Override
     protected void replace(Replace command) {
-        Intent activityIntent = createActivityIntent(activity, command.getScreenKey(), command.getTransitionData());
+        KeyScreen screen = (KeyScreen) command.getScreen();
+        Intent activityIntent = createActivityIntent(activity, screen.getScreenKey(), screen.getTransitionData());
 
         // Replace activity
         if (activityIntent != null) {
             Bundle options = createStartActivityOptions(command, activityIntent);
-            checkAndStartActivity(command.getScreenKey(), activityIntent, options);
+            checkAndStartActivity(screen.getScreenKey(), activityIntent, options);
             activity.finish();
         } else {
             super.replace(command);

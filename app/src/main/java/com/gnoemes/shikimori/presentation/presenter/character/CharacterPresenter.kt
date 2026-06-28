@@ -1,6 +1,6 @@
 package com.gnoemes.shikimori.presentation.presenter.character
 
-import com.arellomobile.mvp.InjectViewState
+import moxy.InjectViewState
 import com.gnoemes.shikimori.domain.roles.CharacterInteractor
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.common.presentation.DetailsContentItem
@@ -41,7 +41,12 @@ class CharacterPresenter @Inject constructor(
             when (it) {
                 is DetailsHeadSimpleItem -> viewState.setHead(it)
                 is DetailsDescriptionItem -> viewState.setDescription(it)
-                is Pair<*, *> -> viewState.setContent(it.first as DetailsContentType, it.second as DetailsContentItem)
+                is Pair<*, *> -> when (it.first as DetailsContentType) {
+                    DetailsContentType.SEYUS -> viewState.setSeyuContent(it.second as DetailsContentItem)
+                    DetailsContentType.ANIMES -> viewState.setAnimeContent(it.second as DetailsContentItem)
+                    DetailsContentType.MANGAS -> viewState.setMangaContent(it.second as DetailsContentItem)
+                    else -> Unit
+                }
             }
         }
     }
@@ -54,7 +59,7 @@ class CharacterPresenter @Inject constructor(
     fun onOpenSource() {
         when {
             !::currentCharacter.isInitialized -> Unit
-            currentCharacter.descriptionSource.isNullOrBlank() -> router.showSystemMessage(resourceProvider.emptyMessage)
+            currentCharacter.descriptionSource.isNullOrBlank() -> viewState.showSystemMessage(resourceProvider.emptyMessage)
             else -> onOpenWeb(currentCharacter.descriptionSource)
         }
     }

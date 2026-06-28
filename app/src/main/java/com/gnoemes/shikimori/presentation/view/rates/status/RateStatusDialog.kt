@@ -9,13 +9,13 @@ import android.view.ViewGroup
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.databinding.DialogMenuBinding
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseBottomSheetDialogFragment
 import com.gnoemes.shikimori.utils.colorStateList
 import com.gnoemes.shikimori.utils.dimenAttr
 import com.gnoemes.shikimori.utils.withArgs
-import kotlinx.android.synthetic.main.dialog_menu.*
 
 class RateStatusDialog : BaseBottomSheetDialogFragment() {
 
@@ -38,19 +38,23 @@ class RateStatusDialog : BaseBottomSheetDialogFragment() {
         peekHeight = context.dimenAttr(android.R.attr.actionBarSize)
     }
 
+    private var _binding: DialogMenuBinding? = null
+    private val binding: DialogMenuBinding? get() = _binding
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(getDialogLayout(), container, false)
+        _binding = DialogMenuBinding.inflate(inflater, container, false)
+        return _binding!!.root
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val b = _binding ?: return
+
         val isAnime = arguments?.getBoolean(IS_ANIME) != false
 
-        with(toolbar) {
-            title = arguments?.getString(TITLE)
-        }
+        b.toolbar.title = arguments?.getString(TITLE)
 
         val index = arguments?.getInt(CURRENT_STATUS) ?: -1
 
@@ -60,7 +64,7 @@ class RateStatusDialog : BaseBottomSheetDialogFragment() {
                 .zip(RateStatus.values())
                 .map { Rate(it.second.ordinal, it.second, it.first, currentStatus == it.second, getIcon(it.second), getTintColor(it.second), getSelector(it.second)) }
 
-        navView.apply {
+        b.navView.apply {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 val item = items.firstOrNull { it.isSelected }
@@ -88,6 +92,11 @@ class RateStatusDialog : BaseBottomSheetDialogFragment() {
                 if (checkedId != -1) setCheckedItem(checkedId)
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun getIcon(status: RateStatus): Int {

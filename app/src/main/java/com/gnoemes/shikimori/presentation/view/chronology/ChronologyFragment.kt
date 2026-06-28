@@ -1,12 +1,14 @@
 package com.gnoemes.shikimori.presentation.view.chronology
 
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.ProvidePresenter
+import moxy.presenter.InjectPresenter
+import moxy.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.databinding.FragmentChronologyBinding
 import com.gnoemes.shikimori.entity.chronology.ChronologyNavigationData
 import com.gnoemes.shikimori.entity.chronology.ChronologyType
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
@@ -18,10 +20,6 @@ import com.gnoemes.shikimori.presentation.view.rates.status.RateStatusDialog
 import com.gnoemes.shikimori.utils.*
 import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.gnoemes.shikimori.utils.widgets.VerticalSpaceItemDecorator
-import kotlinx.android.synthetic.main.fragment_chronology.*
-import kotlinx.android.synthetic.main.layout_default_list.*
-import kotlinx.android.synthetic.main.layout_default_placeholders.*
-import kotlinx.android.synthetic.main.layout_toolbar.*
 import javax.inject.Inject
 
 class ChronologyFragment : BaseFragment<ChronologyPresenter, ChronologyView>(), ChronologyView, RateStatusDialog.RateStatusCallback, ChronologyTypeDialog.Callback {
@@ -35,7 +33,12 @@ class ChronologyFragment : BaseFragment<ChronologyPresenter, ChronologyView>(), 
     @ProvidePresenter
     fun provide() = presenterProvider.get().apply {
         localRouter = (parentFragment as RouterProvider).localRouter
-        data = arguments?.getParcelable(DATA_KEY)!!
+        @Suppress("DEPRECATION")
+        data = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            arguments?.getParcelable(DATA_KEY, ChronologyNavigationData::class.java)!!
+        } else {
+            arguments?.getParcelable(DATA_KEY)!!
+        }
     }
 
     companion object {
@@ -43,12 +46,17 @@ class ChronologyFragment : BaseFragment<ChronologyPresenter, ChronologyView>(), 
         private const val DATA_KEY = "DATA_KEY"
     }
 
+    private var _binding: FragmentChronologyBinding? = null
+    private val binding: FragmentChronologyBinding? get() = _binding
+
     private val adapter by lazy { ChronologyAdapter(imageLoader, getPresenter()::onContentClicked, getPresenter()::onShowStatusDialog) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentChronologyBinding.bind(view.findViewById(R.id.fragment_content))
+        val b = _binding ?: return
 
-        toolbar?.apply {
+        toolbarBinding?.toolbar?.apply {
             addBackButton { getPresenter().onBackPressed() }
             setTitle(R.string.common_chronology)
             inflateMenu(R.menu.menu_chronology)
@@ -61,17 +69,22 @@ class ChronologyFragment : BaseFragment<ChronologyPresenter, ChronologyView>(), 
             }
         }
 
-        with(recyclerView) {
+        with(b.includedLayoutDefaultList.recyclerView) {
             adapter = this@ChronologyFragment.adapter
             layoutManager = LinearLayoutManager(context)
-            addItemDecoration(VerticalSpaceItemDecorator(context.dp(8)))
+            addItemDecoration(VerticalSpaceItemDecorator(context!!.dp(8)))
         }
 
-        refreshLayout.background = ColorDrawable(context!!.colorAttr(R.attr.colorSurface))
-        refreshLayout.setOnRefreshListener { getPresenter().onRefresh() }
+        b.includedLayoutDefaultList.refreshLayout.background = ColorDrawable(context!!.colorAttr(R.attr.colorSurface))
+        b.includedLayoutDefaultList.refreshLayout.setOnRefreshListener { getPresenter().onRefresh() }
 
-        emptyContentView.setText(R.string.similar_empty_description)
-        fab.onClick { getPresenter().onFabClicked() }
+        placeholdersBinding?.emptyContentView?.setText(R.string.similar_empty_description)
+        b.fab.onClick { getPresenter().onFabClicked() }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onStatusChanged(id: Long, newStatus: RateStatus) {
@@ -105,7 +118,10 @@ class ChronologyFragment : BaseFragment<ChronologyPresenter, ChronologyView>(), 
     }
 
     override fun scrollTo(pos: Int) {
-        postViewAction { (recyclerView?.layoutManager as? LinearLayoutManager)?.scrollToPositionWithOffset(pos, recyclerView.dp(16)) }
+        postViewAction {
+            val b = _binding ?: return@postViewAction
+            (b.includedLayoutDefaultList.recyclerView.layoutManager as? LinearLayoutManager)?.scrollToPositionWithOffset(pos, b.includedLayoutDefaultList.recyclerView.dp(16))
+        }
     }
 
     override fun showTypeDialog(currentType: ChronologyType) {
@@ -113,7 +129,7 @@ class ChronologyFragment : BaseFragment<ChronologyPresenter, ChronologyView>(), 
         dialog.show(childFragmentManager, "ChronologyTypeDialog")
     }
 
-    override fun showContent(show: Boolean) = recyclerView.visibleIf { show }
-    override fun onShowLoading() = refreshLayout.showRefresh()
-    override fun onHideLoading() = refreshLayout.hideRefresh()
+    override fun showContent(show: Boolean) { binding?.includedLayoutDefaultList?.recyclerView?.visibleIf { show } }
+    override fun onShowLoading() { binding?.includedLayoutDefaultList?.refreshLayout?.showRefresh() }
+    override fun onHideLoading() { binding?.includedLayoutDefaultList?.refreshLayout?.hideRefresh() }
 }

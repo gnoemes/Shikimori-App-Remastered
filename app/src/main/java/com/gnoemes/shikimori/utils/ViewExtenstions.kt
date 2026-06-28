@@ -101,15 +101,8 @@ fun Snackbar.floatingStyle(context: Context, @DimenRes margins: Int = R.dimen.sn
     val params = this.view.layoutParams as ViewGroup.MarginLayoutParams
     val margin = context.dimen(margins).toInt()
     params.setMargins(margin, margin, margin, margin)
-    this.view.findViewById<Button>(R.id.snackbar_action)?.run {
-        isAllCaps = false
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            letterSpacing = 0.03f
-        }
-    }
-    this.view.findViewById<TextView>(R.id.snackbar_text)?.setTextColor(context.color(R.color.player_controls))
+    this.view.setBackgroundColor(context.color(background))
     this.view.layoutParams = params
-    this.view.background = context.drawable(background)
     return this
 }
 

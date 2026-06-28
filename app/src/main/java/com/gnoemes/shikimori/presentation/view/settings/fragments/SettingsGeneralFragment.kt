@@ -1,12 +1,13 @@
 package com.gnoemes.shikimori.presentation.view.settings.fragments
 
-import android.Manifest
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.files.folderChooser
-import com.afollestad.materialdialogs.list.listItems
+import android.provider.DocumentsContract
+import androidx.preference.PreferenceGroup
+import androidx.preference.TwoStatePreference
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.app.domain.SettingsExtras
@@ -14,18 +15,30 @@ import com.gnoemes.shikimori.entity.rates.domain.RateSwipeAction
 import com.gnoemes.shikimori.utils.preference
 import com.gnoemes.shikimori.utils.prefs
 import com.gnoemes.shikimori.utils.putString
-import com.kotlinpermissions.KotlinPermissions
+import androidx.activity.result.contract.ActivityResultContracts
 import java.io.File
 
 
 class SettingsGeneralFragment : BaseSettingsFragment() {
+
+    private val folderChooserLauncher = registerForActivityResult(
+        ActivityResultContracts.OpenDocumentTree()
+    ) { uri ->
+        if (uri != null) {
+            val path = getPathFromTreeUri(uri)
+            if (path != null) {
+                prefs().putString(SettingsExtras.DOWNLOAD_FOLDER, path)
+                updateFolderSummary()
+            }
+        }
+    }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         super.onCreatePreferences(savedInstanceState, rootKey)
 
         preference(R.string.settings_content_download_folder_key)?.apply {
             updateFolderSummary()
-            setOnPreferenceClickListener { checkStoragePermissions { showFolderChooserDialog() };true }
+            setOnPreferenceClickListener { showFolderChooserDialog(); true }
         }
 
         preference(SettingsExtras.RATE_SWIPE_TO_LEFT_ACTION)?.apply {
@@ -40,9 +53,9 @@ class SettingsGeneralFragment : BaseSettingsFragment() {
 
         preference(SettingsExtras.BACKUP_SETTINGS)?.apply {
             setOnPreferenceClickListener {
-                checkStoragePermissions {
-                    BackupDialog().show(childFragmentManager, "BackupDialog")
-                }
+                BackupDialog().apply {
+                    onBackupRestored = { refreshPreferenceSummaries() }
+                }.show(childFragmentManager, "BackupDialog")
                 true
             }
         }
@@ -57,6 +70,31 @@ class SettingsGeneralFragment : BaseSettingsFragment() {
         }
     }
 
+    fun refreshPreferenceSummaries() {
+        getPreferenceScreen()?.let { syncPreferenceTree(it) }
+        updateFolderSummary()
+        preference(SettingsExtras.RATE_SWIPE_TO_LEFT_ACTION)?.summary = getRateActionSummary(
+            prefs().getString(SettingsExtras.RATE_SWIPE_TO_LEFT_ACTION, RateSwipeAction.INCREMENT.name)!!
+        )
+        preference(SettingsExtras.RATE_SWIPE_TO_RIGHT_ACTION)?.summary = getRateActionSummary(
+            prefs().getString(SettingsExtras.RATE_SWIPE_TO_RIGHT_ACTION, RateSwipeAction.CHANGE.name)!!
+        )
+    }
+
+    private fun syncPreferenceTree(group: PreferenceGroup) {
+        for (i in 0 until group.preferenceCount) {
+            val pref = group.getPreference(i)
+            when (pref) {
+                is PreferenceGroup -> syncPreferenceTree(pref)
+                is TwoStatePreference -> {
+                    if (pref.key != null) {
+                        pref.isChecked = prefs().getBoolean(pref.key, pref.isChecked)
+                    }
+                }
+            }
+        }
+    }
+
     private fun getRateActionSummary(action: String): String {
         return when (action) {
             RateSwipeAction.INCREMENT.name -> getString(R.string.rate_swipe_increment)
@@ -66,16 +104,6 @@ class SettingsGeneralFragment : BaseSettingsFragment() {
             RateSwipeAction.DISABLED.name -> getString(R.string.rate_swipe_disabled)
             else -> getString(R.string.rate_swipe_disabled)
         }
-    }
-
-    private fun checkStoragePermissions(onAccepted: () -> Unit) {
-        KotlinPermissions.with(activity!!)
-            .permissions(
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.READ_EXTERNAL_STORAGE
-            )
-            .onAccepted { onAccepted.invoke() }
-            .ask()
     }
 
     override val preferenceScreen: Int
@@ -90,37 +118,28 @@ class SettingsGeneralFragment : BaseSettingsFragment() {
     }
 
     private fun showRateSwipeActionDialog(key: String) {
-        MaterialDialog(context!!).show {
-            listItems(
-                R.array.rate_swipe_actions,
-                waitForPositiveButton = false
-            ) { dialog, index, text ->
-                preference(key)?.summary = text
-                prefs().putString(key, RateSwipeAction.values()[index].name)
+        val items = resources!!.getStringArray(R.array.rate_swipe_actions)
+        MaterialAlertDialogBuilder(context!!).apply {
+            setItems(items) { _, which ->
+                preference(key)?.summary = items[which]
+                prefs().putString(key, RateSwipeAction.values()[which].name)
             }
-        }
+        }.show()
     }
 
     private fun showFolderChooserDialog() {
-        val path = prefs().getString(SettingsExtras.DOWNLOAD_FOLDER, "")!!
-        val initialDirectory = try {
-            File(path).let { if (it.canWrite()) it else Environment.getExternalStorageDirectory() }
-        } catch (e: Exception) {
-            Environment.getExternalStorageDirectory()
-        }
+        folderChooserLauncher.launch(null)
+    }
 
-        MaterialDialog(context!!).show {
-            folderChooser(
-                initialDirectory = initialDirectory,
-                allowFolderCreation = true,
-                emptyTextRes = R.string.download_folder_empty,
-                folderCreationLabel = R.string.download_new_folder
-            )
-            { dialog, file ->
-                prefs().putString(SettingsExtras.DOWNLOAD_FOLDER, file.absolutePath)
-                updateFolderSummary()
+    private fun getPathFromTreeUri(uri: Uri): String? {
+        if (DocumentsContract.isTreeUri(uri)) {
+            val docId = DocumentsContract.getTreeDocumentId(uri)
+            val parts = docId.split(":")
+            if (parts.isNotEmpty() && parts[0] == "primary") {
+                return Environment.getExternalStorageDirectory().absolutePath + "/" + parts.drop(1).joinToString(":")
             }
         }
+        return null
     }
 }
 

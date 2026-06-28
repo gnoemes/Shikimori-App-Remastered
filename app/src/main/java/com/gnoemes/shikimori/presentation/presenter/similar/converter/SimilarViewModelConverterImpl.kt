@@ -26,7 +26,7 @@ class SimilarViewModelConverterImpl @Inject constructor(
 
     private val isDarkTheme by lazy { context.getCurrentTheme != R.style.ShikimoriAppTheme_Default }
 
-    override fun apply(t: List<Any>, isGuest: Boolean): List<SimilarViewModel> = t.mapNotNull {
+    override fun apply(it: List<Any>, isGuest: Boolean): List<SimilarViewModel> = it.mapNotNull {
         when (it) {
             is AnimeWithStatus -> convertAnime(it, isGuest)
             is MangaWithStatus -> convertManga(it, isGuest)

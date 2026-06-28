@@ -1,6 +1,6 @@
 package com.gnoemes.shikimori.presentation.presenter.chronology
 
-import com.arellomobile.mvp.InjectViewState
+import moxy.InjectViewState
 import com.gnoemes.shikimori.BuildConfig
 import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.domain.chronology.ChronologyInteractor
@@ -11,6 +11,7 @@ import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.chronology.ChronologyNavigationData
 import com.gnoemes.shikimori.entity.chronology.ChronologyType
 import com.gnoemes.shikimori.entity.chronology.ChronologyViewModel
+import com.gnoemes.shikimori.entity.common.domain.KeyScreen
 import com.gnoemes.shikimori.entity.common.domain.Screens
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
@@ -21,6 +22,7 @@ import com.gnoemes.shikimori.presentation.view.base.activity.BaseView
 import com.gnoemes.shikimori.presentation.view.chronology.ChronologyView
 import com.gnoemes.shikimori.utils.clearAndAddAll
 import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
 @InjectViewState
@@ -110,7 +112,7 @@ class ChronologyPresenter @Inject constructor(
                     .subscribe(this::onRefresh, this::processErrors)
                     .addToDisposables()
         } else {
-            router.showSystemMessage(resourceProvider.needAuth)
+            viewState.showSystemMessage(resourceProvider.needAuth)
         }
     }
 
@@ -129,7 +131,7 @@ class ChronologyPresenter @Inject constructor(
     }
 
     fun onShareClicked() {
-        router.navigateTo(Screens.SHARE, getUrl())
+        router.navigateTo(KeyScreen(Screens.SHARE, getUrl()))
     }
 
     private fun processUserErrors(it: Throwable) {
@@ -151,7 +153,8 @@ class ChronologyPresenter @Inject constructor(
     }
 
     private fun <T> Single<T>.appendLoadingLogic(viewState: BaseView): Single<T> =
-            this.doOnSubscribe { viewState.onShowLoading() }
+            this.observeOn(AndroidSchedulers.mainThread())
+                    .doOnSubscribe { viewState.onShowLoading() }
                     .doOnSubscribe { viewState.hideEmptyView() }
                     .doOnSubscribe { viewState.hideNetworkView() }
                     .doAfterTerminate { viewState.onHideLoading() }

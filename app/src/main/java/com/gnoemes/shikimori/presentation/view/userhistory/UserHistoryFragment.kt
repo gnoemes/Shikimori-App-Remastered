@@ -2,12 +2,15 @@ package com.gnoemes.shikimori.presentation.view.userhistory
 
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.ProvidePresenter
+import moxy.presenter.InjectPresenter
+import moxy.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.databinding.LayoutDefaultListBinding
 import com.gnoemes.shikimori.entity.app.domain.AppExtras
 import com.gnoemes.shikimori.entity.user.presentation.UserHistoryNavigationData
 import com.gnoemes.shikimori.entity.user.presentation.UserHistoryViewModel
@@ -22,8 +25,6 @@ import com.gnoemes.shikimori.utils.dimen
 import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.gnoemes.shikimori.utils.widgets.VerticalSpaceItemDecorator
 import com.gnoemes.shikimori.utils.withArgs
-import kotlinx.android.synthetic.main.layout_default_list.*
-import kotlinx.android.synthetic.main.layout_toolbar.*
 import javax.inject.Inject
 
 class UserHistoryFragment : BasePaginationFragment<UserHistoryViewModel, UserHistoryPresenter, UserHistoryView>(), UserHistoryView {
@@ -55,21 +56,34 @@ class UserHistoryFragment : BasePaginationFragment<UserHistoryViewModel, UserHis
 
     private val historyAdapter by lazy { UserHistoryAdapter(imageLoader, getPresenter()::onContentClicked) }
 
+    private lateinit var historyListBinding: LayoutDefaultListBinding
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        val view = super.onCreateView(inflater, container, savedInstanceState)!!
+        historyListBinding = LayoutDefaultListBinding.bind(view.findViewById(R.id.included_layout_default_list))
+        return view
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        toolbar.apply {
+        toolbarBinding?.toolbar?.apply {
             setTitle(R.string.common_user_history)
             addBackButton { getPresenter().onBackPressed() }
         }
 
-        with(recyclerView) {
+        with(historyListBinding.recyclerView) {
             adapter = this@UserHistoryFragment.adapter
             layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
             addItemDecoration(VerticalSpaceItemDecorator(context.dimen(R.dimen.margin_normal).toInt(), true, 0))
             background = ColorDrawable(context.colorAttr(R.attr.colorPrimary))
             addOnScrollListener(nextPageListener)
         }
+    }
+
+    override fun onDestroyView() {
+        historyListBinding.recyclerView.removeOnScrollListener(nextPageListener)
+        super.onDestroyView()
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -89,6 +103,6 @@ class UserHistoryFragment : BasePaginationFragment<UserHistoryViewModel, UserHis
 
     override fun setTitle(title: String) {
         val text = String.format(context!!.getString(R.string.profile_history_format), title)
-        toolbar.title = text
+        toolbarBinding?.toolbar?.title = text
     }
 }

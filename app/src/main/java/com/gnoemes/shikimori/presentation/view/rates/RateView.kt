@@ -1,7 +1,7 @@
 package com.gnoemes.shikimori.presentation.view.rates
 
-import com.arellomobile.mvp.viewstate.strategy.SkipStrategy
-import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
+import moxy.viewstate.strategy.SkipStrategy
+import moxy.viewstate.strategy.StateStrategyType
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.common.presentation.RateSort
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus

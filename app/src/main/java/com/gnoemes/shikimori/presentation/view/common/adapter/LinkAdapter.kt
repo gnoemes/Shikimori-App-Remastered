@@ -4,12 +4,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.databinding.ItemLinkBinding
 import com.gnoemes.shikimori.entity.common.domain.Link
 import com.gnoemes.shikimori.entity.common.presentation.DetailsAction
 import com.gnoemes.shikimori.utils.inflate
 import com.gnoemes.shikimori.utils.onClick
 import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
-import kotlinx.android.synthetic.main.item_link.view.*
 
 class LinkAdapter(
         callback: (DetailsAction.Link) -> Unit
@@ -32,26 +32,24 @@ class LinkAdapter(
         override fun isForViewType(item: Link, items: MutableList<Link>, position: Int): Boolean = true
 
         override fun onCreateViewHolder(parent: ViewGroup): ViewHolder =
-                ViewHolder(parent.inflate(R.layout.item_link))
+                ViewHolder(ItemLinkBinding.inflate(android.view.LayoutInflater.from(parent.context), parent, false))
 
         override fun onBindViewHolder(item: Link, holder: ViewHolder, payloads: MutableList<Any>) {
             holder.bind(item)
         }
 
-        inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        inner class ViewHolder(private val binding: ItemLinkBinding) : RecyclerView.ViewHolder(binding.root) {
 
             private lateinit var item: Link
 
             init {
-                itemView.container.onClick { callback.invoke(DetailsAction.Link(item.url, false)) }
-                itemView.sharingBtn.onClick { callback.invoke(DetailsAction.Link(item.url, true)) }
+                binding.container.onClick { callback.invoke(DetailsAction.Link(item.url, false)) }
+                binding.sharingBtn.onClick { callback.invoke(DetailsAction.Link(item.url, true)) }
             }
 
             fun bind(item: Link) {
                 this.item = item
-                with(itemView) {
-                    nameView.text = item.name
-                }
+                binding.nameView.text = item.name
             }
 
         }

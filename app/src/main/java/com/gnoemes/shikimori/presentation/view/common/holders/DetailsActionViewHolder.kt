@@ -4,21 +4,21 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.shimmer.ShimmerFrameLayout
+import com.gnoemes.shikimori.databinding.LayoutDetailsActionBinding
 import com.gnoemes.shikimori.entity.common.presentation.DetailsActionItem
 import com.gnoemes.shikimori.presentation.view.common.adapter.ActionAdapter
 import com.gnoemes.shikimori.utils.dp
 import com.gnoemes.shikimori.utils.widgets.HorizontalSpaceItemDecorator
-import kotlinx.android.synthetic.main.layout_details_action.view.*
 
 class DetailsActionViewHolder(
-        private val view: View,
+        private val binding: LayoutDetailsActionBinding,
         private val actionAdapter: ActionAdapter
 ) {
 
-    private val placeholder: DetailsPlaceholderViewHolder by lazy { DetailsPlaceholderViewHolder(view.actionContent, view.actionPlaceholder as ShimmerFrameLayout) }
+    private val placeholder: DetailsPlaceholderViewHolder by lazy { DetailsPlaceholderViewHolder(binding.actionContent.root, binding.actionPlaceholder.root) }
 
     init {
-        with(view.actionContent as RecyclerView) {
+        with(binding.actionContent.root as RecyclerView) {
             adapter = actionAdapter
             isNestedScrollingEnabled = false
             layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)

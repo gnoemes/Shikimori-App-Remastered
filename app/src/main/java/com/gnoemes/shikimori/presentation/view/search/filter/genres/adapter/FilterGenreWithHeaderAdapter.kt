@@ -4,6 +4,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.databinding.ItemGenresWithHeaderBinding
 import com.gnoemes.shikimori.entity.search.domain.FilterType
 import com.gnoemes.shikimori.entity.search.presentation.FilterGenreItem
 import com.gnoemes.shikimori.entity.search.presentation.FilterViewModel
@@ -11,7 +12,6 @@ import com.gnoemes.shikimori.presentation.view.search.filter.adapter.FilterChipA
 import com.gnoemes.shikimori.utils.clearAndAddAll
 import com.gnoemes.shikimori.utils.inflate
 import com.google.android.flexbox.FlexboxLayoutManager
-import kotlinx.android.synthetic.main.item_genres_with_header.view.*
 
 class FilterGenreWithHeaderAdapter(
         private val invertCallback: (FilterType, FilterViewModel) -> Unit,
@@ -30,30 +30,28 @@ class FilterGenreWithHeaderAdapter(
     override fun getItemCount(): Int = items.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-            ViewHolder(parent.inflate(R.layout.item_genres_with_header))
+            ViewHolder(ItemGenresWithHeaderBinding.inflate(android.view.LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(items[position])
     }
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(private val binding: ItemGenresWithHeaderBinding) : RecyclerView.ViewHolder(binding.root) {
 
         init {
-            itemView.recyclerView.setRecycledViewPool(sharedPool)
+            binding.recyclerView.setRecycledViewPool(sharedPool)
         }
 
         fun bind(item: FilterGenreItem) {
-            with(itemView) {
-                headerView.text = item.header
-                val chipAdapter = FilterChipAdapter(FilterType.GENRE, invertCallback, selectCallback).apply { if (!hasObservers()) setHasStableIds(true) }
+            binding.headerView.text = item.header
+            val chipAdapter = FilterChipAdapter(FilterType.GENRE, invertCallback, selectCallback).apply { if (!hasObservers()) setHasStableIds(true) }
 
-                with(recyclerView) {
-                    adapter = chipAdapter
-                    layoutManager = FlexboxLayoutManager(context)
-                }
-
-                chipAdapter.bind(item.filters)
+            with(binding.recyclerView) {
+                adapter = chipAdapter
+                layoutManager = FlexboxLayoutManager(context)
             }
+
+            chipAdapter.bind(item.filters)
         }
     }
 }

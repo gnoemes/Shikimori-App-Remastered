@@ -68,7 +68,7 @@ class FilterViewModelConverterImpl @Inject constructor() : FilterViewModelConver
                     val statuses = getAppliedStatus(it, applied)
                     convertFilter(it, statuses.first, statuses.second)
                 }
-                .groupBy { it.text.first().toUpperCase() }
+                .groupBy { it.text.first().uppercase() }
                 .entries
                 .map { FilterGenreItem(it.key.toString(), it.value) }
                 .toMutableList()

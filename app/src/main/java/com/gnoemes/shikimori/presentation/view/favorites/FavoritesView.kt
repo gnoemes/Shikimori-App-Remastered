@@ -2,7 +2,10 @@ package com.gnoemes.shikimori.presentation.view.favorites
 
 import com.gnoemes.shikimori.entity.user.presentation.FavoriteViewModel
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragmentView
+import moxy.viewstate.strategy.AddToEndSingleStrategy
+import moxy.viewstate.strategy.StateStrategyType
 
+@StateStrategyType(AddToEndSingleStrategy::class)
 interface FavoritesView : BaseFragmentView {
 
     fun showData(items : List<FavoriteViewModel>)

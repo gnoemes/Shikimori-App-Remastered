@@ -1,21 +1,20 @@
 package com.gnoemes.shikimori.presentation.view.calendar.adapter
 
 import android.content.Context
-import android.view.View
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.recyclerview.widget.RecyclerView
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.databinding.ItemCalendarAnimeBinding
 import com.gnoemes.shikimori.entity.calendar.presentation.CalendarAnimeItem
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.gnoemes.shikimori.utils.images.Prefetcher
 import com.gnoemes.shikimori.utils.images.SimplePrefetcher
-import com.gnoemes.shikimori.utils.inflate
 import com.gnoemes.shikimori.utils.onClick
 import com.gnoemes.shikimori.utils.visibleIf
-import kotlinx.android.synthetic.main.item_calendar_anime.view.*
 
 class CalendarAnimeAdapter(
         context: Context,
@@ -30,7 +29,7 @@ class CalendarAnimeAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-            ViewHolder(parent.inflate(R.layout.item_calendar_anime))
+            ViewHolder(ItemCalendarAnimeBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(items[position])
@@ -44,34 +43,30 @@ class CalendarAnimeAdapter(
 
     override fun onViewRecycled(holder: ViewHolder) {
         super.onViewRecycled(holder)
-        holder.itemView.apply {
-            imageLoader.clearImage(imageView)
-        }
+        imageLoader.clearImage(holder.binding.imageView)
     }
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(val binding: ItemCalendarAnimeBinding) : RecyclerView.ViewHolder(binding.root) {
 
         private lateinit var item: CalendarAnimeItem
 
         init {
-            itemView.materialCardView.onClick { callback.invoke(item.id) }
+            binding.materialCardView.onClick { callback.invoke(item.id) }
         }
 
         fun bind(item: CalendarAnimeItem) {
             this.item = item
-            with(itemView) {
-                imageLoader.setImageListItem(imageView, item.image.original)
-                nameView.text = item.name
-                descriptionView.text = item.description
+            imageLoader.setImageListItem(binding.imageView, item.image.original)
+            binding.nameView.text = item.name
+            binding.descriptionView.text = item.description
 
-                if (item.status != null) {
-                    rateView.setIconResource(getRateIcon(item.status))
-                    rateView.setIconTintResource(getRateColor(item.status))
-                }
-
-                rateView.visibleIf { item.status != null }
-                seasonLastView.visibleIf { item.isLast }
+            if (item.status != null) {
+                binding.rateView.setIconResource(getRateIcon(item.status))
+                binding.rateView.setIconTintResource(getRateColor(item.status))
             }
+
+            binding.rateView.visibleIf { item.status != null }
+            binding.seasonLastView.visibleIf { item.isLast }
         }
 
         @DrawableRes

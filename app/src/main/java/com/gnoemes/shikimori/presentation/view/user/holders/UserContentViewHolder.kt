@@ -3,6 +3,7 @@ package com.gnoemes.shikimori.presentation.view.user.holders
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.databinding.LayoutUserProfileContentBinding
 import com.gnoemes.shikimori.entity.user.presentation.UserContentMoreItem
 import com.gnoemes.shikimori.entity.user.presentation.UserContentType
 import com.gnoemes.shikimori.entity.user.presentation.UserContentViewModel
@@ -11,33 +12,32 @@ import com.gnoemes.shikimori.presentation.view.user.adapter.BaseUserContentAdapt
 import com.gnoemes.shikimori.utils.gone
 import com.gnoemes.shikimori.utils.visible
 import com.gnoemes.shikimori.utils.widgets.HorizontalSpaceItemDecorator
-import kotlinx.android.synthetic.main.layout_user_profile_content.view.*
 
 class UserContentViewHolder(
-        private val view: View,
+        private val binding: LayoutUserProfileContentBinding,
         private val adapter: BaseUserContentAdapter
 ) {
 
     init {
-        if (view.contentRecyclerView.onFlingListener == null) {
-            val snapOffset = view.resources.getDimension(R.dimen.margin_normal).toInt()
+        if (binding.contentRecyclerView.onFlingListener == null) {
+            val snapOffset = binding.root.resources.getDimension(R.dimen.margin_normal).toInt()
             val snapHelper = StartSnapHelper(snapOffset)
-            snapHelper.attachToRecyclerView(view.contentRecyclerView)
+            snapHelper.attachToRecyclerView(binding.contentRecyclerView)
         }
 
-        view.contentRecyclerView.apply {
+        binding.contentRecyclerView.apply {
             adapter = this@UserContentViewHolder.adapter.apply { if (!hasObservers()) setHasStableIds(true) }
-            layoutManager = LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false).apply { initialPrefetchItemCount = 3 }
+            layoutManager = LinearLayoutManager(binding.root.context, LinearLayoutManager.HORIZONTAL, false).apply { initialPrefetchItemCount = 3 }
             setHasFixedSize(true)
-            val spacing = resources.getDimension(R.dimen.margin_normal).toInt()
-            val firstItemSpacing = resources.getDimension(R.dimen.margin_big).toInt()
+            val spacing = binding.root.resources.getDimension(R.dimen.margin_normal).toInt()
+            val firstItemSpacing = binding.root.resources.getDimension(R.dimen.margin_big).toInt()
             addItemDecoration(HorizontalSpaceItemDecorator(spacing, firstItemSpacing))
         }
     }
 
     fun bind(item: UserContentViewModel) {
         if (item.content.isEmpty()) {
-            view.gone()
+            binding.root.gone()
             return
         }
 
@@ -53,10 +53,16 @@ class UserContentViewHolder(
             UserContentType.FRIENDS -> R.string.common_friends
         }
 
-        with(view) {
+        with(binding) {
             contentLabelView.setText(stringRes)
             progressBar.gone()
             contentRecyclerView.visible()
+        }
+    }
+
+    companion object {
+        fun create(view: View, adapter: BaseUserContentAdapter): UserContentViewHolder {
+            return UserContentViewHolder(LayoutUserProfileContentBinding.bind(view), adapter)
         }
     }
 }

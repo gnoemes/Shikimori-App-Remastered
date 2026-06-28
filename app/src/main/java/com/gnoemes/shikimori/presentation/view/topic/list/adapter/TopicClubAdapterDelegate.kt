@@ -1,10 +1,12 @@
 package com.gnoemes.shikimori.presentation.view.topic.list.adapter
 
-import android.view.View
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.databinding.ItemTopicClubBinding
+import com.gnoemes.shikimori.databinding.LayoutTopicBinding
 import com.gnoemes.shikimori.entity.common.domain.LinkedContent
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.topic.domain.TopicType
@@ -14,11 +16,8 @@ import com.gnoemes.shikimori.presentation.view.topic.holders.TopicUserViewHolder
 import com.gnoemes.shikimori.utils.dimen
 import com.gnoemes.shikimori.utils.gone
 import com.gnoemes.shikimori.utils.images.ImageLoader
-import com.gnoemes.shikimori.utils.inflate
 import com.gnoemes.shikimori.utils.visibleIf
 import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
-import kotlinx.android.synthetic.main.item_topic_club.view.*
-import kotlinx.android.synthetic.main.layout_topic.view.*
 
 class TopicClubAdapterDelegate(
         private val imageLoader: ImageLoader,
@@ -30,29 +29,29 @@ class TopicClubAdapterDelegate(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup): ViewHolder =
-            ViewHolder(parent.inflate(R.layout.item_topic_club))
+            ViewHolder(ItemTopicClubBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(item: TopicViewModel, holder: ViewHolder, payloads: MutableList<Any>) {
         holder.bind(item)
     }
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(private val binding: ItemTopicClubBinding) : RecyclerView.ViewHolder(binding.root) {
         private lateinit var item: TopicViewModel
 
-        private val userHolder by lazy { TopicUserViewHolder(itemView.userLayout, imageLoader, navigationCallback) }
-        private val topicHolder by lazy { TopicContentViewHolder(view.topicLayout, navigationCallback) }
+        private val userHolder by lazy { TopicUserViewHolder(binding.userLayout, imageLoader, navigationCallback) }
+        private val topicHolder by lazy { TopicContentViewHolder(binding.topicLayout, navigationCallback) }
 
         init {
-            itemView.container.setOnClickListener { navigationCallback.invoke(Type.TOPIC, item.id) }
-            itemView.divider.gone()
-            itemView.linkedImageView.setOnClickListener {
+            binding.container.setOnClickListener { navigationCallback.invoke(Type.TOPIC, item.id) }
+            binding.root.findViewById<android.view.View>(R.id.divider).gone()
+            binding.linkedImageView.setOnClickListener {
                 item.linked?.let { content ->
                     navigationCallback.invoke(content.linkedType, content.linkedId)
                 }
             }
 
-            val margin = itemView.context.dimen(R.dimen.margin_normal).toInt()
-            (itemView.topicLayout.titleView.layoutParams as ConstraintLayout.LayoutParams).apply { leftMargin = margin }
+            val margin = binding.root.context.dimen(R.dimen.margin_normal).toInt()
+            (binding.topicLayout.titleView.layoutParams as ConstraintLayout.LayoutParams).apply { leftMargin = margin }
         }
 
         fun bind(item: TopicViewModel) {
@@ -60,11 +59,11 @@ class TopicClubAdapterDelegate(
             setLinkedContent(item.linked)
             userHolder.bind(item.userData)
             topicHolder.bind(item.contentData)
-            itemView.commentView.text = item.commentsCount.toString()
+            binding.commentView.text = item.commentsCount.toString()
         }
 
         private fun setLinkedContent(linked: LinkedContent?) {
-            with(itemView) {
+            with(binding) {
                 linkedImageView.visibleIf { linked != null }
 
                 if (linked !== null) {

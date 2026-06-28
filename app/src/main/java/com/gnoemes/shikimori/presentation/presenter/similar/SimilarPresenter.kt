@@ -1,6 +1,6 @@
 package com.gnoemes.shikimori.presentation.presenter.similar
 
-import com.arellomobile.mvp.InjectViewState
+import moxy.InjectViewState
 import com.gnoemes.shikimori.domain.rates.RatesInteractor
 import com.gnoemes.shikimori.domain.similar.SimilarInteractor
 import com.gnoemes.shikimori.domain.user.UserInteractor
@@ -17,6 +17,7 @@ import com.gnoemes.shikimori.presentation.view.base.activity.BaseView
 import com.gnoemes.shikimori.presentation.view.similar.SimilarView
 import com.gnoemes.shikimori.utils.clearAndAddAll
 import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
 @InjectViewState
@@ -91,7 +92,7 @@ class SimilarPresenter @Inject constructor(
                     .subscribe(this::onRefresh, this::processErrors)
                     .addToDisposables()
         } else {
-            router.showSystemMessage(resourceProvider.needAuth)
+            viewState.showSystemMessage(resourceProvider.needAuth)
         }
     }
 
@@ -104,7 +105,8 @@ class SimilarPresenter @Inject constructor(
     }
 
     private fun <T> Single<T>.appendLoadingLogic(viewState: BaseView): Single<T> =
-            this.doOnSubscribe { viewState.onShowLoading() }
+            this.observeOn(AndroidSchedulers.mainThread())
+                    .doOnSubscribe { viewState.onShowLoading() }
                     .doOnSubscribe { viewState.hideEmptyView() }
                     .doOnSubscribe { viewState.hideNetworkView() }
                     .doAfterTerminate { viewState.onHideLoading() }

@@ -1,14 +1,13 @@
 package com.gnoemes.shikimori.presentation.view.forum.adapter
 
-import android.view.View
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.databinding.ItemForumBinding
 import com.gnoemes.shikimori.entity.forum.domain.Forum
 import com.gnoemes.shikimori.entity.forum.domain.ForumType
-import com.gnoemes.shikimori.utils.inflate
 import com.gnoemes.shikimori.utils.onClick
-import kotlinx.android.synthetic.main.item_forum.view.*
 
 class ForumAdapter(
         private val callback: (ForumType) -> Unit
@@ -19,7 +18,7 @@ class ForumAdapter(
     override fun getItemCount(): Int = items.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-            ViewHolder(parent.inflate(R.layout.item_forum))
+            ViewHolder(ItemForumBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(items[position])
@@ -31,17 +30,17 @@ class ForumAdapter(
         notifyDataSetChanged()
     }
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(private val binding: ItemForumBinding) : RecyclerView.ViewHolder(binding.root) {
 
         private lateinit var item: Forum
 
         init {
-            itemView.forumNameView.onClick { callback.invoke(item.type) }
+            binding.forumNameView.onClick { callback.invoke(item.type) }
         }
 
         fun bind(item: Forum) {
             this.item = item
-            itemView.forumNameView.text = item.name
+            binding.forumNameView.text = item.name
         }
 
     }

@@ -8,7 +8,7 @@ import javax.inject.Inject
 abstract class BaseAnalyticPresenter<View : BaseView> : BasePresenter<View>() {
 
     @Inject
-    protected lateinit var analyticInteractor: AnalyticInteractor
+    lateinit var analyticInteractor: AnalyticInteractor
 
     open fun logEvent(event : AnalyticEvent) = analyticInteractor.logEvent(event)
 }

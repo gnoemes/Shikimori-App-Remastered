@@ -1,6 +1,6 @@
 package com.gnoemes.shikimori.presentation.presenter.clubs
 
-import com.arellomobile.mvp.InjectViewState
+import moxy.InjectViewState
 import com.gnoemes.shikimori.entity.club.presentation.UserClubViewModel
 import com.gnoemes.shikimori.domain.user.UserInteractor
 import com.gnoemes.shikimori.entity.app.domain.Constants

@@ -1,12 +1,13 @@
 package com.gnoemes.shikimori.presentation.presenter.search
 
-import com.arellomobile.mvp.InjectViewState
+import moxy.InjectViewState
 import com.gnoemes.shikimori.domain.search.filter.FilterInteractor
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.search.domain.FilterType
 import com.gnoemes.shikimori.presentation.presenter.base.BaseFilterPresenter
 import com.gnoemes.shikimori.presentation.presenter.search.converter.FilterViewModelConverter
 import com.gnoemes.shikimori.presentation.view.search.filter.genres.FilterGenresView
+import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
 @InjectViewState
@@ -23,6 +24,7 @@ class FilterGenresPresenter @Inject constructor(
             })
                     .map { list -> list.first { it.filterType == FilterType.GENRE } }
                     .map { converter.convertGenres(it, appliedFilters) }
+                    .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(this::setData, this::processErrors)
                     .addToDisposables()
 

@@ -1,6 +1,6 @@
 package com.gnoemes.shikimori.presentation.presenter.topic.list
 
-import com.arellomobile.mvp.InjectViewState
+import moxy.InjectViewState
 import com.gnoemes.shikimori.domain.topic.TopicInteractor
 import com.gnoemes.shikimori.entity.forum.domain.ForumType
 import com.gnoemes.shikimori.entity.topic.presentation.TopicViewModel

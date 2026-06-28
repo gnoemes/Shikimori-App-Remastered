@@ -4,29 +4,29 @@ import android.graphics.drawable.ColorDrawable
 import android.view.View
 import android.widget.LinearLayout
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.databinding.LayoutRateProgressBinding
 import com.gnoemes.shikimori.entity.user.presentation.RateProgressStatus
 import com.gnoemes.shikimori.utils.color
 import com.gnoemes.shikimori.utils.drawable
 import com.gnoemes.shikimori.utils.tint
 import com.gnoemes.shikimori.utils.visibleIf
-import kotlinx.android.synthetic.main.layout_rate_progress.view.*
 
 class RateProgressViewHolder(
-        val view: View,
+        private val binding: LayoutRateProgressBinding,
         val isAnime: Boolean
 ) {
 
     init {
-        val progressColor: Int = view.context.color(R.color.rate_default_dark)
-        val completedColor: Int = view.context.color(R.color.rate_watched_dark)
-        val droppedColor: Int = view.context.color(R.color.rate_dropped_dark)
+        val progressColor: Int = binding.root.context.color(R.color.rate_default_dark)
+        val completedColor: Int = binding.root.context.color(R.color.rate_watched_dark)
+        val droppedColor: Int = binding.root.context.color(R.color.rate_dropped_dark)
 
-        val plannedIcon = view.context.drawable(R.drawable.ic_planned)?.apply { tint(progressColor) }
-        val progressIcon = view.context.drawable(R.drawable.ic_play_rate)?.apply { tint(progressColor) }
-        val completedIcon = view.context.drawable(R.drawable.ic_check)?.apply { tint(completedColor) }
-        val droppedIcon = view.context.drawable(R.drawable.ic_close)?.apply { tint(droppedColor) }
+        val plannedIcon = binding.root.context.drawable(R.drawable.ic_planned)?.apply { tint(progressColor) }
+        val progressIcon = binding.root.context.drawable(R.drawable.ic_play_rate)?.apply { tint(progressColor) }
+        val completedIcon = binding.root.context.drawable(R.drawable.ic_check)?.apply { tint(completedColor) }
+        val droppedIcon = binding.root.context.drawable(R.drawable.ic_close)?.apply { tint(droppedColor) }
 
-        with(view) {
+        with(binding) {
             plannedCountView.setCompoundDrawablesWithIntrinsicBounds(null, null, plannedIcon, null)
             watchingCountView.setCompoundDrawablesWithIntrinsicBounds(null, null, progressIcon, null)
             watchedCountView.setCompoundDrawablesWithIntrinsicBounds(null, null, completedIcon, null)
@@ -40,7 +40,7 @@ class RateProgressViewHolder(
     }
 
     fun bind(rates: Map<RateProgressStatus, Int>) {
-        with(view) {
+        with(binding) {
             val plannedCount = rates.getValue(RateProgressStatus.PLANNED)
             plannedCountView.text = "$plannedCount"
 
@@ -53,7 +53,7 @@ class RateProgressViewHolder(
             val droppedCount = rates.getValue(RateProgressStatus.DROPPED)
             droppedCountView.text = "$droppedCount"
 
-            val sum = rates.toList().sumBy { it.second }
+            val sum = rates.toList().sumOf { it.second }
 
             if (sum != 0) {
                 val percents = rates.mapValues { it.value / sum.toDouble() }
@@ -72,5 +72,9 @@ class RateProgressViewHolder(
         (parent as? View)?.post { layoutParams = (layoutParams as LinearLayout.LayoutParams).apply { weight = newWeight.toFloat() } }
     }
 
-
+    companion object {
+        fun create(view: View, isAnime: Boolean): RateProgressViewHolder {
+            return RateProgressViewHolder(LayoutRateProgressBinding.bind(view), isAnime)
+        }
+    }
 }

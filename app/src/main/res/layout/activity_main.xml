@@ -16,6 +16,7 @@
         android:fitsSystemWindows="true" />
 
     <include
+        android:id="@+id/included_layout_bottom_bar"
         layout="@layout/layout_bottom_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

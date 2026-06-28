@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.annotation.LayoutRes
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.databinding.DialogBaseBottomSheetBinding
 import com.gnoemes.shikimori.utils.attr
 import com.gnoemes.shikimori.utils.drawable
 import com.gnoemes.shikimori.utils.getCurrentAscentTheme
@@ -26,23 +27,27 @@ abstract class BaseBottomSheetDialogFragment : MvpDialogFragment() {
     var peekHeight = -1
 
     private val viewHandler = Handler()
+    private var _binding: DialogBaseBottomSheetBinding? = null
+    private val binding: DialogBaseBottomSheetBinding? get() = _binding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): android.view.View? {
-        val view = inflater.inflate(R.layout.dialog_base_bottom_sheet, container, false)
+        _binding = DialogBaseBottomSheetBinding.inflate(inflater, container, false)
+        val b = _binding ?: return null
         if (getDialogLayout() != android.view.View.NO_ID) {
-            inflater.inflate(getDialogLayout(), view.findViewById(R.id.fragment_content), true)
+            inflater.inflate(getDialogLayout(), b.fragmentContent, true)
         }
-        return view
+        return b.root
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return BottomSheetDialog(context!!.wrapTheme(R.style.Theme_MaterialComponents_BottomSheetDialog), context!!.getCurrentAscentTheme)
+        return BottomSheetDialog(context!!.wrapTheme(com.google.android.material.R.style.Theme_MaterialComponents_BottomSheetDialog), context!!.getCurrentAscentTheme)
                 .apply {
                     isCancelable = true
                     setCanceledOnTouchOutside(true)
                     setOnShowListener {
-                        bottomSheet = (it as BottomSheetDialog).findViewById(R.id.design_bottom_sheet)!!
+                        bottomSheet = (it as BottomSheetDialog).findViewById(com.google.android.material.R.id.design_bottom_sheet)!!
                         if (peekHeight != -1 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            @Suppress("DEPRECATION")
                             it.window?.statusBarColor = Color.TRANSPARENT
                         }
 
@@ -73,6 +78,7 @@ abstract class BaseBottomSheetDialogFragment : MvpDialogFragment() {
 
     override fun onDestroyView() {
         viewHandler.removeCallbacksAndMessages(null)
+        _binding = null
         super.onDestroyView()
     }
 

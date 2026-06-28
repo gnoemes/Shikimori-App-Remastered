@@ -11,6 +11,7 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.databinding.ViewShikimoriCollapsedBinding
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.common.presentation.shikimori.*
 import com.gnoemes.shikimori.utils.gone
@@ -18,7 +19,6 @@ import com.gnoemes.shikimori.utils.onClick
 import com.gnoemes.shikimori.utils.splitWithSavedNested
 import com.gnoemes.shikimori.utils.visible
 import com.gnoemes.shikimori.utils.widgets.UniqueStateLinearLayout
-import kotlinx.android.synthetic.main.view_shikimori_collapsed.view.*
 
 class ShikimoriContentView @JvmOverloads constructor(
         context: Context,
@@ -41,8 +41,10 @@ class ShikimoriContentView @JvmOverloads constructor(
     var linkCallback: ((Type, Long) -> Unit)? = null
     var expandable: Boolean = true
 
+    private var binding: ViewShikimoriCollapsedBinding
+
     init {
-        View.inflate(context, R.layout.view_shikimori_collapsed, this)
+        binding = ViewShikimoriCollapsedBinding.inflate(android.view.LayoutInflater.from(context), this, true)
         contentView = createContentView()
         attrs?.let { resolveAttrs(it) }
     }
@@ -66,7 +68,7 @@ class ShikimoriContentView @JvmOverloads constructor(
             else setMargins(contentMarginLeft, contentMarginTop, contentMarginRight, contentMarginBottom)
         }
 
-        if (!expandable) expandView.gone()
+        if (!expandable) binding.expandView.gone()
 
         ta.recycle()
     }
@@ -80,18 +82,18 @@ class ShikimoriContentView @JvmOverloads constructor(
                     if (contentMargin != 0) setMargins(contentMargin, contentMargin, contentMargin, contentMargin)
                     else setMargins(contentMarginLeft, contentMarginTop, contentMarginRight, contentMarginBottom)
                 }
-        container.addView(view, 0, params)
+        binding.container.addView(view, 0, params)
         val set = ConstraintSet()
-        set.clone(container)
+        set.clone(binding.container)
         set.connect(view.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
         set.connect(view.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
         set.connect(view.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
-        set.applyTo(container)
+        set.applyTo(binding.container)
         return view
     }
 
     private fun clearState() {
-        container.removeView(contentView)
+        binding.container.removeView(contentView)
         contentView.removeAllViews()
         contentView = createContentView()
         contentHeight = COLLAPSED_MAX_HEIGHT
@@ -111,7 +113,7 @@ class ShikimoriContentView @JvmOverloads constructor(
 
         when {
             expandable -> initToggle()
-            else -> expandView.gone()
+            else -> binding.expandView.gone()
         }
     }
 
@@ -168,17 +170,17 @@ class ShikimoriContentView @JvmOverloads constructor(
             if (contentView.height >= COLLAPSED_MAX_HEIGHT) {
                 contentView.layoutParams.height = COLLAPSED_MAX_HEIGHT
                 contentView.requestLayout()
-                expandView.visible()
-                expandView.onClick { contentView.post { expandOrCollapse() } }
-            } else expandView.gone()
+                binding.expandView.visible()
+                binding.expandView.onClick { contentView.post { expandOrCollapse() } }
+            } else binding.expandView.gone()
         }
     }
 
     private fun expandOrCollapse() {
         if (contentView.height >= COLLAPSED_MAX_HEIGHT) {
             isExpanded = !isExpanded
-            if (isExpanded) expandView.setImageResource(R.drawable.ic_chevron_up)
-            else expandView.setImageResource(R.drawable.ic_chevron_down)
+            if (isExpanded) binding.expandView.setImageResource(R.drawable.ic_chevron_up)
+            else binding.expandView.setImageResource(R.drawable.ic_chevron_down)
 
             cycleHeightExpansion(contentView)
         }

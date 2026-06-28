@@ -15,7 +15,9 @@ class RelatedRepositoryImpl @Inject constructor(
         private val converter: RelatedResponseConverter
 ) : RelatedRepository {
 
-    override fun getAnime(animeId: Long): Single<List<Related>> = animeApi.getRelated(animeId).map(converter)
+    override fun getAnime(animeId: Long): Single<List<Related>> =
+            animeApi.getRelated(animeId)
+                    .map(converter)
 
     override fun getManga(mangaId: Long): Single<List<Related>> = mangaApi.getRelated(mangaId).map(converter)
 

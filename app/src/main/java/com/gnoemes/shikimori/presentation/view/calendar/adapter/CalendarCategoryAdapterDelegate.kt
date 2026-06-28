@@ -1,18 +1,17 @@
 package com.gnoemes.shikimori.presentation.view.calendar.adapter
 
-import android.view.View
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.databinding.ItemCalendarBinding
 import com.gnoemes.shikimori.entity.calendar.presentation.CalendarViewModel
 import com.gnoemes.shikimori.presentation.view.common.adapter.StartSnapHelper
 import com.gnoemes.shikimori.utils.dp
 import com.gnoemes.shikimori.utils.images.ImageLoader
-import com.gnoemes.shikimori.utils.inflate
 import com.gnoemes.shikimori.utils.widgets.HorizontalSpaceItemDecorator
 import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
-import kotlinx.android.synthetic.main.item_calendar.view.*
 
 class CalendarCategoryAdapterDelegate(
         private val imageLoader: ImageLoader,
@@ -24,7 +23,7 @@ class CalendarCategoryAdapterDelegate(
     override fun isForViewType(item: Any, items: MutableList<Any>, position: Int): Boolean = item is CalendarViewModel
 
     override fun onCreateViewHolder(parent: ViewGroup): ViewHolder =
-            ViewHolder(parent.inflate(R.layout.item_calendar))
+            ViewHolder(ItemCalendarBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(item: CalendarViewModel, holder: ViewHolder, payloads: MutableList<Any>) {
         holder.bind(item)
@@ -32,25 +31,24 @@ class CalendarCategoryAdapterDelegate(
 
     override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
         super.onViewRecycled(holder)
-        (holder as ViewHolder).itemView.apply {
-            recyclerView.adapter = null
-            recyclerView.layoutManager = null
-            dateTextView.text = null
-        }
+        val vh = holder as ViewHolder
+        vh.binding.recyclerView.adapter = null
+        vh.binding.recyclerView.layoutManager = null
+        vh.binding.dateTextView.text = null
     }
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(val binding: ItemCalendarBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        private val snapOffset by lazy { itemView.context.dp(16) }
+        private val snapOffset by lazy { binding.root.context.dp(16) }
         private lateinit var item: CalendarViewModel
 
         init {
-            if (itemView.recyclerView.onFlingListener == null) {
+            if (binding.recyclerView.onFlingListener == null) {
                 val snapHelper = StartSnapHelper(snapOffset)
-                snapHelper.attachToRecyclerView(itemView.recyclerView)
+                snapHelper.attachToRecyclerView(binding.recyclerView)
             }
 
-            itemView.recyclerView.apply {
+            binding.recyclerView.apply {
                 setHasFixedSize(true)
                 setRecycledViewPool(sharedPool)
                 setItemViewCacheSize(20)
@@ -60,13 +58,11 @@ class CalendarCategoryAdapterDelegate(
 
         fun bind(item: CalendarViewModel) {
             this.item = item
-            with(itemView) {
-                dateTextView.text = item.date
-                with(recyclerView) {
-                    isNestedScrollingEnabled = false
-                    adapter = CalendarAnimeAdapter(itemView.context, imageLoader, callback, item.items).apply { if (!hasObservers()) setHasStableIds(true) }
-                    layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false).apply { initialPrefetchItemCount = 3 }
-                }
+            binding.dateTextView.text = item.date
+            with(binding.recyclerView) {
+                isNestedScrollingEnabled = false
+                adapter = CalendarAnimeAdapter(binding.root.context, imageLoader, callback, item.items).apply { if (!hasObservers()) setHasStableIds(true) }
+                layoutManager = LinearLayoutManager(binding.root.context, LinearLayoutManager.HORIZONTAL, false).apply { initialPrefetchItemCount = 3 }
             }
         }
 

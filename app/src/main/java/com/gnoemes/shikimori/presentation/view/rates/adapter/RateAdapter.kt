@@ -48,23 +48,25 @@ class RateAdapter(
     override fun canDragItem(position: Int): Boolean = false
 
     override fun canSwipeItem(position: Int): Boolean {
-        val item = items.getOrNull(position)
+        val list = items!!
+        val item = list.getOrNull(position)
         return !(item == null || item !is RateViewModel)
     }
 
     override fun onItemMove(oldPosition: Int, newPosition: Int): Boolean {
         if (newPosition == 0) return false
 
-        val item = items.getOrNull(newPosition)
+        val list = items!!
+        val item = list.getOrNull(newPosition)
         if (item == null || item !is RateViewModel || !item.isPinned) return false
 
         if (oldPosition < newPosition) {
             for (i in oldPosition until newPosition) {
-                Collections.swap(items, i, i + 1)
+                Collections.swap(list, i, i + 1)
             }
         } else {
             for (i in oldPosition downTo newPosition + 1) {
-                Collections.swap(items, i, i - 1)
+                Collections.swap(list, i, i - 1)
             }
         }
         notifyItemMoved(oldPosition, newPosition)
@@ -73,14 +75,16 @@ class RateAdapter(
     }
 
     override fun onSelectedItemMove(newPosition: Int) {
-        val item = items.getOrNull(newPosition)
+        val list = items!!
+        val item = list.getOrNull(newPosition)
         if (item == null || item !is RateViewModel || !item.isPinned) return
 
         listActionCallback.invoke(RateListAction.ChangeOrder(item, newPosition - 1))
     }
 
     override fun onItemSwipeAction(pos: Int, action: RateSwipeAction) {
-        val item = items.getOrNull(pos)
+        val list = items!!
+        val item = list.getOrNull(pos)
         if (item == null || item !is RateViewModel) return
 
         listActionCallback.invoke(RateListAction.SwipeAction(item, action))

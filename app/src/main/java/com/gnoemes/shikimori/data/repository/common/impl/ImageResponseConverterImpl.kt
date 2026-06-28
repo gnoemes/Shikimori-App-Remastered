@@ -8,10 +8,14 @@ import javax.inject.Inject
 
 class ImageResponseConverterImpl @Inject constructor() : ImageResponseConverter {
 
-    override fun convertResponse(response: ImageResponse): Image = Image(
-            response.original?.appendHostIfNeed(),
-            response.preview?.appendHostIfNeed(),
-            response.x96?.appendHostIfNeed(),
-            response.x48?.appendHostIfNeed()
-    )
+    override fun convertResponse(response: ImageResponse?): Image = if (response == null) {
+        Image(null, null, null, null)
+    } else {
+        Image(
+                response.original?.appendHostIfNeed(),
+                response.preview?.appendHostIfNeed(),
+                response.x96?.appendHostIfNeed(),
+                response.x48?.appendHostIfNeed()
+        )
+    }
 }

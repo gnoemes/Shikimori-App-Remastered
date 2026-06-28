@@ -9,10 +9,10 @@ import android.widget.TextView
 import androidx.preference.PreferenceGroup
 import androidx.preference.PreferenceViewHolder
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.databinding.ViewDonationGroupBinding
 import com.gnoemes.shikimori.utils.drawable
 import com.gnoemes.shikimori.utils.gone
 import com.gnoemes.shikimori.utils.onClick
-import kotlinx.android.synthetic.main.view_donation_group.view.*
 
 class AppGroupPreference @JvmOverloads constructor(context: Context,
                                                    attrs: AttributeSet? = null,
@@ -30,30 +30,31 @@ class AppGroupPreference @JvmOverloads constructor(context: Context,
     var clubClickListener: View.OnClickListener? = null
 
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
-        with(holder.itemView) {
+        val binding = ViewDonationGroupBinding.bind(holder.itemView)
+        with(binding) {
             message.text = Html.fromHtml(context.getString(R.string.settings_donation_message))
             donationView.onClick { donationClickListener?.onClick(it) }
             btn.onClick { donationClickListener?.onClick(it) }
 
-            sendLayout.icon()?.setImageDrawable(context.drawable(R.drawable.icon_mail_setting))
-            sendLayout.title()?.text = context.getString(R.string.settings_about_send_title)
-            sendLayout.summary()?.gone()
-            sendLayout.onClick { mailClickListener?.onClick(it) }
+            sendLayout.root.icon()?.setImageDrawable(context.drawable(R.drawable.icon_mail_setting))
+            sendLayout.root.title()?.text = context.getString(R.string.settings_about_send_title)
+            sendLayout.root.summary()?.gone()
+            sendLayout.root.onClick { mailClickListener?.onClick(it) }
 
-            trelloLayout.icon()?.setImageDrawable(context.drawable(R.drawable.icon_trello_setting))
-            trelloLayout.title()?.text = context.getString(R.string.settings_roadmap_title)
-            trelloLayout.summary()?.gone()
-            trelloLayout.onClick { trelloClickListener?.onClick(it) }
+            trelloLayout.root.icon()?.setImageDrawable(context.drawable(R.drawable.icon_trello_setting))
+            trelloLayout.root.title()?.text = context.getString(R.string.settings_roadmap_title)
+            trelloLayout.root.summary()?.gone()
+            trelloLayout.root.onClick { trelloClickListener?.onClick(it) }
 
-            fourPdaLayout.icon()?.setImageDrawable(context.drawable(R.drawable.icon_4pda_setting))
-            fourPdaLayout.title()?.text = context.getString(R.string.settings_about_forum_title)
-            fourPdaLayout.summary()?.gone()
-            fourPdaLayout.onClick { forumClickListener?.onClick(it) }
+            fourPdaLayout.root.icon()?.setImageDrawable(context.drawable(R.drawable.icon_4pda_setting))
+            fourPdaLayout.root.title()?.text = context.getString(R.string.settings_about_forum_title)
+            fourPdaLayout.root.summary()?.gone()
+            fourPdaLayout.root.onClick { forumClickListener?.onClick(it) }
 
-            clubLayout.icon()?.setImageDrawable(context.drawable(R.drawable.icon_shikimori_setting))
-            clubLayout.title()?.text = context.getString(R.string.settings_club_title)
-            clubLayout.summary()?.gone()
-            clubLayout.onClick { clubClickListener?.onClick(it) }
+            clubLayout.root.icon()?.setImageDrawable(context.drawable(R.drawable.icon_shikimori_setting))
+            clubLayout.root.title()?.text = context.getString(R.string.settings_club_title)
+            clubLayout.root.summary()?.gone()
+            clubLayout.root.onClick { clubClickListener?.onClick(it) }
         }
     }
 

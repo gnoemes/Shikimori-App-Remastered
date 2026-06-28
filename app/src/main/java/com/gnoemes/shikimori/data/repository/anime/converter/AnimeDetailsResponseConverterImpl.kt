@@ -8,6 +8,7 @@ import com.gnoemes.shikimori.entity.anime.data.AnimeDetailsResponse
 import com.gnoemes.shikimori.entity.anime.data.AnimeVideoResponse
 import com.gnoemes.shikimori.entity.anime.domain.AnimeDetails
 import com.gnoemes.shikimori.entity.anime.domain.AnimeVideo
+import com.gnoemes.shikimori.entity.common.domain.AgeRating
 import com.gnoemes.shikimori.entity.user.data.StatisticResponse
 import com.gnoemes.shikimori.entity.user.domain.Statistic
 import com.gnoemes.shikimori.utils.appendHostIfNeed
@@ -23,10 +24,10 @@ class AnimeDetailsResponseConverterImpl @Inject constructor(
 
     override fun apply(t: AnimeDetailsResponse): AnimeDetails = AnimeDetails(
             t.id,
-            t.name,
+            t.name ?: "",
             t.nameRu.nullIfEmpty(),
             imageConverter.convertResponse(t.image),
-            t.url.appendHostIfNeed(),
+            t.url?.appendHostIfNeed() ?: "",
             t.type,
             t.status,
             t.episodes,
@@ -36,20 +37,20 @@ class AnimeDetailsResponseConverterImpl @Inject constructor(
             t.nextEpisodeDate,
             t.namesEnglish,
             t.namesJapanese,
-            t.ageRating,
-            t.score,
+            t.ageRating ?: AgeRating.NONE,
+            t.score?.toDoubleOrNull() ?: 0.0,
             t.duration,
             t.description,
-            t.descriptionHtml,
+            t.descriptionHtml ?: "",
             t.franchise,
             t.favoured,
             t.topicId,
-            genreConverter.apply(t.genres),
+            genreConverter.apply(t.genres ?: emptyList()),
             rateResponseConverter.convertUserRateResponse(t.id, t.userRate),
             convertVideos(t.videoResponses),
             studioConverter.apply(t.studioResponses ?: emptyList()),
-            t.rateScoresStats.map { convertStatistic(it) },
-            t.rateStatusesStats.map { convertStatistic(it) }
+            t.rateScoresStats?.map { convertStatistic(it) } ?: emptyList(),
+            t.rateStatusesStats?.map { convertStatistic(it) } ?: emptyList()
     )
 
     private fun convertStatistic(it: StatisticResponse): Statistic = Statistic(it.name, it.value)

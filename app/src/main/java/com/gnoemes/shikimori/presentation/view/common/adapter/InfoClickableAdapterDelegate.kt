@@ -1,17 +1,15 @@
 package com.gnoemes.shikimori.presentation.view.common.adapter
 
-import android.view.View
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.databinding.ItemDetailsInfoClickableBinding
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.common.presentation.InfoClickableItem
 import com.gnoemes.shikimori.utils.images.ImageLoader
-import com.gnoemes.shikimori.utils.inflate
-import com.gnoemes.shikimori.utils.onClick
 import com.gnoemes.shikimori.utils.visibleIf
 import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
-import kotlinx.android.synthetic.main.item_details_info_clickable.view.*
 
 class InfoClickableAdapterDelegate(
         private val navigationCallback: (Type, Long) -> Unit,
@@ -22,23 +20,23 @@ class InfoClickableAdapterDelegate(
             item is InfoClickableItem
 
     override fun onCreateViewHolder(parent: ViewGroup): ViewHolder =
-            ViewHolder(parent.inflate(R.layout.item_details_info_clickable))
+            ViewHolder(ItemDetailsInfoClickableBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(item: InfoClickableItem, holder: ViewHolder, payloads: MutableList<Any>) {
         holder.bind(item)
     }
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(private val binding: ItemDetailsInfoClickableBinding) : RecyclerView.ViewHolder(binding.root) {
 
         private lateinit var item: InfoClickableItem
 
         init {
-            itemView.container.onClick { navigationCallback.invoke(item.type, item.id) }
+            binding.container.setOnClickListener { navigationCallback.invoke(item.type, item.id) }
         }
 
         fun bind(item: InfoClickableItem) {
             this.item = item
-            with(itemView) {
+            with(binding) {
                 infoView.text = item.description
                 categoryView.text = item.category
                 imageLoader.setCircleImage(imageView, item.image?.preview)

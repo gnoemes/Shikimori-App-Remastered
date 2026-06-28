@@ -2,7 +2,7 @@ package com.gnoemes.shikimori.entity.rates.domain
 
 import android.os.Parcelable
 import com.gnoemes.shikimori.entity.common.domain.Type
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 import org.joda.time.DateTime
 
 @Parcelize

@@ -1,7 +1,5 @@
 package com.gnoemes.shikimori.data.local.db.table
 
-import com.pushtorefresh.storio3.sqlite.queries.Query
-
 object EpisodeTable {
 
     const val TABLE = "episodes"
@@ -19,8 +17,4 @@ object EpisodeTable {
             "PRIMARY KEY ($COLUMN_ANIME_ID , $COLUMN_EPISODE_ID));"
 
     const val DROP_QUERY = "DROP TABLE IF EXISTS $TABLE"
-
-    val ALL_QUERY: Query = Query.builder()
-            .table(TABLE)
-            .build()
 }

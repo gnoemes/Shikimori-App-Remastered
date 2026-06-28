@@ -24,7 +24,7 @@ data class AnimeDetails(
         val nextEpisodeDate: DateTime?,
         val namesEnglish: List<String?>?,
         val namesJapanese: List<String?>?,
-        val ageRating: AgeRating,
+        val ageRating: AgeRating?,
         val score: Double,
         val duration: Int,
         val description: String?,

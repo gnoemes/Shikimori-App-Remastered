@@ -3,6 +3,7 @@ package com.gnoemes.shikimori.presentation.view.common.holders
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.databinding.LayoutDetailsContentBinding
 import com.gnoemes.shikimori.entity.common.presentation.DetailsContentItem
 import com.gnoemes.shikimori.entity.common.presentation.DetailsContentType
 import com.gnoemes.shikimori.presentation.view.common.adapter.StartSnapHelper
@@ -11,27 +12,23 @@ import com.gnoemes.shikimori.utils.dp
 import com.gnoemes.shikimori.utils.gone
 import com.gnoemes.shikimori.utils.visible
 import com.gnoemes.shikimori.utils.widgets.HorizontalSpaceItemDecorator
-import kotlinx.android.synthetic.main.layout_details_content.view.contentLabelView
-import kotlinx.android.synthetic.main.layout_details_content.view.contentRecyclerView
-import kotlinx.android.synthetic.main.layout_details_content.view.progressBar
-import kotlinx.android.synthetic.main.layout_details_content_with_search.view.*
 
 class DetailsContentViewHolder(
-        private val view: View,
+        private val binding: LayoutDetailsContentBinding,
         private val adapter: ContentAdapter,
-        private val withSearch : Boolean= false
+        private val withSearch: Boolean = false
 ) {
 
     init {
-        if (view.contentRecyclerView.onFlingListener == null) {
-            val snapOffset = view.resources.getDimension(R.dimen.margin_normal).toInt()
+        if (binding.contentRecyclerView.onFlingListener == null) {
+            val snapOffset = binding.root.resources.getDimension(R.dimen.margin_normal).toInt()
             val snapHelper = StartSnapHelper(snapOffset)
-            snapHelper.attachToRecyclerView(view.contentRecyclerView)
+            snapHelper.attachToRecyclerView(binding.contentRecyclerView)
         }
 
-        view.contentRecyclerView.apply {
+        binding.contentRecyclerView.apply {
             adapter = this@DetailsContentViewHolder.adapter.apply { if (!hasObservers()) setHasStableIds(true) }
-            layoutManager = LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false).apply { initialPrefetchItemCount = 3 }
+            layoutManager = LinearLayoutManager(binding.root.context, LinearLayoutManager.HORIZONTAL, false).apply { initialPrefetchItemCount = 3 }
             setHasFixedSize(true)
             addItemDecoration(HorizontalSpaceItemDecorator(context.dp(if (withSearch) 16 else 8), context.dp(16)))
         }
@@ -39,7 +36,7 @@ class DetailsContentViewHolder(
 
     fun bind(type: DetailsContentType, item: DetailsContentItem) {
         if (item.items.isEmpty()) {
-            view.gone()
+            binding.root.gone()
             return
         }
 
@@ -56,10 +53,9 @@ class DetailsContentViewHolder(
             DetailsContentType.SCREENSHOTS -> R.string.details_screenshots
         }
 
-        with(view) {
+        with(binding) {
             contentLabelView.setText(stringRes)
             adapter.bindItems(item.items)
-            if (withSearch) searchBtn.visible()
             progressBar.gone()
             contentRecyclerView.visible()
         }

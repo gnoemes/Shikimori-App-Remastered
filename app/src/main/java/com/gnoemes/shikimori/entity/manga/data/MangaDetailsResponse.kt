@@ -2,6 +2,7 @@ package com.gnoemes.shikimori.entity.manga.data
 
 import com.gnoemes.shikimori.entity.common.data.GenreResponse
 import com.gnoemes.shikimori.entity.common.data.ImageResponse
+import com.gnoemes.shikimori.entity.common.domain.AgeRating
 import com.gnoemes.shikimori.entity.common.domain.Status
 import com.gnoemes.shikimori.entity.manga.domain.MangaType
 import com.gnoemes.shikimori.entity.rates.data.UserRateResponse
@@ -11,10 +12,10 @@ import org.joda.time.DateTime
 
 data class MangaDetailsResponse(
         @field:SerializedName("id") val id: Long,
-        @field:SerializedName("name") val name: String,
+        @field:SerializedName("name") val name: String?,
         @field:SerializedName("russian") val nameRu: String?,
-        @field:SerializedName("image") val image: ImageResponse,
-        @field:SerializedName("url") val url: String,
+        @field:SerializedName("image") val image: ImageResponse?,
+        @field:SerializedName("url") val url: String?,
         @field:SerializedName("kind") private val _type: MangaType?,
         @field:SerializedName("status") private val _status: Status?,
         @field:SerializedName("volumes") val volumes: Int,
@@ -23,16 +24,17 @@ data class MangaDetailsResponse(
         @field:SerializedName("released_on") val dateReleased: DateTime?,
         @field:SerializedName("english") val namesEnglish: List<String?>?,
         @field:SerializedName("japanese") val namesJapanese: List<String?>?,
-        @field:SerializedName("score") val score: Double,
+        @field:SerializedName("rating") val ageRating: AgeRating?,
+        @field:SerializedName("score") val score: String?,
         @field:SerializedName("description") val description: String?,
-        @field:SerializedName("description_html") val descriptionHtml: String,
+        @field:SerializedName("description_html") val descriptionHtml: String?,
         @field:SerializedName("franchise") val franchise: String?,
         @field:SerializedName("favoured") val favoured: Boolean,
         @field:SerializedName("topic_id") val topicId: Long?,
-        @field:SerializedName("genres") val genres: List<GenreResponse>,
+        @field:SerializedName("genres") val genres: List<GenreResponse>?,
         @field:SerializedName("user_rate") val userRate: UserRateResponse?,
-        @field:SerializedName("rates_scores_stats") val rateScoresStats: List<StatisticResponse>,
-        @field:SerializedName("rates_statuses_stats") val rateStatusesStats: List<StatisticResponse>
+        @field:SerializedName("rates_scores_stats") val rateScoresStats: List<StatisticResponse>?,
+        @field:SerializedName("rates_statuses_stats") val rateStatusesStats: List<StatisticResponse>?
 ) {
 
     val status: Status

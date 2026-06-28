@@ -10,22 +10,26 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.gnoemes.shikimori.BuildConfig
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.databinding.ActivitySettingsBinding
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.app.domain.SettingsExtras.NEW_VERSION_AVAILABLE
 import com.gnoemes.shikimori.presentation.view.base.activity.MvpActivity
 import com.gnoemes.shikimori.presentation.view.settings.fragments.SettingsFragment
 import com.gnoemes.shikimori.utils.*
 import com.google.android.material.appbar.AppBarLayout
-import kotlinx.android.synthetic.main.layout_toolbar.*
 
 class SettingsActivity : MvpActivity(), PreferenceFragmentCompat.OnPreferenceStartFragmentCallback, ToolbarCallback {
+
+    private lateinit var binding: ActivitySettingsBinding
+    private val toolbar: Toolbar by lazy { binding.root.findViewById(R.id.toolbar) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme()
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        toolbar?.apply {
+        toolbar.apply {
             setDefaultTitle()
             addBackButton { onBackPressed() }
             inflateMenu(R.menu.menu_setting)
@@ -51,21 +55,20 @@ class SettingsActivity : MvpActivity(), PreferenceFragmentCompat.OnPreferenceSta
     }
 
     override fun onBackPressed() {
-        toolbar?.setDefaultTitle()
+        toolbar.setDefaultTitle()
         showVersion(true)
         val fragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
         if (fragment is SettingsFragment) super.finish()
         else super.onBackPressed()
     }
 
-    override fun onPreferenceStartFragment(caller: PreferenceFragmentCompat?, pref: Preference?): Boolean {
+    override fun onPreferenceStartFragment(caller: PreferenceFragmentCompat, pref: Preference): Boolean {
 
         val fragment = supportFragmentManager.fragmentFactory.instantiate(
                 classLoader,
-                pref?.fragment!!)
-                .apply { setTargetFragment(caller, 0) }
+                pref.fragment!!)
 
-        toolbar?.title = pref.title
+        toolbar.title = pref.title
         showVersion(false)
         replaceFragment(fragment)
 
@@ -94,6 +97,10 @@ class SettingsActivity : MvpActivity(), PreferenceFragmentCompat.OnPreferenceSta
         }
     }
 
-    override fun showToolbarMenu() = run { toolbar.menu.findItem(R.id.item_accept).isVisible = true }
-    override fun hideToolbarMenu() = run { toolbar.menu.findItem(R.id.item_accept).isVisible = false }
+    override fun showToolbarMenu() {
+        toolbar.menu.findItem(R.id.item_accept).isVisible = true
+    }
+    override fun hideToolbarMenu() {
+        toolbar.menu.findItem(R.id.item_accept).isVisible = false
+    }
 }

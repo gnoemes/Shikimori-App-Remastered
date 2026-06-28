@@ -1,6 +1,6 @@
 package com.gnoemes.shikimori.di.main.module;
 
-import com.arellomobile.mvp.MvpPresenter;
+import moxy.MvpPresenter;
 import com.gnoemes.shikimori.di.base.modules.BaseActivityModule;
 import com.gnoemes.shikimori.di.base.scopes.ActivityScope;
 import com.gnoemes.shikimori.di.base.scopes.BottomScope;

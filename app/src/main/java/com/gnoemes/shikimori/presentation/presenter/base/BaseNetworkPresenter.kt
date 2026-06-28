@@ -5,31 +5,23 @@ import com.gnoemes.shikimori.entity.app.domain.exceptions.BaseException
 import com.gnoemes.shikimori.entity.app.domain.exceptions.NetworkException
 import com.gnoemes.shikimori.entity.app.domain.exceptions.ServiceCodeException
 import com.gnoemes.shikimori.presentation.view.base.activity.BaseNetworkView
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
-
 abstract class BaseNetworkPresenter<View : BaseNetworkView> : BaseNavigationPresenter<View>() {
 
-    private var compositeDisposable = CompositeDisposable()
-
     override fun initData() {}
-
-    override fun onDestroy() {
-        compositeDisposable.clear()
-    }
-
-    fun Disposable.addToDisposables() {
-        compositeDisposable.add(this)
-    }
 
     //TODO process exceptions
     protected open fun processErrors(throwable: Throwable) {
 //        val errorUtils = ErrorUtils()
 //        errorUtils.processErrors(throwable, router, viewState)
         when ((throwable as? BaseException)?.tag) {
-            NetworkException.TAG -> viewState.apply { showNetworkView(); showContent(false); router.showSystemMessage(throwable.localizedMessage) }
-            ServiceCodeException.TAG -> viewState.apply { showNetworkView(); showContent(false); router.showSystemMessage("HTTP error ${(throwable as ServiceCodeException).serviceCode}") }
-            else -> Log.e("Error", throwable.toString())
+            NetworkException.TAG -> viewState.apply { showNetworkView(); showContent(false); showSystemMessage(throwable.localizedMessage) }
+            ServiceCodeException.TAG -> viewState.apply { showNetworkView(); showContent(false); showSystemMessage("HTTP error ${(throwable as ServiceCodeException).serviceCode}") }
+            else -> {
+                Log.e("Error", "Error processing request", throwable)
+                viewState.onHideLoading()
+                viewState.showContent(true)
+                viewState.showSystemMessage("Something went wrong")
+            }
         }
     }
 }

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <include layout="@layout/layout_toolbar" />
+    <include android:id="@+id/included_layout_toolbar" layout="@layout/layout_toolbar" />
 
     <FrameLayout
         android:id="@+id/fragment_content"
@@ -17,6 +17,6 @@
 
     <include layout="@layout/layout_default_placeholders" />
 
-    <include layout="@layout/layout_progress" />
+    <include android:id="@+id/included_layout_progress" layout="@layout/layout_progress" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

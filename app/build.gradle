@@ -1,102 +1,143 @@
-import org.moallemi.gradle.internal.VersionCodeType
-
 apply from: '../dependencies.gradle'
 apply plugin: 'com.android.application'
-apply plugin: 'io.fabric'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+apply plugin: 'org.jetbrains.kotlin.android'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'org.moallemi.advanced-build-version'
+
+apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'kotlin-parcelize'
+apply plugin: 'com.google.devtools.ksp'
+
+
+
+def getVersionName() {
+    try {
+        def proc = "git describe --tags --abbrev=0".execute()
+        proc.waitFor()
+        def tag = proc.text?.trim()
+        return tag ? tag.replaceAll('^v', '') : '0.0.0'
+    } catch (Exception e) {
+        return '0.0.0'
+    }
+}
+
+def getVersionCode() {
+    try {
+        def proc = "git rev-list --count HEAD".execute()
+        proc.waitFor()
+        def count = proc.text?.trim()
+        return count ? count.toInteger() : 1
+    } catch (Exception e) {
+        return 1
+    }
+}
 
 android {
-    compileSdkVersion versions.compileSdk
-    buildToolsVersion versions.buildTools
-
-    kapt { generateStubs = true }
-    androidExtensions { experimental = true }
-
-    advancedVersioning {
-        nameOptions {
-            versionMajor 0
-            versionMinor 8
-            versionPatch 7
-            versionBuild 3
-        }
-        codeOptions {
-            versionCodeType VersionCodeType.AUTO_INCREMENT_ONE_STEP
-            dependsOnTasks 'release'
-        }
-
-        outputOptions {
-            renameOutput true
-            nameFormat 'ShikimoriApp-v' + versionName + '-${buildType}'
-        }
-    }
-
-    def appVersionName = advancedVersioning.versionName
-    def appVersionCode = advancedVersioning.versionCode
-
-    println "config code: ${appVersionName}, name: ${appVersionCode}"
+    namespace = 'com.gnoemes.shikimori'
+    compileSdk versions.compileSdk
 
     defaultConfig {
         applicationId "com.gnoemes.shikimori"
-        minSdkVersion versions.minSdk
-        targetSdkVersion versions.compileSdk
-        versionName appVersionName
-        versionCode appVersionCode
+        minSdk versions.minSdk
+        targetSdk versions.targetSdk
+        versionCode this.getVersionCode()
+        versionName this.getVersionName()
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
-        multiDexEnabled true
+        multiDexEnabled = true
     }
+
     buildTypes {
         release {
             minifyEnabled true
-            shrinkResources true
+            shrinkResources = true
             zipAlignEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 
         debug {
+            applicationIdSuffix = ".debug"
             versionNameSuffix "-SNAPSHOT"
         }
     }
 
-    buildTypes.each {
-        it.buildConfigField 'String', 'ShikimoriClientId', ShikimoriClientId
-        it.buildConfigField 'String', 'ShikimoriClientSecret', ShikimoriClientSecret
-        it.buildConfigField 'String', 'ShikimoriBaseUrl', ShikimoriBaseUrl
-        it.buildConfigField 'String', 'VideoBaseUrl', VideoBaseUrl
-        it.buildConfigField 'String', 'VkRandomToken', VkRandomToken
+    buildTypes.configureEach {
+        buildConfigField 'String', 'ShikimoriClientId', ShikimoriClientId
+        buildConfigField 'String', 'ShikimoriClientSecret', ShikimoriClientSecret
+        buildConfigField 'String', 'ShikimoriBaseUrl', ShikimoriBaseUrl
+        buildConfigField 'String', 'VideoBaseUrl', VideoBaseUrl
+        buildConfigField 'String', 'VkRandomToken', VkRandomToken
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
-    packagingOptions {
-        exclude 'META-INF/atomicfu.kotlin_module'
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+            freeCompilerArgs.add("-Xannotation-default-target=param-property")
+        }
+    }
+
+    buildFeatures {
+        buildConfig = true
+        viewBinding = true
+    }
+
+    testOptions {
+        unitTests.all {
+            useJUnitPlatform()
+        }
+    }
+
+    packaging {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+            excludes += 'META-INF/atomicfu.kotlin_module'
+        }
     }
 }
 
+kapt {
+    correctErrorTypes = true
+    arguments {
+        arg("defaultMoxyStrategy", "moxy.viewstate.strategy.AddToEndSingleStrategy")
+        arg("disableEmptyStrategyCheck", "true")
+    }
+}
+
+ksp {
+    arg("defaultMoxyStrategy", "moxy.viewstate.strategy.AddToEndSingleStrategy")
+    arg("disableEmptyStrategyCheck", "true")
+    arg("room.schemaLocation", "$projectDir/schemas")
+}
+
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:" + versions.kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:" + versions.kotlin
 
     implementation 'androidx.appcompat:appcompat:' + versions.androidx
-    implementation 'androidx.preference:preference:' + versions.androidx
-    implementation 'androidx.constraintlayout:constraintlayout:' + versions.constraint
-    implementation 'androidx.fragment:fragment:' + versions.androidxFragment
     implementation 'androidx.preference:preference:' + versions.androidxPrefs
+    implementation 'androidx.constraintlayout:constraintlayout:' + versions.constraint
+    implementation 'androidx.fragment:fragment-ktx:' + versions.androidxFragment
     implementation 'androidx.core:core-ktx:' + versions.ktx
-    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:' + versions.androidx
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation 'com.google.android.material:material:' + versions.material
-    implementation 'androidx.palette:palette:' + versions.androidx
+    implementation 'androidx.palette:palette:1.0.0'
+    implementation 'androidx.media:media:1.7.0'
+    implementation 'androidx.viewpager2:viewpager2:' + versions.viewpager2
+
+    implementation "androidx.room:room-runtime:" + versions.room
+    implementation "androidx.room:room-rxjava2:" + versions.room
+    ksp "androidx.room:room-compiler:" + versions.room
 
     implementation "com.google.dagger:dagger-android:" + versions.dagger
     implementation "com.google.dagger:dagger-android-support:" + versions.dagger
-    kapt "com.google.dagger:dagger-android-processor:" + versions.dagger
-    kapt "com.google.dagger:dagger-compiler:" + versions.dagger
+    ksp "com.google.dagger:dagger-android-processor:" + versions.dagger
+    ksp "com.google.dagger:dagger-compiler:" + versions.dagger
+    ksp "com.google.dagger:dagger-android-support:" + versions.dagger
+    ksp "com.google.dagger:dagger-android:" + versions.dagger
 
     implementation 'io.reactivex.rxjava2:rxandroid:' + versions.rxAndroid
     implementation "io.reactivex.rxjava2:rxjava:" + versions.rxJava
@@ -108,61 +149,94 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:" + versions.okHttp
     implementation 'com.squareup.okhttp3:okhttp-urlconnection:' + versions.urlConnection
 
-    implementation "com.arello-mobile:moxy:" + versions.moxy
-    kapt "com.arello-mobile:moxy-compiler:" + versions.moxy
+    implementation "com.github.moxy-community:moxy:" + versions.moxy
+    implementation "com.github.moxy-community:moxy-androidx:" + versions.moxy
+    kapt "com.github.moxy-community:moxy-compiler:" + versions.moxy
+    kapt "com.github.moxy-community:moxy:" + versions.moxy
 
     implementation "com.github.bumptech.glide:glide:" + versions.glide
     implementation "com.github.bumptech.glide:okhttp3-integration:" + versions.glide
-    kapt "com.github.bumptech.glide:compiler:" + versions.glide
+    ksp "com.github.bumptech.glide:ksp:" + versions.glide
 
     implementation "com.google.code.gson:gson:" + versions.gson
-    implementation 'net.danlew:android.joda:' + versions.jodaDateTime
-    implementation 'com.afollestad.material-dialogs:core:' + versions.materialDialogs
-    implementation 'com.afollestad.material-dialogs:input:' + versions.materialDialogs
-    implementation 'com.afollestad.material-dialogs:files:' + versions.materialDialogs
-    implementation 'com.afollestad.material-dialogs:datetime:' + versions.materialDialogs
-    implementation 'com.github.ybq:Android-SpinKit:' + versions.spinKit
-    implementation 'com.github.santalu:respinner:' + versions.reSpinner
-    implementation 'com.hannesdorfmann:adapterdelegates4:' + versions.adapterDelegate
-    implementation 'com.facebook.shimmer:shimmer:' + versions.shimmer
-    implementation 'de.hdodenhof:circleimageview:' + versions.circleImageView
+    implementation 'net.danlew:android.joda:2.12.7'
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
+    implementation 'com.hannesdorfmann:adapterdelegates4:4.3.2'
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 
-    implementation files("../libs/flexbox-" + versions.flexbox + ".aar")
-    implementation files("../libs/drawer-behavior-" + versions.drawerBehavior + ".aar")
-    implementation files("../libs/kotlin-permissions-" + versions.kotlinPermissions + ".aar")
-    implementation files("../libs/exoplayer-" + versions.exoplayer + ".aar")
-    implementation files("../libs/exoplayer-core-" + versions.exoplayer + ".aar")
-    implementation files("../libs/exoplayer-dash-" + versions.exoplayer + ".aar")
-    implementation files("../libs/exoplayer-hls-" + versions.exoplayer + ".aar")
-    implementation files("../libs/exoplayer-ui-" + versions.exoplayer + ".aar")
-    implementation files("../libs/exoplayer-smoothstreaming-" + versions.exoplayer + ".aar")
-    implementation files("../libs/extension-mediasession-" + versions.exoplayer + ".aar")
-    implementation files("../libs/media-" + versions.androidx + ".aar")
-    implementation files("../libs/cicerone-" + versions.cicerone + ".jar")
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
 
-    implementation 'org.kefirsf:kefirbb:' + versions.kefirBB
+    implementation "com.google.android.exoplayer:exoplayer:" + versions.exoplayer
+    implementation "com.google.android.exoplayer:extension-mediasession:" + versions.exoplayer
 
-    implementation 'com.google.firebase:firebase-core:' + versions.firebase
-    implementation 'com.google.firebase:firebase-messaging:' + versions.firebaseMessaging
-    implementation 'com.google.firebase:firebase-firestore:' + versions.firebaseFirestore
-    implementation 'com.google.firebase:firebase-storage:' + versions.firebaseStorage
+    implementation 'com.github.terrakok:cicerone:5.1.1'
 
-    implementation('com.crashlytics.sdk.android:crashlytics:' + versions.crashlytics) {
-        transitive = true
+    implementation 'org.kefirsf:kefirbb:1.5'
+
+    implementation platform('com.google.firebase:firebase-bom:' + versions.firebase)
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-messaging'
+    implementation 'com.google.firebase:firebase-firestore'
+    implementation 'com.google.firebase:firebase-storage'
+    implementation 'com.google.firebase:firebase-crashlytics'
+
+    implementation 'com.github.ome450901:SimpleRatingBar:1.5.1'
+    implementation 'org.jsoup:jsoup:1.17.2'
+
+
+    // Test dependencies
+    testImplementation "org.junit.jupiter:junit-jupiter-api:" + versions.junitJupiter
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:" + versions.junitJupiter
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher:1.11.0"
+    testImplementation "io.mockk:mockk:" + versions.mockk
+    testImplementation "app.cash.turbine:turbine:" + versions.turbine
+    testImplementation "androidx.arch.core:core-testing:" + versions.archCoreTesting
+    testImplementation "androidx.room:room-testing:" + versions.room
+    testImplementation "com.squareup.okhttp3:mockwebserver:" + versions.okHttp
+    androidTestImplementation "androidx.room:room-testing:" + versions.room
+    androidTestImplementation "io.mockk:mockk-android:" + versions.mockk
+    androidTestImplementation "androidx.test.ext:junit:" + versions.androidXTestJunit
+    androidTestImplementation "androidx.test.espresso:espresso-core:" + versions.espressoCore
+
+    // Replaced by source in com.infideap.drawerbehavior.AdvanceDrawerLayout
+    // implementation files("../libs/drawer-behavior-0.0.5.aar")
+}
+
+task generateChangelog {
+    doLast {
+        def tagOut = new ByteArrayOutputStream()
+        project.exec {
+            workingDir = rootProject.rootDir
+            commandLine 'git', 'describe', '--tags', '--abbrev=0'
+            standardOutput = tagOut
+            ignoreExitValue = true
+        }
+        def lastTag = tagOut.toString().trim()
+
+        def logOut = new ByteArrayOutputStream()
+        if (lastTag) {
+            project.exec {
+                workingDir = rootProject.rootDir
+                commandLine 'git', 'log', '--oneline', '--no-decorate', "${lastTag}..HEAD"
+                standardOutput = logOut
+            }
+        } else {
+            project.exec {
+                workingDir = rootProject.rootDir
+                commandLine 'git', 'log', '--oneline', '--no-decorate'
+                standardOutput = logOut
+            }
+        }
+
+        def date = new Date().format('yyyy-MM-dd')
+        def title = lastTag ? "## ${lastTag.replaceAll('^v', '')} (${date})" : "## Initial (${date})"
+        def changelog = "# Changelog\n\n${title}\n${logOut.toString().trim()}\n"
+
+        file("${rootDir}/CHANGELOG.md").text = changelog
     }
-
-    implementation 'com.github.ome450901:SimpleRatingBar:' + versions.ratingBar
-    implementation 'org.jsoup:jsoup:' + versions.jsoup
-
-    implementation 'androidx.multidex:multidex:' + versions.multidex
-
-    implementation project(":storio-common")
-    implementation project(":storio-sqlite")
-    implementation project(':storio-sqlite-annotations')
-    implementation project(':storio-content-resolver')
-    kapt project(':storio-common-annotations-processor')
-    kapt project(':storio-sqlite-annotations-processor')
-    kapt project(':storio-content-resolver-annotations-processor')
 }
 
 apply plugin: 'com.google.gms.google-services'
+
+

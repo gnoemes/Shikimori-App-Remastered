@@ -62,11 +62,11 @@ fun PreferenceFragmentCompat.preference(@StringRes stringRes: Int) : Preference?
 }
 
 fun PreferenceFragmentCompat.preference(string: String?) : Preference? {
-    return findPreference(string)
+    return findPreference(string as CharSequence)
 }
 
 fun PreferenceFragmentCompat.prefs() : SharedPreferences {
-    return this.preferenceManager.sharedPreferences
+    return this.preferenceManager.sharedPreferences!!
 }
 
 private fun SharedPreferences.getEditor(): SharedPreferences.Editor {

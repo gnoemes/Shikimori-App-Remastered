@@ -1,6 +1,6 @@
 package com.gnoemes.shikimori.presentation.presenter.search
 
-import com.arellomobile.mvp.InjectViewState
+import moxy.InjectViewState
 import com.gnoemes.shikimori.domain.search.SearchInteractor
 import com.gnoemes.shikimori.entity.app.domain.AnalyticEvent
 import com.gnoemes.shikimori.entity.common.domain.FilterItem

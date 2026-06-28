@@ -3,6 +3,7 @@ package com.gnoemes.shikimori.presentation.presenter.details
 import com.gnoemes.shikimori.domain.rates.RatesInteractor
 import com.gnoemes.shikimori.domain.user.UserInteractor
 import com.gnoemes.shikimori.entity.app.domain.Constants
+import com.gnoemes.shikimori.entity.common.domain.KeyScreen
 import com.gnoemes.shikimori.entity.common.domain.*
 import com.gnoemes.shikimori.entity.common.presentation.DetailsAction
 import com.gnoemes.shikimori.entity.common.presentation.DetailsContentType
@@ -21,6 +22,7 @@ import com.gnoemes.shikimori.presentation.presenter.common.provider.CommonResour
 import com.gnoemes.shikimori.presentation.view.details.BaseDetailsView
 import com.gnoemes.shikimori.utils.appendLightLoadingLogic
 import com.gnoemes.shikimori.utils.clearAndAddAll
+import io.reactivex.android.schedulers.AndroidSchedulers
 import com.gnoemes.shikimori.utils.firstUpperCase
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -46,9 +48,7 @@ abstract class BaseDetailsPresenter<View : BaseDetailsView>(
     }
 
     override fun onViewReattached() {
-        loadDetails()
-                .subscribe({ viewState.setHeadItem(it) }, this::processErrors)
-                .addToDisposables()
+        loadData()
     }
 
     abstract fun loadContent(showLoading: Boolean = true): Single<DetailsHeadItem>
@@ -67,7 +67,7 @@ abstract class BaseDetailsPresenter<View : BaseDetailsView>(
             loadContent()
                     .doOnSuccess { loadCharacters() }
                     .doOnSuccess { loadRelated() }
-                    .subscribe({ viewState.setHeadItem(it) }, this::processErrors)
+                    .subscribe({ if (!getAttachedViews().isEmpty()) viewState.setHeadItem(it) }, this::processErrors)
                     .addToDisposables()
 
     protected open fun loadCharacters() =
@@ -76,22 +76,30 @@ abstract class BaseDetailsPresenter<View : BaseDetailsView>(
                     .map { it.characters }
                     .doOnSuccess { characters.clearAndAddAll(it) }
                     .map(contentConverter)
-                    .subscribe({ viewState.setContentItem(DetailsContentType.CHARACTERS, it) }, this::processErrors)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
+                        if (!getAttachedViews().isEmpty()) viewState.setContentItem(DetailsContentType.CHARACTERS, it)
+                    }, this::processErrors)
                     .addToDisposables()
 
     protected open fun loadRelated() =
             relatedFactory.invoke(id)
                     .map(contentConverter)
-                    .subscribe({ viewState.setContentItem(DetailsContentType.RELATED, it) }, this::processErrors)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
+                        if (!getAttachedViews().isEmpty()) viewState.setContentItem(DetailsContentType.RELATED, it)
+                    }, this::processErrors)
                     .addToDisposables()
 
     protected open fun loadLinks() =
             linkFactory.invoke(id)
                     .appendLightLoadingLogic(viewState)
-                    .map { links -> links.map { it.copy(name = it.name!!.replace("_", " ").firstUpperCase()!!) } }
+                    .map { links -> links.map { it.copy(name = it.name?.replace("_", " ")?.firstUpperCase() ?: "") } }
                     .subscribe({
-                        if (it.isNotEmpty()) viewState.showLinks(it)
-                        else router.showSystemMessage(resourceProvider.emptyMessage)
+                        if (!getAttachedViews().isEmpty()) {
+                            if (it.isNotEmpty()) viewState.showLinks(it)
+                            else viewState.showSystemMessage(resourceProvider.emptyMessage)
+                        }
                     }, this::processErrors)
                     .addToDisposables()
 
@@ -110,7 +118,7 @@ abstract class BaseDetailsPresenter<View : BaseDetailsView>(
             ratesInteractor.createRate(id, type, rate ?: UserRate(status = newStatus), userId)
                     .updateContentData()
         } else {
-            router.showSystemMessage(resourceProvider.needAuth)
+            if (!getAttachedViews().isEmpty()) viewState.showSystemMessage(resourceProvider.needAuth)
         }
     }
 
@@ -155,12 +163,13 @@ abstract class BaseDetailsPresenter<View : BaseDetailsView>(
             is DetailsAction.Similar -> onSimilarClicked()
             is DetailsAction.Statistic -> onStatisticClicked()
             is DetailsAction.Share -> onShareClicked()
+            is DetailsAction.AddVideo -> onAddVideo()
         }
     }
 
     private fun onLink(url: String, share: Boolean) {
         val screen = if (share) Screens.SHARE else Screens.WEB
-        router.navigateTo(screen, url)
+        router.navigateTo(KeyScreen(screen, url))
     }
 
     protected open fun onShareClicked() {
@@ -184,7 +193,7 @@ abstract class BaseDetailsPresenter<View : BaseDetailsView>(
     }
 
     protected open fun onStudioClicked(id: Long) {
-        router.navigateTo(BottomScreens.SEARCH, SearchNavigationData(SearchPayload(studioId = id), Type.ANIME))
+        router.navigateTo(KeyScreen(BottomScreens.SEARCH, SearchNavigationData(SearchPayload(studioId = id), Type.ANIME)))
     }
 
     open fun onChangeRateStatus(newStatus: RateStatus) {
@@ -195,6 +204,7 @@ abstract class BaseDetailsPresenter<View : BaseDetailsView>(
     }
 
     open fun onCharacterSearch(newText: String?) {
+        if (getAttachedViews().isEmpty()) return
         if (newText.isNullOrBlank()) viewState.setContentItem(DetailsContentType.CHARACTERS, contentConverter.apply(characters))
         else {
             val searchItems: MutableList<Any> = characters.filter { it.name.contains(newText, true) || it.nameRu?.contains(newText, true) ?: false }.toMutableList()
@@ -204,7 +214,7 @@ abstract class BaseDetailsPresenter<View : BaseDetailsView>(
     }
 
     protected open fun onGenreClicked(genre: Genre) {
-        router.navigateTo(BottomScreens.SEARCH, SearchNavigationData(SearchPayload(genre), type))
+        router.navigateTo(KeyScreen(BottomScreens.SEARCH, SearchNavigationData(SearchPayload(genre), type)))
     }
 
     protected open fun onOpenDiscussion() {
@@ -228,13 +238,17 @@ abstract class BaseDetailsPresenter<View : BaseDetailsView>(
     protected open fun onStatusDialog() {
     }
 
+    protected open fun onAddVideo() {
+    }
+
     protected open fun processUserErrors(throwable: Throwable) {
         throwable.printStackTrace()
     }
 
     protected open fun Completable.updateContentData() {
         andThen(loadContent(false))
-                .doOnSuccess { viewState.setHeadItem(it) }
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSuccess { if (!getAttachedViews().isEmpty()) viewState.setHeadItem(it) }
                 .subscribe({ }, this@BaseDetailsPresenter::processErrors)
                 .addToDisposables()
     }

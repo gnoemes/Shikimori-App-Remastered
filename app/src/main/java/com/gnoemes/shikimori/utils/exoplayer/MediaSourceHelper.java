@@ -9,12 +9,12 @@ import androidx.annotation.Nullable;
 import com.gnoemes.shikimori.entity.series.domain.VideoFormat;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.Format;
+import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.source.ConcatenatingMediaSource;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.source.MergingMediaSource;
 import com.google.android.exoplayer2.source.SingleSampleMediaSource;
-import com.google.android.exoplayer2.source.ads.AdsMediaSource;
 import com.google.android.exoplayer2.source.dash.DashMediaSource;
 import com.google.android.exoplayer2.source.dash.DefaultDashChunkSource;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
@@ -49,7 +49,7 @@ public  class MediaSourceHelper {
         for (String url : urls) {
             if (!TextUtils.isEmpty(url)) {
                 videoSources.add(getMediaSourceFactory()
-                        .createMediaSource(Uri.parse(url)));
+                        .createMediaSource(MediaItem.fromUri(Uri.parse(url))));
             }
         }
 
@@ -60,7 +60,7 @@ public  class MediaSourceHelper {
     public MediaSourceHelper withVideoUrl(@NonNull String url) {
         if (!TextUtils.isEmpty(url)) {
             videoSource = getMediaSourceFactory()
-                    .createMediaSource(Uri.parse(url));
+                    .createMediaSource(MediaItem.fromUri(Uri.parse(url)));
         }
         return this;
     }
@@ -68,8 +68,12 @@ public  class MediaSourceHelper {
     public MediaSourceHelper withSubtitles(@Nullable String url, Format format) {
         if (url == null) return this;
 
+        MediaItem.SubtitleConfiguration subtitleConfig =
+                new MediaItem.SubtitleConfiguration.Builder(Uri.parse(url))
+                        .setMimeType(format.sampleMimeType)
+                        .build();
         subtitlesSource = new SingleSampleMediaSource.Factory(factory)
-                .createMediaSource(Uri.parse(url), format, C.TIME_UNSET);
+                .createMediaSource(subtitleConfig, C.TIME_UNSET);
         return this;
     }
 
@@ -78,10 +82,10 @@ public  class MediaSourceHelper {
         else return new MergingMediaSource(videoSource, subtitlesSource);
     }
 
-    private AdsMediaSource.MediaSourceFactory getMediaSourceFactory() {
+    private MediaSource.Factory getMediaSourceFactory() {
         switch (format) {
             case MP4:
-                return new ExtractorMediaSource.Factory(factory);
+                return new ProgressiveMediaSource.Factory(factory);
             case HLS:
                 return new HlsMediaSource.Factory(factory);
             case DASH:

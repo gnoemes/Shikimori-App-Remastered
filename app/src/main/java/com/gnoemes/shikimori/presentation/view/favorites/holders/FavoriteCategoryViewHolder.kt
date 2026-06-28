@@ -4,6 +4,7 @@ import android.view.View
 import androidx.annotation.StringRes
 import androidx.recyclerview.widget.GridLayoutManager
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.databinding.LayoutFavoriteCategoryBinding
 import com.gnoemes.shikimori.entity.user.domain.FavoriteType
 import com.gnoemes.shikimori.entity.user.presentation.FavoriteViewModel
 import com.gnoemes.shikimori.presentation.view.favorites.adapter.FavoritesAdapter
@@ -11,15 +12,14 @@ import com.gnoemes.shikimori.utils.calculateColumns
 import com.gnoemes.shikimori.utils.dimen
 import com.gnoemes.shikimori.utils.gone
 import com.gnoemes.shikimori.utils.widgets.GridItemDecorator
-import kotlinx.android.synthetic.main.layout_favorite_category.view.*
 
 class FavoriteCategoryViewHolder(
-        private val view: View,
+        private val binding: LayoutFavoriteCategoryBinding,
         private val adapter: FavoritesAdapter
 ) {
 
     init {
-        with(view.contentRecyclerView) {
+        with(binding.contentRecyclerView) {
             val spanCount = context.calculateColumns(R.dimen.image_favorite_width_big)
             adapter = this@FavoriteCategoryViewHolder.adapter
             layoutManager = GridLayoutManager(context, spanCount)
@@ -30,9 +30,9 @@ class FavoriteCategoryViewHolder(
     }
 
     fun bind(item: FavoriteViewModel) {
-        if (item.items.isEmpty()) return view.gone()
+        if (item.items.isEmpty()) return binding.root.gone()
 
-        with(view) {
+        with(binding) {
             categoryName.setText(getFavoriteCategory(item.type))
             adapter.bindItems(item.items)
         }

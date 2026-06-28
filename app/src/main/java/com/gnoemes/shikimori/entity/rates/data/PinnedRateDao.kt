@@ -1,14 +1,13 @@
 package com.gnoemes.shikimori.entity.rates.data
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
 import com.gnoemes.shikimori.data.local.db.table.PinnedRateTable
-import com.pushtorefresh.storio3.sqlite.annotations.StorIOSQLiteColumn
-import com.pushtorefresh.storio3.sqlite.annotations.StorIOSQLiteCreator
-import com.pushtorefresh.storio3.sqlite.annotations.StorIOSQLiteType
 
-@StorIOSQLiteType(table = PinnedRateTable.TABLE)
-data class PinnedRateDao @StorIOSQLiteCreator constructor(
-        @StorIOSQLiteColumn(name = PinnedRateTable.COLUMN_ID, key = true) val id: Long,
-        @StorIOSQLiteColumn(name = PinnedRateTable.COLUMN_TYPE, key = true) val type: String,
-        @StorIOSQLiteColumn(name = PinnedRateTable.COLUMN_STATUS, key = true) val status: String,
-        @StorIOSQLiteColumn(name = PinnedRateTable.COLUMN_ORDER) val order: Int
+@Entity(tableName = PinnedRateTable.TABLE, primaryKeys = [PinnedRateTable.COLUMN_ID, PinnedRateTable.COLUMN_TYPE, PinnedRateTable.COLUMN_STATUS])
+data class PinnedRateDao(
+        @ColumnInfo(name = PinnedRateTable.COLUMN_ID) val id: Long,
+        @ColumnInfo(name = PinnedRateTable.COLUMN_TYPE) val type: String,
+        @ColumnInfo(name = PinnedRateTable.COLUMN_STATUS) val status: String,
+        @ColumnInfo(name = PinnedRateTable.COLUMN_ORDER) val order: Int
 )

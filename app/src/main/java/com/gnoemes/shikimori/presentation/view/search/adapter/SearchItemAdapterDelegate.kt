@@ -4,6 +4,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.databinding.ItemSearchBinding
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.search.presentation.SearchItem
 import com.gnoemes.shikimori.utils.images.ImageLoader
@@ -11,7 +12,6 @@ import com.gnoemes.shikimori.utils.inflate
 import com.gnoemes.shikimori.utils.onClick
 import com.gnoemes.shikimori.utils.visibleIf
 import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
-import kotlinx.android.synthetic.main.item_search.view.*
 
 class SearchItemAdapterDelegate(
         private val imageLoader: ImageLoader,
@@ -23,28 +23,26 @@ class SearchItemAdapterDelegate(
             item is SearchItem
 
     override fun onCreateViewHolder(parent: ViewGroup): ViewHolder =
-            ViewHolder(parent.inflate(R.layout.item_search))
+            ViewHolder(ItemSearchBinding.inflate(android.view.LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(item: SearchItem, holder: ViewHolder, payloads: MutableList<Any>) {
         holder.bind(item)
     }
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(private val binding: ItemSearchBinding) : RecyclerView.ViewHolder(binding.root) {
 
         private lateinit var item: SearchItem
 
         init {
-            itemView.cardView.onClick { callback.invoke(item.type, item.id) }
+            binding.cardView.onClick { callback.invoke(item.type, item.id) }
         }
 
         fun bind(item: SearchItem) {
             this.item = item
-            with(itemView) {
-                imageLoader.setImageListItem(imageView, item.image.original)
-                nameView.text = item.name
-                typeView.text = item.typeText
-                typeView.visibleIf { !item.typeText.isNullOrEmpty() }
-            }
+            imageLoader.setImageListItem(binding.imageView, item.image.original)
+            binding.nameView.text = item.name
+            binding.typeView.text = item.typeText
+            binding.typeView.visibleIf { !item.typeText.isNullOrEmpty() }
         }
 
     }

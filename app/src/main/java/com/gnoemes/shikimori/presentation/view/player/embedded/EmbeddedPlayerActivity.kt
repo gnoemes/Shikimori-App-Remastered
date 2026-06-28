@@ -19,22 +19,28 @@ import android.text.SpannableStringBuilder
 import android.util.Log
 import android.view.*
 import android.webkit.JavascriptInterface
+import android.webkit.WebResourceRequest
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ArrayAdapter
+import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.graphics.ColorUtils
 import androidx.transition.Fade
 import androidx.transition.TransitionManager
-import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.ProvidePresenter
+import moxy.presenter.InjectPresenter
+import moxy.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.data.local.preference.PlayerSettingsSource
 import com.gnoemes.shikimori.entity.app.domain.AppExtras
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.series.domain.Track
 import com.gnoemes.shikimori.entity.series.domain.VideoFormat
+import com.gnoemes.shikimori.entity.series.presentation.EmbeddedPlayerNavigationData
 import com.gnoemes.shikimori.presentation.presenter.player.EmbeddedPlayerPresenter
 import com.gnoemes.shikimori.presentation.view.base.activity.BaseActivity
 import com.gnoemes.shikimori.presentation.view.common.widget.CustomSpinner
@@ -44,19 +50,15 @@ import com.gnoemes.shikimori.utils.exoplayer.MediaSourceHelper
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.source.MediaSource
-import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
+import com.google.android.exoplayer2.ui.DefaultTimeBar
 import com.google.android.exoplayer2.ui.PlayerControlView
 import com.google.android.exoplayer2.ui.TimeBar
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.exoplayer2.util.MimeTypes
-import kotlinx.android.synthetic.main.activity_embedded_player.*
-import kotlinx.android.synthetic.main.layout_player_bottom.*
-import kotlinx.android.synthetic.main.layout_player_controls.*
-import kotlinx.android.synthetic.main.layout_player_rewind_forward.*
-import kotlinx.android.synthetic.main.layout_player_toolbar.*
+import com.gnoemes.shikimori.databinding.ActivityEmbeddedPlayerBinding
 import org.joda.time.Duration
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder
@@ -74,7 +76,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
     @ProvidePresenter
     fun providePresenter(): EmbeddedPlayerPresenter =
         presenterProvider.get()
-            .apply { navigationData = intent.getParcelableExtra(AppExtras.ARGUMENT_PLAYER_DATA) }
+            .apply { navigationData = intent.getParcelableExtra<EmbeddedPlayerNavigationData>(AppExtras.ARGUMENT_PLAYER_DATA)!! }
 
     @Inject
     lateinit var localNavigatorHolder: NavigatorHolder
@@ -103,16 +105,33 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
     private var currentVolume: Int = 0
     private var currentBrightness: Int = 0
 
+    private lateinit var binding: ActivityEmbeddedPlayerBinding
+
+    // Views from merge layouts (not accessible via ViewBinding directly)
+    private val forwardView: TextView by lazy { findViewById(R.id.forwardView) }
+    private val rewindView: TextView by lazy { findViewById(R.id.rewindView) }
+
+    // Views from controller layout (children of PlayerView)
+    private val exoProgress: DefaultTimeBar by lazy { binding.playerView.findViewById(R.id.exo_progress) }
+    private val dragProgress: TextView by lazy { binding.playerView.findViewById(R.id.dragProgress) }
+    private val prev: ImageButton by lazy { binding.playerView.findViewById(R.id.prev) }
+    private val next: ImageButton by lazy { binding.playerView.findViewById(R.id.next) }
+    private val lockView: ImageButton by lazy { binding.playerView.findViewById(R.id.lockView) }
+    private val pipView: ImageButton by lazy { binding.playerView.findViewById(R.id.pipView) }
+    private val rotationView: ImageButton by lazy { binding.playerView.findViewById(R.id.rotationView) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.ShikimoriAppTheme_Player)
         theme.applyStyle(getCurrentAscentTheme, true)
         super.onCreate(savedInstanceState)
+        binding = ActivityEmbeddedPlayerBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
         currentVolume = audioManager().getStreamVolume(AudioManager.STREAM_MUSIC)
         currentBrightness = (window.attributes.screenBrightness / 2.55f).toInt()
 
-        toolbar.addBackButton(icon = R.drawable.ic_arrow_back_player) { onBackPressed() }
+        binding.includedToolbar.toolbar.addBackButton(icon = R.drawable.ic_arrow_back_player) { onBackPressed() }
 
         if (settingsSource.isOpenLandscape) requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 
@@ -121,10 +140,10 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         rewindView.text = smallOffsetText
         rewindView.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_rewind, 0, 0)
 
-        exo_progress.setBufferedColor(ColorUtils.setAlphaComponent(colorAttr(R.attr.colorSecondaryTransparent), 153))
-        resolutionSpinnerView.background.tint(color(R.color.player_controls))
+        exoProgress.setBufferedColor(ColorUtils.setAlphaComponent(colorAttr(R.attr.colorSecondaryTransparent), 153))
+        binding.includedToolbar.resolutionSpinnerView.background.tint(color(R.color.player_controls))
 
-        speedSpinnerView.apply {
+        binding.includedToolbar.speedSpinnerView.apply {
             background.tint(color(R.color.player_controls))
             adapter = ArrayAdapter(
                 this@EmbeddedPlayerActivity,
@@ -135,9 +154,8 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
             setSelection(2, false)
         }
 
-        adView.apply {
+        binding.adView.apply {
             settings.apply {
-                setAppCacheEnabled(true)
                 cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
                 javaScriptCanOpenWindowsAutomatically = true
                 javaScriptEnabled = true
@@ -156,8 +174,8 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
             webViewClient = AdClient()
         }
 
-        includedToolbar.gone()
-        unlockView.hide()
+        binding.includedToolbar.root.gone()
+        binding.unlockView.hide()
 
         pipView.visibleIf { hasPip }
 
@@ -165,7 +183,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         next.onClick { presenter.loadNextEpisode() }
         rotationView.onClick { toggleOrientation() }
         lockView.onClick { controller.lock() }
-        unlockView.onClick { controller.unlock() }
+        binding.unlockView.onClick { controller.unlock() }
         pipView.onClick { enterPip() }
     }
 
@@ -196,6 +214,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
             }
         }
 
+        @Suppress("DEPRECATION")
         override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
             return if ((url.startsWith("http://") || url.startsWith("https://"))) {
                 view.context.startActivity(
@@ -204,11 +223,17 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
                 true
             } else false
         }
+
+        override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                shouldOverrideUrlLoading(view, request.url.toString())
+            } else false
+        }
     }
 
     private fun removeAd() {
         runOnUiThread {
-            adView.gone()
+            binding.adView.gone()
             controller.play()
         }
     }
@@ -225,20 +250,20 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
             150L,
             150L,
             MotionEvent.ACTION_DOWN,
-            adView.width / 2f,
-            adView.height / 2f,
+            binding.adView.width / 2f,
+            binding.adView.height / 2f,
             0
         )
-        adView.dispatchTouchEvent(d)
+        binding.adView.dispatchTouchEvent(d)
         val u = MotionEvent.obtain(
             150L,
             150L,
             MotionEvent.ACTION_UP,
-            adView.width / 2f,
-            adView.height / 2f,
+            binding.adView.width / 2f,
+            binding.adView.height / 2f,
             0
         )
-        adView.dispatchTouchEvent(u)
+        binding.adView.dispatchTouchEvent(u)
     }
 
     private fun enterPip() {
@@ -279,18 +304,11 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
     private fun hideSystemUi() {
-        window.decorView.systemUiVisibility = (
-                View.SYSTEM_UI_FLAG_IMMERSIVE
-                        // Set the content to appear under the system bars so that the
-                        // content doesn't resize when the system bars hide and show.
-                        or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        // Hide the nav bar and status bar
-                        or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        or View.SYSTEM_UI_FLAG_FULLSCREEN)
+        WindowInsetsControllerCompat(window, window.decorView).let { controller ->
+            controller.hide(WindowInsetsCompat.Type.systemBars())
+            controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        }
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -301,8 +319,8 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         }
     }
 
-    override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean, newConfig: Configuration?) {
-        playerView.useController = !isInPictureInPictureMode
+    override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean, newConfig: Configuration) {
+        binding.playerView.useController = !isInPictureInPictureMode
     }
 
     private fun toggleOrientation() {
@@ -382,9 +400,9 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
     }
 
     private fun showParamChanges(text: CharSequence, icon: Drawable?) {
-        paramChangesView.text = text
-        paramChangesView.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null)
-        paramChangesView.visible()
+        binding.paramChangesView.text = text
+        binding.paramChangesView.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null)
+        binding.paramChangesView.visible()
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -405,26 +423,26 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
     ///////////////////////////////////////////////////////////////////////////
 
     override fun setTitle(title: String) {
-        toolbar.title = title
+        binding.includedToolbar.toolbar.title = title
     }
 
     override fun setEpisodeSubtitle(currentEpisode: Int) {
         val subTitle = String.format(getString(R.string.episode_number), currentEpisode)
-        toolbar.subtitle = subTitle
+        binding.includedToolbar.toolbar.subtitle = subTitle
     }
 
     override fun showAd(adLink: String) {
         val iframe =
             "<html><body style='margin:0;padding:0;'><iframe id='kodik-player' src='$adLink' width='100%' height='100%' frameborder='0' allowfullscreen allow='autoplay *; fullscreen *'></iframe></body></html>"
-        adView.loadData(iframe, "text/html", "utf-8")
-        adView.visible()
+        binding.adView.loadData(iframe, "text/html", "utf-8")
+        binding.adView.visible()
     }
 
     override fun setResolutions(resolutions: List<String>) {
-        resolutionSpinnerView.visibleIf { resolutions.isNotEmpty() }
+        binding.includedToolbar.resolutionSpinnerView.visibleIf { resolutions.isNotEmpty() }
         if (resolutions.isNotEmpty()) {
-            resolutionSpinnerView.adapter = ArrayAdapter(this, R.layout.item_spinner_player, resolutions)
-            resolutionSpinnerView.setOnItemClickListener { _, _, position, _ -> presenter.onResolutionChanged(resolutions[position]) }
+            binding.includedToolbar.resolutionSpinnerView.adapter = ArrayAdapter(this, R.layout.item_spinner_player, resolutions)
+            binding.includedToolbar.resolutionSpinnerView.setOnItemClickListener { _, _, position, _ -> presenter.onResolutionChanged(resolutions[position]) }
         }
     }
 
@@ -435,10 +453,10 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
     override fun selectTrack(currentTrack: Int) = controller.selectTrack(currentTrack)
     override fun enableNextButton(enable: Boolean) = controller.enableNextButton(enable)
     override fun enablePrevButton(enable: Boolean) = controller.enablePrevButton(enable)
-    override fun onShowLoading() = progressBar.visible()
-    override fun onHideLoading() = progressBar.gone()
-    override fun onShowLightLoading() = bufferingProgressBar.visible()
-    override fun onHideLightLoading() = bufferingProgressBar.gone()
+    override fun onShowLoading() = binding.progressBar.visible()
+    override fun onHideLoading() = binding.progressBar.gone()
+    override fun onShowLightLoading() = binding.bufferingProgressBar.visible()
+    override fun onHideLightLoading() = binding.bufferingProgressBar.gone()
 
     override fun showMessage(s: String, exit: Boolean) {
         Toast.makeText(this, s, Toast.LENGTH_LONG).show()
@@ -452,14 +470,12 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         headers: Map<String, String>,
         ad: Boolean
     ) {
-        val factory = DefaultHttpDataSourceFactory(
-            "sap",
-            DefaultBandwidthMeter(),
-            Constants.LONG_TIMEOUT * 1000,
-            Constants.LONG_TIMEOUT * 1000,
-            true
-        )
-        factory.defaultRequestProperties.set(headers)
+        val factory = DefaultHttpDataSource.Factory()
+            .setUserAgent("sap")
+            .setConnectTimeoutMs(Constants.LONG_TIMEOUT * 1000)
+            .setReadTimeoutMs(Constants.LONG_TIMEOUT * 1000)
+            .setAllowCrossProtocolRedirects(true)
+        factory.setDefaultRequestProperties(headers)
 
         val source = MediaSourceHelper
             .withFactory(factory)
@@ -470,7 +486,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
             .withVideoUrl(it.url)
             .withSubtitles(
                 subtitles,
-                Format.createTextSampleFormat(null, MimeTypes.TEXT_SSA, Format.NO_VALUE, null)
+                Format.Builder().setSampleMimeType(MimeTypes.TEXT_SSA).build()
             )
             .get()
 
@@ -484,9 +500,9 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
 
     private inner class PlayerController(
             private val settingsSource: PlayerSettingsSource
-    ) : Player.EventListener, PlayerControlView.VisibilityListener {
+    ) : Player.Listener, PlayerControlView.VisibilityListener {
 
-        private val player: SimpleExoPlayer
+        private val player: ExoPlayer
 
         var isLocked: Boolean = false
         private var controlsVisibility = View.GONE
@@ -511,17 +527,17 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         private val progressListener = object : TimeBar.OnScrubListener {
             private var prevPosition = 0L
 
-            override fun onScrubStart(timeBar: TimeBar?, position: Long) {
+            override fun onScrubStart(timeBar: TimeBar, position: Long) {
                 prevPosition = position
                 controlsInAction = true
             }
 
-            override fun onScrubStop(timeBar: TimeBar?, position: Long, canceled: Boolean) {
+            override fun onScrubStop(timeBar: TimeBar, position: Long, canceled: Boolean) {
                 prevPosition = if (!canceled) position else 0L
                 onActionEnd()
             }
 
-            override fun onScrubMove(timeBar: TimeBar?, position: Long) {
+            override fun onScrubMove(timeBar: TimeBar, position: Long) {
                 val dragText = (if (prevPosition < position) "+" else "-").plus(" ${toMinutesAndSecond(prevPosition - position)}")
                 dragProgress.apply {
                     text = dragText
@@ -541,19 +557,21 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         }
 
         init {
-            val trackSelector = DefaultTrackSelector(AdaptiveTrackSelection.Factory())
-            player = ExoPlayerFactory.newSimpleInstance(this@EmbeddedPlayerActivity, trackSelector)
+            val trackSelector = DefaultTrackSelector(this@EmbeddedPlayerActivity)
+            player = ExoPlayer.Builder(this@EmbeddedPlayerActivity)
+                .setTrackSelector(trackSelector)
+                .build()
             player.addListener(this)
-            playerView.player = player
-            playerView.setControllerShowOnTouch(false)
-            playerView.setControllerVisibilityListener(this)
-            playerView.controllerAutoShow = false
+            binding.playerView.player = player
+            binding.playerView.setControllerShowOnTouch(false)
+            binding.playerView.setControllerVisibilityListener(this)
+            binding.playerView.controllerAutoShow = false
             detector = GestureDetector(this@EmbeddedPlayerActivity, gestureListener)
             scaleDetector = ScaleGestureDetector(this@EmbeddedPlayerActivity, gestureListener)
-            playerView.setOnTouchListener(gestureListener)
-            exo_progress.addListener(progressListener)
-            resolutionSpinnerView.setSpinnerEventsListener(spinnerOpenListener)
-            speedSpinnerView.setSpinnerEventsListener(spinnerOpenListener)
+            binding.playerView.setOnTouchListener(gestureListener)
+            exoProgress.addListener(progressListener)
+            binding.includedToolbar.resolutionSpinnerView.setSpinnerEventsListener(spinnerOpenListener)
+            binding.includedToolbar.speedSpinnerView.setSpinnerEventsListener(spinnerOpenListener)
 
             val mediaSession = MediaSessionCompat(this@EmbeddedPlayerActivity, packageName)
             connector = MediaSessionConnector(mediaSession)
@@ -579,32 +597,32 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         }
 
         fun selectTrack(currentTrack: Int) {
-            resolutionSpinnerView.setSelection(currentTrack, false)
+            binding.includedToolbar.resolutionSpinnerView.setSelection(currentTrack, false)
         }
 
         fun changePlaySpeed(currentSpeed: Int) {
             player.playbackParameters = PlaybackParameters(speedRates[currentSpeed])
-            speedSpinnerView.setSelection(currentSpeed, false)
+            binding.includedToolbar.speedSpinnerView.setSelection(currentSpeed, false)
         }
 
         fun addMediaSource(source: MediaSource?, playWhenReady : Boolean) {
             player.playWhenReady = playWhenReady
-            player.prepare(source)
+            if (source != null) player.prepare(source)
         }
 
         fun updateTrack(source: MediaSource?) {
             player.playWhenReady = true
-            player.prepare(source, false, false)
+            if (source != null) player.prepare(source, false, false)
         }
 
         fun onStart() {
-            connector.setPlayer(player, null)
+            connector.setPlayer(player)
             connector.mediaSession.isActive = true
         }
 
         fun onStop() {
             player.playWhenReady = false
-            connector.setPlayer(null, null)
+            connector.setPlayer(null)
             connector.mediaSession.isActive = false
         }
 
@@ -622,9 +640,9 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
 
         fun unlock() {
             isLocked = false
-            TransitionManager.beginDelayedTransition(container, Fade(Fade.MODE_OUT))
-            unlockSurface.gone()
-            unlockView.hide()
+            TransitionManager.beginDelayedTransition(binding.container, Fade(Fade.MODE_OUT))
+            binding.unlockSurface.gone()
+            binding.unlockView.hide()
             updateOrientation()
         }
 
@@ -675,13 +693,13 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
 
             if (isVisible && !controlsInAction) {
                 hideAfterTimeout()
-                includedToolbar.visible()
+                binding.includedToolbar.root.visible()
             } else if (!controlsInAction) {
-                includedToolbar.gone()
+                binding.includedToolbar.root.gone()
             }
         }
 
-        override fun onPlayerError(error: ExoPlaybackException?) {
+        override fun onPlayerError(error: PlaybackException) {
             error?.printStackTrace()
             showMessage(getString(R.string.player_error))
         }
@@ -694,8 +712,8 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         }
 
         private fun toggleControllerVisibility(): Boolean {
-            if (isVisible && !controlsInAction) playerView.hideController()
-            else if (!controlsInAction) playerView.showController()
+            if (isVisible && !controlsInAction) binding.playerView.hideController()
+            else if (!controlsInAction) binding.playerView.showController()
             return true
         }
 
@@ -705,10 +723,10 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         }
 
         private fun onLockedScreenTouch(): Boolean {
-            unlockView.show()
-            TransitionManager.beginDelayedTransition(container, Fade(Fade.MODE_IN))
-            unlockSurface.visible()
-            playerView.hideController()
+            binding.unlockView.show()
+            TransitionManager.beginDelayedTransition(binding.container, Fade(Fade.MODE_IN))
+            binding.unlockSurface.visible()
+            binding.playerView.hideController()
             hideUnlockAfterTimeout()
             return false
         }
@@ -730,20 +748,20 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
         }
 
         private fun hideAfterTimeout() {
-            playerView.removeCallbacks(postHideRunnable)
-            playerView.postDelayed(postHideRunnable, CONTROLLER_HIDE_DELAY)
+            binding.playerView.removeCallbacks(postHideRunnable)
+            binding.playerView.postDelayed(postHideRunnable, CONTROLLER_HIDE_DELAY)
         }
 
         private fun hideUnlockAfterTimeout() {
-            unlockView.removeCallbacks(delayedUnlockHide)
-            unlockView.postDelayed(delayedUnlockHide, UNLOCK_HIDE_DELAY)
+            binding.unlockView.removeCallbacks(delayedUnlockHide)
+            binding.unlockView.postDelayed(delayedUnlockHide, UNLOCK_HIDE_DELAY)
         }
 
-        private val postHideRunnable = Runnable { if (!controlsInAction) playerView.hideController() }
+        private val postHideRunnable = Runnable { if (!controlsInAction) binding.playerView.hideController() }
         private val delayedForwardHide = Runnable { forwardView.gone() }
         private val delayedRewindHide = Runnable { rewindView.gone() }
-        private val delayedUnlockHide = Runnable { unlockView.hide(); TransitionManager.beginDelayedTransition(container, Fade(Fade.MODE_OUT)); unlockSurface.gone() }
-        private val delayedParamChangesHide = Runnable { TransitionManager.beginDelayedTransition(container, Fade(Fade.MODE_OUT)); paramChangesView.gone() }
+        private val delayedUnlockHide = Runnable { binding.unlockView.hide(); TransitionManager.beginDelayedTransition(binding.container, Fade(Fade.MODE_OUT)); binding.unlockSurface.gone() }
+        private val delayedParamChangesHide = Runnable { TransitionManager.beginDelayedTransition(binding.container, Fade(Fade.MODE_OUT)); binding.paramChangesView.gone() }
         private val dragPostHideRunnable = Runnable { dragProgress.gone(); dragProgress.text = null }
 
         private inner class ExoPlayerGestureListener : GestureDetector.SimpleOnGestureListener(), View.OnTouchListener, ScaleGestureDetector.OnScaleGestureListener {
@@ -761,7 +779,7 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
 
             @SuppressLint("ClickableViewAccessibility")
             override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-                if (event == null || event.y < playerMargin / 2 || event.x > playerView.width - playerMargin) return false
+                if (event == null || event.y < playerMargin / 2 || event.x > binding.playerView.width - playerMargin) return false
 
                 return if (!isLocked) {
                     if (event.action == MotionEvent.ACTION_UP && isDrag) {
@@ -786,27 +804,27 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
                 return toggleControllerVisibility()
             }
 
-            override fun onLongPress(e: MotionEvent?) {
-                if (e == null || isSlideControl) return
+            override fun onLongPress(e: MotionEvent) {
+                if (isSlideControl) return
 
                 when {
-                    e.x > playerView.width - playerView.width / 3 -> onBigForward()
-                    e.x < playerView.width / 3 -> onBigRewind()
+                    e.x > binding.playerView.width - binding.playerView.width / 3 -> onBigForward()
+                    e.x < binding.playerView.width / 3 -> onBigRewind()
                 }
             }
 
-            override fun onDoubleTap(e: MotionEvent?): Boolean {
-                if (e == null || isSlideControl) return false
+            override fun onDoubleTap(e: MotionEvent): Boolean {
+                if (isSlideControl) return false
 
                 return when {
-                    e.x > playerView.width - playerView.width / 3 -> onFastForward()
-                    e.x < playerView.width / 3 -> onRewind()
+                    e.x > binding.playerView.width - binding.playerView.width / 3 -> onFastForward()
+                    e.x < binding.playerView.width / 3 -> onRewind()
                     else -> false
                 }
             }
 
-            override fun onScroll(e1: MotionEvent?, e2: MotionEvent?, distanceX: Float, distanceY: Float): Boolean {
-                if (e1 == null || e2 == null) return false
+            override fun onScroll(e1: MotionEvent?, e2: MotionEvent, distanceX: Float, distanceY: Float): Boolean {
+                if (e1 == null) return false
 
                 return if (isVolumeAndBrightnessGesturesEnabled) {
                     val diff = Math.abs(e1.y - e2.y).toInt()
@@ -815,8 +833,8 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
                     val stepChanged = Math.abs(distanceY).roundToInt() % 3 == 0 && diff > MOVEMENT_TH
 
                     if (stepChanged && (e1.y > playerMargin && e2.y > playerMargin)) when {
-                        e1.x < playerView.width / 3 -> leftAreaScroll(distanceY > 0)
-                        e1.x > playerView.width - playerView.width / 3 -> rightAreaScroll(distanceY > 0)
+                        e1.x < binding.playerView.width / 3 -> leftAreaScroll(distanceY > 0)
+                        e1.x > binding.playerView.width - binding.playerView.width / 3 -> rightAreaScroll(distanceY > 0)
                         else -> false
                     }
                     else false
@@ -834,23 +852,23 @@ class EmbeddedPlayerActivity : BaseActivity<EmbeddedPlayerPresenter, EmbeddedPla
                 } else false
             }
 
-            override fun onScale(detector: ScaleGestureDetector?): Boolean {
+            override fun onScale(detector: ScaleGestureDetector): Boolean {
                 scaleFactor *= scaleDetector.scaleFactor
 
                 scaleFactor = Math.max(0.1f, Math.min(scaleFactor, 1.0f))
 
-                if (scaleFactor > 0.5f) playerView.resizeMode = if (isZoomProportional) AspectRatioFrameLayout.RESIZE_MODE_ZOOM else AspectRatioFrameLayout.RESIZE_MODE_FILL
-                else playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
+                if (scaleFactor > 0.5f) binding.playerView.resizeMode = if (isZoomProportional) AspectRatioFrameLayout.RESIZE_MODE_ZOOM else AspectRatioFrameLayout.RESIZE_MODE_FILL
+                else binding.playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
 
                 return true
             }
 
-            override fun onScaleBegin(detector: ScaleGestureDetector?): Boolean = true
-            override fun onScaleEnd(detector: ScaleGestureDetector?) = Unit
+            override fun onScaleBegin(detector: ScaleGestureDetector): Boolean = true
+            override fun onScaleEnd(detector: ScaleGestureDetector) = Unit
 
             private fun onScrollEnd() {
-                paramChangesView.removeCallbacks(delayedParamChangesHide)
-                paramChangesView.postDelayed(delayedParamChangesHide, UNLOCK_HIDE_DELAY)
+                binding.paramChangesView.removeCallbacks(delayedParamChangesHide)
+                binding.paramChangesView.postDelayed(delayedParamChangesHide, UNLOCK_HIDE_DELAY)
 
                 if (isSlide) {
                     seek(slideOffset)

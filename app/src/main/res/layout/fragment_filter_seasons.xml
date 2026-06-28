@@ -6,7 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include layout="@layout/layout_filter_nested_toolbar" />
+    <include
+        android:id="@+id/nestedToolbar"
+        layout="@layout/layout_filter_nested_toolbar" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -35,7 +37,9 @@
                 android:layout_gravity="bottom"
                 android:background="?attr/colorDivider" />
 
-            <include layout="@layout/layout_filter_seasons_custom" />
+            <include
+                android:id="@+id/seasonsCustom"
+                layout="@layout/layout_filter_seasons_custom" />
 
             <View
                 android:layout_width="match_parent"

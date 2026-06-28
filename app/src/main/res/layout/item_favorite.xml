@@ -14,6 +14,7 @@
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/image_favorite_height_big"
+        android:contentDescription="@string/description_favorite_image"
         android:foreground="?attr/selectableItemBackgroundBorderless"
         android:minWidth="@dimen/image_favorite_width_big"
         tools:src="@drawable/test_preview2" />

@@ -1,13 +1,11 @@
 package com.gnoemes.shikimori.presentation.view.userhistory.adapter
 
-import android.view.View
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.databinding.ItemUserHistoryHeaderBinding
 import com.gnoemes.shikimori.entity.user.presentation.UserHistoryHeaderViewModel
-import com.gnoemes.shikimori.utils.inflate
 import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
-import kotlinx.android.synthetic.main.item_user_history_header.view.*
 
 class UserHistoryHeaderAdapterDelegate : AbsListItemAdapterDelegate<UserHistoryHeaderViewModel, Any, UserHistoryHeaderAdapterDelegate.ViewHolder>() {
 
@@ -15,11 +13,11 @@ class UserHistoryHeaderAdapterDelegate : AbsListItemAdapterDelegate<UserHistoryH
             item is UserHistoryHeaderViewModel
 
     override fun onCreateViewHolder(parent: ViewGroup): ViewHolder =
-            ViewHolder(parent.inflate(R.layout.item_user_history_header))
+            ViewHolder(ItemUserHistoryHeaderBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(item: UserHistoryHeaderViewModel, holder: ViewHolder, payloads: MutableList<Any>) {
-        holder.itemView.headerView.text = item.date
+        holder.binding.headerView.text = item.date
     }
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
+    inner class ViewHolder(val binding: ItemUserHistoryHeaderBinding) : RecyclerView.ViewHolder(binding.root)
 }

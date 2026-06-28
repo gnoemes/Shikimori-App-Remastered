@@ -35,6 +35,7 @@
                 android:id="@+id/imageView"
                 android:layout_width="@dimen/image_rate_width"
                 android:layout_height="@dimen/image_rate_height"
+                android:contentDescription="@string/description_anime_cover"
                 tools:src="@drawable/test_preview2" />
 
             <TextView
@@ -133,6 +134,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
+            android:contentDescription="@null"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_pin_badge" />

@@ -2,7 +2,7 @@ package com.gnoemes.shikimori.di.rate;
 
 import androidx.fragment.app.Fragment;
 
-import com.arellomobile.mvp.MvpPresenter;
+import moxy.MvpPresenter;
 import com.gnoemes.shikimori.data.local.preference.RateSortSource;
 import com.gnoemes.shikimori.data.local.preference.impl.RateSortSourceImpl;
 import com.gnoemes.shikimori.di.base.modules.BaseChildFragmentModule;

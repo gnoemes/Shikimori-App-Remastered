@@ -11,7 +11,7 @@ import ru.terrakok.cicerone.commands.BackTo;
 import ru.terrakok.cicerone.commands.Command;
 import ru.terrakok.cicerone.commands.Forward;
 import ru.terrakok.cicerone.commands.Replace;
-import ru.terrakok.cicerone.commands.SystemMessage;
+import com.gnoemes.shikimori.entity.common.domain.KeyScreen;
 
 public abstract class SupportFragmentNavigator implements Navigator {
     private FragmentManager fragmentManager;
@@ -79,8 +79,6 @@ public abstract class SupportFragmentNavigator implements Navigator {
             replace((Replace) command);
         } else if (command instanceof BackTo) {
             backTo((BackTo) command);
-        } else if (command instanceof SystemMessage) {
-            showSystemMessage(((SystemMessage) command).getMessage());
         }
     }
 
@@ -88,7 +86,8 @@ public abstract class SupportFragmentNavigator implements Navigator {
      * Performs {@link Forward} command transition
      */
     protected void forward(Forward command) {
-        Fragment fragment = createFragment(command.getScreenKey(), command.getTransitionData());
+        KeyScreen screen = (KeyScreen) command.getScreen();
+        Fragment fragment = createFragment(screen.getScreenKey(), screen.getTransitionData());
 
         if (fragment == null) {
             unknownScreen(command);
@@ -106,9 +105,9 @@ public abstract class SupportFragmentNavigator implements Navigator {
 
         fragmentTransaction
                 .replace(containerId, fragment)
-                .addToBackStack(command.getScreenKey())
+                .addToBackStack(screen.getScreenKey())
                 .commit();
-        localStackCopy.add(command.getScreenKey());
+        localStackCopy.add(screen.getScreenKey());
     }
 
     /**
@@ -127,7 +126,8 @@ public abstract class SupportFragmentNavigator implements Navigator {
      * Performs {@link Replace} command transition
      */
     protected void replace(Replace command) {
-        Fragment fragment = createFragment(command.getScreenKey(), command.getTransitionData());
+        KeyScreen screen = (KeyScreen) command.getScreen();
+        Fragment fragment = createFragment(screen.getScreenKey(), screen.getTransitionData());
 
         if (fragment == null) {
             unknownScreen(command);
@@ -149,9 +149,9 @@ public abstract class SupportFragmentNavigator implements Navigator {
 
             fragmentTransaction
                     .replace(containerId, fragment)
-                    .addToBackStack(command.getScreenKey())
+                    .addToBackStack(screen.getScreenKey())
                     .commit();
-            localStackCopy.add(command.getScreenKey());
+            localStackCopy.add(screen.getScreenKey());
 
         } else {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -173,7 +173,7 @@ public abstract class SupportFragmentNavigator implements Navigator {
      * Performs {@link BackTo} command transition
      */
     protected void backTo(BackTo command) {
-        String key = command.getScreenKey();
+        String key = command.getScreen() != null ? command.getScreen().getScreenKey() : null;
 
         if (key == null) {
             backToRoot();
@@ -188,7 +188,7 @@ public abstract class SupportFragmentNavigator implements Navigator {
                 }
                 fragmentManager.popBackStack(key, 0);
             } else {
-                backToUnexisting(command.getScreenKey());
+                backToUnexisting(key);
             }
         }
     }

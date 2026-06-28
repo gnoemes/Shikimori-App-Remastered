@@ -17,7 +17,9 @@ class CalendarRepositoryImpl @Inject constructor(
         private val rateConverter: RateResponseConverter
 ) : CalendarRepository {
 
-    override fun getData(): Single<List<CalendarItem>> = api.getCalendar().map(converter)
+    override fun getData(): Single<List<CalendarItem>> =
+            api.getCalendar()
+                    .map(converter)
 
     override fun getCalendarRates(userId: Long): Single<List<UserRate>> = userApi
             .getUserRates(userId, targetType = "Anime", status = "${RateStatus.WATCHING.status},${RateStatus.PLANNED.status},${RateStatus.ON_HOLD.status}")

@@ -1,6 +1,6 @@
 package com.gnoemes.shikimori.presentation.presenter.anime
 
-import com.arellomobile.mvp.InjectViewState
+import moxy.InjectViewState
 import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.domain.anime.AnimeInteractor
 import com.gnoemes.shikimori.domain.rates.RatesInteractor
@@ -9,9 +9,11 @@ import com.gnoemes.shikimori.domain.user.UserInteractor
 import com.gnoemes.shikimori.entity.anime.domain.AnimeDetails
 import com.gnoemes.shikimori.entity.anime.domain.Screenshot
 import com.gnoemes.shikimori.entity.anime.domain.ScreenshotsNavigationData
+import com.gnoemes.shikimori.BuildConfig
 import com.gnoemes.shikimori.entity.app.domain.AnalyticEvent
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.chronology.ChronologyNavigationData
+import com.gnoemes.shikimori.entity.common.domain.KeyScreen
 import com.gnoemes.shikimori.entity.common.domain.*
 import com.gnoemes.shikimori.entity.common.presentation.DetailsContentType
 import com.gnoemes.shikimori.entity.common.presentation.DetailsHeadItem
@@ -111,7 +113,7 @@ open class AnimePresenter @Inject constructor(
 
     override fun onOpenDiscussion() {
         currentAnime.topicId?.let { onTopicClicked(it) }
-                ?: router.showSystemMessage(resourceProvider.topicNotFound)
+                ?: viewState.showSystemMessage(resourceProvider.topicNotFound)
         logEvent(AnalyticEvent.ANIME_DETAILS_DISCUSSION)
     }
 
@@ -133,13 +135,13 @@ open class AnimePresenter @Inject constructor(
     override fun onChronology() {
         super.onChronology()
         val data = ChronologyNavigationData(id, type, currentAnime.franchise)
-        router.navigateTo(Screens.CHRONOLOGY, data)
+        router.navigateTo(KeyScreen(Screens.CHRONOLOGY, data))
         logEvent(AnalyticEvent.ANIME_DETAILS_CHRONOLOGY)
     }
 
     override fun onSimilarClicked() {
         val data = CommonNavigationData(currentAnime.id, Type.ANIME)
-        router.navigateTo(Screens.SIMILAR, data)
+        router.navigateTo(KeyScreen(Screens.SIMILAR, data))
     }
 
     override fun onLinks() {
@@ -148,15 +150,14 @@ open class AnimePresenter @Inject constructor(
     }
 
     override fun onOpenInBrowser() {
-        if (!::currentAnime.isInitialized) return
-
-        onOpenWeb(currentAnime.url)
+        val url = "${BuildConfig.ShikimoriBaseUrl}/animes/$id"
+        viewState.openInBrowser(url)
     }
 
     override fun onShareClicked() {
         if (!::currentAnime.isInitialized) return
 
-        router.navigateTo(Screens.SHARE, currentAnime.url)
+        router.navigateTo(KeyScreen(Screens.SHARE, currentAnime.url))
     }
 
     override fun onWatchOnline() {
@@ -169,7 +170,7 @@ open class AnimePresenter @Inject constructor(
                 currentAnime.userRate?.id,
                 if (currentAnime.status == Status.RELEASED) currentAnime.episodes else currentAnime.episodesAired,
                 null)
-        router.navigateTo(Screens.SERIES, data)
+        router.navigateTo(KeyScreen(Screens.SERIES, data))
         logEvent(AnalyticEvent.NAVIGATION_ANIME_TRANSLATIONS)
     }
 
@@ -186,7 +187,7 @@ open class AnimePresenter @Inject constructor(
 
     override fun onScreenshotsClicked(pos: Int) {
         val data = ScreenshotsNavigationData(pos, screenshots)
-        router.navigateTo(Screens.SCREENSHOTS, data)
+        router.navigateTo(KeyScreen(Screens.SCREENSHOTS, data))
     }
 
     override fun onClearHistory() {

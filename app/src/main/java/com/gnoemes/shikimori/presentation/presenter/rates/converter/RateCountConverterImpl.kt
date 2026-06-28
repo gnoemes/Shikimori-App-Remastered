@@ -51,7 +51,7 @@ class RateCountConverterImpl @Inject constructor(
     }
 
     private fun countRateSize(statuses: List<Status>?, rateStatus: RateStatus): Int {
-        return statuses?.asSequence()?.filter { it.name == rateStatus }?.sumBy { it.size }
+        return statuses?.asSequence()?.filter { it.name == rateStatus }?.sumOf { it.size }
                 ?: 0
     }
 

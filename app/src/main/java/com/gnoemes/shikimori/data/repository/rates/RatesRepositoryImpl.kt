@@ -37,7 +37,7 @@ class RatesRepositoryImpl @Inject constructor(
                     .doOnSuccess { if (it.isNotEmpty() && page > 1) it.toMutableList().removeAt(0) }
 
     override fun getUserRates(id: Long, targetId: Long?, target: Type?, statuses: String?, page: Int, limit: Int): Single<List<UserRate>> =
-            api.getUserRates(id, targetId, target?.name?.toLowerCase()?.firstUpperCase(), statuses, page, limit)
+            api.getUserRates(id, targetId, target?.name?.lowercase()?.firstUpperCase(), statuses, page, limit)
                     .map { list -> list.mapNotNull { converter.convertUserRateResponse(targetId, it) } }
 
     override fun createRate(id: Long, type: Type, rate: UserRate, userId: Long): Completable =

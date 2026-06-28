@@ -22,6 +22,7 @@
             android:id="@+id/headGradient"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:contentDescription="@null"
             android:fitsSystemWindows="true"
             android:tint="?attr/colorSurface"
             app:srcCompat="@drawable/details_head_background_gradient" />

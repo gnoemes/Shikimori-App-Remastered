@@ -84,7 +84,7 @@ class DetailsContentViewModelConverterImpl @Inject constructor(
         return FrameItem(
                 Image(it.imageUrl, it.imageUrl, it.imageUrl, it.imageUrl),
                 it.name ?: context.getString(getTitleFromType(it.type)),
-                it.hosting?.toUpperCase(),
+                it.hosting?.uppercase(),
                 it
         )
     }
@@ -110,7 +110,7 @@ class DetailsContentViewModelConverterImpl @Inject constructor(
         val name = relations.find { pair -> pair.first.contains(it.relation, true) }?.second
                 ?: it.relationRu
                 ?: it.relation
-        val description = SpannableStringBuilder((if (isAnime) getLocalizedType(it.anime!!.type) else getLocalizedType(it.manga!!.type)).toUpperCase())
+        val description = SpannableStringBuilder((if (isAnime) getLocalizedType(it.anime!!.type) else getLocalizedType(it.manga!!.type)).uppercase())
 
         val divider = "  •  ".colorSpan(dividerColor)
         if (isAnime && it.anime?.dateReleased != null) {
@@ -160,7 +160,7 @@ class DetailsContentViewModelConverterImpl @Inject constructor(
 
     private fun convertManga(it: Manga): ContentItem {
         val name = if (!settings.isRussianNaming) it.name else it.nameRu.nullIfEmpty() ?: it.name
-        val description = SpannableStringBuilder(getLocalizedType(it.type).toUpperCase())
+        val description = SpannableStringBuilder(getLocalizedType(it.type).uppercase())
 
         val divider = "  •  ".colorSpan(dividerColor)
         if (it.dateReleased != null) {
@@ -181,7 +181,7 @@ class DetailsContentViewModelConverterImpl @Inject constructor(
 
     private fun convertAnime(it: Anime): ContentItem {
         val name = if (!settings.isRussianNaming) it.name else it.nameRu.nullIfEmpty() ?: it.name
-        val description = SpannableStringBuilder(getLocalizedType(it.type).toUpperCase())
+        val description = SpannableStringBuilder(getLocalizedType(it.type).uppercase())
 
         val divider = "  •  ".colorSpan(dividerColor)
         if (it.dateReleased != null) {

@@ -25,6 +25,7 @@
                 android:id="@+id/imageView"
                 android:layout_width="@dimen/image_content_poster_width"
                 android:layout_height="@dimen/image_content_poster_height"
+                android:contentDescription="@string/description_anime_poster"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

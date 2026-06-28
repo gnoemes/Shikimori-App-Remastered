@@ -1,14 +1,12 @@
 package com.gnoemes.shikimori.presentation.view.series.translations.adapter
 
-import android.view.View
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.databinding.ItemChipBinding
 import com.gnoemes.shikimori.entity.series.presentation.TranslationVideo
 import com.gnoemes.shikimori.utils.clearAndAddAll
-import com.gnoemes.shikimori.utils.inflate
 import com.gnoemes.shikimori.utils.onClick
-import kotlinx.android.synthetic.main.item_chip.view.*
 
 class HostingAdapter(
         private val callback: (TranslationVideo) -> Unit
@@ -19,7 +17,7 @@ class HostingAdapter(
     override fun getItemCount(): Int = items.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-            ViewHolder(parent.inflate(R.layout.item_chip))
+            ViewHolder(ItemChipBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(items[position])
@@ -30,17 +28,17 @@ class HostingAdapter(
         notifyDataSetChanged()
     }
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(private val binding: ItemChipBinding) : RecyclerView.ViewHolder(binding.root) {
 
         private lateinit var item: TranslationVideo
 
         init {
-            itemView.chip.onClick { callback.invoke(item) }
+            binding.chip.onClick { callback.invoke(item) }
         }
 
         fun bind(item: TranslationVideo) {
             this.item = item
-            itemView.chip.text = item.videoHosting.synonymType
+            binding.chip.text = item.videoHosting.synonymType
         }
 
     }

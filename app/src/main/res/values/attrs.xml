@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <attr name="colorSecondary" format="color" />
     <attr name="colorSecondaryTransparent" format="color" />
+    <attr name="colorOnPrimary" format="color" />
     <attr name="colorOnPrimarySecondary" format="color" />
     <attr name="colorDivider" format="color" />
     <attr name="colorTransparentBackground" format="color" />
@@ -17,6 +19,9 @@
     <attr name="bottomSheetBackground" format="reference" />
     <attr name="editRateBackground" format="reference" />
     <attr name="colorSnackbarSurface" format="reference" />
+    <attr name="colorPrimary" format="color" />
+    <attr name="colorSurface" format="color" />
+    <attr name="colorOnSurface" format="color" />
 
     <attr name="themeStrokeWidth" format="dimension" />
 

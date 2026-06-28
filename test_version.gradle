@@ -1,0 +1,30 @@
+apply plugin: 'java'
+
+def getVersionName() {
+    try {
+        def proc = 'git describe --tags --abbrev=0'.execute(null, file('.'))
+        proc.waitFor()
+        def tag = proc.text?.trim()
+        println "getVersionName: tag=[$tag]"
+        return tag ? tag.replaceAll('^v', '') : '0.0.0'
+    } catch (Exception e) {
+        println "getVersionName error: ${e.message}"
+        return '0.0.0'
+    }
+}
+
+def getVersionCode() {
+    try {
+        def proc = 'git rev-list --count HEAD'.execute(null, file('.'))
+        proc.waitFor()
+        def count = proc.text?.trim()
+        println "getVersionCode: count=[$count]"
+        return count ? count.toInteger() : 1
+    } catch (Exception e) {
+        println "getVersionCode error: ${e.message}"
+        return 1
+    }
+}
+
+println "VERSION_NAME=[${getVersionName()}]"
+println "VERSION_CODE=[${getVersionCode()}]"

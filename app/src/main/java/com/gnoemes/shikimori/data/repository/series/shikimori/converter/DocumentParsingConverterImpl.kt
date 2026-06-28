@@ -44,11 +44,11 @@ class DocumentParsingConverterImpl @Inject constructor(
 
     override fun convertEpisodes(it: Document, animeId: Long): List<EpisodeResponse> {
 
-        val infoJson = it.select("script").last().html().let {
+        val infoJson = it.select("script").last()?.html()?.let {
             it.substring(
                     it.indexOf(INFO_OBJECT_QUERY) + INFO_OBJECT_QUERY.length,
                     it.lastIndexOf("};") + 1)
-        }
+        } ?: ""
         var errorItem: InfoObject? = null
 
         try {
@@ -68,12 +68,13 @@ class DocumentParsingConverterImpl @Inject constructor(
         val episodesSize = convertEpisodes(it, animeId).size
         return it.select(String.format(TRANSLATIONS_ALL_QUERY, type))
                 .first()
-                .select(TRANSLATIONS_QUERY)
-                .map { convertTranslation(it, animeId, episodeId, episodesSize) }
+                ?.select(TRANSLATIONS_QUERY)
+                ?.map { convertTranslation(it, animeId, episodeId, episodesSize) }
+                .orEmpty()
     }
 
     override fun convertVideoRequest(it: Document, animeId: Long, episodeId: Int): VideoRequest {
-        val playerUrl = it.select(VIDEO_URL_QUERY).first().attr("href").let { if (it.contains("http")) it else "http:$it" }
+        val playerUrl = it.select(VIDEO_URL_QUERY).first()?.attr("href")?.let { if (it.contains("http")) it else "http:$it" } ?: ""
         return VideoRequest(animeId, episodeId.toLong(), playerUrl)
     }
 
@@ -85,7 +86,7 @@ class DocumentParsingConverterImpl @Inject constructor(
         val rawQuality = e.getElementsByClass(VIDEO_QUALITY_QUERY).attr("class").split(" ").getOrNull(1)
         val quality = TranslationQuality.values().find { it.equalQuality(rawQuality) }
                 ?: TranslationQuality.TV
-        val type = e.getElementsByClass(VIDEO_TYPE_QUERY).text().trim().toLowerCase().let { strType -> TranslationType.values().find { it.isEqualType(strType) } }
+        val type = e.getElementsByClass(VIDEO_TYPE_QUERY).text().trim().lowercase().let { strType -> TranslationType.values().find { it.isEqualType(strType) } }
                 ?: TranslationType.VOICE_RU
         val hosting = e.getElementsByClass(VIDEO_HOSTING_QUERY).text().trim().let { rawHosting -> Utils.hostingFromString(rawHosting).synonymType }
         val author = e.getElementsByClass(VIDEO_AUTHOR_QUERY).text().trim()

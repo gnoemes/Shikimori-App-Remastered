@@ -1,17 +1,17 @@
 package com.gnoemes.shikimori.presentation.view.search.filter.adapter
 
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.databinding.ItemCategoryWithButtonBinding
 import com.gnoemes.shikimori.entity.search.domain.FilterType
 import com.gnoemes.shikimori.entity.search.presentation.FilterAction
 import com.gnoemes.shikimori.entity.search.presentation.FilterNestedViewModel
-import com.gnoemes.shikimori.utils.inflate
 import com.gnoemes.shikimori.utils.onClick
 import com.gnoemes.shikimori.utils.visibleIf
 import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
-import kotlinx.android.synthetic.main.item_category_with_button.view.*
 
 class FilterNestedAdapterDelegate(
         private val actionCallback: (FilterType, FilterAction) -> Unit
@@ -21,25 +21,25 @@ class FilterNestedAdapterDelegate(
             item is FilterNestedViewModel
 
     override fun onCreateViewHolder(parent: ViewGroup): ViewHolder =
-            ViewHolder(parent.inflate(R.layout.item_category_with_button))
+            ViewHolder(ItemCategoryWithButtonBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(item: FilterNestedViewModel, holder: ViewHolder, payloads: MutableList<Any>) {
         holder.bind(item)
     }
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(private val binding: ItemCategoryWithButtonBinding) : RecyclerView.ViewHolder(binding.root) {
 
         private lateinit var item: FilterNestedViewModel
 
         init {
-            itemView.countBtn.onClick { actionCallback.invoke(item.type, FilterAction.ShowNested) }
-            itemView.container.onClick { actionCallback.invoke(item.type, FilterAction.ShowNested) }
-            itemView.clearBtn.onClick { actionCallback.invoke(item.type, FilterAction.Clear) }
+            binding.countBtn.onClick { actionCallback.invoke(item.type, FilterAction.ShowNested) }
+            binding.container.onClick { actionCallback.invoke(item.type, FilterAction.ShowNested) }
+            binding.clearBtn.onClick { actionCallback.invoke(item.type, FilterAction.Clear) }
         }
 
         fun bind(item: FilterNestedViewModel) {
             this.item = item
-            with(itemView) {
+            with(binding) {
                 val countText = if (item.appliedCount > 0) "${item.appliedCount}" else "+"
                 countBtn.text = countText
                 categoryName.text = item.categoryLocalised

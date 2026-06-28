@@ -71,7 +71,7 @@
         android:fillViewport="true"
         app:layout_behavior="@string/appBarFixScrollingFooterBehavior">
 
-        <include layout="@layout/layout_edit_rate_content" />
+        <include android:id="@+id/included_layout_edit_rate_content" layout="@layout/layout_edit_rate_content" />
 
     </androidx.core.widget.NestedScrollView>
 

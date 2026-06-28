@@ -2,7 +2,7 @@ package com.gnoemes.shikimori.presentation.view.base.activity;
 
 import android.os.Bundle;
 
-import com.arellomobile.mvp.MvpDelegate;
+import moxy.MvpDelegate;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -26,8 +26,6 @@ public abstract class MvpActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        getMvpDelegate().onAttach();
     }
 
     @Override
@@ -35,7 +33,6 @@ public abstract class MvpActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
 
         getMvpDelegate().onSaveInstanceState(outState);
-        getMvpDelegate().onDetach();
     }
 
     @Override

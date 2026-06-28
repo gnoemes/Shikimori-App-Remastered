@@ -2,15 +2,20 @@ package com.gnoemes.shikimori.presentation.view.search.filter.seasons
 
 import android.content.Context
 import android.graphics.Point
+import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.afollestad.materialdialogs.MaterialDialog
-import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.ProvidePresenter
+import android.view.WindowManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import moxy.presenter.InjectPresenter
+import moxy.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.databinding.FragmentFilterSeasonsBinding
+import com.gnoemes.shikimori.databinding.LayoutFilterNestedToolbarBinding
+import com.gnoemes.shikimori.databinding.LayoutFilterSeasonsCustomBinding
 import com.gnoemes.shikimori.entity.common.domain.FilterItem
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.search.domain.FilterType
@@ -18,15 +23,14 @@ import com.gnoemes.shikimori.entity.search.presentation.FilterViewModel
 import com.gnoemes.shikimori.presentation.presenter.search.FilterSeasonsPresenter
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseBottomSheetInjectionDialogFragment
 import com.gnoemes.shikimori.presentation.view.search.filter.FilterCallback
+import com.gnoemes.shikimori.presentation.view.search.filter.FilterFragment
 import com.gnoemes.shikimori.presentation.view.search.filter.adapter.FilterChipAdapter
 import com.gnoemes.shikimori.presentation.view.search.filter.seasons.adapter.FilterSeasonsAdapter
 import com.gnoemes.shikimori.utils.*
+import com.google.gson.Gson
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
-import kotlinx.android.synthetic.main.fragment_filter_seasons.*
-import kotlinx.android.synthetic.main.layout_filter_nested_toolbar.*
-import kotlinx.android.synthetic.main.layout_filter_seasons_custom.*
 
 class FilterSeasonsFragment : BaseBottomSheetInjectionDialogFragment<FilterSeasonsPresenter, FilterSeasonsView>(), FilterSeasonsView {
 
@@ -37,7 +41,13 @@ class FilterSeasonsFragment : BaseBottomSheetInjectionDialogFragment<FilterSeaso
     fun providePresenter(): FilterSeasonsPresenter = presenterProvider.get().apply {
         type = arguments?.getSerializable(TYPE_KEY) as? Type ?: Type.ANIME
         //copy of filters
-        appliedFilters = HashMap(arguments?.getSerializable(FILTERS_KEY) as HashMap<String, MutableList<FilterItem>>)
+        @Suppress("DEPRECATION")
+        val raw = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            arguments?.getSerializable(FILTERS_KEY, HashMap::class.java)
+        } else {
+            arguments?.getSerializable(FILTERS_KEY)
+        } as? HashMap<String, MutableList<FilterItem>>
+        appliedFilters = HashMap(raw ?: HashMap())
     }
 
     companion object {
@@ -53,44 +63,64 @@ class FilterSeasonsFragment : BaseBottomSheetInjectionDialogFragment<FilterSeaso
     private val simpleAdapter by lazy { FilterChipAdapter(FilterType.SEASON, presenter::onFilterInverted, presenter::onFilterSelected) }
     private val customAdapter by lazy { FilterSeasonsAdapter(presenter::onNewCustomFilter, presenter::onRemoveCustomFilter) }
 
+    private var _binding: FragmentFilterSeasonsBinding? = null
+    private val binding: FragmentFilterSeasonsBinding? get() = _binding
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        peekHeight = Point().let { activity?.windowManager?.defaultDisplay?.getSize(it);it }.x - context.dimenAttr(android.R.attr.actionBarSize)
+        peekHeight = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+            windowManager.currentWindowMetrics.bounds.width() - context.dimenAttr(android.R.attr.actionBarSize)
+        } else {
+            Point().let { point ->
+                @Suppress("DEPRECATION")
+                activity?.windowManager?.defaultDisplay?.getSize(point)
+                point
+            }.x - context.dimenAttr(android.R.attr.actionBarSize)
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(getDialogLayout(), container, false)
+        _binding = FragmentFilterSeasonsBinding.inflate(inflater, container, false)
+        return _binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        with(toolbar) {
+        val b = _binding ?: return
+
+        with(b.nestedToolbar.toolbar) {
             setTitle(R.string.filter_seasons)
             addBackButton(R.drawable.ic_close) { onBackPressed() }
         }
 
-        with(recyclerView) {
+        with(b.recyclerView) {
             adapter = simpleAdapter
             layoutManager = FlexboxLayoutManager(context)
             itemAnimator = null
         }
 
-        with(customInputRecyclerView) {
+        with(b.seasonsCustom.customInputRecyclerView) {
             adapter = customAdapter
             layoutManager = FlexboxLayoutManager(context).apply { flexWrap = FlexWrap.WRAP; flexDirection = FlexDirection.ROW }
             itemAnimator = null
         }
 
-        clearBtn.onClick { presenter.onResetClicked() }
-        acceptBtn.onClick { presenter.onAcceptClicked() }
-        helpBtn.onClick {
-            MaterialDialog(context!!).show {
-                title(R.string.filter_custom)
-                message(text = Html.fromHtml(getString(R.string.filter_custom_seasons_hint)))
-                positiveButton(R.string.common_understand)
-            }
+        b.nestedToolbar.clearBtn.onClick { presenter.onResetClicked() }
+        b.nestedToolbar.acceptBtn.onClick { presenter.onAcceptClicked() }
+        b.seasonsCustom.helpBtn.onClick {
+            MaterialAlertDialogBuilder(context!!).apply {
+                setTitle(R.string.filter_custom)
+                setMessage(Html.fromHtml(getString(R.string.filter_custom_seasons_hint)))
+                setPositiveButton(R.string.common_understand, null)
+            }.show()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -114,10 +144,14 @@ class FilterSeasonsFragment : BaseBottomSheetInjectionDialogFragment<FilterSeaso
         customAdapter.bindItems(items)
     }
 
-    override fun setResetEnabled(show: Boolean) = clearBtn.visibleIf { show }
+    override fun setResetEnabled(show: Boolean) { _binding?.nestedToolbar?.clearBtn?.visibleIf { show } }
 
     override fun onFiltersAccepted(appliedFilters: HashMap<String, MutableList<FilterItem>>) {
-        (targetFragment as? FilterCallback)?.onFiltersSelected(tag, appliedFilters)
+        val bundle = Bundle().apply {
+            putString(FilterFragment.RESULT_TAG_KEY, tag)
+            putString(FilterFragment.RESULT_FILTERS_KEY, Gson().toJson(appliedFilters))
+        }
+        parentFragmentManager.setFragmentResult(FilterFragment.SEASONS_RESULT_KEY, bundle)
         onBackPressed()
     }
 

@@ -18,6 +18,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
+        android:contentDescription="@string/description_preference_icon"
         tools:srcCompat="@drawable/icon_shikimori_setting" />
 
     <RelativeLayout

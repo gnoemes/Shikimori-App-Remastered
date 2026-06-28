@@ -7,8 +7,9 @@
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:contentDescription="@string/description_screenshot" />
 
-    <include layout="@layout/layout_progress" />
+    <include android:id="@+id/included_layout_progress" layout="@layout/layout_progress" />
 
 </FrameLayout>

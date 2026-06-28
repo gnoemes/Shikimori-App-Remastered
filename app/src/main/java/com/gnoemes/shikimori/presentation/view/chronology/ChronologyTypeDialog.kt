@@ -7,14 +7,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.databinding.DialogMenuBinding
 import com.gnoemes.shikimori.entity.chronology.ChronologyType
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseBottomSheetDialogFragment
 import com.gnoemes.shikimori.utils.colorStateList
 import com.gnoemes.shikimori.utils.dimenAttr
 import com.gnoemes.shikimori.utils.withArgs
-import kotlinx.android.synthetic.main.dialog_menu.*
 
 class ChronologyTypeDialog : BaseBottomSheetDialogFragment() {
+
+    private var _binding: DialogMenuBinding? = null
+    private val binding: DialogMenuBinding? get() = _binding
 
     companion object {
         fun newInstance(type: ChronologyType) = ChronologyTypeDialog().withArgs {
@@ -30,21 +33,26 @@ class ChronologyTypeDialog : BaseBottomSheetDialogFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(getDialogLayout(), container, false)
+        _binding = DialogMenuBinding.inflate(inflater, container, false)
+        return _binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val b = _binding ?: return
 
-        with(toolbar) {
-            setTitle(R.string.chronology_type)
+        b.toolbar.setTitle(R.string.chronology_type)
+
+        @Suppress("DEPRECATION")
+        val current = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            arguments?.getSerializable(TYPE_KEY, ChronologyType::class.java) as? ChronologyType ?: ChronologyType.MAIN
+        } else {
+            arguments?.getSerializable(TYPE_KEY) as? ChronologyType ?: ChronologyType.MAIN
         }
-
-        val current = arguments?.getSerializable(TYPE_KEY) as? ChronologyType ?: ChronologyType.MAIN
 
         val items = ChronologyType.values().toMutableList()
 
-        navView.apply {
+        b.navView.apply {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 setItemBackgroundResource(R.drawable.selector_item_menu_background_accent)
                 itemTextColor = context.colorStateList(R.color.selector_item_menu_text_color_accent)
@@ -61,6 +69,11 @@ class ChronologyTypeDialog : BaseBottomSheetDialogFragment() {
                 setCheckedItem(checkedId)
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun getTypeText(it: ChronologyType): CharSequence? = when (it) {

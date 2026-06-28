@@ -35,6 +35,7 @@
                 android:id="@+id/imageView"
                 android:layout_width="@dimen/image_rate_width"
                 android:layout_height="@dimen/image_rate_height"
+                android:contentDescription="@string/description_anime_cover"
                 tools:src="@drawable/test_preview2" />
 
         </com.google.android.material.card.MaterialCardView>

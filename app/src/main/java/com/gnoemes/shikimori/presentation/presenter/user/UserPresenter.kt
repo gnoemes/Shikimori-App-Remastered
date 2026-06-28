@@ -1,10 +1,11 @@
 package com.gnoemes.shikimori.presentation.presenter.user
 
-import com.arellomobile.mvp.InjectViewState
+import moxy.InjectViewState
 import com.gnoemes.shikimori.domain.user.UserInteractor
 import com.gnoemes.shikimori.entity.app.domain.AnalyticEvent
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.auth.AuthType
+import com.gnoemes.shikimori.entity.common.domain.KeyScreen
 import com.gnoemes.shikimori.entity.common.domain.Screens
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.main.BottomScreens
@@ -23,7 +24,7 @@ import com.gnoemes.shikimori.utils.appendHostIfNeed
 import com.gnoemes.shikimori.utils.appendLoadingLogic
 import io.reactivex.Completable
 import io.reactivex.Single
-import java.net.URLEncoder
+import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
 @InjectViewState
@@ -53,14 +54,25 @@ class UserPresenter @Inject constructor(
         } else loadData()
     }
 
+    override fun processErrors(throwable: Throwable) {
+        viewState.showAuthView(false)
+        super.processErrors(throwable)
+    }
+
     override fun onViewReattached() {
-        if (wasGuest) loadMyUser()
+        if (wasGuest && !isGuest()) {
+            loadMyUser()
+        } else if (wasGuest) {
+            viewState.showContent(false)
+            viewState.showAuthView(true)
+        }
     }
 
     private fun loadMyUser() = interactor.getMyUserId()
             .doOnSuccess { id = it }
             .doOnSubscribe { isMe = true }
             .doOnSuccess { wasGuest = false }
+            .observeOn(AndroidSchedulers.mainThread())
             .doOnSuccess { viewState.showAuthView(false) }
             .subscribe({ loadData() }, this::processErrors)
             .addToDisposables()
@@ -70,7 +82,7 @@ class UserPresenter @Inject constructor(
                     .doOnSuccess { loadFavorites() }
                     .doOnSuccess { loadFriends() }
                     .doOnSuccess { loadClubs() }
-                    .subscribe({}, this::processErrors)
+                    .subscribe({ viewState.showContent(true) }, this::processErrors)
                     .addToDisposables()
 
     private fun loadUser(showLoading: Boolean = true): Single<UserDetails> =
@@ -79,6 +91,7 @@ class UserPresenter @Inject constructor(
                         if (showLoading) Single.just(it).appendLoadingLogic(viewState)
                         else Single.just(it)
                     }
+                    .observeOn(AndroidSchedulers.mainThread())
                     .doOnSuccess { currentUser = it }
                     .doOnSuccess { viewState.setInfo(converter.convertInfo(it)) }
                     .doOnSuccess { viewState.setHead(converter.convertHead(it)) }
@@ -88,18 +101,21 @@ class UserPresenter @Inject constructor(
     private fun loadFavorites() =
             interactor.getFavorites(id)
                     .map { converter.convertFavorites(it) }
+                    .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ viewState.setFavorites(currentUser.isMe, it) }, this::processErrors)
                     .addToDisposables()
 
     private fun loadFriends() =
             interactor.getFriends(id)
                     .map { converter.convertFriends(it) }
+                    .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ viewState.setFriends(currentUser.isMe, it) }, this::processErrors)
                     .addToDisposables()
 
     private fun loadClubs() =
             interactor.getClubs(id)
                     .map { converter.convertClubs(it) }
+                    .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ viewState.setClubs(currentUser.isMe, it) }, this::processErrors)
                     .addToDisposables()
 
@@ -128,17 +144,17 @@ class UserPresenter @Inject constructor(
     }
 
     fun onSettingsClicked() {
-        router.navigateTo(Screens.SETTINGS)
+        router.navigateTo(KeyScreen(Screens.SETTINGS))
     }
 
     private fun onRateClicked(anime: Boolean, status: RateStatus) {
         val data = RateNavigationData(id, if (anime) Type.ANIME else Type.MANGA, status)
-        router.navigateTo(BottomScreens.RATES, data)
+        router.navigateTo(KeyScreen(BottomScreens.RATES, data))
     }
 
     private fun onFriendshipStatusChanged(newStatus: Boolean) {
         if (checkUserStatus()) {
-            router.showSystemMessage(resourceProvider.needAuth)
+            viewState.showSystemMessage(resourceProvider.needAuth)
             return
         }
 
@@ -158,15 +174,15 @@ class UserPresenter @Inject constructor(
     private fun onMoreClicked(type: UserContentType) {
         when (type) {
             UserContentType.FRIENDS -> {
-                router.navigateTo(Screens.USER_FRIENDS, id)
+                router.navigateTo(KeyScreen(Screens.USER_FRIENDS, id))
                 logEvent(AnalyticEvent.NAVIGATION_USER_FRIENDS)
             }
             UserContentType.CLUBS -> {
-                router.navigateTo(Screens.USER_CLUBS, id)
+                router.navigateTo(KeyScreen(Screens.USER_CLUBS, id))
                 logEvent(AnalyticEvent.NAVIGATION_USER_CLUBS)
             }
             UserContentType.FAVORITES -> {
-                router.navigateTo(Screens.USER_FAVORITES, id)
+                router.navigateTo(KeyScreen(Screens.USER_FAVORITES, id))
                 logEvent(AnalyticEvent.NAVIGATION_USER_FAVORITES)
             }
         }
@@ -174,7 +190,7 @@ class UserPresenter @Inject constructor(
 
     private fun onMessageBoxClicked() {
         if (checkUserStatus()) return
-        //TODO
+        viewState.openUrl("messages".appendHostIfNeed())
     }
 
     private fun onMessageClicked() {
@@ -183,16 +199,16 @@ class UserPresenter @Inject constructor(
     }
 
     private fun onAboutClicked() {
-        onOpenWeb(URLEncoder.encode(currentUser.nickname, "utf-8").appendHostIfNeed())
+        viewState.openUrl(currentUser.nickname.appendHostIfNeed())
     }
 
     private fun onBansClicked() {
-        router.navigateTo(Screens.USER_BANS, id)
+        router.navigateTo(KeyScreen(Screens.USER_BANS, id))
         logEvent(AnalyticEvent.NAVIGATION_USER_BANS)
     }
 
     private fun onHistoryClicked() {
-        router.navigateTo(Screens.USER_HISTORY, UserHistoryNavigationData(id, currentUser.nickname))
+        router.navigateTo(KeyScreen(Screens.USER_HISTORY, UserHistoryNavigationData(id, currentUser.nickname)))
         logEvent(AnalyticEvent.NAVIGATION_USER_HISTORY)
     }
 
@@ -208,7 +224,7 @@ class UserPresenter @Inject constructor(
 
     private fun checkUserStatus(): Boolean {
         return if (isGuest()) {
-            router.showSystemMessage(resourceProvider.needAuth)
+            viewState.showSystemMessage(resourceProvider.needAuth)
             true
         } else false
     }
@@ -219,7 +235,7 @@ class UserPresenter @Inject constructor(
     fun onSignUp() = openAuth(AuthType.SIGN_UP)
 
     private fun openAuth(type: AuthType) {
-        router.navigateTo(Screens.AUTHORIZATION, type)
+        router.navigateTo(KeyScreen(Screens.AUTHORIZATION, type))
         logEvent(AnalyticEvent.NAVIGATION_AUTHORIZATION)
     }
 }

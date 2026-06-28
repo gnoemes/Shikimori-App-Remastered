@@ -20,17 +20,19 @@ class EpisodeAdapter(
     }
 
     override fun getItemId(position: Int): Long {
-        return items[position].hashCode().toLong()
+        val list = items!!
+        return list[position].hashCode().toLong()
     }
 
     fun bindItems(newItems: List<Any>) {
-        val oldData = items.toList()
+        val list = items!!
+        val oldData = list.toList()
 
-        items.clear()
-        items.addAll(newItems)
+        list.clear()
+        list.addAll(newItems)
 
         DiffUtil
-                .calculateDiff(DiffCallback(items, oldData), false)
+                .calculateDiff(DiffCallback(list, oldData), false)
                 .dispatchUpdatesTo(this)
     }
 

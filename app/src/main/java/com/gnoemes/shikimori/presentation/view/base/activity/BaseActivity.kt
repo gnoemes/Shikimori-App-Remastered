@@ -2,7 +2,6 @@ package com.gnoemes.shikimori.presentation.view.base.activity
 
 import android.os.Bundle
 import androidx.annotation.LayoutRes
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.di.base.modules.BaseActivityModule
@@ -12,7 +11,7 @@ import com.gnoemes.shikimori.utils.inputMethodManager
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.HasSupportFragmentInjector
+import dagger.android.HasAndroidInjector
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder
 import javax.inject.Inject
@@ -20,7 +19,7 @@ import javax.inject.Named
 import javax.inject.Provider
 
 abstract class BaseActivity<Presenter : BasePresenter<View>, View : BaseView> : BaseThemedActivity(),
-        HasSupportFragmentInjector, BaseView {
+        HasAndroidInjector, BaseView {
 
     @Inject
     lateinit var presenterProvider: Provider<Presenter>
@@ -30,14 +29,13 @@ abstract class BaseActivity<Presenter : BasePresenter<View>, View : BaseView> : 
     lateinit var fragmentManager: FragmentManager
 
     @Inject
-    lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
+    lateinit var androidInjector: DispatchingAndroidInjector<Any>
 
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> = fragmentDispatchingAndroidInjector
+    override fun androidInjector(): AndroidInjector<Any> = androidInjector
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
-        setContentView(getLayoutActivity())
     }
 
     override fun onResumeFragments() {
@@ -84,4 +82,3 @@ abstract class BaseActivity<Presenter : BasePresenter<View>, View : BaseView> : 
         else presenter.onBackPressed()
     }
 }
-

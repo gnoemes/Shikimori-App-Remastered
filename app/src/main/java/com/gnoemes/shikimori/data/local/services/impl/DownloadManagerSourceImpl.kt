@@ -2,7 +2,9 @@ package com.gnoemes.shikimori.data.local.services.impl
 
 import android.app.DownloadManager
 import android.content.Context
+import android.media.MediaScannerConnection
 import android.net.Uri
+import android.os.Build
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.data.local.services.DownloadSource
@@ -32,12 +34,18 @@ class DownloadManagerSourceImpl @Inject constructor(
                     .setDescription(context.getString(R.string.app_name))
                     .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
                     .apply {
-                        allowScanningByMediaScanner()
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+                            @Suppress("DEPRECATION")
+                            allowScanningByMediaScanner()
+                        }
                         setDestinationUri(path)
                         data.requestHeaders.entries.forEach { addRequestHeader(it.key, it.value) }
                     }
 
             manager?.enqueue(request)
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+                MediaScannerConnection.scanFile(context, arrayOf(path.path), null, null)
+            }
         }
     }
 }

@@ -13,6 +13,7 @@ import com.gnoemes.shikimori.entity.common.domain.Roles
 import com.gnoemes.shikimori.entity.manga.domain.Manga
 import com.gnoemes.shikimori.entity.manga.domain.MangaDetails
 import io.reactivex.Completable
+import io.reactivex.Maybe
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -44,7 +45,7 @@ class RanobeRepositoryImpl @Inject constructor(
                     .map(franchiseConverter)
 
     private fun syncRate(details: MangaDetails): Completable =
-            Single.fromCallable { details }
-                    .filter { details.userRate != null }
-                    .flatMapCompletable { syncDbSource.saveRate(it.userRate!!) }
+            Maybe.fromCallable { details.userRate }
+                    .filter { it.id != null && it.targetId != null && it.chapters != null }
+                    .flatMapCompletable { syncDbSource.saveRate(it) }
 }

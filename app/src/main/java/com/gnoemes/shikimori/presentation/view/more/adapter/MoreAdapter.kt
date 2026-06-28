@@ -19,8 +19,8 @@ class MoreAdapter(
     }
 
     fun bindItems(newItems: List<Any>) {
-        items.clear()
-        items.addAll(newItems)
+        items!!.clear()
+        items!!.addAll(newItems)
         notifyDataSetChanged()
     }
 }

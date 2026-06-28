@@ -74,9 +74,9 @@ class UserDetailsViewModelConverterImpl @Inject constructor(
     private fun countAvgScore(scores: List<Statistic>): Float {
         if (scores.isEmpty()) return 0f
 
-        val sum = scores.sumBy { it.value }
+        val sum = scores.sumOf { it.value }
         return scores
-                .sumBy { it.name.toInt() * it.value }
+                .sumOf { it.name.toInt() * it.value }
                 .toFloat()
                 .div(sum)
                 .toBigDecimal(MathContext(3, RoundingMode.UP))
@@ -92,7 +92,7 @@ class UserDetailsViewModelConverterImpl @Inject constructor(
                 UserStatisticItem("R+", 0, 0f),
                 UserStatisticItem("Rx", 0, 0f)
         )
-        val sum = ratings.sumBy { it.value }
+        val sum = ratings.sumOf { it.value }
 
         return ratings
                 .mapNotNull { stat ->
@@ -118,7 +118,7 @@ class UserDetailsViewModelConverterImpl @Inject constructor(
                 Pair("Doujin|Додзинси", UserStatisticItem(context.getString(R.string.type_doujin_translatable), 0, 0f))
         )
 
-        val sum = types.sumBy { it.value }
+        val sum = types.sumOf { it.value }
 
         return types
                 .mapNotNull { statistic ->
@@ -129,7 +129,7 @@ class UserDetailsViewModelConverterImpl @Inject constructor(
 
 
     private fun convertScores(scores: List<Statistic>): List<UserStatisticItem> {
-        val sum = scores.sumBy { it.value }
+        val sum = scores.sumOf { it.value }
 
         return scores
                 .asSequence()

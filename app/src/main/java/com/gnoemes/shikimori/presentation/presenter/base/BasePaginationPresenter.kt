@@ -34,9 +34,13 @@ abstract class BasePaginationPresenter<Items : Any, View : BasePaginationView> :
         paginator = null
     }
 
+    override fun detachView(view: View) {
+        super.detachView(view)
+        destroyPaginator()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
-
         destroyPaginator()
     }
 

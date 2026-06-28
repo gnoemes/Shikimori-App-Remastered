@@ -7,7 +7,7 @@ import androidx.annotation.StyleRes
 import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
 import com.gnoemes.shikimori.R
-import kotlinx.android.synthetic.main.view_ascent_preference.view.*
+import com.gnoemes.shikimori.databinding.ViewAscentPreferenceBinding
 
 class AscentPreference @JvmOverloads constructor(context: Context,
                                                  attrs: AttributeSet? = null,
@@ -31,7 +31,8 @@ class AscentPreference @JvmOverloads constructor(context: Context,
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
         holder.itemView.isClickable = false
-        with(holder.itemView) {
+        val binding = ViewAscentPreferenceBinding.bind(holder.itemView)
+        with(binding) {
             var id = getIdFromStyle(ascentStyle)
             chipGroup.check(id)
             chipGroup.setOnCheckedChangeListener { group, checkedId ->

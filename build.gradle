@@ -5,24 +5,23 @@ buildscript {
 
     repositories {
         google()
-        jcenter()
-        maven { url 'https://maven.fabric.io/public' }
+        mavenCentral()
+        gradlePluginPortal()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:' + versions.gradlePlugin
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:" + versions.kotlin
-        classpath 'com.android.tools.build.jetifier:jetifier-processor:' + versions.jetifier
         classpath 'com.google.gms:google-services:' + versions.gms
-        classpath 'io.fabric.tools:gradle:' + versions.fabric
-        classpath 'org.moallemi.gradle.advanced-build-version:gradle-plugin:' + versions.advancedVersioning
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:3.0.7'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:" + versions.kotlin
+        classpath "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin:" + versions.ksp
     }
 }
 
 allprojects {
     repositories {
         google()
-        jcenter()
-        maven { url "https://jitpack.io" }
+        mavenCentral()
+        maven { url = "https://jitpack.io" }
     }
 }
 

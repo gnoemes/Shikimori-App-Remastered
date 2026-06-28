@@ -85,9 +85,9 @@ interface UserApi {
     @DELETE("/api/friends/{id}")
     fun deleteFriend(@Path("id") id: Long): Completable
 
-    @POST(" /api/v2/users/{user_id}/ignore")
+    @POST("/api/v2/users/{user_id}/ignore")
     fun ignoreUser(@Path("user_id") id: Long): Completable
 
-    @DELETE(" /api/v2/users/{user_id}/ignore")
+    @DELETE("/api/v2/users/{user_id}/ignore")
     fun unignoreUser(@Path("user_id") id: Long): Completable
 }

@@ -1,25 +1,16 @@
 package com.gnoemes.shikimori.di.app.module.local;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteOpenHelper;
 
-import androidx.annotation.NonNull;
+import androidx.room.Room;
 
-import com.gnoemes.shikimori.entity.chapters.ChapterDao;
-import com.gnoemes.shikimori.entity.chapters.ChapterDaoSQLiteTypeMapping;
-import com.gnoemes.shikimori.entity.rates.data.AnimeRateSyncDao;
-import com.gnoemes.shikimori.entity.rates.data.AnimeRateSyncDaoSQLiteTypeMapping;
-import com.gnoemes.shikimori.entity.rates.data.MangaRateSyncDao;
-import com.gnoemes.shikimori.entity.rates.data.MangaRateSyncDaoSQLiteTypeMapping;
-import com.gnoemes.shikimori.entity.rates.data.PinnedRateDao;
-import com.gnoemes.shikimori.entity.rates.data.PinnedRateDaoSQLiteTypeMapping;
-import com.gnoemes.shikimori.entity.series.data.EpisodeDao;
-import com.gnoemes.shikimori.entity.series.data.EpisodeDaoSQLiteTypeMapping;
-import com.gnoemes.shikimori.entity.series.data.TranslationSettingDao;
-import com.gnoemes.shikimori.entity.series.data.TranslationSettingDaoSQLiteTypeMapping;
-import com.gnoemes.shikimori.utils.db.DbOpenHelper;
-import com.pushtorefresh.storio3.sqlite.StorIOSQLite;
-import com.pushtorefresh.storio3.sqlite.impl.DefaultStorIOSQLite;
+import com.gnoemes.shikimori.data.local.db.AppDatabase;
+import com.gnoemes.shikimori.data.local.db.dao.AnimeRateSyncRoomDao;
+import com.gnoemes.shikimori.data.local.db.dao.ChapterRoomDao;
+import com.gnoemes.shikimori.data.local.db.dao.EpisodeRoomDao;
+import com.gnoemes.shikimori.data.local.db.dao.MangaRateSyncRoomDao;
+import com.gnoemes.shikimori.data.local.db.dao.PinnedRateRoomDao;
+import com.gnoemes.shikimori.data.local.db.dao.TranslationSettingRoomDao;
 
 import javax.inject.Singleton;
 
@@ -31,21 +22,45 @@ public interface DbModule {
 
     @Provides
     @Singleton
-    static StorIOSQLite provideStorIosqLite(@NonNull SQLiteOpenHelper sqLiteOpenHelper) {
-        return DefaultStorIOSQLite.builder()
-                .sqliteOpenHelper(sqLiteOpenHelper)
-                .addTypeMapping(AnimeRateSyncDao.class, new AnimeRateSyncDaoSQLiteTypeMapping())
-                .addTypeMapping(EpisodeDao.class, new EpisodeDaoSQLiteTypeMapping())
-                .addTypeMapping(MangaRateSyncDao.class, new MangaRateSyncDaoSQLiteTypeMapping())
-                .addTypeMapping(TranslationSettingDao.class, new TranslationSettingDaoSQLiteTypeMapping())
-                .addTypeMapping(ChapterDao.class, new ChapterDaoSQLiteTypeMapping())
-                .addTypeMapping(PinnedRateDao.class, new PinnedRateDaoSQLiteTypeMapping())
+    static AppDatabase provideDatabase(Context context) {
+        return Room.databaseBuilder(context, AppDatabase.class, "shikimori_database")
+                .addMigrations(AppDatabase.MIGRATION_1_2, AppDatabase.MIGRATION_2_3)
                 .build();
     }
 
     @Provides
     @Singleton
-    static SQLiteOpenHelper provideSqLiteOpenHelper(Context context) {
-        return new DbOpenHelper(context);
+    static AnimeRateSyncRoomDao provideAnimeRateSyncDao(AppDatabase database) {
+        return database.animeRateSyncDao();
+    }
+
+    @Provides
+    @Singleton
+    static EpisodeRoomDao provideEpisodeDao(AppDatabase database) {
+        return database.episodeDao();
+    }
+
+    @Provides
+    @Singleton
+    static MangaRateSyncRoomDao provideMangaRateSyncDao(AppDatabase database) {
+        return database.mangaRateSyncDao();
+    }
+
+    @Provides
+    @Singleton
+    static TranslationSettingRoomDao provideTranslationSettingDao(AppDatabase database) {
+        return database.translationSettingDao();
+    }
+
+    @Provides
+    @Singleton
+    static ChapterRoomDao provideChapterDao(AppDatabase database) {
+        return database.chapterDao();
+    }
+
+    @Provides
+    @Singleton
+    static PinnedRateRoomDao providePinnedRateDao(AppDatabase database) {
+        return database.pinnedRateDao();
     }
 }

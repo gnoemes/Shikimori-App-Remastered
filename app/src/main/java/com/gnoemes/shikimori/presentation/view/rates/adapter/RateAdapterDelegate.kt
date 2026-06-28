@@ -4,6 +4,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.databinding.ItemRateBinding
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.common.presentation.DetailsAction
 import com.gnoemes.shikimori.entity.rates.domain.RateListAction
@@ -13,7 +14,6 @@ import com.gnoemes.shikimori.utils.inflate
 import com.gnoemes.shikimori.utils.onClick
 import com.gnoemes.shikimori.utils.visibleIf
 import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
-import kotlinx.android.synthetic.main.item_rate.view.*
 
 class RateAdapterDelegate(
         private val imageLoader: ImageLoader,
@@ -26,18 +26,18 @@ class RateAdapterDelegate(
             item is RateViewModel
 
     override fun onCreateViewHolder(parent: ViewGroup): ViewHolder =
-            ViewHolder(parent.inflate(R.layout.item_rate))
+            ViewHolder(ItemRateBinding.inflate(android.view.LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(item: RateViewModel, holder: ViewHolder, payloads: MutableList<Any>) {
         holder.bind(item)
     }
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(private val binding: ItemRateBinding) : RecyclerView.ViewHolder(binding.root) {
 
         private lateinit var item: RateViewModel
 
         init {
-            with(itemView) {
+            with(binding) {
                 playBtn.onClick { callback.invoke(DetailsAction.WatchOnline(item.id)) }
                 container.onClick { navigationCallback.invoke(item.type, item.contentId) }
                 imageView.onClick { navigationCallback.invoke(item.type, item.contentId) }
@@ -48,7 +48,7 @@ class RateAdapterDelegate(
 
         fun bind(item: RateViewModel) {
             this.item = item
-            with(itemView) {
+            with(binding) {
                 imageLoader.setImageWithPlaceHolder(imageView, item.image.original)
 
                 nameView.text = item.name

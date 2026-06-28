@@ -3,9 +3,10 @@ package com.gnoemes.shikimori.presentation.view.favorites
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.ProvidePresenter
+import moxy.presenter.InjectPresenter
+import moxy.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.databinding.FragmentFavoritesBinding
 import com.gnoemes.shikimori.entity.app.domain.AppExtras
 import com.gnoemes.shikimori.entity.user.domain.FavoriteType
 import com.gnoemes.shikimori.entity.user.presentation.FavoriteViewModel
@@ -17,11 +18,12 @@ import com.gnoemes.shikimori.presentation.view.favorites.holders.FavoriteCategor
 import com.gnoemes.shikimori.utils.addBackButton
 import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.gnoemes.shikimori.utils.withArgs
-import kotlinx.android.synthetic.main.fragment_favorites.*
-import kotlinx.android.synthetic.main.layout_toolbar.*
 import javax.inject.Inject
 
 class FavoritesFragment : BaseFragment<FavoritesPresenter, FavoritesView>(), FavoritesView {
+
+    private var _viewBinding: FragmentFavoritesBinding? = null
+    private val viewBinding: FragmentFavoritesBinding? get() = _viewBinding
 
     @Inject
     lateinit var imageLoader: ImageLoader
@@ -45,21 +47,27 @@ class FavoritesFragment : BaseFragment<FavoritesPresenter, FavoritesView>(), Fav
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _viewBinding = FragmentFavoritesBinding.bind(view)
 
-        toolbar?.apply {
+        toolbarBinding?.toolbar?.apply {
             setTitle(R.string.common_favorite)
             addBackButton { getPresenter().onBackPressed() }
         }
 
         contentHolders.apply {
-            put(FavoriteType.ANIME, FavoriteCategoryViewHolder(animeLayout, defaultAdapter))
-            put(FavoriteType.MANGA, FavoriteCategoryViewHolder(mangaLayout, defaultAdapter))
-            put(FavoriteType.CHARACTERS, FavoriteCategoryViewHolder(charactersLayout, defaultAdapter))
-            put(FavoriteType.SEYU, FavoriteCategoryViewHolder(seyuLayout, defaultAdapter))
-            put(FavoriteType.PRODUCERS, FavoriteCategoryViewHolder(producersLayout, defaultAdapter))
-            put(FavoriteType.MANGAKAS, FavoriteCategoryViewHolder(mangakasLayout, defaultAdapter))
-            put(FavoriteType.PEOPLE, FavoriteCategoryViewHolder(otherLayout, defaultAdapter))
+            put(FavoriteType.ANIME, FavoriteCategoryViewHolder(viewBinding!!.animeLayout, defaultAdapter))
+            put(FavoriteType.MANGA, FavoriteCategoryViewHolder(viewBinding!!.mangaLayout, defaultAdapter))
+            put(FavoriteType.CHARACTERS, FavoriteCategoryViewHolder(viewBinding!!.charactersLayout, defaultAdapter))
+            put(FavoriteType.SEYU, FavoriteCategoryViewHolder(viewBinding!!.seyuLayout, defaultAdapter))
+            put(FavoriteType.PRODUCERS, FavoriteCategoryViewHolder(viewBinding!!.producersLayout, defaultAdapter))
+            put(FavoriteType.MANGAKAS, FavoriteCategoryViewHolder(viewBinding!!.mangakasLayout, defaultAdapter))
+            put(FavoriteType.PEOPLE, FavoriteCategoryViewHolder(viewBinding!!.otherLayout, defaultAdapter))
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _viewBinding = null
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -82,8 +90,8 @@ class FavoritesFragment : BaseFragment<FavoritesPresenter, FavoritesView>(), Fav
     }
 
     override fun showFavoritesCount(count: Int) {
-        toolbar?.menu?.add("$count")
-        toolbar?.menu?.getItem(0)?.apply {
+        toolbarBinding?.toolbar?.menu?.add("$count")
+        toolbarBinding?.toolbar?.menu?.getItem(0)?.apply {
             isEnabled = false
             setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
         }

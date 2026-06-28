@@ -5,11 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentStatePagerAdapter
-import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.ProvidePresenter
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.google.android.material.tabs.TabLayoutMediator
+import moxy.presenter.InjectPresenter
+import moxy.presenter.ProvidePresenter
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.databinding.FragmentShikimoriMainBinding
 import com.gnoemes.shikimori.entity.forum.domain.ForumType
 import com.gnoemes.shikimori.presentation.presenter.shikimorimain.ShikimoriMainPresenter
 import com.gnoemes.shikimori.presentation.view.base.fragment.BaseFragment
@@ -20,20 +21,20 @@ import com.gnoemes.shikimori.utils.gone
 import com.gnoemes.shikimori.utils.ifNotNull
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.HasSupportFragmentInjector
-import kotlinx.android.synthetic.main.fragment_shikimori_main.*
-import kotlinx.android.synthetic.main.layout_appbar_tabs.*
-import kotlinx.android.synthetic.main.layout_toolbar.*
+import dagger.android.HasAndroidInjector
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
-class ShikimoriMainFragment : BaseFragment<ShikimoriMainPresenter, ShikimoriMainView>(), ShikimoriMainView, RouterProvider, HasSupportFragmentInjector {
+class ShikimoriMainFragment : BaseFragment<ShikimoriMainPresenter, ShikimoriMainView>(), ShikimoriMainView, RouterProvider, HasAndroidInjector {
+
+    private var _viewBinding: FragmentShikimoriMainBinding? = null
+    private val viewBinding: FragmentShikimoriMainBinding? get() = _viewBinding
 
     @Inject
-    lateinit var childFragmentInjector: DispatchingAndroidInjector<Fragment>
+    lateinit var childFragmentInjector: DispatchingAndroidInjector<Any>
 
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> = childFragmentInjector
+    override fun androidInjector(): AndroidInjector<Any> = childFragmentInjector
 
     @InjectPresenter
     lateinit var mainPresenter: ShikimoriMainPresenter
@@ -53,20 +54,31 @@ class ShikimoriMainFragment : BaseFragment<ShikimoriMainPresenter, ShikimoriMain
         fun newInstance() = ShikimoriMainFragment()
     }
 
-    private val adapter by lazy { PagerAdapter(childFragmentManager) }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(getFragmentLayout(), container, false)
+        _viewBinding = FragmentShikimoriMainBinding.inflate(inflater, container, false)
+        return _viewBinding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val vb = _viewBinding ?: return
 
-        toolbar?.gone()
+        // Base toolbar is not inflated (onCreateView overridden without super), no need to hide it
 
-        pagesContainerView.adapter = adapter
-        pagesContainerView.offscreenPageLimit = 3
-        tabLayout.setupWithViewPager(pagesContainerView)
+        vb.pagesContainerView.adapter = PagerAdapter(this)
+        vb.pagesContainerView.offscreenPageLimit = 3
+        TabLayoutMediator(vb.includedLayoutAppbarTabs.tabLayout, vb.pagesContainerView) { tab, position ->
+            tab.text = when (position) {
+                0 -> getString(R.string.topic_news)
+                1 -> getString(R.string.topic_my_feed)
+                else -> getString(R.string.topic_forum)
+            }
+        }.attach()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _viewBinding = null
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -88,10 +100,10 @@ class ShikimoriMainFragment : BaseFragment<ShikimoriMainPresenter, ShikimoriMain
     ///////////////////////////////////////////////////////////////////////////
 
     inner class PagerAdapter(
-            fm: FragmentManager
-    ) : FragmentStatePagerAdapter(fm) {
+            fragment: Fragment
+    ) : FragmentStateAdapter(fragment) {
 
-        override fun getItem(position: Int): Fragment {
+        override fun createFragment(position: Int): Fragment {
             return when (position) {
                 0 -> TopicListFragment.newInstance(ForumType.NEWS)
                 1 -> TopicListFragment.newInstance(ForumType.MY_CLUBS)
@@ -99,14 +111,6 @@ class ShikimoriMainFragment : BaseFragment<ShikimoriMainPresenter, ShikimoriMain
             }
         }
 
-        override fun getCount(): Int = 3
-
-        override fun getPageTitle(position: Int): CharSequence? {
-            return when (position) {
-                0 -> context?.getString(R.string.topic_news)
-                1 -> context?.getString(R.string.topic_my_feed)
-                else -> context?.getString(R.string.topic_forum)
-            }
-        }
+        override fun getItemCount(): Int = 3
     }
 }

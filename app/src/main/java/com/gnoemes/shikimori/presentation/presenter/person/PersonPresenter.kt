@@ -1,6 +1,6 @@
 package com.gnoemes.shikimori.presentation.presenter.person
 
-import com.arellomobile.mvp.InjectViewState
+import moxy.InjectViewState
 import com.gnoemes.shikimori.domain.roles.PersonInteractor
 import com.gnoemes.shikimori.entity.app.domain.Constants
 import com.gnoemes.shikimori.entity.common.presentation.DetailsContentItem
@@ -41,7 +41,11 @@ class PersonPresenter @Inject constructor(
             when (it) {
                 is DetailsHeadSimpleItem -> viewState.setHead(it)
                 is DetailsDescriptionItem -> viewState.setDescription(it)
-                is Pair<*, *> -> viewState.setContent(it.first as DetailsContentType, it.second as DetailsContentItem)
+                is Pair<*, *> -> when (it.first as DetailsContentType) {
+                    DetailsContentType.CHARACTERS -> viewState.setCharactersContent(it.second as DetailsContentItem)
+                    DetailsContentType.WORKS -> viewState.setWorksContent(it.second as DetailsContentItem)
+                    else -> Unit
+                }
             }
         }
     }

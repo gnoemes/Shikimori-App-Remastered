@@ -19,16 +19,26 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 abstract class BaseDialogFragment : MvpDialogFragment(), BaseFragmentView {
 
     private val viewHandler = Handler()
+    private var _binding: android.view.View? = null
+    protected val binding: View? get() = _binding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            inflater.inflate(getDialogLayout(), container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(getDialogLayout(), container, false)
+        _binding = view
+        return view
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
+    }
 
     //TODO mb don't use bottom sheet
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return BottomSheetDialog(context!!.wrapTheme(R.style.Theme_MaterialComponents_BottomSheetDialog), context!!.getCurrentAscentTheme)
+        return BottomSheetDialog(context!!.wrapTheme(com.google.android.material.R.style.Theme_MaterialComponents_BottomSheetDialog), context!!.getCurrentAscentTheme)
                 .apply {
                     setOnShowListener {
-                        (it as BottomSheetDialog).findViewById<FrameLayout>(R.id.design_bottom_sheet)?.apply {
+                        (it as BottomSheetDialog).findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)?.apply {
                             layoutParams = (layoutParams as CoordinatorLayout.LayoutParams).apply { behavior = null }
                         }
                         window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT)

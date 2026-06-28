@@ -88,7 +88,7 @@ class AnimeDetailsViewModelConverterImpl @Inject constructor(
         } else if (it.dateAired != null && it.dateReleased != null) {
 
             val description = if (it.dateAired.year == it.dateReleased.year) {
-                "${it.dateAired.toString("dd ${dateTimeConverter.convertShortMonth(it.dateAired)}")} - ${it.dateReleased.toTitleDate()}"
+                "${it.dateAired.dayOfMonth} ${dateTimeConverter.convertShortMonth(it.dateAired)} - ${it.dateReleased.toTitleDate()}"
             } else {
                 "${it.dateAired.toTitleDate()} - ${it.dateReleased.toTitleDate()}"
             }
@@ -141,7 +141,7 @@ class AnimeDetailsViewModelConverterImpl @Inject constructor(
         }
 
         //age rating
-        if (it.ageRating != AgeRating.NONE) {
+        if (it.ageRating != null && it.ageRating != AgeRating.NONE) {
             val description = convertRating(it.ageRating)
             if (description != null) {
                 val category = context.getString(R.string.common_age_rating)
@@ -174,7 +174,7 @@ class AnimeDetailsViewModelConverterImpl @Inject constructor(
     }
 
     override fun convertScores(t: List<Statistic>): List<UserStatisticItem> {
-        val sum = t.sumBy { it.value }
+        val sum = t.sumOf { it.value }
 
         return t
                 .asSequence()
@@ -192,7 +192,7 @@ class AnimeDetailsViewModelConverterImpl @Inject constructor(
                 Pair("Dropped|Брошено", UserStatisticItem(context.getString(R.string.rate_dropped), 0, 0f))
         )
 
-        val sum = t.sumBy { it.value }
+        val sum = t.sumOf { it.value }
 
         return items
                 .mapNotNull { pair ->
@@ -247,5 +247,5 @@ class AnimeDetailsViewModelConverterImpl @Inject constructor(
     private fun Duration.toHoursAndMinutes(): String = "$standardHours ${context.getString(R.string.hour_short)} ${toMinutes()}"
     private fun Duration.toDays(): String = context.resources.getQuantityString(R.plurals.days, standardDays.toInt(), standardDays)
 
-    private fun DateTime.toTitleDate() = this.toString("dd ${dateTimeConverter.convertShortMonth(this)} yyyy")
+    private fun DateTime.toTitleDate() = "${this.dayOfMonth} ${dateTimeConverter.convertShortMonth(this)} ${this.year}"
 }

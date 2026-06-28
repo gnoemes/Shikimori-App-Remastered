@@ -1,13 +1,12 @@
 package com.gnoemes.shikimori.presentation.view.common.adapter
 
-import android.view.View
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.databinding.ItemDetailsInfoBinding
 import com.gnoemes.shikimori.entity.common.presentation.InfoItem
-import com.gnoemes.shikimori.utils.inflate
 import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
-import kotlinx.android.synthetic.main.item_details_info.view.*
 
 class InfoAdapterDelegate : AbsListItemAdapterDelegate<InfoItem, Any, InfoAdapterDelegate.ViewHolder>() {
 
@@ -15,16 +14,16 @@ class InfoAdapterDelegate : AbsListItemAdapterDelegate<InfoItem, Any, InfoAdapte
             item is InfoItem
 
     override fun onCreateViewHolder(parent: ViewGroup): ViewHolder =
-            ViewHolder(parent.inflate(R.layout.item_details_info))
+            ViewHolder(ItemDetailsInfoBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(item: InfoItem, holder: ViewHolder, payloads: MutableList<Any>) {
         holder.bind(item)
     }
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(private val binding: ItemDetailsInfoBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: InfoItem) {
-            with(itemView) {
+            with(binding) {
                 infoView.text = item.description
                 categoryView.text = item.category
             }

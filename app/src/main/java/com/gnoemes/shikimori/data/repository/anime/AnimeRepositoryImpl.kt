@@ -16,6 +16,7 @@ import com.gnoemes.shikimori.entity.common.domain.Link
 import com.gnoemes.shikimori.entity.common.domain.Roles
 import com.gnoemes.shikimori.utils.appendHostIfNeed
 import io.reactivex.Completable
+import io.reactivex.Maybe
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -33,7 +34,7 @@ class AnimeRepositoryImpl @Inject constructor(
     override fun getDetails(id: Long): Single<AnimeDetails> =
             api.getDetails(id)
                     .map(detailsConverter)
-                    .flatMap { syncRate(it).toSingleDefault(it) }
+                    .flatMap { syncRate(it).toSingleDefault(it).onErrorReturnItem(it) }
 
     override fun getRoles(id: Long): Single<Roles> =
             api.getRoles(id)
@@ -60,8 +61,8 @@ class AnimeRepositoryImpl @Inject constructor(
                     .map { LinkedHashSet(it) }
 
     private fun syncRate(details: AnimeDetails): Completable =
-            Single.fromCallable { details }
-                    .filter { details.userRate?.targetId != null && details.userRate.episodes != null }
-                    .flatMapCompletable { syncDbSource.saveRate(it.userRate!!) }
+            Maybe.fromCallable { details.userRate }
+                    .filter { it.id != null && it.targetId != null && it.episodes != null }
+                    .flatMapCompletable { syncDbSource.saveRate(it) }
 
 }

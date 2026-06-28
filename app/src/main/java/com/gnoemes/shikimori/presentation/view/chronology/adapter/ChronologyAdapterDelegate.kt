@@ -1,16 +1,17 @@
 package com.gnoemes.shikimori.presentation.view.chronology.adapter
 
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.databinding.ItemChronologyBinding
 import com.gnoemes.shikimori.entity.chronology.ChronologyViewModel
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.entity.rates.domain.RateStatus
 import com.gnoemes.shikimori.utils.*
 import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
-import kotlinx.android.synthetic.main.item_chronology.view.*
 
 
 class ChronologyAdapterDelegate(
@@ -22,24 +23,24 @@ class ChronologyAdapterDelegate(
     override fun isForViewType(item: Any, items: MutableList<Any>, position: Int): Boolean = item is ChronologyViewModel
 
     override fun onCreateViewHolder(parent: ViewGroup): ViewHolder =
-            ViewHolder(parent.inflate(R.layout.item_chronology))
+            ViewHolder(ItemChronologyBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(item: ChronologyViewModel, holder: ViewHolder, payloads: MutableList<Any>) {
         holder.bind(item)
     }
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(private val binding: ItemChronologyBinding) : RecyclerView.ViewHolder(binding.root) {
 
         private lateinit var item: ChronologyViewModel
 
         init {
-            itemView.container.onClick { navigationCallback.invoke(item.type, item.id) }
-            itemView.statusRateBtn.onClick { callback.invoke(item.id) }
+            binding.container.onClick { navigationCallback.invoke(item.type, item.id) }
+            binding.statusRateBtn.onClick { callback.invoke(item.id) }
         }
 
         fun bind(item: ChronologyViewModel) {
             this.item = item
-            with(itemView) {
+            with(binding) {
                 imageLoader.setImageWithPlaceHolder(imageView, item.image.original)
                 nameView.text = item.title
                 descriptionView.text = item.description

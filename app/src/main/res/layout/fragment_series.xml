@@ -10,6 +10,7 @@
         android:id="@+id/backgroundImage"
         android:layout_width="match_parent"
         android:layout_height="420dp"
+        android:contentDescription="@null"
         android:fitsSystemWindows="true"
         android:scaleType="centerCrop"
         tools:srcCompat="@drawable/test_preview2" />
@@ -21,7 +22,9 @@
         android:background="?attr/colorTransparentBackground"
         android:fitsSystemWindows="true" />
 
-    <include layout="@layout/layout_toolbar_transparent_with_search" />
+    <include
+        android:id="@+id/toolbarTransparentWithSearch"
+        layout="@layout/layout_toolbar_transparent_with_search" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/backdrop"
@@ -38,7 +41,9 @@
             android:layout_height="match_parent"
             android:animateLayoutChanges="true">
 
-            <include layout="@layout/layout_series_toolbar" />
+            <include
+        android:id="@+id/seriesToolbar"
+        layout="@layout/layout_series_toolbar" />
 
             <com.github.ybq.android.spinkit.SpinKitView
                 android:id="@+id/progress"
@@ -68,7 +73,8 @@
                 android:layout_marginBottom="16dp"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-                <include layout="@layout/layout_default_placeholders" />
+                <include
+        layout="@layout/layout_default_placeholders" />
 
                 <include
                     android:id="@+id/authorsLayout"

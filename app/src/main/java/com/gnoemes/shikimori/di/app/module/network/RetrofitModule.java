@@ -1,5 +1,6 @@
 package com.gnoemes.shikimori.di.app.module.network;
 
+import com.gnoemes.shikimori.BuildConfig;
 import com.gnoemes.shikimori.entity.topic.data.TopicResponse;
 import com.gnoemes.shikimori.entity.user.data.UserHistoryResponse;
 import com.gnoemes.shikimori.utils.network.DateTimeResponseConverter;
@@ -27,8 +28,11 @@ public interface RetrofitModule {
     @Provides
     @Singleton
     static HttpLoggingInterceptor provideHttpLoggingInterceptor() {
+        HttpLoggingInterceptor.Level level = BuildConfig.DEBUG
+                ? HttpLoggingInterceptor.Level.BODY
+                : HttpLoggingInterceptor.Level.NONE;
         return new HttpLoggingInterceptor()
-                .setLevel(HttpLoggingInterceptor.Level.BODY);
+                .setLevel(level);
     }
 
     @Provides

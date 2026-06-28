@@ -13,6 +13,7 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
+        android:contentDescription="@string/app_name"
         android:scaleX="2"
         android:scaleY="2"
         app:layout_constraintEnd_toEndOf="parent"

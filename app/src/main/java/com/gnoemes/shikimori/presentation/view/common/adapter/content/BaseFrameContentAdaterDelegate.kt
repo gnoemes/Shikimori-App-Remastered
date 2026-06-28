@@ -4,20 +4,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.databinding.ItemContentFrameBinding
 import com.gnoemes.shikimori.entity.common.presentation.FrameItem
 import com.gnoemes.shikimori.utils.images.ImageLoader
 import com.gnoemes.shikimori.utils.inflate
 import com.gnoemes.shikimori.utils.onClick
 import com.gnoemes.shikimori.utils.visibleIf
 import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
-import kotlinx.android.synthetic.main.item_content_frame.view.*
 
 abstract class BaseFrameContentAdaterDelegate(
         private val imageLoader: ImageLoader
 ) : AbsListItemAdapterDelegate<FrameItem, Any, BaseFrameContentAdaterDelegate.FrameHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup): FrameHolder =
-            FrameHolder(parent.inflate(R.layout.item_content_frame))
+            FrameHolder(ItemContentFrameBinding.inflate(android.view.LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(item: FrameItem, holder: FrameHolder, payloads: MutableList<Any>) {
         holder.bind(item)
@@ -34,24 +34,22 @@ abstract class BaseFrameContentAdaterDelegate(
 
     }
 
-    inner class FrameHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class FrameHolder(private val binding: ItemContentFrameBinding) : RecyclerView.ViewHolder(binding.root) {
 
         private lateinit var item: FrameItem
 
         init {
-            itemView.container.onClick { onClick(item); onClickIndexed(item, adapterPosition) }
+            binding.container.onClick { onClick(item); onClickIndexed(item, adapterPosition) }
         }
 
         fun bind(item: FrameItem) {
             this.item = item
-            with(itemView) {
-                imageLoader.setImageListItem(imageView, item.image.original)
-                nameView.text = item.name
-                descriptionView.text = item.typeText
+            imageLoader.setImageListItem(binding.imageView, item.image.original)
+            binding.nameView.text = item.name
+            binding.descriptionView.text = item.typeText
 
-                nameView.visibleIf { !item.name.isNullOrEmpty() }
-                descriptionView.visibleIf { !item.typeText.isNullOrEmpty() }
-            }
+            binding.nameView.visibleIf { !item.name.isNullOrEmpty() }
+            binding.descriptionView.visibleIf { !item.typeText.isNullOrEmpty() }
         }
     }
 }

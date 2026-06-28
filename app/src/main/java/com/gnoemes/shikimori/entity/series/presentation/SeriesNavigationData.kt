@@ -2,7 +2,7 @@ package com.gnoemes.shikimori.entity.series.presentation
 
 import android.os.Parcelable
 import com.gnoemes.shikimori.entity.common.domain.Image
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class SeriesNavigationData(

@@ -19,6 +19,7 @@ import com.gnoemes.shikimori.entity.search.presentation.SearchNavigationData
 import com.gnoemes.shikimori.entity.series.presentation.EmbeddedPlayerNavigationData
 import com.gnoemes.shikimori.entity.series.presentation.EpisodesNavigationData
 import com.gnoemes.shikimori.entity.series.presentation.SeriesNavigationData
+import com.gnoemes.shikimori.entity.series.presentation.TranslationVideo
 import com.gnoemes.shikimori.entity.user.presentation.UserHistoryNavigationData
 import com.gnoemes.shikimori.presentation.view.anime.AnimeFragment
 import com.gnoemes.shikimori.presentation.view.auth.AuthActivity
@@ -80,7 +81,16 @@ object RouteHolder {
             //TODO check settings to open in internal on external browser
             Screens.WEB -> Intent(Intent.ACTION_VIEW, Uri.parse(data as String))
             Screens.SETTINGS -> Intent(context, SettingsActivity::class.java)
-            Screens.WEB_PLAYER -> Intent(context, WebPlayerActivity::class.java).apply { putExtra(AppExtras.ARGUMENT_URL, data as? String) }
+            Screens.WEB_PLAYER -> Intent(context, WebPlayerActivity::class.java).apply {
+                when (data) {
+                    is TranslationVideo -> {
+                        putExtra(AppExtras.ARGUMENT_URL, data.webPlayerUrl)
+                        putExtra(AppExtras.ARGUMENT_ANIME_ID, data.animeId)
+                        putExtra(AppExtras.ARGUMENT_EPISODE_ID, data.episodeIndex.toLong())
+                    }
+                    is String -> putExtra(AppExtras.ARGUMENT_URL, data)
+                }
+            }
             Screens.EMBEDDED_PLAYER -> Intent(context, EmbeddedPlayerActivity::class.java).apply { putExtra(AppExtras.ARGUMENT_PLAYER_DATA, data as EmbeddedPlayerNavigationData) }
             Screens.EXTERNAL_PLAYER -> {
                 Intent(Intent.ACTION_VIEW, data?.toString()?.toUri()).apply {

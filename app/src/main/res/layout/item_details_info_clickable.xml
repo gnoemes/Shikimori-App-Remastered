@@ -30,6 +30,7 @@
             android:id="@+id/imageView"
             android:layout_width="32dp"
             android:layout_height="32dp"
+            android:contentDescription="@string/description_info_image"
             app:civ_border_color="?attr/colorDivider"
             app:civ_border_width="1dp"
             app:layout_constraintEnd_toEndOf="parent"

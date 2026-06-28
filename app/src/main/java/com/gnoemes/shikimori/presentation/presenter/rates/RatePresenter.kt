@@ -1,6 +1,6 @@
 package com.gnoemes.shikimori.presentation.presenter.rates
 
-import com.arellomobile.mvp.InjectViewState
+import moxy.InjectViewState
 import com.gnoemes.shikimori.data.local.preference.RateSortSource
 import com.gnoemes.shikimori.data.local.preference.SettingsSource
 import com.gnoemes.shikimori.domain.app.CancelableTaskInteractor
@@ -15,6 +15,7 @@ import com.gnoemes.shikimori.entity.app.domain.Task
 import com.gnoemes.shikimori.entity.app.domain.exceptions.BaseException
 import com.gnoemes.shikimori.entity.app.domain.exceptions.ContentException
 import com.gnoemes.shikimori.entity.auth.AuthType
+import com.gnoemes.shikimori.entity.common.domain.KeyScreen
 import com.gnoemes.shikimori.entity.common.domain.Screens
 import com.gnoemes.shikimori.entity.common.domain.Status
 import com.gnoemes.shikimori.entity.common.domain.Type
@@ -112,6 +113,7 @@ class RatePresenter @Inject constructor(
                         if (isAnime) rateCountConverter.countAnimeRates(it)
                         else rateCountConverter.countMangaRates(it)
                     }
+                    .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(this::setRateData, this::processErrors)
                     .addToDisposables()
 
@@ -169,7 +171,7 @@ class RatePresenter @Inject constructor(
     }
 
     fun onEmptyRateClicked(anime: Boolean) {
-        router.navigateTo(BottomScreens.SEARCH, SearchNavigationData(null, if (anime) Type.ANIME else Type.MANGA))
+        router.navigateTo(KeyScreen(BottomScreens.SEARCH, SearchNavigationData(null, if (anime) Type.ANIME else Type.MANGA)))
     }
 
     fun onTaskCanceled(taskId: Int, rateId: Long) {
@@ -230,6 +232,7 @@ class RatePresenter @Inject constructor(
         when (it) {
             is DetailsAction.ChangeRateStatus -> onChangeRateStatus(it.id, it.newStatus)
             is DetailsAction.WatchOnline -> onWatchOnline(it.id!!)
+            else -> Unit
         }
     }
 
@@ -300,7 +303,7 @@ class RatePresenter @Inject constructor(
         if (item != null) {
             if (item.anime != null) onAnimeClicked(item.anime.id)
             else if (item.manga != null) onMangaClicked(item.manga.id)
-        } else router.showSystemMessage(resourceProvider.emptyMessage)
+        } else viewState.showSystemMessage(resourceProvider.emptyMessage)
     }
 
     private fun onEditRate(rate: RateViewModel) {
@@ -325,7 +328,7 @@ class RatePresenter @Inject constructor(
     private fun onWatchOnline(rateId: Long) {
         val rateItem = items.find { it is Rate && it.id == rateId } as? Rate
         rateItem?.let { rate ->
-            val animeId = rate.anime?.id!!
+            val animeId = rate.anime?.id ?: return
             Single.zip(
                     seriesInteractor.getWatchedEpisodesCount(animeId),
                     seriesInteractor.getFirstNotWatchedEpisodeIndex(animeId),
@@ -340,26 +343,31 @@ class RatePresenter @Inject constructor(
                 else if (info.first > rate.episodes) rate.episodes + 1
                 else info.second
             }
+                    .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ checkRateWatchProgress(true, rate, it) }, this::processErrors)
                     .addToDisposables()
         }
     }
 
     //TODO add manga
-    private fun checkRateWatchProgress(anime: Boolean, rate: Rate, progress: Int) =
-            seriesInteractor.getTranslationSettings(rate.anime?.id!!)
-                    .flatMap { ratesInteractor.getRate(rate.id).ignoreElement().andThen(Single.just(it)) }
-                    .subscribe({ watchOnlineOrOpenList(rate, it, progress) }, this::processErrors)
-                    .addToDisposables()
+    private fun checkRateWatchProgress(anime: Boolean, rate: Rate, progress: Int) {
+        val animeId = rate.anime?.id ?: return
+        seriesInteractor.getTranslationSettings(animeId)
+                .flatMap { ratesInteractor.getRate(rate.id).ignoreElement().andThen(Single.just(it)) }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ watchOnlineOrOpenList(rate, it, progress) }, this::processErrors)
+                .addToDisposables()
+    }
 
     //TODO manga
     private fun watchOnlineOrOpenList(rate: Rate, settings: TranslationSetting, progress: Int) {
+        val anime = rate.anime ?: return
         val name =
-                if (settingsSource.isRussianNaming) rate.anime?.nameRu.nullIfEmpty() ?: rate.anime?.name!!
-                else rate.anime?.name!!
-        val episodesAired = if (rate.anime?.status == Status.RELEASED) rate.anime.episodes else rate.anime?.episodesAired
-        val navigationData = SeriesNavigationData(settings.animeId, rate.anime?.image!!, name, rate.anime.name, rate.id, episodesAired!!, progress)
-        router.navigateTo(Screens.SERIES, navigationData)
+                if (settingsSource.isRussianNaming) anime.nameRu.nullIfEmpty() ?: anime.name
+                else anime.name
+        val episodesAired = if (anime.status == Status.RELEASED) anime.episodes else anime.episodesAired
+        val navigationData = SeriesNavigationData(settings.animeId, anime.image, name, anime.name, rate.id, episodesAired, progress)
+        router.navigateTo(KeyScreen(Screens.SERIES, navigationData))
         analyticInteractor.logEvent(AnalyticEvent.NAVIGATION_ANIME_TRANSLATIONS_FROM_RATES)
     }
 
@@ -377,6 +385,7 @@ class RatePresenter @Inject constructor(
                 logEvent(AnalyticEvent.RATE_DROP_MENU)
             }
             taskInteractor.newTask(task)
+                    .observeOn(AndroidSchedulers.mainThread())
                     .doOnNext { viewState.showRateMessage(it, rateResourceProvider.getChangeRateStatusMessage(item.type, newStatus), item.id) }
                     .subscribe({ removeFromListAndRefresh(item) }, this::processErrors)
                     .addToDisposables()
@@ -391,6 +400,7 @@ class RatePresenter @Inject constructor(
                         .subscribeAndRefresh(id)
             }
             taskInteractor.newTask(task)
+                    .observeOn(AndroidSchedulers.mainThread())
                     .doOnNext { viewState.showRateMessage(it, rateResourceProvider.getDeleteRateMessage(item.type), item.id) }
                     .subscribe({ removeFromListAndRefresh(item) }, this::processErrors)
                     .addToDisposables()
@@ -403,6 +413,7 @@ class RatePresenter @Inject constructor(
 
     private fun Completable.subscribeAndRefresh(id: Long) {
         this.andThen(changesInteractor.sendRateChanges(id))
+                .observeOn(AndroidSchedulers.mainThread())
                 .doOnComplete { loadUserOrCategories() }
                 .subscribe(this@RatePresenter::onRefresh, this@RatePresenter::processErrors)
                 .addToDisposables()
@@ -435,7 +446,7 @@ class RatePresenter @Inject constructor(
     //TODO optimization?
     private fun MutableList<Any>.addSortItem(): MutableList<Any> {
         val sorts = if (isAnime) sortResourceProvider.getAnimeRateSorts() else sortResourceProvider.getMangaRateSorts()
-        add(0, RateSortViewModel(rateStatus!!, sort, sorts, isDescendingSort, isAnime))
+        add(0, RateSortViewModel(rateStatus ?: RateStatus.WATCHING, sort, sorts, isDescendingSort, isAnime))
         return this
     }
 
@@ -533,14 +544,14 @@ class RatePresenter @Inject constructor(
 
     private fun MutableList<Any>.typeSort(): MutableList<Any> =
             this.sortRateBySelectorAndAddItem {
-                if (it.type == Type.ANIME) it.anime?.type?.ordinal!!
-                else it.manga?.type?.ordinal!!
+                if (it.type == Type.ANIME) it.anime?.type?.ordinal
+                else it.manga?.type?.ordinal
             }
 
     private fun MutableList<Any>.statusSort(): MutableList<Any> =
             this.sortRateBySelectorAndAddItem {
                 if (it.type == Type.ANIME) it.anime?.status?.ordinal
-                else it.manga?.status?.ordinal!!
+                else it.manga?.status?.ordinal
             }
 
     private fun MutableList<Any>.nameSort(): MutableList<Any> =
@@ -556,10 +567,7 @@ class RatePresenter @Inject constructor(
     fun onSignUp() = openAuth(AuthType.SIGN_UP)
 
     private fun openAuth(type: AuthType) {
-        router.navigateTo(Screens.AUTHORIZATION, type)
+        router.navigateTo(KeyScreen(Screens.AUTHORIZATION, type))
         logEvent(AnalyticEvent.NAVIGATION_AUTHORIZATION)
     }
 }
-
-
-

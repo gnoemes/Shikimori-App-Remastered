@@ -10,7 +10,7 @@ abstract class BaseAdapter<T> :  ListDelegationAdapter<MutableList<T>>(){
     }
 
     override fun getItemId(position: Int): Long {
-        return items[position].hashCode().toLong()
+        return items!![position].hashCode().toLong()
     }
 
     abstract fun areItemsTheSame(oldItem: T, newItem: T): Boolean
@@ -18,13 +18,13 @@ abstract class BaseAdapter<T> :  ListDelegationAdapter<MutableList<T>>(){
     abstract fun areContentsTheSame(oldItem: T, newItem: T): Boolean
 
     open fun bindItems(newItems: List<T>) {
-        val oldData = items.toList()
+        val oldData = items?.toList() ?: emptyList()
 
-        items.clear()
-        items.addAll(newItems)
+        items?.clear()
+        items?.addAll(newItems)
 
         DiffUtil
-                .calculateDiff(DiffCallback(items, oldData), false)
+                .calculateDiff(DiffCallback(items ?: emptyList(), oldData), false)
                 .dispatchUpdatesTo(this)
     }
 
@@ -49,5 +49,10 @@ abstract class BaseAdapter<T> :  ListDelegationAdapter<MutableList<T>>(){
 
             return areContentsTheSame(oldItem, newItem)
         }
+    }
+
+    companion object {
+        @JvmStatic
+        fun <T> safeItems(items: MutableList<T>?): List<T> = items ?: emptyList()
     }
 }

@@ -18,7 +18,7 @@ class OkParserImpl @Inject constructor() : OkParser {
         if (html.isNullOrEmpty()) return emptyList()
 
         val doc = Jsoup.parse(html)
-        val playerDataJson = doc.select("div[data-module=\"OKVideo\"]").first().attr("data-options")
+        val playerDataJson = doc.select("div[data-module=\"OKVideo\"]").first()?.attr("data-options") ?: ""
 
         val gson = Gson()
         val playerData = gson.fromJson<OkPlayerData>(playerDataJson, OkPlayerData::class.java)

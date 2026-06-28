@@ -1,8 +1,8 @@
 package com.gnoemes.shikimori.presentation.view.main
 
-import com.arellomobile.mvp.viewstate.strategy.AddToEndStrategy
-import com.arellomobile.mvp.viewstate.strategy.SkipStrategy
-import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
+import moxy.viewstate.strategy.AddToEndStrategy
+import moxy.viewstate.strategy.SkipStrategy
+import moxy.viewstate.strategy.StateStrategyType
 import com.gnoemes.shikimori.presentation.view.base.activity.BaseView
 
 @StateStrategyType(AddToEndStrategy::class)

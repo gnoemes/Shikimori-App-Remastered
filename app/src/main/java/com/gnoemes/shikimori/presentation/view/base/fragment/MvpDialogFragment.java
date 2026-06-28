@@ -2,7 +2,7 @@ package com.gnoemes.shikimori.presentation.view.base.fragment;
 
 import android.os.Bundle;
 
-import com.arellomobile.mvp.MvpDelegate;
+import moxy.MvpDelegate;
 
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.fragment.app.Fragment;
@@ -39,7 +39,6 @@ public class MvpDialogFragment extends AppCompatDialogFragment {
         mIsStateSaved = true;
 
         getMvpDelegate().onSaveInstanceState(outState);
-        getMvpDelegate().onDetach();
     }
 
     @Override

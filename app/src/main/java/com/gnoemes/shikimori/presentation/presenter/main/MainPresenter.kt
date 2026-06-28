@@ -1,8 +1,9 @@
 package com.gnoemes.shikimori.presentation.presenter.main
 
-import com.arellomobile.mvp.InjectViewState
-import com.crashlytics.android.Crashlytics
+import moxy.InjectViewState
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.gnoemes.shikimori.domain.series.SeriesSyncInteractor
+import com.gnoemes.shikimori.entity.common.domain.KeyScreen
 import com.gnoemes.shikimori.entity.main.BottomScreens
 import com.gnoemes.shikimori.presentation.presenter.base.BaseNavigationPresenter
 import com.gnoemes.shikimori.presentation.view.main.MainView
@@ -16,10 +17,10 @@ class MainPresenter @Inject constructor(
         private val interactor: SeriesSyncInteractor
 ) : BaseNavigationPresenter<MainView>() {
 
-    private var disposable: CompositeDisposable = CompositeDisposable()
-
     override val router: Router
         get() = _router
+
+    private val syncDisposable = CompositeDisposable()
 
     override fun initData() {
         onTabItemSelected(BottomScreens.RATES)
@@ -27,10 +28,15 @@ class MainPresenter @Inject constructor(
     }
 
     private fun startEpisodesSync() {
-        val d =
+        syncDisposable.add(
                 interactor.startSync()
-                        .subscribe({}, { Crashlytics.logException(it) })
-        disposable.add(d)
+                        .subscribe({}, { FirebaseCrashlytics.getInstance().recordException(it) })
+        )
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        syncDisposable.clear()
     }
 
     fun onTabItemReselected(screenKey: String) {
@@ -45,20 +51,14 @@ class MainPresenter @Inject constructor(
 
     fun onTabItemSelected(screenKey: String) {
         when (screenKey) {
-            BottomScreens.RATES -> router.replaceScreen(BottomScreens.RATES)
-            BottomScreens.CALENDAR -> router.replaceScreen(BottomScreens.CALENDAR)
-            BottomScreens.SEARCH -> router.replaceScreen(BottomScreens.SEARCH)
-            BottomScreens.MAIN -> router.replaceScreen(BottomScreens.MAIN)
+            BottomScreens.RATES -> router.replaceScreen(KeyScreen(BottomScreens.RATES))
+            BottomScreens.CALENDAR -> router.replaceScreen(KeyScreen(BottomScreens.CALENDAR))
+            BottomScreens.SEARCH -> router.replaceScreen(KeyScreen(BottomScreens.SEARCH))
+            BottomScreens.MAIN -> router.replaceScreen(KeyScreen(BottomScreens.MAIN))
             BottomScreens.MORE -> {
                 viewState.clearMoreBackStack()
-                router.replaceScreen(BottomScreens.MORE)
+                router.replaceScreen(KeyScreen(BottomScreens.MORE))
             }
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        disposable.clear()
     }
 }

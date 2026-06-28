@@ -68,7 +68,7 @@ class FilterSourceImpl @Inject constructor(
 
     private fun getAgeRatings(): MutableList<FilterItem> =
             getList(R.array.age_ratings)
-                    .zip(AgeRating.values().asSequence().filter { it.rating != AgeRating.NONE.rating }.let { if (!settingsSource.allowR18Content) it.filter { !it.isR18 } else it }.map { it.rating.toLowerCase() }.toMutableList())
+                    .zip(AgeRating.values().asSequence().filter { it.rating != AgeRating.NONE.rating }.let { if (!settingsSource.allowR18Content) it.filter { !it.isR18 } else it }.map { it.rating.lowercase() }.toMutableList())
                     .map { (name, value) -> convert(FilterType.AGE_RATING.value, value, name) }
                     .toMutableList()
 
@@ -92,13 +92,13 @@ class FilterSourceImpl @Inject constructor(
 
     private fun getRates(anime: Boolean): MutableList<FilterItem> =
             getList(if (anime) R.array.anime_rate_stasuses else R.array.manga_rate_stasuses)
-                    .zip(RateStatus.values().map { it.status.toLowerCase() }.toMutableList())
+                    .zip(RateStatus.values().map { it.status.lowercase() }.toMutableList())
                     .map { (name, value) -> convert(FilterType.RATE.value, value, name) }
                     .toMutableList()
 
     private fun getStatuses(): MutableList<FilterItem> =
             getList(R.array.filter_statuses)
-                    .zip(Status.values().map { it.status.toLowerCase() }.toMutableList().apply { set(lastIndex, "latest") })
+                    .zip(Status.values().map { it.status.lowercase() }.toMutableList().apply { set(lastIndex, "latest") })
                     .map { (name, value) -> convert(FilterType.STATUS.value, value, name) }
                     .toMutableList()
 
@@ -143,7 +143,7 @@ class FilterSourceImpl @Inject constructor(
         }
 
         fun getYearFilter(year: Int): FilterItem {
-            return FilterItem(SearchConstants.SEASON, "$year", "$year ${context.getString(R.string.common_year).toLowerCase()}")
+            return FilterItem(SearchConstants.SEASON, "$year", "$year ${context.getString(R.string.common_year).lowercase()}")
         }
 
         fun getYearFilter(year: IntRange): FilterItem {

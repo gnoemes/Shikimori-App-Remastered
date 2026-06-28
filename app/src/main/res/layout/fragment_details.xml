@@ -11,6 +11,7 @@
         android:id="@+id/backgroundImage"
         android:layout_width="match_parent"
         android:layout_height="517dp"
+        android:contentDescription="@null"
         android:fitsSystemWindows="true"
         android:scaleType="centerCrop"
         tools:srcCompat="@drawable/test_preview2" />
@@ -79,7 +80,7 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <include layout="@layout/layout_collapsing_toolbar" />
+    <include android:id="@+id/included_layout_collapsing_toolbar" layout="@layout/layout_collapsing_toolbar" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/actionBtn"

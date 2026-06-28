@@ -1,6 +1,6 @@
 package com.gnoemes.shikimori.presentation.presenter.search
 
-import com.arellomobile.mvp.InjectViewState
+import moxy.InjectViewState
 import com.gnoemes.shikimori.domain.search.filter.FilterInteractor
 import com.gnoemes.shikimori.entity.app.domain.AnalyticEvent
 import com.gnoemes.shikimori.entity.common.domain.FilterItem
@@ -14,6 +14,7 @@ import com.gnoemes.shikimori.presentation.presenter.base.BaseFilterPresenter
 import com.gnoemes.shikimori.presentation.presenter.search.converter.FilterViewModelConverter
 import com.gnoemes.shikimori.presentation.view.search.filter.FilterView
 import com.gnoemes.shikimori.utils.clearAndAddAll
+import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
 @InjectViewState
@@ -37,6 +38,7 @@ open class FilterPresenter @Inject constructor(
             else -> interactor.getAnimeSortFilters()
         })
                 .doOnSuccess { sortItems.clearAndAddAll(it) }
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::setSortFilters, this::processErrors)
                 .addToDisposables()
     }
@@ -48,6 +50,7 @@ open class FilterPresenter @Inject constructor(
             else -> interactor.getAnimeFilters()
         })
                 .map { converter.convert(it, appliedFilters) }
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::setData, this::processErrors)
                 .addToDisposables()
     }

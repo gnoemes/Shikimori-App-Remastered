@@ -4,6 +4,32 @@
     <string name="default_notification_channel_id">SHIKIMORI_NOTIFICATION_CHANNEL_ID</string>
     <string name="main_exit_message">Для выхода из программы нажмите кнопку еще раз</string>
 
+    <!-- Content descriptions for accessibility -->
+    <string name="description_anime_cover">Обложка аниме</string>
+    <string name="description_character_image">Изображение персонажа</string>
+    <string name="description_anime_poster">Постер аниме</string>
+    <string name="description_screenshot">Скриншот</string>
+    <string name="description_profile_image">Изображение профиля</string>
+    <string name="description_user_avatar">Аватар пользователя</string>
+    <string name="description_category_icon">Иконка категории</string>
+    <string name="description_search_result">Результат поиска</string>
+    <string name="description_favorite_image">Избранное изображение</string>
+    <string name="description_info_image">Информационное изображение</string>
+    <string name="description_action_icon">Иконка действия</string>
+    <string name="description_person_photo">Фотография человека</string>
+    <string name="description_linked_image">Связанное изображение</string>
+    <string name="description_comments_icon">Иконка комментариев</string>
+    <string name="description_club_avatar">Аватар клуба</string>
+    <string name="description_same_author">Индикатор того же автора</string>
+    <string name="description_history_image">Изображение истории</string>
+    <string name="description_preference_icon">Иконка настройки</string>
+    <string name="description_theme_preview">Превью темы</string>
+    <string name="description_theme_status">Статус темы</string>
+    <string name="description_expand">Развернуть</string>
+    <string name="description_rate_status_icon">Иконка статуса оценки</string>
+    <string name="description_empty_state">Пустое состояние</string>
+    <string name="description_network_error">Ошибка сети</string>
+
     <string name="common_rates">Списки</string>
     <string name="common_calendar">Календарь</string>
     <string name="common_search">Поиск</string>
@@ -102,12 +128,12 @@
     <string name="rate_dropped">Брошено</string>
     <string name="rate_rating">Оценка</string>
     <string name="rate_comment_hint">Добавить комментарий к списку</string>
-    <string name="rate_watching_with_count">Смотрю (%s)</string>
-    <string name="rate_reading_with_count">Читаю (%s)</string>
-    <string name="rate_rereading_with_count">Перечитываю (%s)</string>
-    <string name="rate_readed_with_count">Прочитано (%s)</string>
-    <string name="rate_planned_with_count">Запланировано (%s)</string>
-    <string name="rate_rewatch_with_count">Пересматриваю (%s)</string>
+    <string name="rate_watching_with_count" formatted="false">Смотрю (%s)</string>
+    <string name="rate_reading_with_count" formatted="false">Читаю (%s)</string>
+    <string name="rate_rereading_with_count" formatted="false">Перечитываю (%s)</string>
+    <string name="rate_readed_with_count" formatted="false">Прочитано (%s)</string>
+    <string name="rate_planned_with_count" formatted="false">Запланировано (%s)</string>
+    <string name="rate_rewatch_with_count" formatted="false">Пересматриваю (%s)</string>
     <string name="rate_completed_with_count">Просмотрено (%s)</string>
     <string name="rate_on_hold_with_count">Отложено (%s)</string>
     <string name="rate_dropped_with_count">Брошено (%s)</string>

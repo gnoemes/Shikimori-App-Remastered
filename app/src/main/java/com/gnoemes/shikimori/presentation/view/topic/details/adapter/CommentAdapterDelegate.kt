@@ -1,16 +1,13 @@
 package com.gnoemes.shikimori.presentation.view.topic.details.adapter
 
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.databinding.ItemCommentBinding
 import com.gnoemes.shikimori.entity.comment.presentation.CommentViewModel
 import com.gnoemes.shikimori.entity.common.domain.Type
 import com.gnoemes.shikimori.presentation.view.topic.holders.TopicUserViewHolder
 import com.gnoemes.shikimori.utils.images.ImageLoader
-import com.gnoemes.shikimori.utils.inflate
 import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
-import kotlinx.android.synthetic.main.item_comment.view.*
 
 class CommentAdapterDelegate(
         private val imageLoader: ImageLoader,
@@ -21,31 +18,26 @@ class CommentAdapterDelegate(
             item is CommentViewModel
 
     override fun onCreateViewHolder(parent: ViewGroup): ViewHolder =
-            ViewHolder(parent.inflate(R.layout.item_comment))
+            ViewHolder(ItemCommentBinding.inflate(android.view.LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(item: CommentViewModel, holder: ViewHolder, payloads: MutableList<Any>) {
         holder.bind(item)
     }
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(private val binding: ItemCommentBinding) : RecyclerView.ViewHolder(binding.root) {
 
         private lateinit var item: CommentViewModel
 
-        private val userHolder by lazy { TopicUserViewHolder(itemView.userLayout, imageLoader, navigationCallback) }
+        private val userHolder by lazy { TopicUserViewHolder(binding.userLayout, imageLoader, navigationCallback) }
 
         init {
-            itemView.contentView.linkCallback = navigationCallback
+            binding.contentView.linkCallback = navigationCallback
         }
 
         fun bind(item: CommentViewModel) {
             this.item = item
             userHolder.bind(item.userData)
-            with(itemView) {
-                contentView.setContent(item.content)
-            }
-
+            binding.contentView.setContent(item.content)
         }
-
-
     }
 }

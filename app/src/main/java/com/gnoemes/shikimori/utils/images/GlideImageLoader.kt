@@ -2,6 +2,7 @@ package com.gnoemes.shikimori.utils.images
 
 import android.content.Context
 import android.widget.ImageView
+import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
 import com.bumptech.glide.request.target.BitmapImageViewTarget
 import com.gnoemes.shikimori.R
@@ -12,10 +13,10 @@ class GlideImageLoader @Inject constructor(
         private val context: Context
 ) : ImageLoader {
 
-    val glide = GlideApp.with(context)
+    val glide = Glide.with(context)
 
     override fun setCircleImage(image: ImageView, url: String?) {
-        GlideApp.with(image)
+        Glide.with(image)
                 .asDrawable()
                 .load(url)
                 .dontAnimate()
@@ -23,7 +24,7 @@ class GlideImageLoader @Inject constructor(
     }
 
     override fun setImageWithPlaceHolder(image: ImageView, url: String?) {
-        GlideApp.with(image)
+        Glide.with(image)
                 .asBitmap()
                 .load(url)
                 .error(R.drawable.missing_original)
@@ -32,7 +33,7 @@ class GlideImageLoader @Inject constructor(
     }
 
     override fun setImageListItem(image: ImageView, url: String?) {
-        GlideApp.with(image)
+        Glide.with(image)
                 .asBitmap()
                 .dontAnimate()
                 .error(R.drawable.missing_original)
@@ -43,7 +44,7 @@ class GlideImageLoader @Inject constructor(
     }
 
     override fun setBlurredImage(image: ImageView, url: String?, radius : Int, sampling : Int) {
-        GlideApp.with(image)
+        Glide.with(image)
                 .asBitmap()
                 .load(url)
                 .transform(BlurTransformation(radius, sampling))
@@ -53,7 +54,7 @@ class GlideImageLoader @Inject constructor(
     }
 
     override fun setBlurredCircleImage(image: ImageView, url: String?, radius: Int, sampling: Int) {
-        GlideApp.with(image)
+        Glide.with(image)
                 .asDrawable()
                 .load(url)
                 .transform(BlurTransformation(radius, sampling))

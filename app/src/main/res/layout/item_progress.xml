@@ -5,6 +5,6 @@
     android:padding="8dp"
     >
 
-    <include layout="@layout/layout_progress"/>
+    <include android:id="@+id/included_layout_progress" layout="@layout/layout_progress"/>
 
 </FrameLayout>

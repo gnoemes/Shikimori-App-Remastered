@@ -5,5 +5,5 @@ import com.gnoemes.shikimori.entity.common.domain.Image
 
 interface ImageResponseConverter {
 
-    fun convertResponse(response: ImageResponse): Image
+    fun convertResponse(response: ImageResponse?): Image
 }

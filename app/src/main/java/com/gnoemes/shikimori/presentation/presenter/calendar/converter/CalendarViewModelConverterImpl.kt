@@ -69,22 +69,22 @@ class CalendarViewModelConverterImpl @Inject constructor(
     private fun convertItem(item: CalendarItem): CalendarAnimeItem {
         val isAlreadyAired = convertDuration(item.nextEpisodeDate) == null
 
-        val description = if (isAlreadyAired) String.format(context.getString(R.string.episode_number), item.nextEpisode).toUpperCase()
+        val description = if (isAlreadyAired) String.format(context.getString(R.string.episode_number), item.nextEpisode).uppercase()
         else {
-            val builder = SpannableStringBuilder("${item.nextEpisode} ${context.getString(R.string.episode_short)}".toUpperCase())
+            val builder = SpannableStringBuilder("${item.nextEpisode} ${context.getString(R.string.episode_short)}".uppercase())
 
             val divider = "  •  ".colorSpan(dividerColor)
             builder.append(divider)
 
             val nextEpisode = if (Days.daysBetween(dateTimeUtils.nowDateTime, item.nextEpisodeDate).days > 0) {
                 val days = Days.daysBetween(dateTimeUtils.nowDateTime, item.nextEpisodeDate).days
-                context.resources.getQuantityString(R.plurals.days, days, days).toUpperCase()
+                context.resources.getQuantityString(R.plurals.days, days, days).uppercase()
             } else {
                 val hours = Hours.hoursBetween(dateTimeUtils.nowDateTime, item.nextEpisodeDate).hours
                 val mins = Minutes.minutesBetween(dateTimeUtils.nowDateTime, item.nextEpisodeDate).minutes % 60
 
-                if (hours < 1) "${mins.addZeroIfNeed()} ${context.getString(R.string.minute_short)}".toUpperCase()
-                else "${hours.addZeroIfNeed()} ${context.getString(R.string.hour_short)} ${mins.addZeroIfNeed()} ${context.getString(R.string.minute_short)}".toUpperCase()
+                if (hours < 1) "${mins.addZeroIfNeed()} ${context.getString(R.string.minute_short)}".uppercase()
+                else "${hours.addZeroIfNeed()} ${context.getString(R.string.hour_short)} ${mins.addZeroIfNeed()} ${context.getString(R.string.minute_short)}".uppercase()
             }
 
             builder.append(nextEpisode.colorSpan(dividerColor))

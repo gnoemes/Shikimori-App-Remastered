@@ -1,15 +1,13 @@
 package com.gnoemes.shikimori.presentation.view.common.adapter
 
-import android.view.View
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.databinding.ItemDetailsActionBinding
 import com.gnoemes.shikimori.entity.common.presentation.DetailsAction
 import com.gnoemes.shikimori.entity.common.presentation.DetailsActionType
-import com.gnoemes.shikimori.utils.inflate
-import com.gnoemes.shikimori.utils.onClick
 import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
-import kotlinx.android.synthetic.main.item_details_action.view.*
 
 class ActionAdapterDelegate(
         private val callback: (DetailsAction) -> Unit
@@ -19,23 +17,23 @@ class ActionAdapterDelegate(
             item is DetailsActionType
 
     override fun onCreateViewHolder(parent: ViewGroup): ViewHolder =
-            ViewHolder(parent.inflate(R.layout.item_details_action))
+            ViewHolder(ItemDetailsActionBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(item: DetailsActionType, holder: ViewHolder, payloads: MutableList<Any>) {
         holder.bind(item)
     }
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(private val binding: ItemDetailsActionBinding) : RecyclerView.ViewHolder(binding.root) {
 
         private lateinit var item: DetailsActionType
 
         init {
-            itemView.container.onClick { callback.invoke(getClickAction(item)) }
+            binding.container.setOnClickListener { callback.invoke(getClickAction(item)) }
         }
 
         fun bind(item: DetailsActionType) {
             this.item = item
-            with(itemView) {
+            with(binding) {
                 val icon = when (item) {
                     DetailsActionType.CHRONOLOGY -> R.drawable.ic_chronology
                     DetailsActionType.DISCUSSION -> R.drawable.ic_comment

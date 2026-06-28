@@ -1,6 +1,7 @@
 package com.gnoemes.shikimori.presentation.presenter.common.paginator
 
 import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 
 class PageOffsetPaginator<T>(
@@ -24,6 +25,7 @@ class PageOffsetPaginator<T>(
     private fun loadPage(page: Int) {
         disposable?.dispose()
         disposable = requestFactory.invoke(page)
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         { currentState.newData(it) },
                         { currentState.error(it) }

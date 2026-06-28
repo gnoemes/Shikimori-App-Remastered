@@ -12,5 +12,6 @@ interface PersonView : BaseFragmentView {
 
     fun setDescription(item: DetailsDescriptionItem)
 
-    fun setContent(type: DetailsContentType, item: DetailsContentItem)
+    fun setCharactersContent(item: DetailsContentItem)
+    fun setWorksContent(item: DetailsContentItem)
 }

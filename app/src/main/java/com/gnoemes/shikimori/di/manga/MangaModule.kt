@@ -1,7 +1,7 @@
 package com.gnoemes.shikimori.di.manga
 
 import androidx.fragment.app.Fragment
-import com.arellomobile.mvp.MvpPresenter
+import moxy.MvpPresenter
 import com.gnoemes.shikimori.di.base.modules.BaseChildFragmentModule
 import com.gnoemes.shikimori.di.base.scopes.BottomChildScope
 import com.gnoemes.shikimori.di.rate.RateModule

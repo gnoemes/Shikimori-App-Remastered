@@ -38,6 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="top|center_horizontal"
         android:layout_marginTop="4dp"
+        android:contentDescription="@null"
         app:srcCompat="@drawable/ic_knob" />
 
     <FrameLayout

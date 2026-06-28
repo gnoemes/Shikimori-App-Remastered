@@ -6,8 +6,9 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.Toolbar
 import androidx.preference.PreferenceFragmentCompat
-import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.datetime.timePicker
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import com.gnoemes.shikimori.R
 import com.gnoemes.shikimori.entity.app.domain.AscentTheme
 import com.gnoemes.shikimori.entity.app.domain.Theme
@@ -38,11 +39,22 @@ class SettingsThemeFragment : BaseSettingsFragment(), Toolbar.OnMenuItemClickLis
     }
 
     private fun showTimeDialog(initValue: Int, action: (Int) -> Unit) {
-        MaterialDialog(context!!).show {
-            timePicker(currentTime = LocalTime(initValue.toLong()).toDateTimeToday().toGregorianCalendar()) { _, datetime ->
-                action.invoke(DateTime(datetime).withZone(DateTimeZone.UTC).millisOfDay)
-            }
+        val localTime = LocalTime(initValue.toLong())
+        val picker = MaterialTimePicker.Builder()
+                .setHour(localTime.hourOfDay)
+                .setMinute(localTime.minuteOfHour)
+                .setTimeFormat(TimeFormat.CLOCK_24H)
+                .build()
+        picker.addOnPositiveButtonClickListener {
+            val dateTime = DateTime.now()
+                    .withHourOfDay(picker.hour)
+                    .withMinuteOfHour(picker.minute)
+                    .withSecondOfMinute(0)
+                    .withMillisOfSecond(0)
+                    .withZone(DateTimeZone.UTC)
+            action.invoke(dateTime.millisOfDay)
         }
+        picker.show(parentFragmentManager, "timePicker")
     }
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {

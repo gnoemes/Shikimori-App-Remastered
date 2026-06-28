@@ -1,7 +1,7 @@
 package com.gnoemes.shikimori.di.topic.details
 
 import androidx.fragment.app.Fragment
-import com.arellomobile.mvp.MvpPresenter
+import moxy.MvpPresenter
 import com.gnoemes.shikimori.di.base.modules.BaseChildFragmentModule
 import com.gnoemes.shikimori.di.base.scopes.BottomScope
 import com.gnoemes.shikimori.di.comment.CommentModule

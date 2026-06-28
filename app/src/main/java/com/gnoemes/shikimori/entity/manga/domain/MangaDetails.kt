@@ -1,5 +1,6 @@
 package com.gnoemes.shikimori.entity.manga.domain
 
+import com.gnoemes.shikimori.entity.common.domain.AgeRating
 import com.gnoemes.shikimori.entity.common.domain.Genre
 import com.gnoemes.shikimori.entity.common.domain.Image
 import com.gnoemes.shikimori.entity.common.domain.Status
@@ -15,6 +16,7 @@ data class MangaDetails(
         val url: String,
         val type: MangaType,
         val status: Status,
+        val ageRating: AgeRating?,
         val volumes: Int,
         val chapters: Int,
         val dateAired: DateTime?,

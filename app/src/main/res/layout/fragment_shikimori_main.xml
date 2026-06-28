@@ -7,9 +7,9 @@
     android:fitsSystemWindows="true"
     >
 
-    <include layout="@layout/layout_appbar_tabs" />
+    <include android:id="@+id/included_layout_appbar_tabs" layout="@layout/layout_appbar_tabs" />
 
-    <androidx.viewpager.widget.ViewPager
+    <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/pagesContainerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

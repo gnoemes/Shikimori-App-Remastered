@@ -11,7 +11,7 @@ class MockMediaButtonReceiver : MediaButtonReceiver() {
         try {
             super.onReceive(context, intent)
         } catch (e: IllegalStateException) {
-            Log.d(this.javaClass.name, e.message)
+            Log.d(this.javaClass.name, e.message ?: "")
         }
 
     }

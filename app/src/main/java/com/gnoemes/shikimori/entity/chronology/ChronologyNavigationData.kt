@@ -2,7 +2,7 @@ package com.gnoemes.shikimori.entity.chronology
 
 import android.os.Parcelable
 import com.gnoemes.shikimori.entity.common.domain.Type
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ChronologyNavigationData(

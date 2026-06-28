@@ -1,13 +1,12 @@
 package com.gnoemes.shikimori.entity.chapters
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
 import com.gnoemes.shikimori.data.local.db.table.ChapterTable
-import com.pushtorefresh.storio3.sqlite.annotations.StorIOSQLiteColumn
-import com.pushtorefresh.storio3.sqlite.annotations.StorIOSQLiteCreator
-import com.pushtorefresh.storio3.sqlite.annotations.StorIOSQLiteType
 
-@StorIOSQLiteType(table = ChapterTable.TABLE)
-data class ChapterDao @StorIOSQLiteCreator constructor(
-        @StorIOSQLiteColumn(name = ChapterTable.COLUMN_MANGA_ID, key = true) val mangaId: Long,
-        @StorIOSQLiteColumn(name = ChapterTable.COLUMN_CHAPTER_ID, key = true) val chapterId: Int,
-        @StorIOSQLiteColumn(name = ChapterTable.COLUMN_IS_READED) val isReaded: Int? = null
+@Entity(tableName = ChapterTable.TABLE, primaryKeys = [ChapterTable.COLUMN_MANGA_ID, ChapterTable.COLUMN_CHAPTER_ID])
+data class ChapterDao(
+        @ColumnInfo(name = ChapterTable.COLUMN_MANGA_ID) val mangaId: Long,
+        @ColumnInfo(name = ChapterTable.COLUMN_CHAPTER_ID) val chapterId: Int,
+        @ColumnInfo(name = ChapterTable.COLUMN_IS_READED) val isReaded: Int? = null
 )

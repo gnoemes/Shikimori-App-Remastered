@@ -5,56 +5,56 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.StringRes
 import com.gnoemes.shikimori.R
+import com.gnoemes.shikimori.databinding.ViewNetworkErrorBinding
 import com.gnoemes.shikimori.presentation.view.base.widget.BaseView
 import com.gnoemes.shikimori.utils.gone
 import com.gnoemes.shikimori.utils.visible
-import kotlinx.android.synthetic.main.view_network_error.view.*
 
 class NetworkErrorView @JvmOverloads constructor(context: Context,
                                                  attrs: AttributeSet? = null,
                                                  defStyleInt: Int = 0
 ) : BaseView(context, attrs, defStyleInt) {
 
+    private lateinit var binding: ViewNetworkErrorBinding
     lateinit var callback: (View) -> Unit
 
     override fun getLayout(): Int = R.layout.view_network_error
 
     override fun init(context: Context, attrs: AttributeSet?) {
-        super.init(context, attrs)
+        binding = ViewNetworkErrorBinding.inflate(android.view.LayoutInflater.from(context), this, true)
 
         val ta = context.obtainStyledAttributes(attrs, R.styleable.NetworkErrorView)
-        descriptionTextView.text = ta.getText(R.styleable.NetworkErrorView_text)
+        binding.descriptionTextView.text = ta.getText(R.styleable.NetworkErrorView_text)
         ta.recycle()
 
-        btnView.setOnClickListener {
+        binding.btnView.setOnClickListener {
             if (::callback.isInitialized) {
                 callback.invoke(it)
             }
         }
-
     }
 
     fun setText(string: String) {
-        descriptionTextView.text = string
+        binding.descriptionTextView.text = string
     }
 
     fun setText(@StringRes stringRes: Int) {
-        descriptionTextView.setText(stringRes)
+        binding.descriptionTextView.setText(stringRes)
     }
 
     fun showButton() {
-        btnView.visible()
+        binding.btnView.visible()
     }
 
     fun hideButton() {
-        btnView.gone()
+        binding.btnView.gone()
     }
 
     fun setButtonText(@StringRes textRes: Int) {
-        btnView.setText(textRes)
+        binding.btnView.setText(textRes)
     }
 
     fun setButtonText(text: String) {
-        btnView.text = text
+        binding.btnView.text = text
     }
 }

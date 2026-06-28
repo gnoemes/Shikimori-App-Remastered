@@ -19,8 +19,9 @@ class CalendarAdapter(
     }
 
     override fun getItemId(position: Int): Long {
-        return if (items[position] is CalendarViewModel) (items[position] as CalendarViewModel).date.hashCode().toLong()
-        else items[position].hashCode().toLong()
+        val item = items!![position]
+        return if (item is CalendarViewModel) item.date.hashCode().toLong()
+        else item.hashCode().toLong()
     }
 
     override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean = when {

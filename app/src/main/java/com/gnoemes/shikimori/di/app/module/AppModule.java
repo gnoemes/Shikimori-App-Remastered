@@ -8,9 +8,10 @@ import javax.inject.Singleton;
 
 import dagger.Binds;
 import dagger.Module;
+import dagger.android.AndroidInjectionModule;
 import dagger.android.support.AndroidSupportInjectionModule;
 
-@Module(includes = AndroidSupportInjectionModule.class)
+@Module(includes = {AndroidInjectionModule.class, AndroidSupportInjectionModule.class})
 public interface AppModule {
 
     @Binds

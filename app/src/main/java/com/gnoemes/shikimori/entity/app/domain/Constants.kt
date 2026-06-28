@@ -27,7 +27,7 @@ object Constants {
 
     const val TASK_LONG_DELAY = 3500L
 
-    const val FOUR_PDA_THEME_URL = "https://4pda.ru/forum/index.php?showtopic=903970"
+    const val FOUR_PDA_THEME_URL = "https://4pda.to/forum/index.php?showtopic=903970"
 
     const val APP_CLUB_URL = "https://shikimori.io/clubs/1609"
 
@@ -39,5 +39,5 @@ object Constants {
 
     const val MAX_PINNED_RATES = 3
 
-    const val BACKUP_FILE_NAME= "shimori-backup.json"
+    const val BACKUP_FILE_NAME = "shimori-backup.json"
 }

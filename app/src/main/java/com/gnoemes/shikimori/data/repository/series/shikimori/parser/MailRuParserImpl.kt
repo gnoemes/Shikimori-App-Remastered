@@ -24,7 +24,7 @@ class MailRuParserImpl @Inject constructor() : MailRuParser {
         val playerDataJson = doc
                 .select("script:containsData(flashVars):containsData(video):containsData(metadataUrl)")
                 .first()
-                .data()
+                ?.data()
 
         if (playerDataJson.isNullOrEmpty()) return null
 
